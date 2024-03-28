@@ -139,6 +139,12 @@ impl ListUserClient {
             };
 
             let res = self.reqwest_client.get(url).query(&params).send().await?;
+
+            if !res.status().is_success() {
+                let api_error = res.json::<NotionApiError>().await?;
+                return Err(NotionError::NotionApiError(Box::new(api_error)));
+            }
+
             let body = res.json::<NotionResponse<User>>().await?;
 
             results.extend(body.results.into_iter());
