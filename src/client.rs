@@ -4,7 +4,7 @@ use dotenv::dotenv;
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::env;
 
-use self::user::ListUserClient;
+use self::user::list_user::ListUserClient;
 
 pub struct NotionClient {
     reqwest_client: reqwest::Client,

@@ -25,7 +25,7 @@ where
 #[tokio::main]
 async fn main() -> Result<(), NotionError> {
     let notion = NotionClient::new();
-    let results = notion.list_user().recursive().send().await?;
+    let results = notion.list_user().send().await?;
     println!("{}", results.to_json());
 
     Ok(())
