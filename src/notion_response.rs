@@ -1,7 +1,10 @@
 use serde::{Deserialize, Serialize};
 
+use crate::user::User;
+
 #[derive(Deserialize, Serialize, Debug)]
-pub struct NotionResponse<T> {
+pub struct NotionListResponse<T> {
+    // always "list"
     pub object: String,
     pub results: Vec<T>,
 

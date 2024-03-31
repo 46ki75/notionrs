@@ -20,6 +20,9 @@ pub enum NotionError {
 
     #[error("notion api error: {0}")]
     NotionApiError(Box<NotionApiError>),
+
+    #[error("notion request parameter error: {0}")]
+    NotionRequestParameterError(String),
 }
 
 impl NotionError {

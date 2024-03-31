@@ -2,12 +2,12 @@ use serde::Serialize;
 
 use crate::{
     error::{NotionApiError, NotionError},
-    notion_response::NotionResponse,
+    notion_response::NotionListResponse,
     user::User,
 };
 
-/// A request builder for performing `list_user` operations.
-pub struct ListUserClient {
+/// A request builder for performing `list_users` operations.
+pub struct ListUsersClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
@@ -35,7 +35,7 @@ struct LinsUserQueryParams {
     page_size: Option<u8>,
 }
 
-impl ListUserClient {
+impl ListUsersClient {
     /// https://developers.notion.com/reference/get-users
     ///
     /// This method can fetch a list of users present in the current Notion workspace.
@@ -48,7 +48,7 @@ impl ListUserClient {
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
-    ///     let response = notion.list_user().send().await?;
+    ///     let response = notion.list_users().send().await?;
     ///     println!("{}", response.to_json());
     ///
     ///     Ok(())
@@ -62,7 +62,7 @@ impl ListUserClient {
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
-    ///     let response = notion.list_user().recursive().send().await?;
+    ///     let response = notion.list_users().recursive().send().await?;
     ///     println!("{}", response.to_json());
     ///
     ///     Ok(())
@@ -75,7 +75,7 @@ impl ListUserClient {
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
-    ///     let response = notion.list_user().recursive().send().await?;
+    ///     let response = notion.list_users().recursive().send().await?;
     ///     println!("{}", response.to_json());
     ///
     ///     Ok(())
@@ -127,7 +127,7 @@ impl ListUserClient {
     ///   "request_id": null
     /// }
     /// ```
-    pub async fn send(&mut self) -> Result<NotionResponse<User>, NotionError> {
+    pub async fn send(&mut self) -> Result<NotionListResponse<User>, NotionError> {
         let url = "https://api.notion.com/v1/users";
         let mut results = Vec::new();
 
@@ -145,7 +145,7 @@ impl ListUserClient {
                     return Err(NotionError::NotionApiError(Box::new(api_error)));
                 }
 
-                let body = res.json::<NotionResponse<User>>().await?;
+                let body = res.json::<NotionListResponse<User>>().await?;
 
                 results.extend(body.results);
 
@@ -157,7 +157,7 @@ impl ListUserClient {
                 }
             }
 
-            Ok(NotionResponse {
+            Ok(NotionListResponse {
                 object: "list".to_string(),
                 r#type: Some("user".to_string()),
                 results,
@@ -179,7 +179,7 @@ impl ListUserClient {
                 return Err(NotionError::NotionApiError(Box::new(api_error)));
             }
 
-            let body = res.json::<NotionResponse<User>>().await?;
+            let body = res.json::<NotionListResponse<User>>().await?;
 
             Ok(body)
         }
@@ -191,7 +191,7 @@ impl ListUserClient {
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
     ///     let response = notion
-    ///         .list_user()
+    ///         .list_users()
     ///         .start_cursor("4f5ceec2-c402-41f3-9fb0-6789f526e4b5")
     ///         .send()
     ///         .await?;
@@ -210,7 +210,7 @@ impl ListUserClient {
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
-    ///     let response = notion.list_user().page_size(10).send().await?;
+    ///     let response = notion.list_users().page_size(10).send().await?;
     ///     println!("{}", response.to_json());
     ///
     ///     Ok(())
@@ -227,7 +227,7 @@ impl ListUserClient {
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
-    ///     let response = notion.list_user().recursive().send().await?;
+    ///     let response = notion.list_users().recursive().send().await?;
     ///     println!("{}", response.to_json());
     ///
     ///     Ok(())
