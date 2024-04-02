@@ -6,6 +6,7 @@ use std::env;
 
 use self::user::{get_user::GetUserClient, list_users::ListUsersClient};
 
+#[derive(Default)]
 pub struct NotionClient {
     reqwest_client: reqwest::Client,
 }
@@ -60,7 +61,6 @@ impl NotionClient {
         }
     }
 
-    /// aaaaaaaaaaaaa
     pub fn get_user(&self) -> GetUserClient {
         GetUserClient {
             reqwest_client: self.reqwest_client.clone(),
