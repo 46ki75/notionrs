@@ -4,7 +4,7 @@ use dotenv::dotenv;
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::env;
 
-use self::user::{get_user::GetUserClient, list_users::ListUsersClient};
+use self::user::{get_self::GetSelfClient, get_user::GetUserClient, list_users::ListUsersClient};
 
 #[derive(Default)]
 pub struct NotionClient {
@@ -65,6 +65,12 @@ impl NotionClient {
         GetUserClient {
             reqwest_client: self.reqwest_client.clone(),
             user_id: None,
+        }
+    }
+
+    pub fn get_self(&self) -> GetSelfClient {
+        GetSelfClient {
+            reqwest_client: self.reqwest_client.clone(),
         }
     }
 }
