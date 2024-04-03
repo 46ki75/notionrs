@@ -13,7 +13,7 @@ pub struct Bot {
     pub avatar_url: Option<String>,
 
     /// always "bot"
-    pub r#type: String,
+    pub r#type: Option<String>,
     pub bot: BotDetail,
 }
 

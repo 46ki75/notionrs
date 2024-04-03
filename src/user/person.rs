@@ -8,7 +8,7 @@ pub struct Person {
     pub avatar_url: Option<String>,
 
     /// always "person"
-    pub r#type: String,
+    pub r#type: Option<String>,
     pub person: Option<PersonDetail>,
 }
 

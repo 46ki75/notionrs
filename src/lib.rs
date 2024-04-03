@@ -1,4 +1,8 @@
 pub mod client;
 pub mod error;
-pub mod notion_response;
+pub mod list_response;
+pub mod others;
+pub mod page;
+pub mod prelude;
+pub mod to_json;
 pub mod user;

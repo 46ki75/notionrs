@@ -1,10 +1,14 @@
+pub mod page;
 pub mod user;
 
 use dotenv::dotenv;
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::env;
 
-use self::user::{get_self::GetSelfClient, get_user::GetUserClient, list_users::ListUsersClient};
+use self::{
+    page::get_page::GetPageClient,
+    user::{get_self::GetSelfClient, get_user::GetUserClient, list_users::ListUsersClient},
+};
 
 #[derive(Default)]
 pub struct NotionClient {
@@ -71,6 +75,13 @@ impl NotionClient {
     pub fn get_self(&self) -> GetSelfClient {
         GetSelfClient {
             reqwest_client: self.reqwest_client.clone(),
+        }
+    }
+
+    pub fn get_page(&self) -> GetPageClient {
+        GetPageClient {
+            reqwest_client: self.reqwest_client.clone(),
+            page_id: None,
         }
     }
 }

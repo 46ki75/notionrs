@@ -2,7 +2,7 @@ use serde::Serialize;
 
 use crate::{
     error::{NotionApiError, NotionError},
-    notion_response::NotionListResponse,
+    list_response::ListResponse,
     user::User,
 };
 
@@ -127,7 +127,7 @@ impl ListUsersClient {
     ///   "request_id": null
     /// }
     /// ```
-    pub async fn send(&mut self) -> Result<NotionListResponse<User>, NotionError> {
+    pub async fn send(&mut self) -> Result<ListResponse<User>, NotionError> {
         let url = "https://api.notion.com/v1/users";
         let mut results = Vec::new();
 
@@ -145,7 +145,7 @@ impl ListUsersClient {
                     return Err(NotionError::NotionApiError(Box::new(api_error)));
                 }
 
-                let body = res.json::<NotionListResponse<User>>().await?;
+                let body = res.json::<ListResponse<User>>().await?;
 
                 results.extend(body.results);
 
@@ -157,7 +157,7 @@ impl ListUsersClient {
                 }
             }
 
-            Ok(NotionListResponse {
+            Ok(ListResponse {
                 object: "list".to_string(),
                 r#type: Some("user".to_string()),
                 results,
@@ -179,7 +179,7 @@ impl ListUsersClient {
                 return Err(NotionError::NotionApiError(Box::new(api_error)));
             }
 
-            let body = res.json::<NotionListResponse<User>>().await?;
+            let body = res.json::<ListResponse<User>>().await?;
 
             Ok(body)
         }
