@@ -8,7 +8,7 @@ use self::{
     multi_select::PageMultiSelectProperty, number::PageNumberProperty, people::PagePeopleProperty,
     phone_number::PagePhoneNumberProperty, relation::PageRelationProperty,
     rich_text::PageRichTextProperty, select::PageSelectProperty, status::PageStatusProperty,
-    title::PageTitleProperty, url::PageUrlProperty,
+    title::PageTitleProperty, unique_id::PageUniqueIdProperty, url::PageUrlProperty,
 };
 
 pub mod button;
@@ -30,6 +30,7 @@ pub mod rich_text;
 pub mod select;
 pub mod status;
 pub mod title;
+pub mod unique_id;
 pub mod url;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -54,5 +55,6 @@ pub enum PageProperty {
     Select(PageSelectProperty),
     Status(PageStatusProperty),
     Title(PageTitleProperty),
+    UniqueId(PageUniqueIdProperty),
     Url(PageUrlProperty),
 }
