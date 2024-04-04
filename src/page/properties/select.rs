@@ -22,5 +22,5 @@ use crate::others::select::Select;
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PageSelectProperty {
     pub id: String,
-    pub select: Select,
+    pub select: Option<Select>,
 }
