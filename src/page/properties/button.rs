@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 /// }
 /// ```
 #[derive(Debug, Deserialize, Serialize)]
-pub struct PageButton {
+pub struct PageButtonProperty {
     pub id: String,
     pub button: HashMap<String, String>,
 }

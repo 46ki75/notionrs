@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 /// https://developers.notion.com/reference/page-property-values#email
 ///
-/// Example date page property value
+/// Example email page property value
 ///
 /// ```json
 /// {
@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 /// }
 /// ```
 #[derive(Debug, Deserialize, Serialize)]
-pub struct PageEmail {
+pub struct PageEmailProperty {
     pub id: String,
     pub email: Option<String>,
 }

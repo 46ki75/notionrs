@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 /// }
 /// ```
 #[derive(Debug, Deserialize, Serialize)]
-pub struct PageCheckbox {
+pub struct PageCheckboxProperty {
     pub id: String,
     pub checkbox: bool,
 }

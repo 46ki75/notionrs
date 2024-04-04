@@ -4,3 +4,4 @@ pub mod file;
 pub mod icon;
 pub mod parent;
 pub mod rich_text;
+pub mod select;

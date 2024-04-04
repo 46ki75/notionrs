@@ -2,15 +2,15 @@ use serde::{Deserialize, Serialize};
 
 use crate::user::User;
 
-/// https://developers.notion.com/reference/page-property-values#created-by
+/// https://developers.notion.com/reference/page-property-values#last-edited-by
 ///
-/// Example created_by page property value
+/// Example last_edited_by page property value
 ///
 /// ```json
 /// {
-///   "Created by": {
+///   "CLast edited by": {
 ///     "id": "fR4s",
-///     "type": "created_by",
+///     "type": "last_edited_by",
 ///     "created_by": {
 ///       "object": "user",
 ///       "id": "cb497a8c-1c30-4c22-87af-f8b0c1ee7389",
@@ -25,7 +25,7 @@ use crate::user::User;
 /// }
 /// ```
 #[derive(Debug, Deserialize, Serialize)]
-pub struct PageCreatedByProperty {
+pub struct PageLastEditedByProperty {
     pub id: String,
-    pub created_by: User,
+    pub last_edited_by: User,
 }

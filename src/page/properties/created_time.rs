@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 /// }
 /// ```
 #[derive(Debug, Deserialize, Serialize)]
-pub struct PageCreatedTime {
+pub struct PageCreatedTimeProperty {
     pub id: String,
     pub created_time: String,
 }

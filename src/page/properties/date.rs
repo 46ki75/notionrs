@@ -18,13 +18,13 @@ use serde::{Deserialize, Serialize};
 /// }
 /// ```
 #[derive(Debug, Deserialize, Serialize)]
-pub struct PageDate {
+pub struct PageDateProperty {
     pub id: String,
-    pub date: PageDateParameter,
+    pub date: PageDatePropertyParameter,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct PageDateParameter {
+pub struct PageDatePropertyParameter {
     start: String,
     end: Option<String>,
     time_zone: Option<String>,
