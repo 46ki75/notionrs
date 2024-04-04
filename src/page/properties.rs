@@ -6,7 +6,8 @@ use self::{
     files::PageFilesProperty, formula::PageFormulaProperty,
     last_edited_by::PageLastEditedByProperty, last_edited_time::PageLastEditedTimeProperty,
     multi_select::PageMultiSelectProperty, number::PageNumberProperty, people::PagePeopleProperty,
-    phone_number::PagePhoneNumberProperty, title::PageTitleProperty,
+    phone_number::PagePhoneNumberProperty, relation::PageRelationProperty,
+    title::PageTitleProperty,
 };
 
 pub mod button;
@@ -23,6 +24,7 @@ pub mod multi_select;
 pub mod number;
 pub mod people;
 pub mod phone_number;
+pub mod relation;
 pub mod title;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -42,5 +44,6 @@ pub enum PageProperty {
     Number(PageNumberProperty),
     People(PagePeopleProperty),
     PhoneNumber(PagePhoneNumberProperty),
+    Relation(PageRelationProperty),
     Title(PageTitleProperty),
 }
