@@ -7,7 +7,7 @@ use self::{
     last_edited_by::PageLastEditedByProperty, last_edited_time::PageLastEditedTimeProperty,
     multi_select::PageMultiSelectProperty, number::PageNumberProperty, people::PagePeopleProperty,
     phone_number::PagePhoneNumberProperty, relation::PageRelationProperty,
-    rich_text::PageRichTextProperty, title::PageTitleProperty,
+    rich_text::PageRichTextProperty, select::PageSelectProperty, title::PageTitleProperty,
 };
 
 pub mod button;
@@ -26,6 +26,7 @@ pub mod people;
 pub mod phone_number;
 pub mod relation;
 pub mod rich_text;
+pub mod select;
 pub mod title;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -47,5 +48,6 @@ pub enum PageProperty {
     PhoneNumber(PagePhoneNumberProperty),
     Relation(PageRelationProperty),
     RichText(PageRichTextProperty),
+    Select(PageSelectProperty),
     Title(PageTitleProperty),
 }
