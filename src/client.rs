@@ -56,6 +56,12 @@ impl NotionClient {
         self
     }
 
+    // # --------------------------------------------------------------------------------
+    //
+    // User
+    //
+    // # --------------------------------------------------------------------------------
+
     /// https://developers.notion.com/reference/get-users
     ///
     /// This method can fetch a list of users present in the current Notion workspace.
@@ -263,6 +269,12 @@ impl NotionClient {
             reqwest_client: self.reqwest_client.clone(),
         }
     }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // Page
+    //
+    // # --------------------------------------------------------------------------------
 
     /// https://developers.notion.com/reference/retrieve-a-page
     ///
