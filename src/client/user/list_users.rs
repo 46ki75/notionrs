@@ -44,7 +44,12 @@ impl ListUsersClient {
     /// ## Basic Usage
     /// It adopts the builder pattern, allowing you to add options and then execute
     /// the API call by invoking the `send()` method at the end.
-    /// ```rs
+    ///
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::prelude::ToJson;
+    ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
@@ -58,7 +63,12 @@ impl ListUsersClient {
     /// ### Recursive Fetching
     /// By default, only up to 100 users can be fetched. To fetch all users
     /// without manual pagination, use the `recursive()` method for recursive fetching.
-    /// ```rs
+    ///
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::prelude::ToJson;
+    ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
@@ -71,7 +81,12 @@ impl ListUsersClient {
     ///
     /// ### Limiting Fetch Amount
     /// Though it might not be very useful, the `page_size()` method can limit the number of fetched users.
-    /// ```rs
+    ///
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::prelude::ToJson;
+    ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
@@ -186,7 +201,12 @@ impl ListUsersClient {
     }
 
     /// Performs cursor-based pagination when data cannot be fetched in one go.
-    /// ```rs
+    ///
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::prelude::ToJson;
+    ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
@@ -206,7 +226,12 @@ impl ListUsersClient {
     }
 
     /// Can be used to limit the number of items fetched. Valid range for the number is 1~100.
-    /// ```rs
+    ///
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::prelude::ToJson;
+    ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
@@ -223,7 +248,12 @@ impl ListUsersClient {
 
     /// Use this for recursive data fetching. By default, pagination only fetches up to 100 records,
     /// but this allows fetching all records.
-    /// ```rs
+    ///
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::prelude::ToJson;
+    ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();

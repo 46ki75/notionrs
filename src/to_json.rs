@@ -3,8 +3,11 @@ use serde_json;
 
 pub trait ToJson {
     /// ## Usage:
-    /// ```rs
-    /// use notionrs::{client::NotionClient, error::NotionError, to_json::ToJson};
+    ///
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::prelude::ToJson;
     ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
@@ -18,8 +21,11 @@ pub trait ToJson {
     ///
     /// By importing `notionrs::prelude::*`, you can also use the `to_json()` method.
     ///
-    /// ```rs
-    ///use notionrs::{client::NotionClient, error::NotionError, prelude::*};
+    ///
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::prelude::ToJson;
     ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
