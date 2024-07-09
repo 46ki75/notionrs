@@ -100,3 +100,40 @@ impl GetUserClient {
         self
     }
 }
+
+// # --------------------------------------------------------------------------------
+//
+// Integration Test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod tests {
+
+    use crate::client;
+    use crate::to_json::ToJson;
+
+    use dotenv::dotenv;
+    use std::env;
+
+    /// This integration test cannot be run unless explicit permission
+    /// for user reading is granted in the Notion API key issuance settings.
+    ///
+    /// To conduct integration testing, write the following in the .env file.
+    /// ```ini
+    /// NOTION_USER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    /// ```
+    #[tokio::test]
+    #[ignore]
+    async fn integration_test_get_user() {
+        let method_name = "get_user";
+        println!("\n\x1b[30;47m # {} # \x1b[0m", method_name);
+
+        dotenv().ok();
+        let user_id = env::var("NOTION_USER_ID").unwrap_or_else(|_| String::new());
+
+        let client = client::NotionClient::new();
+        let res = client.get_user().user_id(user_id).send().await.unwrap();
+        println!("{}", res.to_json());
+    }
+}

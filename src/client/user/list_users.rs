@@ -238,3 +238,29 @@ impl ListUsersClient {
         self
     }
 }
+
+// # --------------------------------------------------------------------------------
+//
+// Integration Test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod tests {
+
+    use crate::client;
+    use crate::to_json::ToJson;
+
+    /// This integration test cannot be run unless explicit permission
+    /// for user reading is granted in the Notion API key issuance settings.
+    #[tokio::test]
+    #[ignore]
+    async fn integration_test_list_users() {
+        let method_name = "list_users";
+        println!("\n\x1b[30;47m # {} # \x1b[0m", method_name);
+
+        let client = client::NotionClient::new();
+        let res = client.list_users().send().await.unwrap();
+        println!("{}", res.to_json());
+    }
+}
