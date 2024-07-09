@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::others::file::File;
 
-/// https://developers.notion.com/reference/page-property-values#files
+/// <https://developers.notion.com/reference/page-property-values#files>
 ///
 /// Example filea page property value
 ///

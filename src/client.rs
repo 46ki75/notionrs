@@ -62,7 +62,7 @@ impl NotionClient {
     //
     // # --------------------------------------------------------------------------------
 
-    /// https://developers.notion.com/reference/get-users
+    /// <https://developers.notion.com/reference/get-users>
     ///
     /// This method can fetch a list of users present in the current Notion workspace.
     /// The user list includes humans (Notion accounts) and bots (Notion API integrations).
@@ -177,7 +177,7 @@ impl NotionClient {
         }
     }
 
-    /// https://developers.notion.com/reference/get-user
+    /// <https://developers.notion.com/reference/get-user>
     ///
     /// Can be used to retrieve a specific user.
     ///
@@ -226,7 +226,7 @@ impl NotionClient {
         }
     }
 
-    /// https://developers.notion.com/reference/get-self
+    /// <https://developers.notion.com/reference/get-self>
     ///
     /// Retrieves information about the user (bot) associated with the currently used token.
     ///
@@ -276,7 +276,7 @@ impl NotionClient {
     //
     // # --------------------------------------------------------------------------------
 
-    /// https://developers.notion.com/reference/retrieve-a-page
+    /// <https://developers.notion.com/reference/retrieve-a-page>
     ///
     /// Specify the ID of the Page to retrieve a specific page.
     /// Only the information of the page will be retrieved, not the blocks.

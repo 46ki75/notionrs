@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// https://developers.notion.com/reference/page-property-values#email
+/// <https://developers.notion.com/reference/page-property-values#email>
 ///
 /// Example email page property value
 ///

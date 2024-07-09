@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// https://developers.notion.com/reference/page-property-values#last-edited-time
+/// <https://developers.notion.com/reference/page-property-values#last-edited-time>
 ///
 /// Example last_edited_by page property value
 ///

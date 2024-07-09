@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::user::User;
 
-/// https://developers.notion.com/reference/page-property-values#last-edited-by
+/// <https://developers.notion.com/reference/page-property-values#last-edited-by>
 ///
 /// Example last_edited_by page property value
 ///

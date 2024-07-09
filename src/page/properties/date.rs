@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// https://developers.notion.com/reference/page-property-values#date
+/// <https://developers.notion.com/reference/page-property-values#date>
 ///
 /// Example date page property value
 ///

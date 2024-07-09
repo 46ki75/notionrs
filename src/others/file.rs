@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// https://developers.notion.com/reference/file-object
+/// <https://developers.notion.com/reference/file-object>
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum File {

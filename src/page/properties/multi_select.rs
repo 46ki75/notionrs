@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::others::select::Select;
 
-/// https://developers.notion.com/reference/page-property-values#multi-select
+/// <https://developers.notion.com/reference/page-property-values#multi-select>
 ///
 /// Example multi_select page property value
 ///

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::others::select::Select;
 
-/// https://developers.notion.com/reference/page-property-values#select
+/// <https://developers.notion.com/reference/page-property-values#select>
 ///
 /// Example select page property value
 ///

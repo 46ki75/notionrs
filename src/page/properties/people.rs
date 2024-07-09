@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::user::User;
 
-/// https://developers.notion.com/reference/page-property-values#people
+/// <https://developers.notion.com/reference/page-property-values#people>
 ///
 /// Example people page property value
 ///

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// https://developers.notion.com/reference/page-property-values#phone-number
+/// <https://developers.notion.com/reference/page-property-values#phone-number>
 ///
 /// Example phone_number page property value
 ///

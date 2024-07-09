@@ -9,7 +9,7 @@ use crate::{
 
 use super::properties::PageProperty;
 
-/// https://developers.notion.com/reference/page
+/// <https://developers.notion.com/reference/page>
 #[derive(Deserialize, Serialize, Debug)]
 pub struct PageResponse {
     pub id: String,

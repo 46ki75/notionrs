@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// https://developers.notion.com/reference/page-property-values#unique_id
+/// <https://developers.notion.com/reference/page-property-values#unique_id>
 ///
 /// Example unique_id page property value
 ///

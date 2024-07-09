@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// https://developers.notion.com/reference/page-property-values#checkbox
+/// <https://developers.notion.com/reference/page-property-values#checkbox>
 ///
 /// Example checkbox page property value
 /// ```json

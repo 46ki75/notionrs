@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::user::User;
 
-/// https://developers.notion.com/reference/page-property-values#created-by
+/// <https://developers.notion.com/reference/page-property-values#created-by>
 ///
 /// Example created_by page property value
 ///

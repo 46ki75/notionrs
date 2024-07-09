@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// https://developers.notion.com/reference/page-property-values#created-time
+/// <https://developers.notion.com/reference/page-property-values#created-time>
 ///
 /// Example created_time page property value
 ///

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// https://developers.notion.com/reference/page-property-values#formula
+/// <https://developers.notion.com/reference/page-property-values#formula>
 ///
 /// Example formula page property value
 ///

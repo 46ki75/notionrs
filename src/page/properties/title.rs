@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::others::rich_text::RichText;
 
-/// https://developers.notion.com/reference/page-property-values#title
+/// <https://developers.notion.com/reference/page-property-values#title>
 ///
 /// Example title page property value
 ///

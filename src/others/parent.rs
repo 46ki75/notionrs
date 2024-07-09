@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// https://developers.notion.com/reference/parent-object
+/// <https://developers.notion.com/reference/parent-object>
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum Parent {
@@ -10,7 +10,7 @@ pub enum Parent {
     BlockParent(BlockParent),
 }
 
-/// https://developers.notion.com/reference/parent-object#database-parent
+/// <https://developers.notion.com/reference/parent-object#database-parent>
 #[derive(Serialize, Deserialize, Debug)]
 pub struct DatabaseParent {
     /// always "database_id"
@@ -18,7 +18,7 @@ pub struct DatabaseParent {
     pub database_id: String,
 }
 
-/// https://developers.notion.com/reference/parent-object#page-parent
+/// <https://developers.notion.com/reference/parent-object#page-parent>
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PageParent {
     /// always "page_id"
@@ -26,7 +26,7 @@ pub struct PageParent {
     pub page_id: String,
 }
 
-/// https://developers.notion.com/reference/parent-object#workspace-parent
+/// <https://developers.notion.com/reference/parent-object#workspace-parent>
 #[derive(Serialize, Deserialize, Debug)]
 pub struct WorkspaceParent {
     /// always "workspace"
@@ -35,7 +35,7 @@ pub struct WorkspaceParent {
     pub workspace: bool,
 }
 
-/// https://developers.notion.com/reference/parent-object#block-parent
+/// <https://developers.notion.com/reference/parent-object#block-parent>
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BlockParent {
     /// always "block_id"
