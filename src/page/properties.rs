@@ -1,3 +1,4 @@
+use rollup::PageRollupProperty;
 use serde::{Deserialize, Serialize};
 
 use self::{
@@ -27,6 +28,7 @@ pub mod people;
 pub mod phone_number;
 pub mod relation;
 pub mod rich_text;
+pub mod rollup;
 pub mod select;
 pub mod status;
 pub mod title;
@@ -52,6 +54,7 @@ pub enum PageProperty {
     PhoneNumber(PagePhoneNumberProperty),
     Relation(PageRelationProperty),
     RichText(PageRichTextProperty),
+    Rollup(PageRollupProperty),
     Select(PageSelectProperty),
     Status(PageStatusProperty),
     Title(PageTitleProperty),
