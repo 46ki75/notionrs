@@ -14,7 +14,11 @@ impl GetSelfClient {
     /// Retrieves information about the user (bot) associated with the currently used token.
     ///
     /// ## Usage
-    /// ```rust
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::prelude::ToJson;
+    ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();

@@ -16,7 +16,11 @@ impl GetUserClient {
     /// Can be used to retrieve a specific user.
     ///
     /// ## Usage
-    /// ```rust
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::prelude::ToJson;
+    ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
@@ -73,7 +77,11 @@ impl GetUserClient {
 
     /// Sets the user ID.
     /// ## Usage
-    /// ```rust
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::prelude::ToJson;
+    ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
     ///     let notion = NotionClient::new();
