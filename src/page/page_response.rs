@@ -26,4 +26,5 @@ pub struct PageResponse {
     pub public_url: Option<String>,
     pub developer_survey: Option<String>,
     pub request_id: Option<String>,
+    pub in_trash: bool,
 }
