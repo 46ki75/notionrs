@@ -25,6 +25,7 @@ pub struct FileFile {
     /// always "file"
     pub r#type: String,
     pub file: FileFileParameter,
+    pub name: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
