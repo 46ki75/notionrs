@@ -11,6 +11,7 @@ pub struct GetPageClient {
 }
 
 impl GetPageClient {
+    /// Send a request to the API endpoint of Notion.
     pub async fn send(self) -> Result<PageResponse, NotionError> {
         match self.page_id {
             Some(id) => {
@@ -33,6 +34,8 @@ impl GetPageClient {
         }
     }
 
+    /// Specify the ID of the page.
+    /// The ID is also included in the Notion page URL.
     pub fn page_id<T: AsRef<str>>(mut self, user_id: T) -> Self {
         self.page_id = Some(user_id.as_ref().to_string());
         self

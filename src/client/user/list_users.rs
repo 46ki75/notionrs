@@ -36,112 +36,7 @@ struct LinsUserQueryParams {
 }
 
 impl ListUsersClient {
-    /// https://developers.notion.com/reference/get-users
-    ///
-    /// This method can fetch a list of users present in the current Notion workspace.
-    /// The user list includes humans (Notion accounts) and bots (Notion API integrations).
-    ///
-    /// ## Basic Usage
-    /// It adopts the builder pattern, allowing you to add options and then execute
-    /// the API call by invoking the `send()` method at the end.
-    ///
-    /// ```no_run
-    /// use notionrs::client::NotionClient;
-    /// use notionrs::error::NotionError;
-    /// use notionrs::prelude::ToJson;
-    ///
-    /// #[tokio::main]
-    /// async fn main() -> Result<(), NotionError> {
-    ///     let notion = NotionClient::new();
-    ///     let response = notion.list_users().send().await?;
-    ///     println!("{}", response.to_json());
-    ///
-    ///     Ok(())
-    /// }
-    /// ```
-    ///
-    /// ### Recursive Fetching
-    /// By default, only up to 100 users can be fetched. To fetch all users
-    /// without manual pagination, use the `recursive()` method for recursive fetching.
-    ///
-    /// ```no_run
-    /// use notionrs::client::NotionClient;
-    /// use notionrs::error::NotionError;
-    /// use notionrs::prelude::ToJson;
-    ///
-    /// #[tokio::main]
-    /// async fn main() -> Result<(), NotionError> {
-    ///     let notion = NotionClient::new();
-    ///     let response = notion.list_users().recursive().send().await?;
-    ///     println!("{}", response.to_json());
-    ///
-    ///     Ok(())
-    /// }
-    /// ```
-    ///
-    /// ### Limiting Fetch Amount
-    /// Though it might not be very useful, the `page_size()` method can limit the number of fetched users.
-    ///
-    /// ```no_run
-    /// use notionrs::client::NotionClient;
-    /// use notionrs::error::NotionError;
-    /// use notionrs::prelude::ToJson;
-    ///
-    /// #[tokio::main]
-    /// async fn main() -> Result<(), NotionError> {
-    ///     let notion = NotionClient::new();
-    ///     let response = notion.list_users().recursive().send().await?;
-    ///     println!("{}", response.to_json());
-    ///
-    ///     Ok(())
-    /// }
-    /// ```
-    ///
-    /// ## Response Sample
-    /// ```json
-    /// {
-    ///   "object": "list",
-    ///   "results": [
-    ///     {
-    ///       "object": "user",
-    ///       "id": "8b6c553a-ab6d-462e-8ae1-689487438822",
-    ///       "name": "46ki75",
-    ///       "avatar_url": "https://lh3.googleusercontent.com/a/XXXXXXXXXX",
-    ///       "type": "person",
-    ///       "person": {
-    ///         "email": "user@example.com"
-    ///       }
-    ///     },
-    ///     {
-    ///       "object": "user",
-    ///       "id": "57a16579-8773-4069-b448-ac3cc48cc9a3",
-    ///       "name": "spec",
-    ///       "avatar_url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/XXXXXXXXXX",
-    ///       "type": "bot",
-    ///       "bot": {
-    ///         "owner": {
-    ///           "type": "workspace",
-    ///           "workspace": true
-    ///         },
-    ///         "workspace_name": "MyWorkspace"
-    ///       }
-    ///     },
-    ///     {
-    ///       "object": "user",
-    ///       "id": "9fa18978-20fa-4291-a22d-44e1ece1fd3c",
-    ///       "name": "stg",
-    ///       "avatar_url": null,
-    ///       "type": "bot",
-    ///       "bot": {}
-    ///     }
-    ///   ],
-    ///   "next_cursor": null,
-    ///   "has_more": false,
-    ///   "type": "user",
-    ///   "developer_survey": null,
-    ///   "request_id": null
-    /// }
-    /// ```
+    /// Send a request to the API endpoint of Notion.
     pub async fn send(&mut self) -> Result<ListResponse<User>, NotionError> {
         let url = "https://api.notion.com/v1/users";
         let mut results = Vec::new();
@@ -201,46 +96,12 @@ impl ListUsersClient {
     }
 
     /// Performs cursor-based pagination when data cannot be fetched in one go.
-    ///
-    /// ```no_run
-    /// use notionrs::client::NotionClient;
-    /// use notionrs::error::NotionError;
-    /// use notionrs::prelude::ToJson;
-    ///
-    /// #[tokio::main]
-    /// async fn main() -> Result<(), NotionError> {
-    ///     let notion = NotionClient::new();
-    ///     let response = notion
-    ///         .list_users()
-    ///         .start_cursor("4f5ceec2-c402-41f3-9fb0-6789f526e4b5")
-    ///         .send()
-    ///         .await?;
-    ///     println!("{}", response.to_json());
-    ///
-    ///     Ok(())
-    /// }
-    /// ```
     pub fn start_cursor<T: AsRef<str>>(mut self, start_cursor: T) -> Self {
         self.start_cursor = Some(start_cursor.as_ref().to_string());
         self
     }
 
     /// Can be used to limit the number of items fetched. Valid range for the number is 1~100.
-    ///
-    /// ```no_run
-    /// use notionrs::client::NotionClient;
-    /// use notionrs::error::NotionError;
-    /// use notionrs::prelude::ToJson;
-    ///
-    /// #[tokio::main]
-    /// async fn main() -> Result<(), NotionError> {
-    ///     let notion = NotionClient::new();
-    ///     let response = notion.list_users().page_size(10).send().await?;
-    ///     println!("{}", response.to_json());
-    ///
-    ///     Ok(())
-    /// }
-    ///```
     pub fn page_size(mut self, page_size: u8) -> Self {
         self.page_size = Some(page_size);
         self
@@ -248,21 +109,6 @@ impl ListUsersClient {
 
     /// Use this for recursive data fetching. By default, pagination only fetches up to 100 records,
     /// but this allows fetching all records.
-    ///
-    /// ```no_run
-    /// use notionrs::client::NotionClient;
-    /// use notionrs::error::NotionError;
-    /// use notionrs::prelude::ToJson;
-    ///
-    /// #[tokio::main]
-    /// async fn main() -> Result<(), NotionError> {
-    ///     let notion = NotionClient::new();
-    ///     let response = notion.list_users().recursive().send().await?;
-    ///     println!("{}", response.to_json());
-    ///
-    ///     Ok(())
-    /// }
-    /// ```
     pub fn recursive(mut self) -> Self {
         self.recursive = true;
         self

@@ -11,48 +11,7 @@ pub struct GetUserClient {
 }
 
 impl GetUserClient {
-    /// https://developers.notion.com/reference/get-user
-    ///
-    /// Can be used to retrieve a specific user.
-    ///
-    /// ## Usage
-    /// ```no_run
-    /// use notionrs::client::NotionClient;
-    /// use notionrs::error::NotionError;
-    /// use notionrs::prelude::ToJson;
-    ///
-    /// #[tokio::main]
-    /// async fn main() -> Result<(), NotionError> {
-    ///     let notion = NotionClient::new();
-    ///     let result = notion
-    ///         .get_user()
-    ///         .user_id("c4e69ebe-3c42-4916-8ec4-285e5cb5bcb0")
-    ///         .send()
-    ///         .await?;
-    ///     println!("{}", result.to_json());
-    ///
-    ///     Ok(())
-    /// }
-    /// ```
-    /// ## Sample response
-    ///
-    /// ```json
-    /// {
-    ///     "object": "user",
-    ///     "id": "3571265d-852e-4aec-b529-75947e7842d6",
-    ///     "name": "default",
-    ///     "avatar_url": null,
-    ///     "type": "bot",
-    ///     "bot": {
-    ///         "owner": {
-    ///             "type": "workspace",
-    ///             "workspace": true
-    ///         },
-    ///         "workspace_name": "MyWorkspace"
-    ///     },
-    ///     "request_id": "1739014e-262a-4592-b2c3-9b76491a5ed1"
-    /// }
-    /// ```
+    /// Send a request to the API endpoint of Notion.
     pub async fn send(self) -> Result<User, NotionError> {
         match self.user_id {
             Some(id) => {
@@ -76,25 +35,6 @@ impl GetUserClient {
     }
 
     /// Sets the user ID.
-    /// ## Usage
-    /// ```no_run
-    /// use notionrs::client::NotionClient;
-    /// use notionrs::error::NotionError;
-    /// use notionrs::prelude::ToJson;
-    ///
-    /// #[tokio::main]
-    /// async fn main() -> Result<(), NotionError> {
-    ///     let notion = NotionClient::new();
-    ///     let result = notion
-    ///         .get_user()
-    ///         .user_id("c4e69ebe-3c42-4916-8ec4-285e5cb5bcb0")
-    ///         .send()
-    ///         .await?;
-    ///     println!("{}", result.to_json());
-    ///
-    ///     Ok(())
-    /// }
-    /// ```
     pub fn user_id<T: AsRef<str>>(mut self, user_id: T) -> Self {
         self.user_id = Some(user_id.as_ref().to_string());
         self
