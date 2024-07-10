@@ -20,12 +20,12 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PageDateProperty {
     pub id: String,
-    pub date: PageDatePropertyParameter,
+    pub date: Option<PageDatePropertyParameter>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PageDatePropertyParameter {
-    start: String,
+    start: Option<String>,
     end: Option<String>,
     time_zone: Option<String>,
 }

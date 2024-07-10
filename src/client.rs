@@ -1,6 +1,8 @@
+pub mod database;
 pub mod page;
 pub mod user;
 
+use database::query_database::{QueryDatabaseClient, QueryDatabaseRequestBody};
 use dotenv::dotenv;
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::env;
@@ -410,6 +412,25 @@ impl NotionClient {
         GetPageClient {
             reqwest_client: self.reqwest_client.clone(),
             page_id: None,
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // Database
+    //
+    // # --------------------------------------------------------------------------------
+
+    // TODO: docs
+    pub fn query_database(&self) -> QueryDatabaseClient {
+        QueryDatabaseClient {
+            reqwest_client: self.reqwest_client.clone(),
+            database_id: None,
+            body: QueryDatabaseRequestBody {
+                start_cursor: None,
+                page_size: None,
+            },
+            recursive: false,
         }
     }
 }
