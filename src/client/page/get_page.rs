@@ -46,8 +46,8 @@ impl GetPageClient {
 
     /// Specify the ID of the page.
     /// The ID is also included in the Notion page URL.
-    pub fn page_id<T: AsRef<str>>(mut self, user_id: T) -> Self {
-        self.page_id = Some(user_id.as_ref().to_string());
+    pub fn page_id<T: AsRef<str>>(mut self, page_id: T) -> Self {
+        self.page_id = Some(page_id.as_ref().to_string());
         self
     }
 }
