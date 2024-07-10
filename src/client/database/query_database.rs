@@ -2,6 +2,7 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 use crate::{
     error::{NotionApiError, NotionError},
+    filter::Filter,
     list_response::ListResponse,
     page::page_response::PageResponse,
     prelude::ToJson,
@@ -21,6 +22,9 @@ pub struct QueryDatabaseClient {
 #[derive(Serialize, Deserialize)]
 pub struct QueryDatabaseRequestBody {
     // TODO: implement filter
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) filter: Option<Filter>,
+
     // TODO: implement sort
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) start_cursor: Option<String>,
@@ -125,6 +129,11 @@ impl QueryDatabaseClient {
     /// but by setting recursive to true, you can recursively retrieve all the data.
     pub fn recursive(mut self) -> Self {
         self.recursive = true;
+        self
+    }
+
+    pub fn filter(mut self, filter: Filter) -> Self {
+        self.body.filter = Some(filter);
         self
     }
 }

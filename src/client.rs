@@ -427,6 +427,7 @@ impl NotionClient {
             reqwest_client: self.reqwest_client.clone(),
             database_id: None,
             body: QueryDatabaseRequestBody {
+                filter: None,
                 start_cursor: None,
                 page_size: None,
             },

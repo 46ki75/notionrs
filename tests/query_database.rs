@@ -1,5 +1,6 @@
 use notionrs::client;
 use notionrs::error::NotionError;
+use notionrs::filter::{Filter, FilterExpression};
 use notionrs::page::properties::title::PageTitleProperty;
 use notionrs::page::properties::PageProperty;
 use notionrs::to_json::ToJson;
@@ -96,6 +97,32 @@ async fn integration_test_query_database_recursive() -> Result<(), NotionError> 
         .query_database()
         .database_id(database_id)
         .recursive()
+        .send::<HashMap<String, PageProperty>>()
+        .await?;
+    println!("{}", res.to_json());
+
+    Ok(())
+}
+
+// # --------------------------------------------------------------------------------
+//
+// working with Filter
+//
+// # --------------------------------------------------------------------------------
+
+#[tokio::test]
+#[ignore]
+async fn integration_test_query_database_filter() -> Result<(), NotionError> {
+    dotenv().ok();
+    let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = client::NotionClient::new();
+    let res = client
+        .query_database()
+        .database_id(database_id)
+        .filter(Filter::or(vec![Filter::new(
+            FilterExpression::date_before("CreatedAt", "2024-07-01"),
+        )]))
         .send::<HashMap<String, PageProperty>>()
         .await?;
     println!("{}", res.to_json());
