@@ -1,10 +1,8 @@
-use std::collections::HashMap;
-
 use serde::de::DeserializeOwned;
 
 use crate::{
     error::{NotionApiError, NotionError},
-    page::{page_response::PageResponse, properties::PageProperty},
+    page::page_response::PageResponse,
 };
 
 pub struct GetPageClient {
@@ -16,35 +14,11 @@ pub struct GetPageClient {
 
 impl GetPageClient {
     /// Send a request specifying generics.
-    /// If you are not using generics, use the `send_default()` method.
-    /// ```no_run
-    /// use notionrs::client;
-    /// use notionrs::error::NotionError;
-    /// use notionrs::page::properties::title::PageTitleProperty;
-    /// use notionrs::to_json::ToJson;
     ///
-    /// use serde::{Deserialize, Serialize};
-    ///
-    /// #[derive(Serialize, Deserialize, Debug)]
-    /// struct MyResponse {
-    ///     #[serde(rename = "Title")]
-    ///     title: PageTitleProperty,
-    /// }
-    ///
-    /// #[tokio::main]
-    /// async fn main() -> Result<(), NotionError> {
-    ///
-    ///     let client = client::NotionClient::new();
-    ///     let res = client
-    ///         .get_page()
-    ///         .page_id("7ae4e830-e5bd-4d2c-80d9-ca09ea397c11")
-    ///         .send::<MyResponse>()
-    ///         .await?;
-    ///     println!("{:?}", res.properties.title);
-    ///
-    ///     Ok(())
-    /// }
-    /// ```
+    /// Create a struct with generics like `send::<MyResponse>()`.
+    /// When the response type is not specific,
+    /// use `send::<HashMap<String, PageProperty>>()`.
+    /// (Type inference for the property field cannot be used.)
     pub async fn send<T>(self) -> Result<PageResponse<T>, NotionError>
     where
         T: DeserializeOwned,
@@ -68,14 +42,6 @@ impl GetPageClient {
                 "user_id is empty".to_string(),
             )),
         }
-    }
-
-    /// Send a request without specifying type generics.
-    /// Rust does not recognize which properties exist.
-    pub async fn send_default(
-        self,
-    ) -> Result<PageResponse<HashMap<String, PageProperty>>, NotionError> {
-        self.send::<HashMap<String, PageProperty>>().await
     }
 
     /// Specify the ID of the page.

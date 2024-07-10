@@ -283,9 +283,11 @@ impl NotionClient {
     ///
     /// ## Usage
     /// ```no_run
-    /// use notionrs::client;
     /// use notionrs::error::NotionError;
     /// use notionrs::to_json::ToJson;
+    /// use notionrs::{client, page::properties::PageProperty};
+    ///
+    /// use std::collections::HashMap;
     ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), NotionError> {
@@ -293,7 +295,7 @@ impl NotionClient {
     ///     let res = client
     ///         .get_page()
     ///         .page_id("ea9c82c5-9f21-4c58-bd0d-8473d5227906")
-    ///         .send_default()
+    ///         .send::<HashMap<String, PageProperty>>()
     ///         .await?;
     ///     println!("{}", res.to_json());
     ///

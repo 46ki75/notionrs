@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -7,11 +5,9 @@ use crate::{
     user::User,
 };
 
-use super::properties::PageProperty;
-
 /// <https://developers.notion.com/reference/page>
 #[derive(Deserialize, Serialize, Debug)]
-pub struct PageResponse<T = HashMap<String, PageProperty>> {
+pub struct PageResponse<T> {
     pub id: String,
     pub created_time: String,
     pub last_edited_time: String,
