@@ -293,9 +293,41 @@ impl NotionClient {
     ///     let res = client
     ///         .get_page()
     ///         .page_id("ea9c82c5-9f21-4c58-bd0d-8473d5227906")
-    ///         .send()
+    ///         .send_default()
     ///         .await?;
     ///     println!("{}", res.to_json());
+    ///
+    ///     Ok(())
+    /// }
+    /// ```
+    ///
+    ///
+    /// ## Working With Struct Generics
+    ///
+    /// ```no_run
+    /// use notionrs::client;
+    /// use notionrs::error::NotionError;
+    /// use notionrs::page::properties::title::PageTitleProperty;
+    /// use notionrs::to_json::ToJson;
+    ///
+    /// use serde::{Deserialize, Serialize};
+    ///
+    /// #[derive(Serialize, Deserialize, Debug)]
+    /// struct MyResponse {
+    ///     #[serde(rename = "Title")]
+    ///     title: PageTitleProperty,
+    /// }
+    ///
+    /// #[tokio::main]
+    /// async fn main() -> Result<(), NotionError> {
+    ///
+    ///     let client = client::NotionClient::new();
+    ///     let res = client
+    ///         .get_page()
+    ///         .page_id("7ae4e830-e5bd-4d2c-80d9-ca09ea397c11")
+    ///         .send::<MyResponse>()
+    ///         .await?;
+    ///     println!("{:?}", res.properties.title);
     ///
     ///     Ok(())
     /// }

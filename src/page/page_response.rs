@@ -11,7 +11,7 @@ use super::properties::PageProperty;
 
 /// <https://developers.notion.com/reference/page>
 #[derive(Deserialize, Serialize, Debug)]
-pub struct PageResponse {
+pub struct PageResponse<T = HashMap<String, PageProperty>> {
     pub id: String,
     pub created_time: String,
     pub last_edited_time: String,
@@ -21,7 +21,7 @@ pub struct PageResponse {
     pub icon: Option<Icon>,
     pub parent: Parent,
     pub archived: bool,
-    pub properties: HashMap<String, PageProperty>,
+    pub properties: T,
     pub url: String,
     pub public_url: Option<String>,
     pub developer_survey: Option<String>,

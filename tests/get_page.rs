@@ -1,8 +1,10 @@
 use notionrs::client;
 use notionrs::error::NotionError;
+use notionrs::page::properties::title::PageTitleProperty;
 use notionrs::to_json::ToJson;
 
 use dotenv::dotenv;
+use serde::{Deserialize, Serialize};
 use std::env;
 
 /// This integration test cannot be run unless explicit permission
@@ -19,8 +21,37 @@ async fn integration_test_get_page() -> Result<(), NotionError> {
     let page_id = env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
 
     let client = client::NotionClient::new();
-    let res = client.get_page().page_id(page_id).send().await?;
+    let res = client.get_page().page_id(page_id).send_default().await?;
     println!("{}", res.to_json());
+
+    Ok(())
+}
+
+// # --------------------------------------------------------------------------------
+//
+// working with struct
+//
+// # --------------------------------------------------------------------------------
+
+#[derive(Serialize, Deserialize, Debug)]
+struct MyResponse {
+    #[serde(rename = "Title")]
+    title: PageTitleProperty,
+}
+
+#[tokio::test]
+#[ignore]
+async fn integration_test_get_page_with_struct() -> Result<(), NotionError> {
+    dotenv().ok();
+    let page_id = env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
+
+    let client = client::NotionClient::new();
+    let res = client
+        .get_page()
+        .page_id(page_id)
+        .send::<MyResponse>()
+        .await?;
+    println!("{:?}", res.properties.title);
 
     Ok(())
 }
