@@ -32,7 +32,7 @@ pub struct Filter {
 pub enum Condition {
     Checkbox(CheckboxFilter),
     Date(DateFilter),
-    // TODO: implement files
+    Files(FilesFilter),
     // TODO: implement formula
     // TODO: implement multi_select
     // TODO: implement number
@@ -107,6 +107,21 @@ pub struct DateFilter {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub this_week: Option<()>,
+}
+
+// # --------------------------------------------------------------------------------
+//
+// Files https://developers.notion.com/reference/post-database-query-filter#files
+//
+// # --------------------------------------------------------------------------------
+
+#[derive(Deserialize, Serialize, Debug, Default)]
+pub struct FilesFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_not_empty: Option<bool>,
 }
 
 // # --------------------------------------------------------------------------------
@@ -334,7 +349,36 @@ impl Filter {
         }
     }
 
-    // TODO: implement files
+    // # --------------------------------------------------------------------------------
+    //
+    // Files
+    //
+    // # --------------------------------------------------------------------------------
+
+    pub fn files_is_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Files(FilesFilter {
+                is_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    pub fn files_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Files(FilesFilter {
+                is_not_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
     // TODO: implement formula
     // TODO: implement multi_select
     // TODO: implement number
