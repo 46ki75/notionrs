@@ -14,21 +14,11 @@ pub struct Filter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub or: Option<Vec<Filter>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub property: Option<String>,
+
     #[serde(flatten, skip_serializing_if = "Option::is_none")]
-    pub condition: Option<FilterExpression>,
-}
-
-// # --------------------------------------------------------------------------------
-//
-// FilterExpression
-//
-// # --------------------------------------------------------------------------------
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct FilterExpression {
-    pub property: String,
-    #[serde(flatten)]
-    pub condition: Condition,
+    pub condition: Option<Condition>,
 }
 
 // # --------------------------------------------------------------------------------
@@ -121,176 +111,226 @@ pub struct DateFilter {
 
 // # --------------------------------------------------------------------------------
 //
-// FilterExpression
+// Filter
 //
 // # --------------------------------------------------------------------------------
 
-impl FilterExpression {
+impl Filter {
+    pub fn and(filters: Vec<Filter>) -> Self {
+        Filter {
+            and: Some(filters),
+            or: None,
+            property: None,
+            condition: None,
+        }
+    }
+
+    pub fn or(filters: Vec<Filter>) -> Self {
+        Filter {
+            and: None,
+            or: Some(filters),
+            property: None,
+            condition: None,
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
-    // checkbox
+    // Checkbox
     //
     // # --------------------------------------------------------------------------------
 
     pub fn checkbox_is_checked<T: AsRef<str>>(property_name: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Checkbox(CheckboxFilter { equals: Some(true) }),
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Checkbox(CheckboxFilter { equals: Some(true) })),
         }
     }
 
     pub fn checkbox_is_not_checked<T: AsRef<str>>(property_name: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Checkbox(CheckboxFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Checkbox(CheckboxFilter {
                 equals: Some(false),
-            }),
+            })),
         }
     }
 
     // # --------------------------------------------------------------------------------
     //
-    // date
+    // Date
     //
     // # --------------------------------------------------------------------------------
 
     pub fn date_after<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 after: Some(date.as_ref().to_string()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_before<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 before: Some(date.as_ref().to_string()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_equals<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 equals: Some(date.as_ref().to_string()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_is_empty<T: AsRef<str>>(property_name: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 is_empty: Some(true),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_next_month<T: AsRef<str>>(property_name: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 next_month: Some(()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_next_week<T: AsRef<str>>(property_name: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 next_week: Some(()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_next_year<T: AsRef<str>>(property_name: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 next_year: Some(()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_on_or_after<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 on_or_after: Some(date.as_ref().to_string()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_on_or_before<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 on_or_before: Some(date.as_ref().to_string()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_past_month<T: AsRef<str>>(property_name: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 past_month: Some(()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_past_week<T: AsRef<str>>(property_name: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 past_week: Some(()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_past_year<T: AsRef<str>>(property_name: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 past_year: Some(()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
     pub fn date_this_week<T: AsRef<str>>(property_name: T) -> Self {
-        FilterExpression {
-            property: property_name.as_ref().to_string(),
-            condition: Condition::Date(DateFilter {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Date(DateFilter {
                 this_week: Some(()),
                 ..Default::default()
-            }),
+            })),
         }
     }
 
@@ -306,36 +346,4 @@ impl FilterExpression {
     // TODO: implement status
     // TODO: implement timestamp
     // TODO: implement ID
-}
-
-// # --------------------------------------------------------------------------------
-//
-// Filter
-//
-// # --------------------------------------------------------------------------------
-
-impl Filter {
-    pub fn and(filters: Vec<Filter>) -> Self {
-        Filter {
-            and: Some(filters),
-            or: None,
-            condition: None,
-        }
-    }
-
-    pub fn or(filters: Vec<Filter>) -> Self {
-        Filter {
-            and: None,
-            or: Some(filters),
-            condition: None,
-        }
-    }
-
-    pub fn new(single_filter: FilterExpression) -> Self {
-        Filter {
-            and: None,
-            or: None,
-            condition: Some(single_filter),
-        }
-    }
 }

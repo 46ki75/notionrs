@@ -1,6 +1,6 @@
 use notionrs::client;
 use notionrs::error::NotionError;
-use notionrs::filter::{Filter, FilterExpression};
+use notionrs::filter::Filter;
 use notionrs::page::properties::title::PageTitleProperty;
 use notionrs::page::properties::PageProperty;
 use notionrs::to_json::ToJson;
@@ -120,8 +120,9 @@ async fn integration_test_query_database_filter() -> Result<(), NotionError> {
     let res = client
         .query_database()
         .database_id(database_id)
-        .filter(Filter::or(vec![Filter::new(
-            FilterExpression::date_before("CreatedAt", "2024-07-01"),
+        .filter(Filter::or(vec![Filter::date_before(
+            "CreatedAt",
+            "2024-07-01",
         )]))
         .send::<HashMap<String, PageProperty>>()
         .await?;
