@@ -112,7 +112,7 @@ async fn integration_test_query_database_recursive() -> Result<(), NotionError> 
 
 #[tokio::test]
 #[ignore]
-async fn integration_test_query_database_filter() -> Result<(), NotionError> {
+async fn integration_test_query_database_filter_1() -> Result<(), NotionError> {
     dotenv().ok();
     let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
@@ -124,6 +124,24 @@ async fn integration_test_query_database_filter() -> Result<(), NotionError> {
             "CreatedAt",
             "2024-07-01",
         )]))
+        .send::<HashMap<String, PageProperty>>()
+        .await?;
+    println!("{}", res.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
+#[ignore]
+async fn integration_test_query_database_filter_2() -> Result<(), NotionError> {
+    dotenv().ok();
+    let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = client::NotionClient::new();
+    let res = client
+        .query_database()
+        .database_id(database_id)
+        .filter(Filter::date_before("CreatedAt", "2024-07-01"))
         .send::<HashMap<String, PageProperty>>()
         .await?;
     println!("{}", res.to_json());
