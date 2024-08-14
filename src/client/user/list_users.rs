@@ -7,6 +7,8 @@ use crate::{
 };
 
 /// A request builder for performing `list_users` operations.
+
+#[derive(Debug)]
 pub struct ListUsersClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,

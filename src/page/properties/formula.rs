@@ -28,7 +28,7 @@ pub enum Formula {
     String(FormulaString),
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 pub struct FormulaBoolean {
     pub boolean: bool,
 }
@@ -38,7 +38,7 @@ pub struct FormulaDate {
     pub date: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 pub struct FormulaNumber {
     pub number: f64,
 }

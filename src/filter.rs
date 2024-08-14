@@ -52,7 +52,7 @@ pub enum Condition {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
 pub struct CheckboxFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub equals: Option<bool>,
@@ -115,7 +115,7 @@ pub struct DateFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
 pub struct FilesFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_empty: Option<bool>,

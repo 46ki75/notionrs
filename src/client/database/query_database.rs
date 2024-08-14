@@ -8,6 +8,7 @@ use crate::{
     prelude::ToJson,
 };
 
+#[derive(Debug)]
 pub struct QueryDatabaseClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -19,7 +20,7 @@ pub struct QueryDatabaseClient {
     pub(crate) recursive: bool,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct QueryDatabaseRequestBody {
     // TODO: implement filter
     #[serde(skip_serializing_if = "Option::is_none")]

@@ -17,7 +17,7 @@ pub struct RichTextContent {
     pub link: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 pub struct RichTextAnnotations {
     pub bold: bool,
     pub italic: bool,

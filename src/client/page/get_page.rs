@@ -5,6 +5,7 @@ use crate::{
     page::page_response::PageResponse,
 };
 
+#[derive(Debug)]
 pub struct GetPageClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 #[serde(rename_all = "snake_case")]
 pub enum ColorFG {
     Default,
@@ -15,7 +15,7 @@ pub enum ColorFG {
     Yellow,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 #[serde(rename_all = "snake_case")]
 pub enum ColorBG {
     BlueBackground,
@@ -29,7 +29,7 @@ pub enum ColorBG {
     YellowBackground,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 #[serde(untagged)]
 pub enum Color {
     FG(ColorFG),

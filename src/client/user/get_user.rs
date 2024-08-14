@@ -3,6 +3,7 @@ use crate::{
     user::User,
 };
 
+#[derive(Debug)]
 pub struct GetUserClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
