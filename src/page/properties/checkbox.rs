@@ -29,3 +29,37 @@ pub struct PageCheckboxProperty {
     /// Whether the checkbox is checked (`true`) or unchecked (`false`).
     pub checkbox: bool,
 }
+
+// # --------------------------------------------------------------------------------
+//
+// unit test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn unit_test_deserialize_page_checkbox_property() {
+        let json_data = r#"
+        {
+            "Task completed": {
+                "id": "ZI%40W",
+                "type": "checkbox",
+                "checkbox": true
+            }
+        }
+        "#;
+
+        let checkbox_map = serde_json::from_str::<
+            std::collections::HashMap<String, PageCheckboxProperty>,
+        >(json_data)
+        .unwrap();
+
+        let checkbox = checkbox_map.get("Task completed").unwrap();
+
+        assert_eq!(checkbox.id, "ZI%40W".to_string());
+        assert!(checkbox.checkbox);
+    }
+}
