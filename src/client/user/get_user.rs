@@ -18,16 +18,23 @@ impl GetUserClient {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/users/{}", id);
 
-                let res = self.reqwest_client.get(url).send().await?;
+                let request = self.reqwest_client.get(url);
 
-                if !res.status().is_success() {
-                    let api_error = res.json::<NotionApiError>().await?;
-                    return Err(NotionError::NotionApiError(Box::new(api_error)));
+                let response = request.send().await?;
+
+                if !response.status().is_success() {
+                    let error_body = response.text().await?;
+
+                    let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+
+                    return Err(NotionError::NotionApiError(Box::new(error_json)));
                 }
 
-                let body = res.json::<User>().await?;
+                let body = response.text().await?;
 
-                Ok(body)
+                let user = serde_json::from_str::<User>(&body)?;
+
+                Ok(user)
             }
             None => Err(NotionError::NotionRequestParameterError(
                 "user_id is empty".to_string(),

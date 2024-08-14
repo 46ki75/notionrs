@@ -50,18 +50,25 @@ impl ListUsersClient {
                     page_size: Some(100),
                 };
 
-                let res = self.reqwest_client.get(url).query(&params).send().await?;
+                let request = self.reqwest_client.get(url).query(&params);
 
-                if !res.status().is_success() {
-                    let api_error = res.json::<NotionApiError>().await?;
-                    return Err(NotionError::NotionApiError(Box::new(api_error)));
+                let response = request.send().await?;
+
+                if !response.status().is_success() {
+                    let error_body = response.text().await?;
+
+                    let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+
+                    return Err(NotionError::NotionApiError(Box::new(error_json)));
                 }
 
-                let body = res.json::<ListResponse<User>>().await?;
+                let body = response.text().await?;
 
-                results.extend(body.results);
+                let users_response = serde_json::from_str::<ListResponse<User>>(&body)?;
 
-                match body.next_cursor {
+                results.extend(users_response.results);
+
+                match users_response.next_cursor {
                     Some(next_cursor) => {
                         self.start_cursor = Some(next_cursor.clone());
                     }
@@ -84,14 +91,19 @@ impl ListUsersClient {
                 page_size: self.page_size,
             };
 
-            let res = self.reqwest_client.get(url).query(&params).send().await?;
+            let request = self.reqwest_client.get(url).query(&params);
 
-            if !res.status().is_success() {
-                let api_error = res.json::<NotionApiError>().await?;
-                return Err(NotionError::NotionApiError(Box::new(api_error)));
+            let response = request.send().await?;
+
+            if !response.status().is_success() {
+                let error_body = response.text().await?;
+
+                let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+
+                return Err(NotionError::NotionApiError(Box::new(error_json)));
             }
 
-            let body = res.json::<ListResponse<User>>().await?;
+            let body = response.json::<ListResponse<User>>().await?;
 
             Ok(body)
         }

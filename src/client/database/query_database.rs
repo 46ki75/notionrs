@@ -51,20 +51,23 @@ impl QueryDatabaseClient {
 
                         let request_body = self.body.to_json().to_string();
 
-                        let res = self
+                        let request = self
                             .reqwest_client
                             .post(url)
                             .header("Content-Type", "application/json")
-                            .body(request_body)
-                            .send()
-                            .await?;
+                            .body(request_body);
 
-                        if !res.status().is_success() {
-                            let api_error = res.json::<NotionApiError>().await?;
-                            return Err(NotionError::NotionApiError(Box::new(api_error)));
+                        let response = request.send().await?;
+
+                        if !response.status().is_success() {
+                            let error_body = response.text().await?;
+
+                            let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+
+                            return Err(NotionError::NotionApiError(Box::new(error_json)));
                         }
 
-                        let mut body = res.json::<ListResponse<PageResponse<T>>>().await?;
+                        let mut body = response.json::<ListResponse<PageResponse<T>>>().await?;
 
                         results.extend(body.results);
 
@@ -80,20 +83,23 @@ impl QueryDatabaseClient {
 
                     let request_body = self.body.to_json().to_string();
 
-                    let res = self
+                    let request = self
                         .reqwest_client
                         .post(url)
                         .header("Content-Type", "application/json")
-                        .body(request_body)
-                        .send()
-                        .await?;
+                        .body(request_body);
 
-                    if !res.status().is_success() {
-                        let api_error = res.json::<NotionApiError>().await?;
-                        return Err(NotionError::NotionApiError(Box::new(api_error)));
+                    let response = request.send().await?;
+
+                    if !response.status().is_success() {
+                        let error_body = response.text().await?;
+
+                        let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+
+                        return Err(NotionError::NotionApiError(Box::new(error_json)));
                     }
 
-                    let body = res.json::<ListResponse<PageResponse<T>>>().await?;
+                    let body = response.json::<ListResponse<PageResponse<T>>>().await?;
 
                     Ok(body)
                 }
