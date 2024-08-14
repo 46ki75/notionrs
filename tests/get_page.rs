@@ -15,7 +15,6 @@ use std::{collections::HashMap, env};
 /// NOTION_PAGE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 /// ```
 #[tokio::test]
-#[ignore]
 async fn integration_test_get_page() -> Result<(), NotionError> {
     dotenv().ok();
     let page_id = env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());

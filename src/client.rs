@@ -311,7 +311,7 @@ impl NotionClient {
     /// ```no_run
     /// use notionrs::client;
     /// use notionrs::error::NotionError;
-    /// use notionrs::page::properties::title::PageTitleProperty;
+    /// use notionrs::page::properties::PageTitleProperty;
     /// use notionrs::to_json::ToJson;
     ///
     /// use serde::{Deserialize, Serialize};

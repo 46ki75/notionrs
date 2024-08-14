@@ -646,7 +646,7 @@ pub struct PageStatusProperty {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PageTitleProperty {
     pub id: String,
-    pub title: Vec<crate::others::select::Select>,
+    pub title: Vec<crate::others::rich_text::RichText>,
 }
 
 // # --------------------------------------------------------------------------------
