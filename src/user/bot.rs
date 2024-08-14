@@ -32,3 +32,27 @@ pub struct BotOwner {
 
     pub workspace: bool,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json;
+
+    #[test]
+    fn unit_test_deserialize_bot() {
+        let json_data = r#"
+        {
+            "object": "user",
+            "id": "015a538b-bc75-4327-8b89-8847bf01705a",
+            "name": "notionrs-integration-test",
+            "avatar_url": null,
+            "type": "bot",
+            "bot": {}
+        }
+        "#;
+
+        let bot: Bot = serde_json::from_str(json_data).unwrap();
+
+        assert_eq!(bot.object, "user");
+    }
+}
