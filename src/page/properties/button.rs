@@ -1,12 +1,13 @@
 use serde::{Deserialize, Serialize};
 
-/// Example checkbox page property value
-///
-/// - `$.['*'].id`: Property identifier.
+/// - `$.['*'].id`: An underlying identifier for the property.
+///                 `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"button"`
 /// - `$.['*'].button`: Always an empty object
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
+///
+/// Example checkbox page property value
 ///
 /// ```json
 /// {
@@ -19,7 +20,8 @@ use serde::{Deserialize, Serialize};
 /// ```
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PageButtonProperty {
-    /// Property identifier
+    /// An underlying identifier for the property.
+    /// `id` remains constant when the property name changes.
     pub id: String,
 
     /// Always `"button"`
