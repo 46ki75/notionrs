@@ -1,8 +1,8 @@
 use notionrs::client;
 use notionrs::error::NotionError;
 use notionrs::filter::Filter;
-use notionrs::page::properties::title::PageTitleProperty;
 use notionrs::page::properties::PageProperty;
+use notionrs::page::properties::PageTitleProperty;
 use notionrs::to_json::ToJson;
 
 use dotenv::dotenv;

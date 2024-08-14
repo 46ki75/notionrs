@@ -1,5 +1,5 @@
 use notionrs::error::NotionError;
-use notionrs::page::properties::title::PageTitleProperty;
+use notionrs::page::properties::PageTitleProperty;
 use notionrs::to_json::ToJson;
 use notionrs::{client, page::properties::PageProperty};
 
