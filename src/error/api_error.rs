@@ -1,4 +1,3 @@
-use reqwest::Error as ReqwestError;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
@@ -34,29 +33,4 @@ pub struct NotionApiError {
 
     /// URL for the developer survey
     developer_survey: Option<String>,
-}
-
-#[derive(Error, Debug)]
-pub enum NotionError {
-    #[error("network error: {0}")]
-    NetworkError(#[from] ReqwestError),
-
-    #[error("notion api error: {0}")]
-    NotionApiError(Box<NotionApiError>),
-
-    #[error("notion request parameter error: {0}")]
-    NotionRequestParameterError(String),
-}
-
-impl NotionError {
-    pub async fn from_response(
-        res: reqwest::Response,
-    ) -> Result<Option<NotionApiError>, reqwest::Error> {
-        if !res.status().is_success() {
-            let api_error = res.json::<NotionApiError>().await?;
-            Ok(Some(api_error))
-        } else {
-            Ok(None)
-        }
-    }
 }

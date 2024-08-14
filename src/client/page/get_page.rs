@@ -1,7 +1,7 @@
 use serde::de::DeserializeOwned;
 
 use crate::{
-    error::{NotionApiError, NotionError},
+    error::{api_error::NotionApiError, NotionError},
     page::page_response::PageResponse,
 };
 

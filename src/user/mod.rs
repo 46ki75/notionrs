@@ -23,7 +23,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn unit_test_deserialize_user_bot() {
+    fn unit_test_deserialize_user_bot() -> Result<(), crate::error::NotionError> {
         let json_data = r#"
         {
             "object": "user",
@@ -41,7 +41,7 @@ mod tests {
         }
         "#;
 
-        let user = serde_json::from_str::<User>(json_data).unwrap();
+        let user = serde_json::from_str::<User>(json_data)?;
 
         match user {
             User::Bot(bot) => {
@@ -55,10 +55,12 @@ mod tests {
                 panic!("The expected enum during deserialization was Bot, but it was deserialized as Person.");
             }
         }
+
+        Ok(())
     }
 
     #[test]
-    fn unit_test_deserialize_user_person() {
+    fn unit_test_deserialize_user_person() -> Result<(), crate::error::NotionError> {
         let json_data = r#"
         {
             "object": "user",
@@ -72,7 +74,7 @@ mod tests {
         }
         "#;
 
-        let user = serde_json::from_str::<User>(json_data).unwrap();
+        let user = serde_json::from_str::<User>(json_data)?;
 
         match user {
             User::Bot(_) => {
@@ -98,5 +100,7 @@ mod tests {
                 }
             }
         }
+
+        Ok(())
     }
 }

@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 use crate::{
-    error::{NotionApiError, NotionError},
+    error::{api_error::NotionApiError, NotionError},
     list_response::ListResponse,
     user::User,
 };
