@@ -12,7 +12,7 @@ use self::{
     user::{get_self::GetSelfClient, get_user::GetUserClient, list_users::ListUsersClient},
 };
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct NotionClient {
     reqwest_client: reqwest::Client,
 }
