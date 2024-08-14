@@ -59,5 +59,8 @@ mod tests {
         let bot: Bot = serde_json::from_str(json_data).unwrap();
 
         assert_eq!(bot.object, "user");
+        assert_eq!(bot.id, "015a538b-bc75-4327-8b89-8847bf01705a");
+        assert_eq!(bot.name, Some("notionrs-integration-test".to_string()));
+        assert_eq!(bot.avatar_url, None);
     }
 }
