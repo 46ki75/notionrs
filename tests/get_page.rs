@@ -44,7 +44,6 @@ struct MyResponse {
 }
 
 #[tokio::test]
-#[ignore]
 async fn integration_test_get_page_with_struct() -> Result<(), NotionError> {
     dotenv().ok();
     let page_id = env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());

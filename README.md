@@ -9,7 +9,8 @@ NOTION_API_KEY=secret_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 To perform testing while outputting to standard output, do the following.
 
 ```bash
-RUST_TEST_THREADS=1 cargo test integration_test -- --nocapture --ignored
+cargo test integration_test
+cargo test integration_test -- --nocapture
 ```
 
 - `RUST_TEST_THREADS=1`: Sets the number of concurrent test threads to 1. This is to ensure you can check the values in the standard output.

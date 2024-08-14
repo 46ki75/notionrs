@@ -13,7 +13,6 @@ use std::env;
 /// NOTION_USER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 /// ```
 #[tokio::test]
-#[ignore]
 async fn integration_test_get_user() -> Result<(), NotionError> {
     dotenv().ok();
     let user_id = env::var("NOTION_USER_ID").unwrap_or_else(|_| String::new());

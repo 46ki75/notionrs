@@ -11,7 +11,6 @@ use std::collections::HashMap;
 use std::env;
 
 #[tokio::test]
-#[ignore]
 async fn integration_test_query_database() -> Result<(), NotionError> {
     dotenv().ok();
     let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
@@ -40,7 +39,6 @@ struct MyResponse {
 }
 
 #[tokio::test]
-#[ignore]
 async fn integration_test_query_database_with_struct() -> Result<(), NotionError> {
     dotenv().ok();
     let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
@@ -63,7 +61,6 @@ async fn integration_test_query_database_with_struct() -> Result<(), NotionError
 // # --------------------------------------------------------------------------------
 
 #[tokio::test]
-#[ignore]
 async fn integration_test_query_database_page_size() -> Result<(), NotionError> {
     dotenv().ok();
     let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
@@ -87,7 +84,6 @@ async fn integration_test_query_database_page_size() -> Result<(), NotionError> 
 // # --------------------------------------------------------------------------------
 
 #[tokio::test]
-#[ignore]
 async fn integration_test_query_database_recursive() -> Result<(), NotionError> {
     dotenv().ok();
     let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
@@ -111,7 +107,6 @@ async fn integration_test_query_database_recursive() -> Result<(), NotionError> 
 // # --------------------------------------------------------------------------------
 
 #[tokio::test]
-#[ignore]
 async fn integration_test_query_database_filter_1() -> Result<(), NotionError> {
     dotenv().ok();
     let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
@@ -132,7 +127,6 @@ async fn integration_test_query_database_filter_1() -> Result<(), NotionError> {
 }
 
 #[tokio::test]
-#[ignore]
 async fn integration_test_query_database_filter_2() -> Result<(), NotionError> {
     dotenv().ok();
     let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
