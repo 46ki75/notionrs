@@ -14,20 +14,25 @@ pub struct Bot {
 
     /// always "bot"
     pub r#type: Option<String>,
+
+    /// Since all fields are optional, it might result in an empty object. `{}`
     pub bot: BotDetail,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct BotDetail {
+    /// Information about who owns this bot.
     pub owner: Option<BotOwner>,
 
-    /// "workspace" or "user"
+    /// If the owner.type is "workspace", then workspace.name identifies
+    /// the name of the workspace that owns the bot.
+    /// If the owner.type is "user", then workspace.name is null.
     pub workspace_name: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct BotOwner {
-    /// "workspace" or "user"
+    /// The type of owner, either "workspace" or "user".
     pub r#type: String,
 
     pub workspace: bool,
@@ -52,7 +57,13 @@ mod tests {
             "name": "notionrs-integration-test",
             "avatar_url": null,
             "type": "bot",
-            "bot": {}
+            "bot": {
+                "owner": {
+                    "type": "workspace",
+                    "workspace": true
+                },
+                "workspace_name": "notionrs integration test"
+            }
         }
         "#;
 
@@ -62,5 +73,9 @@ mod tests {
         assert_eq!(bot.id, "015a538b-bc75-4327-8b89-8847bf01705a");
         assert_eq!(bot.name, Some("notionrs-integration-test".to_string()));
         assert_eq!(bot.avatar_url, None);
+        assert_eq!(
+            bot.bot.workspace_name,
+            Some("notionrs integration test".to_string())
+        );
     }
 }

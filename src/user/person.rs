@@ -1,19 +1,32 @@
 use serde::{Deserialize, Serialize};
 
+/// <https://developers.notion.com/reference/user#people>
+///
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Person {
-    pub object: String, // always "user"
+    /// always "user"
+    pub object: String,
+
+    /// Unique identifier for this user.
     pub id: String,
+
+    /// User's name, as displayed in Notion.
     pub name: Option<String>,
+
+    /// Chosen avatar image.
     pub avatar_url: Option<String>,
 
     /// always "person"
     pub r#type: Option<String>,
+
+    /// Properties only present for non-bot users.
     pub person: Option<PersonDetail>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PersonDetail {
+    /// Email address of person. This is only present if an integration has
+    /// user capabilities that allow access to email addresses.
     pub email: Option<String>,
 }
 

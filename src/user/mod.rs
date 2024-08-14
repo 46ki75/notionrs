@@ -31,7 +31,13 @@ mod tests {
             "name": "notionrs-integration-test",
             "avatar_url": null,
             "type": "bot",
-            "bot": {}
+            "bot": {
+                "owner": {
+                    "type": "workspace",
+                    "workspace": true
+                },
+                "workspace_name": "notionrs integration test"
+            }
         }
         "#;
 
