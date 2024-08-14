@@ -1,25 +1,18 @@
-use notionrs::client;
-use notionrs::error::NotionError;
-use notionrs::filter::Filter;
-use notionrs::page::properties::PageProperty;
-use notionrs::page::properties::PageTitleProperty;
 use notionrs::to_json::ToJson;
 
 use dotenv::dotenv;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use std::env;
 
 #[tokio::test]
-async fn integration_test_query_database() -> Result<(), NotionError> {
+async fn integration_test_query_database() -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
-    let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-    let client = client::NotionClient::new();
+    let client = notionrs::client::NotionClient::new();
     let res = client
         .query_database()
         .database_id(database_id)
-        .send::<HashMap<String, PageProperty>>()
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
         .await?;
     println!("{}", res.to_json());
 
@@ -35,15 +28,15 @@ async fn integration_test_query_database() -> Result<(), NotionError> {
 #[derive(Serialize, Deserialize, Debug)]
 struct MyResponse {
     #[serde(rename = "Title")]
-    title: PageTitleProperty,
+    title: notionrs::page::properties::title::PageTitleProperty,
 }
 
 #[tokio::test]
-async fn integration_test_query_database_with_struct() -> Result<(), NotionError> {
+async fn integration_test_query_database_with_struct() -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
-    let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-    let client = client::NotionClient::new();
+    let client = notionrs::client::NotionClient::new();
     let res = client
         .query_database()
         .database_id(database_id)
@@ -61,16 +54,16 @@ async fn integration_test_query_database_with_struct() -> Result<(), NotionError
 // # --------------------------------------------------------------------------------
 
 #[tokio::test]
-async fn integration_test_query_database_page_size() -> Result<(), NotionError> {
+async fn integration_test_query_database_page_size() -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
-    let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-    let client = client::NotionClient::new();
+    let client = notionrs::client::NotionClient::new();
     let res = client
         .query_database()
         .database_id(database_id)
         .page_size(1)
-        .send::<HashMap<String, PageProperty>>()
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
         .await?;
     println!("{}", res.to_json());
 
@@ -84,16 +77,16 @@ async fn integration_test_query_database_page_size() -> Result<(), NotionError> 
 // # --------------------------------------------------------------------------------
 
 #[tokio::test]
-async fn integration_test_query_database_recursive() -> Result<(), NotionError> {
+async fn integration_test_query_database_recursive() -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
-    let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-    let client = client::NotionClient::new();
+    let client = notionrs::client::NotionClient::new();
     let res = client
         .query_database()
         .database_id(database_id)
         .recursive()
-        .send::<HashMap<String, PageProperty>>()
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
         .await?;
     println!("{}", res.to_json());
 
@@ -107,19 +100,18 @@ async fn integration_test_query_database_recursive() -> Result<(), NotionError> 
 // # --------------------------------------------------------------------------------
 
 #[tokio::test]
-async fn integration_test_query_database_filter_1() -> Result<(), NotionError> {
+async fn integration_test_query_database_filter_1() -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
-    let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-    let client = client::NotionClient::new();
+    let client = notionrs::client::NotionClient::new();
     let res = client
         .query_database()
         .database_id(database_id)
-        .filter(Filter::or(vec![Filter::date_before(
-            "CreatedAt",
-            "2024-07-01",
-        )]))
-        .send::<HashMap<String, PageProperty>>()
+        .filter(notionrs::filter::Filter::or(vec![
+            notionrs::filter::Filter::date_before("CreatedAt", "2024-07-01"),
+        ]))
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
         .await?;
     println!("{}", res.to_json());
 
@@ -127,16 +119,19 @@ async fn integration_test_query_database_filter_1() -> Result<(), NotionError> {
 }
 
 #[tokio::test]
-async fn integration_test_query_database_filter_2() -> Result<(), NotionError> {
+async fn integration_test_query_database_filter_2() -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
-    let database_id = env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-    let client = client::NotionClient::new();
+    let client = notionrs::client::NotionClient::new();
     let res = client
         .query_database()
         .database_id(database_id)
-        .filter(Filter::date_before("CreatedAt", "2024-07-01"))
-        .send::<HashMap<String, PageProperty>>()
+        .filter(notionrs::filter::Filter::date_before(
+            "CreatedAt",
+            "2024-07-01",
+        ))
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
         .await?;
     println!("{}", res.to_json());
 

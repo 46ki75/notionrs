@@ -1,11 +1,7 @@
-use notionrs::error::NotionError;
-use notionrs::page::properties::PageTitleProperty;
 use notionrs::to_json::ToJson;
-use notionrs::{client, page::properties::PageProperty};
 
 use dotenv::dotenv;
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, env};
 
 /// This integration test cannot be run unless explicit permission
 /// for user reading is granted in the Notion API key issuance settings.
@@ -15,15 +11,15 @@ use std::{collections::HashMap, env};
 /// NOTION_PAGE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 /// ```
 #[tokio::test]
-async fn integration_test_get_page() -> Result<(), NotionError> {
+async fn integration_test_get_page() -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
-    let page_id = env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
+    let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
 
-    let client = client::NotionClient::new();
+    let client = notionrs::client::NotionClient::new();
     let res = client
         .get_page()
         .page_id(page_id)
-        .send::<HashMap<String, PageProperty>>()
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
         .await?;
     println!("{}", res.to_json());
 
@@ -39,15 +35,15 @@ async fn integration_test_get_page() -> Result<(), NotionError> {
 #[derive(Serialize, Deserialize, Debug)]
 struct MyResponse {
     #[serde(rename = "Title")]
-    title: PageTitleProperty,
+    title: notionrs::page::properties::title::PageTitleProperty,
 }
 
 #[tokio::test]
-async fn integration_test_get_page_with_struct() -> Result<(), NotionError> {
+async fn integration_test_get_page_with_struct() -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
-    let page_id = env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
+    let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
 
-    let client = client::NotionClient::new();
+    let client = notionrs::client::NotionClient::new();
     let res = client
         .get_page()
         .page_id(page_id)
