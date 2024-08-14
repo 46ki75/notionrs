@@ -19,7 +19,10 @@ use serde::{Deserialize, Serialize};
 /// ```
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PageButtonProperty {
+    /// Property identifier
     pub id: String,
+
+    /// Always `"button"`
     pub button: std::collections::HashMap<String, String>,
 }
 
