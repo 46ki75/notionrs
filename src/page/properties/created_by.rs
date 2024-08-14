@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
-/// Example checkbox page property value
+/// Example created_by page property value
 ///
 /// ```json
 /// {
