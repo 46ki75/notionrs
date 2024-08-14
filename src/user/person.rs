@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// <https://developers.notion.com/reference/user#people>
-///
+/// User objects that represent people have the type property set to "person".
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Person {
     /// always "user"

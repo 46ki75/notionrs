@@ -1,11 +1,17 @@
-// https://developers.notion.com/reference/user#bots
-
 use serde::{Deserialize, Serialize};
 
+/// <https://developers.notion.com/reference/user#bots>
+/// A user object's type property is"bot" when the user object represents a bot.
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Bot {
-    pub object: String, // always "user"
+    /// always "user"
+    pub object: String,
+
+    /// bot identifier
     pub id: String,
+
+    /// Integration name.
+    /// You can check it [here](https://www.notion.so/profile/integrations).
     pub name: Option<String>,
 
     /// Within the Notion API Integration page, when you upload an image,
@@ -19,6 +25,7 @@ pub struct Bot {
     pub bot: BotDetail,
 }
 
+/// This struct can potentially become an empty object since all its fields are optional.
 #[derive(Deserialize, Serialize, Debug)]
 pub struct BotDetail {
     /// Information about who owns this bot.
@@ -30,11 +37,13 @@ pub struct BotDetail {
     pub workspace_name: Option<String>,
 }
 
+/// Information about who owns this bot.
 #[derive(Deserialize, Serialize, Debug)]
 pub struct BotOwner {
     /// The type of owner, either "workspace" or "user".
     pub r#type: String,
 
+    /// Whether the bot's owner is the workspace.
     pub workspace: bool,
 }
 // # --------------------------------------------------------------------------------
