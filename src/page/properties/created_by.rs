@@ -42,3 +42,45 @@ pub struct PageCreatedByProperty {
     /// `created_by` can’t be updated.
     pub created_by: crate::user::User,
 }
+
+// # --------------------------------------------------------------------------------
+//
+// unit test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn unit_test_deserialize_page_created_by_property() {
+        let json_data = r#"
+        {
+            "Created by": {
+                "id": "fR4s",
+                "type": "created_by",
+                "created_by": {
+                    "object": "user",
+                    "id": "cb497a8c-1c30-4c22-87af-f8b0c1ee7389",
+                    "name": "Sam",
+                    "avatar_url": null,
+                    "type": "person",
+                    "person": {
+                        "email": "info@example.com"
+                    }
+                }
+            }
+        }
+        "#;
+
+        let created_by_map = serde_json::from_str::<
+            std::collections::HashMap<String, PageCreatedByProperty>,
+        >(json_data)
+        .unwrap();
+
+        let created_by = created_by_map.get("Created by").unwrap();
+
+        assert_eq!(created_by.id, "fR4s".to_string());
+    }
+}
