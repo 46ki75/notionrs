@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
 ///                 `id` remains constant when the property name changes.
-/// - `$.['*'].type`: Always `"button"`
+/// - `$.['*'].type`: Always `"checkbox"`
 /// - `$.['*'].checkbox`: Whether the checkbox is checked (`true`) or unchecked (`false`).
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
