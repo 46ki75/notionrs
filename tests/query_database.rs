@@ -105,15 +105,22 @@ async fn integration_test_query_database_filter_1() -> Result<(), notionrs::erro
     let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
     let client = notionrs::client::NotionClient::new();
-    let res = client
+
+    let filter = notionrs::filter::Filter::or(vec![notionrs::filter::Filter::date_before(
+        "CreatedAt",
+        "2024-07-01",
+    )]);
+
+    let request = client
         .query_database()
         .database_id(database_id)
-        .filter(notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::date_before("CreatedAt", "2024-07-01"),
-        ]))
+        .filter(filter);
+
+    let response = request
         .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
         .await?;
-    println!("{}", res.to_json());
+
+    println!("{}", response.to_json());
 
     Ok(())
 }
@@ -124,16 +131,19 @@ async fn integration_test_query_database_filter_2() -> Result<(), notionrs::erro
     let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
     let client = notionrs::client::NotionClient::new();
-    let res = client
+
+    let filter = notionrs::filter::Filter::date_before("CreatedAt", "2024-07-01");
+
+    let request = client
         .query_database()
         .database_id(database_id)
-        .filter(notionrs::filter::Filter::date_before(
-            "CreatedAt",
-            "2024-07-01",
-        ))
+        .filter(filter);
+
+    let response = request
         .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
         .await?;
-    println!("{}", res.to_json());
+
+    println!("{}", response.to_json());
 
     Ok(())
 }
