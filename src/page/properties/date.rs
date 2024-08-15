@@ -4,12 +4,16 @@ use serde::{Deserialize, Serialize};
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
 ///                 `id` remains constant when the property name changes.
-/// - `$.['*'].type`: Always `"__________"` // TODO: documentation replace placeholder
-/// - `$.['*'].__________`: // TODO: documentation
+/// - `$.['*'].type`: Always `"date"`
+/// - `$.['*'].date`: If the value is blank, it will be an empty object.
+/// - `$.['*'].date.start`: A date, with an optional time.
+/// - `$.['*'].date.end`: A string representing the end of a date range.
+///                         If the value is null, then the date value is not a range.
+/// - `$.['*'].date.time_zone`: Always `null`. The time zone is already included in the formats of start and end times.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
-/// Example __________ page property value // TODO: documentation replace placeholder
+/// Example date page property value
 ///
 /// ```json
 /// {
@@ -30,14 +34,21 @@ pub struct PageDateProperty {
     /// `id` remains constant when the property name changes.
     pub id: String,
 
-    // TODO: documentation
+    /// If the value is blank, it will be an empty object.
     pub date: Option<PageDatePropertyParameter>,
 }
 
+/// If the value is blank, it will be an empty object.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PageDatePropertyParameter {
-    start: Option<String>,
+    /// A date, with an optional time.
+    start: String,
+
+    /// A string representing the end of a date range.
+    /// If the value is null, then the date value is not a range.
     end: Option<String>,
+
+    /// Always `null`. The time zone is already included in the formats of start and end times.
     time_zone: Option<String>,
 }
 
@@ -49,5 +60,39 @@ pub struct PageDatePropertyParameter {
 
 #[cfg(test)]
 mod tests {
-    // TODO: test
+    use super::PageDateProperty;
+
+    #[test]
+    fn unit_test_deserialize_page_created_time_property() {
+        let json_data = r#"
+        {
+            "Date": {
+                "id": "w%5E%7DO",
+                "type": "date",
+                "date": {
+                    "start": "2024-04-04T00:00:00.000+02:00",
+                    "end": null,
+                    "time_zone": null
+                }
+            }
+        }
+        "#;
+
+        let date_map =
+            serde_json::from_str::<std::collections::HashMap<String, PageDateProperty>>(json_data)
+                .unwrap();
+
+        let date = date_map.get("Date").unwrap();
+
+        assert_eq!(date.id, "w%5E%7DO");
+
+        match &date.date {
+            Some(property) => {
+                assert_eq!(property.start, "2024-04-04T00:00:00.000+02:00");
+                assert_eq!(property.end, None);
+                assert_eq!(property.time_zone, None);
+            }
+            None => {}
+        }
+    }
 }
