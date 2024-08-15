@@ -31,7 +31,7 @@ pub struct Filter {
 #[serde(rename_all = "snake_case")]
 pub enum Condition {
     Checkbox(CheckboxFilter),
-    Date(DateFilter),
+    Date(Box<DateFilter>),
     Files(FilesFilter),
     // TODO: implement formula
     // TODO: implement multi_select
@@ -82,13 +82,13 @@ pub struct DateFilter {
     pub is_not_empty: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub next_month: Option<()>,
+    pub next_month: Option<std::collections::HashMap<(), ()>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub next_week: Option<()>,
+    pub next_week: Option<std::collections::HashMap<(), ()>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub next_year: Option<()>,
+    pub next_year: Option<std::collections::HashMap<(), ()>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub on_or_after: Option<String>,
@@ -97,16 +97,16 @@ pub struct DateFilter {
     pub on_or_before: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub past_month: Option<()>,
+    pub past_month: Option<std::collections::HashMap<(), ()>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub past_week: Option<()>,
+    pub past_week: Option<std::collections::HashMap<(), ()>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub past_year: Option<()>,
+    pub past_year: Option<std::collections::HashMap<(), ()>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub this_week: Option<()>,
+    pub this_week: Option<std::collections::HashMap<(), ()>>,
 }
 
 // # --------------------------------------------------------------------------------
@@ -285,10 +285,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
+            condition: Some(Condition::Date(Box::new(DateFilter {
                 after: Some(date.as_ref().to_string()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -302,10 +302,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
+            condition: Some(Condition::Date(Box::new(DateFilter {
                 before: Some(date.as_ref().to_string()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -319,10 +319,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
+            condition: Some(Condition::Date(Box::new(DateFilter {
                 equals: Some(date.as_ref().to_string()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -334,10 +334,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
+            condition: Some(Condition::Date(Box::new(DateFilter {
                 is_empty: Some(true),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -349,10 +349,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
+            condition: Some(Condition::Date(Box::new(DateFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -365,10 +365,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
-                next_month: Some(()),
+            condition: Some(Condition::Date(Box::new(DateFilter {
+                next_month: Some(std::collections::HashMap::new()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -381,10 +381,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
-                next_week: Some(()),
+            condition: Some(Condition::Date(Box::new(DateFilter {
+                next_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -397,10 +397,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
-                next_year: Some(()),
+            condition: Some(Condition::Date(Box::new(DateFilter {
+                next_year: Some(std::collections::HashMap::new()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -415,10 +415,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
+            condition: Some(Condition::Date(Box::new(DateFilter {
                 on_or_after: Some(date.as_ref().to_string()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -432,10 +432,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
+            condition: Some(Condition::Date(Box::new(DateFilter {
                 on_or_before: Some(date.as_ref().to_string()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -448,10 +448,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
-                past_month: Some(()),
+            condition: Some(Condition::Date(Box::new(DateFilter {
+                past_month: Some(std::collections::HashMap::new()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -464,10 +464,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
-                past_week: Some(()),
+            condition: Some(Condition::Date(Box::new(DateFilter {
+                past_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -480,10 +480,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
-                past_year: Some(()),
+            condition: Some(Condition::Date(Box::new(DateFilter {
+                past_year: Some(std::collections::HashMap::new()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 
@@ -496,10 +496,10 @@ impl Filter {
             and: None,
             or: None,
             property: Some(property_name.as_ref().to_string()),
-            condition: Some(Condition::Date(DateFilter {
-                this_week: Some(()),
+            condition: Some(Condition::Date(Box::new(DateFilter {
+                this_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
-            })),
+            }))),
         }
     }
 

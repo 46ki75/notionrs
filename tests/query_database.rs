@@ -106,10 +106,22 @@ async fn integration_test_query_database_filter_1() -> Result<(), notionrs::erro
 
     let client = notionrs::client::NotionClient::new();
 
-    let filter = notionrs::filter::Filter::or(vec![notionrs::filter::Filter::date_before(
-        "CreatedAt",
-        "2024-07-01",
-    )]);
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::date_after("Created time", "2024-07-01"),
+        notionrs::filter::Filter::date_before("Created time", "2024-07-01"),
+        notionrs::filter::Filter::date_equals("Created time", "2024-07-01"),
+        notionrs::filter::Filter::date_is_empty("Created time"),
+        notionrs::filter::Filter::date_is_not_empty("Created time"),
+        notionrs::filter::Filter::date_next_month("Created time"),
+        notionrs::filter::Filter::date_next_week("Created time"),
+        notionrs::filter::Filter::date_next_year("Created time"),
+        notionrs::filter::Filter::date_on_or_after("Created time", "2024-07-01"),
+        notionrs::filter::Filter::date_on_or_before("Created time", "2024-07-01"),
+        notionrs::filter::Filter::date_past_month("Created time"),
+        notionrs::filter::Filter::date_past_week("Created time"),
+        notionrs::filter::Filter::date_past_year("Created time"),
+        notionrs::filter::Filter::date_this_week("Created time"),
+    ]);
 
     let request = client
         .query_database()
@@ -132,7 +144,7 @@ async fn integration_test_query_database_filter_2() -> Result<(), notionrs::erro
 
     let client = notionrs::client::NotionClient::new();
 
-    let filter = notionrs::filter::Filter::date_before("CreatedAt", "2024-07-01");
+    let filter = notionrs::filter::Filter::date_before("Created time", "2024-07-01");
 
     let request = client
         .query_database()
