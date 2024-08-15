@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 /// - `$.['*'].type`: Always `"files"`
 /// - `$.['*'].files`: An array of objects containing information about
 ///                    the [files](https://developers.notion.com/reference/file-object).
+///                    If the file does not exist, an empty array will be returned.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
