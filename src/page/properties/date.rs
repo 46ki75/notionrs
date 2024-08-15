@@ -75,7 +75,7 @@ mod tests {
     use super::PageDateProperty;
 
     #[test]
-    fn unit_test_deserialize_page_created_time_property() {
+    fn unit_test_deserialize_page_date_property() {
         let json_data = r#"
         {
             "Date": {
