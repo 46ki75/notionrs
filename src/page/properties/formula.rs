@@ -2,14 +2,22 @@ use serde::{Deserialize, Serialize};
 
 /// <https://developers.notion.com/reference/page-property-values#formula>
 ///
+/// Formula property value objects represent the result of evaluating
+/// a formula described in the database's properties.
+///
 /// - `$.['*'].id`: An underlying identifier for the property.
 ///                 `id` remains constant when the property name changes.
-/// - `$.['*'].type`: Always `"__________"` // TODO: documentation replace placeholder
-/// - `$.['*'].__________`: // TODO: documentation
+/// - `$.['*'].type`: Always `"formula"`
+/// - `$.['*'].formula.type`: A string indicating the data type of the result of the formula.
+///                         Possible type values are:
+///                         - `boolean`
+///                         - `date`
+///                         - `number`
+///                         - `string`
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
-/// Example __________ page property value // TODO: documentation replace placeholder
+/// Example formula page property value
 ///
 /// ```json
 /// {
@@ -26,7 +34,8 @@ pub struct PageFormulaProperty {
     /// `id` remains constant when the property name changes.
     pub id: String,
 
-    // TODO: documentation
+    /// Formula property value objects represent the result of evaluating
+    /// a formula described in the database's properties.
     pub formula: Formula,
 }
 
@@ -39,23 +48,51 @@ pub enum Formula {
     String(FormulaString),
 }
 
+/// ```json
+/// {
+///   "type": "boolean",
+///   "boolean": false
+/// }
+/// ```
 #[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 pub struct FormulaBoolean {
+    /// Calculated value of the database property
     pub boolean: bool,
 }
 
+/// ```json
+/// {
+///   "type": "date",
+///   "date": "2024-08-15T05:24:00.000Z"
+/// }
+/// ```
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FormulaDate {
+    /// Calculated value of the database property
     pub date: String,
 }
 
+/// ```json
+/// {
+///   "type": "number",
+///   "number": 56
+/// }
+/// ```
 #[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 pub struct FormulaNumber {
+    /// Calculated value of the database property
     pub number: f64,
 }
 
+/// ```json
+/// {
+///   "type": "string",
+///   "string": "My Title"
+/// }
+/// ```
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FormulaString {
+    /// Calculated value of the database property
     pub string: String,
 }
 
@@ -67,5 +104,38 @@ pub struct FormulaString {
 
 #[cfg(test)]
 mod tests {
-    // TODO: test
+
+    use super::*;
+
+    #[test]
+    pub fn unit_test_deserialize_page_forlula_property() {
+        let json_data = r#"
+        {
+            "Formula": {
+                "type": "formula",
+                "id": "W~%5BW",
+                "formula": {
+                    "type": "string",
+                    "string": "My Title"
+                }
+            }
+        }
+        "#;
+
+        let formula_map = serde_json::from_str::<
+            std::collections::HashMap<String, PageFormulaProperty>,
+        >(json_data)
+        .unwrap();
+
+        let formula = formula_map.get("Formula").unwrap();
+
+        assert_eq!(formula.id, "W~%5BW");
+
+        match &formula.formula {
+            Formula::String(s) => assert_eq!(s.string, "My Title"),
+            Formula::Boolean(_) => panic!(),
+            Formula::Date(_) => panic!(),
+            Formula::Number(_) => panic!(),
+        }
+    }
 }
