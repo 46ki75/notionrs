@@ -100,7 +100,59 @@ async fn integration_test_query_database_recursive() -> Result<(), notionrs::err
 // # --------------------------------------------------------------------------------
 
 #[tokio::test]
-async fn integration_test_query_database_filter_1() -> Result<(), notionrs::error::NotionError> {
+async fn integration_test_query_database_filter_simple() -> Result<(), notionrs::error::NotionError>
+{
+    dotenv().ok();
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = notionrs::client::NotionClient::new();
+
+    let filter = notionrs::filter::Filter::date_before("Created time", "2024-07-01");
+
+    let request = client
+        .query_database()
+        .database_id(database_id)
+        .filter(filter);
+
+    let response = request
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+        .await?;
+
+    println!("{}", response.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn integration_test_query_database_filter_checkbox(
+) -> Result<(), notionrs::error::NotionError> {
+    dotenv().ok();
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = notionrs::client::NotionClient::new();
+
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::checkbox_is_checked("Checkbox"),
+        notionrs::filter::Filter::checkbox_is_not_checked("Checkbox"),
+    ]);
+
+    let request = client
+        .query_database()
+        .database_id(database_id)
+        .filter(filter);
+
+    let response = request
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+        .await?;
+
+    println!("{}", response.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn integration_test_query_database_filter_date_filter(
+) -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
     let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
@@ -138,13 +190,17 @@ async fn integration_test_query_database_filter_1() -> Result<(), notionrs::erro
 }
 
 #[tokio::test]
-async fn integration_test_query_database_filter_2() -> Result<(), notionrs::error::NotionError> {
+async fn integration_test_query_database_filter_date_files(
+) -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
     let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
     let client = notionrs::client::NotionClient::new();
 
-    let filter = notionrs::filter::Filter::date_before("Created time", "2024-07-01");
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::files_is_empty("Files & media"),
+        notionrs::filter::Filter::files_is_not_empty("Files & media"),
+    ]);
 
     let request = client
         .query_database()
