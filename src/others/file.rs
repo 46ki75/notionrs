@@ -20,7 +20,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// When a file is uploaded to Notion, it becomes an object as shown below.
 ///
-/// json```
+/// ```json
 /// {
 ///     "name": "Project Alpha blueprint",
 ///     "type": "file",
