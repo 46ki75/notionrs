@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// - `$.['*'].id`: An underlying identifier for the property.
 ///                 `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"date"`
-/// - `$.['*'].date`: If the value is blank, it will be an empty object.
+/// - `$.['*'].date`: If the value is blank, it will be `null`.
 /// - `$.['*'].date.start`: A date, with an optional time.
 /// - `$.['*'].date.end`: A string representing the end of a date range.
 ///                         If the value is null, then the date value is not a range.
@@ -28,13 +28,25 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
+///
+/// When the value is not set:
+///
+/// ```json
+/// {
+///   "Date": {
+///     "id": "w%5E%7DO",
+///     "type": "date",
+///     "date": null
+///   }
+/// }
+/// ```
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PageDateProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
     pub id: String,
 
-    /// If the value is blank, it will be an empty object.
+    /// If the value is blank, it will be `null`.
     pub date: Option<PageDatePropertyParameter>,
 }
 
