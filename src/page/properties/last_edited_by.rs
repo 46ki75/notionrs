@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
-/// Example last_edited_by page property value // TODO: documentation replace placeholder
+/// Example last_edited_by page property value
 ///
 /// ```json
 /// {
