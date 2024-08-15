@@ -243,6 +243,9 @@ impl Filter {
     //
     // # --------------------------------------------------------------------------------
 
+    /// Return the records where the checkbox is checked.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn checkbox_is_checked<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -252,6 +255,9 @@ impl Filter {
         }
     }
 
+    /// Return the records where the checkbox is NOT checked.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn checkbox_is_not_checked<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -269,6 +275,11 @@ impl Filter {
     //
     // # --------------------------------------------------------------------------------
 
+    /// Returns database entries where the date property value is after the provided date.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `date`: ISO 8601 date
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn date_after<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
         Filter {
             and: None,
@@ -281,6 +292,11 @@ impl Filter {
         }
     }
 
+    /// Returns database entries where the date property value is before the provided date.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `date`: The value to compare the date property value against. (ISO 8601 date)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn date_before<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
         Filter {
             and: None,
@@ -293,6 +309,11 @@ impl Filter {
         }
     }
 
+    /// Returns database entries where the date property value is the provided date.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `date`: The value to compare the date property value against. (ISO 8601 date)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn date_equals<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
         Filter {
             and: None,
@@ -305,6 +326,9 @@ impl Filter {
         }
     }
 
+    /// Returns database entries where the date property value contains no data.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_is_empty<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -317,6 +341,9 @@ impl Filter {
         }
     }
 
+    /// Returns database entries where the date property value is not empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -329,6 +356,10 @@ impl Filter {
         }
     }
 
+    /// A filter that limits the results to database entries
+    /// where the date property value is within the next month.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_next_month<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -341,6 +372,10 @@ impl Filter {
         }
     }
 
+    /// A filter that limits the results to database entries
+    /// where the date property value is within the next week.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_next_week<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -353,6 +388,10 @@ impl Filter {
         }
     }
 
+    /// A filter that limits the results to database entries
+    /// where the date property value is within the next year.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_next_year<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -365,6 +404,12 @@ impl Filter {
         }
     }
 
+    /// Returns database entries where the date property value
+    /// is on or after the provided date.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `date`: The value to compare the date property value against. (ISO 8601 date)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn date_on_or_after<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
         Filter {
             and: None,
@@ -377,6 +422,11 @@ impl Filter {
         }
     }
 
+    /// Returns database entries where the date property value is on or before the provided date.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `date`: The value to compare the date property value against. (ISO 8601 date)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn date_on_or_before<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
         Filter {
             and: None,
@@ -389,6 +439,10 @@ impl Filter {
         }
     }
 
+    /// A filter that limits the results to database entries
+    /// where the date property value is within the past month.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_past_month<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -401,6 +455,10 @@ impl Filter {
         }
     }
 
+    /// A filter that limits the results to database entries
+    /// where the date property value is within the past week.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_past_week<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -413,6 +471,10 @@ impl Filter {
         }
     }
 
+    /// A filter that limits the results to database entries
+    /// where the date property value is within the past year.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_past_year<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -425,6 +487,10 @@ impl Filter {
         }
     }
 
+    /// A filter that limits the results to database entries
+    /// where the date property value is this week.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_this_week<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -443,6 +509,9 @@ impl Filter {
     //
     // # --------------------------------------------------------------------------------
 
+    /// Returns all database entries with an empty files property value.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn files_is_empty<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
@@ -455,6 +524,9 @@ impl Filter {
         }
     }
 
+    /// Returns all entries with a populated files property value.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn files_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             and: None,
