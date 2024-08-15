@@ -54,7 +54,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn unit_test_deserialize_page_file_properties() {
+    fn unit_test_deserialize_page_files_property() {
         let json_data = r#"
         {
             "File": {
