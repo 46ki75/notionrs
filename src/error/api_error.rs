@@ -29,7 +29,7 @@ pub struct NotionApiError {
     message: String,
 
     /// Request identifier
-    request_id: String,
+    request_id: Option<String>,
 
     /// URL for the developer survey
     developer_survey: Option<String>,

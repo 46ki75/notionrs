@@ -4,6 +4,7 @@ pub mod user;
 
 use database::query_database::{QueryDatabaseClient, QueryDatabaseRequestBody};
 use dotenv::dotenv;
+use page::get_page_property_item::GetPagePropertyItemClient;
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::env;
 
@@ -439,6 +440,15 @@ impl NotionClient {
         GetPageClient {
             reqwest_client: self.reqwest_client.clone(),
             page_id: None,
+        }
+    }
+
+    // TODO: docs for get_page_property_item method
+    pub fn get_page_property_item(&self) -> GetPagePropertyItemClient {
+        GetPagePropertyItemClient {
+            reqwest_client: self.reqwest_client.clone(),
+            page_id: None,
+            property_id: None,
         }
     }
 
