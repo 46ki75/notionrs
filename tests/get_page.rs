@@ -1,6 +1,5 @@
 use notionrs::to_json::ToJson;
 
-use dotenv::dotenv;
 use serde::{Deserialize, Serialize};
 
 /// This integration test cannot be run unless explicit permission
@@ -12,16 +11,28 @@ use serde::{Deserialize, Serialize};
 /// ```
 #[tokio::test]
 async fn integration_test_get_page() -> Result<(), notionrs::error::NotionError> {
-    dotenv().ok();
+    dotenv::dotenv().ok();
+
     let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
 
     let client = notionrs::client::NotionClient::new();
-    let res = client
-        .get_page()
-        .page_id(page_id)
+
+    let request = client.get_page().page_id(page_id);
+
+    let response = request
         .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
         .await?;
-    println!("{}", res.to_json());
+
+    let id_property = response.properties.get("ID").unwrap();
+
+    let unique_id = match id_property {
+        notionrs::page::properties::PageProperty::UniqueId(i) => i.unique_id.number,
+        _ => todo!(),
+    };
+
+    println!("ID is {}", unique_id);
+
+    println!("{}", response.to_json());
 
     Ok(())
 }
@@ -40,16 +51,17 @@ struct MyResponse {
 
 #[tokio::test]
 async fn integration_test_get_page_with_struct() -> Result<(), notionrs::error::NotionError> {
-    dotenv().ok();
+    dotenv::dotenv().ok();
+
     let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
 
     let client = notionrs::client::NotionClient::new();
-    let res = client
-        .get_page()
-        .page_id(page_id)
-        .send::<MyResponse>()
-        .await?;
-    println!("{:?}", res.properties.title);
+
+    let request = client.get_page().page_id(page_id);
+
+    let response = request.send::<MyResponse>().await?;
+
+    println!("{:?}", response.properties.title);
 
     Ok(())
 }
