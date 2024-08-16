@@ -1,0 +1,27 @@
+{
+  "name": "Rust Dev Container",
+  "build": { "dockerfile": "Dockerfile" },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "rust-analyzer.linkedProjects": ["./Cargo.toml"],
+        "rust-analyzer.showUnlinkedFileNotification": false
+      },
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "fill-labs.dependi",
+        "panicbit.cargo",
+        "tamasfe.even-better-toml",
+        "Gruntfuggly.todo-tree",
+        "usernamehw.errorlens",
+        "yzhang.markdown-all-in-one"
+      ]
+    }
+  },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "8gb",
+    "storage": "16gb"
+  },
+  "forwardPorts": [5173]
+}
