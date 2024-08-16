@@ -39,7 +39,7 @@ pub enum Condition {
     Date(Box<DateFilter>),
     Files(FilesFilter),
     // TODO: implement formula
-    // TODO: implement multi_select
+    MultiSelect(MultiSelectFilter),
     Number(NumberFilter),
     People(PeopleFilter),
     PhoneNumber(PhoneNumberFilter),
@@ -159,7 +159,21 @@ pub struct FilesFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement multi_select
+/// <https://developers.notion.com/reference/post-database-query-filter#multi-select>
+#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+pub struct MultiSelectFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub contains: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_contain: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_not_empty: Option<bool>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -778,6 +792,86 @@ impl Filter {
     // multi select <https://developers.notion.com/reference/post-database-query-filter#multi-select>
     //
     // # --------------------------------------------------------------------------------
+
+    /// Returns database entries where the multi-select value matches the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_name`: The string to compare the multi-select property value against.
+    pub fn multi_select_contains<S, T>(property_name: S, option_name: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::MultiSelect(MultiSelectFilter {
+                contains: Some(option_name.as_ref().to_string()),
+                ..Default::default()
+            })),
+            timestamp: None,
+        }
+    }
+
+    /// Returns database entries where the multi-select value does not match the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_name`: The string to compare the multi-select property value against.
+    pub fn multi_select_does_not_contain<S, T>(property_name: S, option_name: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::MultiSelect(MultiSelectFilter {
+                does_not_contain: Some(option_name.as_ref().to_string()),
+                ..Default::default()
+            })),
+            timestamp: None,
+        }
+    }
+
+    /// Returns database entries where the multi-select property value is empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn multi_select_is_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::MultiSelect(MultiSelectFilter {
+                is_empty: Some(true),
+                ..Default::default()
+            })),
+            timestamp: None,
+        }
+    }
+
+    /// Returns database entries where the multi-select property value is not empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn multi_select_is_not_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::MultiSelect(MultiSelectFilter {
+                is_not_empty: Some(true),
+                ..Default::default()
+            })),
+            timestamp: None,
+        }
+    }
 
     // # --------------------------------------------------------------------------------
     //

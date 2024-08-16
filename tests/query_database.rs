@@ -217,6 +217,35 @@ async fn integration_test_query_database_filter_files_filter(
 }
 
 #[tokio::test]
+async fn integration_test_query_database_filter_multi_select_filter(
+) -> Result<(), notionrs::error::NotionError> {
+    dotenv().ok();
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = notionrs::client::NotionClient::new();
+
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::multi_select_contains("Multi-select", "0"),
+        notionrs::filter::Filter::multi_select_does_not_contain("Multi-select", "0"),
+        notionrs::filter::Filter::multi_select_is_empty("Multi-select"),
+        notionrs::filter::Filter::multi_select_is_not_empty("Multi-select"),
+    ]);
+
+    let request = client
+        .query_database()
+        .database_id(database_id)
+        .filter(filter);
+
+    let response = request
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+        .await?;
+
+    println!("{}", response.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
 async fn integration_test_query_database_filter_number_filter(
 ) -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
