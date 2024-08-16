@@ -43,7 +43,7 @@ pub enum Condition {
     Number(NumberFilter),
     People(PeopleFilter),
     PhoneNumber(PhoneNumberFilter),
-    // TODO: implement relation
+    // TODO: implement rollup
     RichText(RichTextFilter),
     Select(SelectFilter),
     Status(StatusFilter),
