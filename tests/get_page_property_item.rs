@@ -6,7 +6,7 @@ mod integration_tests {
     /// for user reading is granted in the Notion API key issuance settings.
     #[tokio::test]
     async fn get_page_property_item() -> Result<(), notionrs::error::NotionError> {
-        dotenv::dotenv().ok();
+        dotenvy::dotenv().ok();
 
         let page_id = std::env::var("NOTION_PAGE_ID").unwrap();
 

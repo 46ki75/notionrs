@@ -11,7 +11,7 @@ mod integration_tests {
     /// ```
     #[tokio::test]
     async fn get_page() -> Result<(), notionrs::error::NotionError> {
-        dotenv::dotenv().ok();
+        dotenvy::dotenv().ok();
 
         let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
 

@@ -3,7 +3,6 @@ pub mod page;
 pub mod user;
 
 use database::query_database::{QueryDatabaseClient, QueryDatabaseRequestBody};
-use dotenv::dotenv;
 use page::get_page_property_item::GetPagePropertyItemClient;
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::env;
@@ -23,7 +22,7 @@ impl NotionClient {
     pub fn new() -> Self {
         let mut headers = HeaderMap::new();
 
-        dotenv().ok();
+        dotenvy::dotenv().ok();
 
         let secret = env::var("NOTION_TOKEN").unwrap_or_else(|_| String::new());
 

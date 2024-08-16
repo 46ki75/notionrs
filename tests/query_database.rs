@@ -2,11 +2,9 @@ mod integration_tests {
 
     use notionrs::to_json::ToJson;
 
-    use dotenv::dotenv;
-
     #[tokio::test]
     async fn query_database() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -28,7 +26,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_page_size() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -51,7 +49,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_recursive() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -74,7 +72,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_filter_simple() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -95,7 +93,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_filter_checkbox() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -119,7 +117,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_filter_date_filter() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -155,7 +153,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_filter_files_filter() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -182,7 +180,7 @@ mod integration_tests {
     #[tokio::test]
     async fn query_database_filter_multi_select_filter() -> Result<(), notionrs::error::NotionError>
     {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -208,7 +206,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_filter_number_filter() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -238,7 +236,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_filter_people_filter() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -271,7 +269,7 @@ mod integration_tests {
     #[tokio::test]
     async fn query_database_filter_phone_number_filter() -> Result<(), notionrs::error::NotionError>
     {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -303,7 +301,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_filter_rich_text_filter() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -333,7 +331,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_filter_select_filter() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -359,7 +357,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_filter_status_filter() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -385,7 +383,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_filter_timestamp_filter() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
@@ -421,7 +419,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn query_database_filter_unique_id_filter() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();

@@ -2,8 +2,6 @@ mod integration_tests {
 
     use notionrs::to_json::ToJson;
 
-    use dotenv::dotenv;
-
     /// This integration test cannot be run unless explicit permission
     /// for user reading is granted in the Notion API key issuance settings.
     ///
@@ -13,7 +11,7 @@ mod integration_tests {
     /// ```
     #[tokio::test]
     async fn get_user() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
+        dotenvy::dotenv().ok();
         let user_id = std::env::var("NOTION_USER_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::NotionClient::new();
