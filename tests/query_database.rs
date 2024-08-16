@@ -406,6 +406,45 @@ async fn integration_test_query_database_filter_status_filter(
 }
 
 #[tokio::test]
+async fn integration_test_query_database_filter_timestamp_filter(
+) -> Result<(), notionrs::error::NotionError> {
+    dotenv().ok();
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = notionrs::client::NotionClient::new();
+
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::timestamp_after("2024-07-01"),
+        notionrs::filter::Filter::timestamp_before("2024-07-01"),
+        notionrs::filter::Filter::timestamp_equals("2024-07-01"),
+        notionrs::filter::Filter::timestamp_is_empty(),
+        notionrs::filter::Filter::timestamp_is_not_empty(),
+        notionrs::filter::Filter::timestamp_next_month(),
+        notionrs::filter::Filter::timestamp_next_week(),
+        notionrs::filter::Filter::timestamp_next_year(),
+        notionrs::filter::Filter::timestamp_on_or_after("2024-07-01"),
+        notionrs::filter::Filter::timestamp_on_or_before("2024-07-01"),
+        notionrs::filter::Filter::timestamp_past_month(),
+        notionrs::filter::Filter::timestamp_past_week(),
+        notionrs::filter::Filter::timestamp_past_year(),
+        notionrs::filter::Filter::timestamp_this_week(),
+    ]);
+
+    let request = client
+        .query_database()
+        .database_id(database_id)
+        .filter(filter);
+
+    let response = request
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+        .await?;
+
+    println!("{}", response.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
 async fn integration_test_query_database_filter_unique_id_filter(
 ) -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();

@@ -19,6 +19,11 @@ pub struct Filter {
 
     #[serde(flatten, skip_serializing_if = "Option::is_none")]
     pub condition: Option<Condition>,
+
+    /// Always either a "created_time" or null.
+    /// When it's "created_time", apply a timestamp filter.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub timestamp: Option<String>,
 }
 
 // # --------------------------------------------------------------------------------
@@ -42,7 +47,8 @@ pub enum Condition {
     RichText(RichTextFilter),
     Select(SelectFilter),
     Status(StatusFilter),
-    // TODO: implement timestamp
+    #[serde(rename = "created_time")]
+    Timestamp(Box<TimestampFilter>),
     UniqueId(UniqueIdFilter),
 }
 
@@ -338,7 +344,50 @@ pub struct StatusFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement timestamp
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct TimestampFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub after: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub before: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub equals: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_not_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub next_month: Option<std::collections::HashMap<(), ()>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub next_week: Option<std::collections::HashMap<(), ()>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub next_year: Option<std::collections::HashMap<(), ()>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub on_or_after: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub on_or_before: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub past_month: Option<std::collections::HashMap<(), ()>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub past_week: Option<std::collections::HashMap<(), ()>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub past_year: Option<std::collections::HashMap<(), ()>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub this_week: Option<std::collections::HashMap<(), ()>>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -380,6 +429,7 @@ impl Filter {
             or: None,
             property: None,
             condition: None,
+            timestamp: None,
         }
     }
 
@@ -389,6 +439,7 @@ impl Filter {
             or: Some(filters),
             property: None,
             condition: None,
+            timestamp: None,
         }
     }
 
@@ -407,6 +458,7 @@ impl Filter {
             or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Checkbox(CheckboxFilter { equals: Some(true) })),
+            timestamp: None,
         }
     }
 
@@ -421,6 +473,7 @@ impl Filter {
             condition: Some(Condition::Checkbox(CheckboxFilter {
                 equals: Some(false),
             })),
+            timestamp: None,
         }
     }
 
@@ -444,6 +497,7 @@ impl Filter {
                 after: Some(date.as_ref().to_string()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -461,6 +515,7 @@ impl Filter {
                 before: Some(date.as_ref().to_string()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -478,6 +533,7 @@ impl Filter {
                 equals: Some(date.as_ref().to_string()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -493,6 +549,7 @@ impl Filter {
                 is_empty: Some(true),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -508,6 +565,7 @@ impl Filter {
                 is_not_empty: Some(true),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -524,6 +582,7 @@ impl Filter {
                 next_month: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -540,6 +599,7 @@ impl Filter {
                 next_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -556,6 +616,7 @@ impl Filter {
                 next_year: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -574,6 +635,7 @@ impl Filter {
                 on_or_after: Some(date.as_ref().to_string()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -591,6 +653,7 @@ impl Filter {
                 on_or_before: Some(date.as_ref().to_string()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -607,6 +670,7 @@ impl Filter {
                 past_month: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -623,6 +687,7 @@ impl Filter {
                 past_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -639,6 +704,7 @@ impl Filter {
                 past_year: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -655,6 +721,7 @@ impl Filter {
                 this_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
+            timestamp: None,
         }
     }
 
@@ -676,6 +743,7 @@ impl Filter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -691,6 +759,7 @@ impl Filter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -733,6 +802,7 @@ impl Filter {
                 does_not_equal: Some(number.into()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -753,6 +823,7 @@ impl Filter {
                 equals: Some(number.into()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -773,6 +844,7 @@ impl Filter {
                 greater_than: Some(number.into()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -793,6 +865,7 @@ impl Filter {
                 greater_than_or_equal_to: Some(number.into()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -811,6 +884,7 @@ impl Filter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -829,6 +903,7 @@ impl Filter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -849,6 +924,7 @@ impl Filter {
                 less_than: Some(number.into()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -869,6 +945,7 @@ impl Filter {
                 less_than_or_equal_to: Some(number.into()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -895,6 +972,7 @@ impl Filter {
                 contains: Some(id.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -915,6 +993,7 @@ impl Filter {
                 does_not_contain: Some(id.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -933,6 +1012,7 @@ impl Filter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -951,6 +1031,7 @@ impl Filter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -973,6 +1054,7 @@ impl Filter {
                 contains: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -989,6 +1071,7 @@ impl Filter {
                 does_not_contain: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1005,6 +1088,7 @@ impl Filter {
                 does_not_equal: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1021,6 +1105,7 @@ impl Filter {
                 ends_with: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1037,6 +1122,7 @@ impl Filter {
                 equals: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1052,6 +1138,7 @@ impl Filter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1067,6 +1154,7 @@ impl Filter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1083,6 +1171,7 @@ impl Filter {
                 starts_with: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1111,6 +1200,7 @@ impl Filter {
                 contains: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1131,6 +1221,7 @@ impl Filter {
                 does_not_contain: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1151,6 +1242,7 @@ impl Filter {
                 does_not_equal: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1171,6 +1263,7 @@ impl Filter {
                 ends_with: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1191,6 +1284,7 @@ impl Filter {
                 equals: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1209,6 +1303,7 @@ impl Filter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1227,6 +1322,7 @@ impl Filter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1247,6 +1343,7 @@ impl Filter {
                 starts_with: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1273,6 +1370,7 @@ impl Filter {
                 does_not_equal: Some(option_name.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1293,6 +1391,7 @@ impl Filter {
                 equals: Some(option_name.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1311,6 +1410,7 @@ impl Filter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1329,6 +1429,7 @@ impl Filter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1355,6 +1456,7 @@ impl Filter {
                 does_not_equal: Some(option_name.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1375,6 +1477,7 @@ impl Filter {
                 equals: Some(option_name.as_ref().to_string()),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1393,6 +1496,7 @@ impl Filter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1411,10 +1515,257 @@ impl Filter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
-    // TODO: implement timestamp
+    // # --------------------------------------------------------------------------------
+    //
+    // timestamp <https://developers.notion.com/reference/post-database-query-filter#timestamp>
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Returns database entries where the timestamp property value is after the provided timestamp.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `timestamp`: ISO 8601 timestamp
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
+    pub fn timestamp_after<T: AsRef<str>>(timestamp: T) -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                after: Some(timestamp.as_ref().to_string()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// Returns database entries where the timestamp property value is before the provided timestamp.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `timestamp`: The value to compare the timestamp property value against. (ISO 8601 timestamp)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
+    pub fn timestamp_before<T: AsRef<str>>(timestamp: T) -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                before: Some(timestamp.as_ref().to_string()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// Returns database entries where the timestamp property value is the provided timestamp.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `timestamp`: The value to compare the timestamp property value against. (ISO 8601 timestamp)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
+    pub fn timestamp_equals<T: AsRef<str>>(timestamp: T) -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                equals: Some(timestamp.as_ref().to_string()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// Returns database entries where the timestamp property value contains no data.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn timestamp_is_empty() -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                is_empty: Some(true),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// Returns database entries where the timestamp property value is not empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn timestamp_is_not_empty() -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                is_not_empty: Some(true),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// A filter that limits the results to database entries
+    /// where the timestamp property value is within the next month.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn timestamp_next_month() -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                next_month: Some(std::collections::HashMap::new()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// A filter that limits the results to database entries
+    /// where the timestamp property value is within the next week.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn timestamp_next_week() -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                next_week: Some(std::collections::HashMap::new()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// A filter that limits the results to database entries
+    /// where the timestamp property value is within the next year.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn timestamp_next_year() -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                next_year: Some(std::collections::HashMap::new()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// Returns database entries where the timestamp property value
+    /// is on or after the provided timestamp.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `timestamp`: The value to compare the timestamp property value against. (ISO 8601 timestamp)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
+    pub fn timestamp_on_or_after<T: AsRef<str>>(timestamp: T) -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                on_or_after: Some(timestamp.as_ref().to_string()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// Returns database entries where the timestamp property value is on or before the provided timestamp.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `timestamp`: The value to compare the timestamp property value against. (ISO 8601 timestamp)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
+    pub fn timestamp_on_or_before<T: AsRef<str>>(timestamp: T) -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                on_or_before: Some(timestamp.as_ref().to_string()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// A filter that limits the results to database entries
+    /// where the timestamp property value is within the past month.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn timestamp_past_month() -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                past_month: Some(std::collections::HashMap::new()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// A filter that limits the results to database entries
+    /// where the timestamp property value is within the past week.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn timestamp_past_week() -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                past_week: Some(std::collections::HashMap::new()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// A filter that limits the results to database entries
+    /// where the timestamp property value is within the past year.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn timestamp_past_year() -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                past_year: Some(std::collections::HashMap::new()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
+
+    /// A filter that limits the results to database entries
+    /// where the timestamp property value is this week.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn timestamp_this_week() -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: None,
+            condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
+                this_week: Some(std::collections::HashMap::new()),
+                ..Default::default()
+            }))),
+            timestamp: Some("created_time".to_string()),
+        }
+    }
 
     // # --------------------------------------------------------------------------------
     //
@@ -1438,6 +1789,7 @@ impl Filter {
                 does_not_equal: Some(unique_id),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1457,6 +1809,7 @@ impl Filter {
                 equals: Some(unique_id),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1476,6 +1829,7 @@ impl Filter {
                 greater_than: Some(unique_id),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1495,6 +1849,7 @@ impl Filter {
                 greater_than_or_equal_to: Some(unique_id),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1514,6 +1869,7 @@ impl Filter {
                 less_than: Some(unique_id),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 
@@ -1533,6 +1889,7 @@ impl Filter {
                 less_than_or_equal_to: Some(unique_id),
                 ..Default::default()
             })),
+            timestamp: None,
         }
     }
 }
