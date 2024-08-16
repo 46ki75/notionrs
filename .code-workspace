@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "crate (notionrs)",
+      "path": "."
+    },
+    {
+      "name": "document (vitepress)",
+      "path": "docs"
+    }
+  ]
+}
