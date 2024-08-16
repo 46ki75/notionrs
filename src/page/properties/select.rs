@@ -4,12 +4,12 @@ use serde::{Deserialize, Serialize};
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
 ///                 `id` remains constant when the property name changes.
-/// - `$.['*'].type`: Always `"__________"` // TODO: documentation replace placeholder
-/// - `$.['*'].__________`: // TODO: documentation
+/// - `$.['*'].type`: Always `"select"`
+/// - `$.['*'].select`: Select object (optional)
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
-/// Example __________ page property value // TODO: documentation replace placeholder
+/// Example select page property value
 ///
 /// ```json
 /// {
@@ -30,7 +30,7 @@ pub struct PageSelectProperty {
     /// `id` remains constant when the property name changes.
     pub id: String,
 
-    // TODO: documentation
+    /// Select object (optional)
     pub select: Option<crate::others::select::Select>,
 }
 
@@ -42,5 +42,41 @@ pub struct PageSelectProperty {
 
 #[cfg(test)]
 mod tests {
-    // TODO: test
+
+    use super::*;
+
+    #[test]
+    fn unit_test_deserialize_select_property() {
+        let json_data = r#"
+        {
+            "Select": {
+                "type": "select",
+                "id": "chOy",
+                "select": {
+                    "id": "eede87ce-52db-4b16-9931-2bc40687d697",
+                    "name": "TODO",
+                    "color": "default"
+                }
+            }
+        }
+        "#;
+
+        let select_map = serde_json::from_str::<
+            std::collections::HashMap<String, PageSelectProperty>,
+        >(json_data)
+        .unwrap();
+
+        let select = select_map.get("Select").unwrap();
+
+        assert_eq!(select.id, "chOy");
+        assert_eq!(
+            select.select.as_ref().unwrap().id,
+            "eede87ce-52db-4b16-9931-2bc40687d697"
+        );
+        assert_eq!(select.select.as_ref().unwrap().name, "TODO");
+        assert_eq!(
+            select.select.as_ref().unwrap().color,
+            crate::others::color::ColorFG::Default
+        );
+    }
 }

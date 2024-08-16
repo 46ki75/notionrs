@@ -4,12 +4,12 @@ use serde::{Deserialize, Serialize};
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
 ///                 `id` remains constant when the property name changes.
-/// - `$.['*'].type`: Always `"__________"` // TODO: documentation replace placeholder
-/// - `$.['*'].__________`: // TODO: documentation
+/// - `$.['*'].type`: Always `"status"`
+/// - `$.['*'].status`: Select object
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
-/// Example __________ page property value // TODO: documentation replace placeholder
+/// Example status page property value
 ///
 /// ```json
 /// {
@@ -30,7 +30,7 @@ pub struct PageStatusProperty {
     /// `id` remains constant when the property name changes.
     pub id: String,
 
-    // TODO: documentation
+    /// Select object
     pub status: crate::others::select::Select,
 }
 
@@ -42,5 +42,35 @@ pub struct PageStatusProperty {
 
 #[cfg(test)]
 mod tests {
-    // TODO: test
+
+    use super::*;
+
+    #[test]
+    fn unit_test_deserialize_status_property() {
+        let json_data = r#"
+        {
+            "Status": {
+                "type": "status",
+                "id": "xx%7Cd",
+                "status": {
+                    "id": "4a1accbf-6716-4cf2-9034-5877581fc5f6",
+                    "name": "Not started",
+                    "color": "default"
+                }
+            }
+        }
+        "#;
+
+        let status_map = serde_json::from_str::<
+            std::collections::HashMap<String, PageStatusProperty>,
+        >(json_data)
+        .unwrap();
+
+        let status = status_map.get("Status").unwrap();
+
+        assert_eq!(status.id, "xx%7Cd");
+        assert_eq!(status.status.id, "4a1accbf-6716-4cf2-9034-5877581fc5f6");
+        assert_eq!(status.status.name, "Not started");
+        assert_eq!(status.status.color, crate::others::color::ColorFG::Default);
+    }
 }

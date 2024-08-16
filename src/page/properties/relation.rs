@@ -4,12 +4,14 @@ use serde::{Deserialize, Serialize};
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
 ///                 `id` remains constant when the property name changes.
-/// - `$.['*'].type`: Always `"__________"` // TODO: documentation replace placeholder
-/// - `$.['*'].__________`: // TODO: documentation
+/// - `$.['*'].type`: Always `"relation"`
+/// - `$.['*'].relation`: An array of related page references.
+///                       A page reference is an object with an id key and
+///                       a string value corresponding to a page ID in another database.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
-/// Example __________ page property value // TODO: documentation replace placeholder
+/// Example relation page property value
 ///
 /// ```json
 /// {
@@ -31,7 +33,9 @@ pub struct PageRelationProperty {
     /// `id` remains constant when the property name changes.
     pub id: String,
 
-    // TODO: documentation
+    /// An array of related page references.
+    /// A page reference is an object with an id key and
+    /// a string value corresponding to a page ID in another database.
     pub relation: Vec<PageRelationPropertyParameter>,
 
     /// If a relation has more than 25 references,
@@ -42,6 +46,7 @@ pub struct PageRelationProperty {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PageRelationPropertyParameter {
+    /// related page id
     pub id: String,
 }
 
@@ -53,5 +58,38 @@ pub struct PageRelationPropertyParameter {
 
 #[cfg(test)]
 mod tests {
-    // TODO: test
+    use super::*;
+
+    #[test]
+    fn unit_test_deserialize_relation_property() {
+        let json_data = r#"
+        {
+            "Related": {
+                "id": "b%7D%3Ek",
+                "type": "relation",
+                "relation": [
+                    {
+                        "id": "669ffc58-9c20-4264-956b-f7f917c58400"
+                    }
+                ],
+                "has_more": false
+            }
+        }
+        "#;
+
+        let relation_map = serde_json::from_str::<
+            std::collections::HashMap<String, PageRelationProperty>,
+        >(json_data)
+        .unwrap();
+
+        let relation = relation_map.get("Related").unwrap();
+
+        assert_eq!(relation.id, "b%7D%3Ek");
+        assert!(!relation.has_more);
+
+        assert_eq!(
+            relation.relation.first().unwrap().id,
+            "669ffc58-9c20-4264-956b-f7f917c58400"
+        );
+    }
 }

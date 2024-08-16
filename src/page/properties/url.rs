@@ -4,12 +4,12 @@ use serde::{Deserialize, Serialize};
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
 ///                 `id` remains constant when the property name changes.
-/// - `$.['*'].type`: Always `"__________"` // TODO: documentation replace placeholder
-/// - `$.['*'].__________`: // TODO: documentation
+/// - `$.['*'].type`: Always `"url"`
+/// - `$.['*'].url`: A string that describes a web address.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
-/// Example __________ page property value // TODO: documentation replace placeholder
+/// Example url page property value
 ///
 /// ```json
 /// {
@@ -26,7 +26,7 @@ pub struct PageUrlProperty {
     /// `id` remains constant when the property name changes.
     pub id: String,
 
-    // TODO: documentation
+    /// A string that describes a web address.
     pub url: Option<String>,
 }
 
@@ -38,5 +38,31 @@ pub struct PageUrlProperty {
 
 #[cfg(test)]
 mod tests {
-    // TODO: test
+
+    use super::*;
+
+    #[test]
+    fn unit_test_deserialize_url_property() {
+        let json_data = r#"
+        {
+            "URL": {
+                "type": "url",
+                "id": "h_AH",
+                "url": "https://developers.notion.com/reference/page-property-values#url"
+            }
+        }
+        "#;
+
+        let url_map =
+            serde_json::from_str::<std::collections::HashMap<String, PageUrlProperty>>(json_data)
+                .unwrap();
+
+        let url = url_map.get("URL").unwrap();
+
+        assert_eq!(url.id, "h_AH");
+        assert_eq!(
+            url.url,
+            Some("https://developers.notion.com/reference/page-property-values#url".to_string())
+        );
+    }
 }

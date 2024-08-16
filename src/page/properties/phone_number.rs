@@ -4,19 +4,19 @@ use serde::{Deserialize, Serialize};
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
 ///                 `id` remains constant when the property name changes.
-/// - `$.['*'].type`: Always `"__________"` // TODO: documentation replace placeholder
-/// - `$.['*'].__________`: // TODO: documentation
+/// - `$.['*'].type`: Always `"phone_number"`
+/// - `$.['*'].phone_number`: A string representing a phone number. No phone number format is enforced.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
-/// Example __________ page property value // TODO: documentation replace placeholder
+/// Example phone_number page property value
 ///
 /// ```json
 /// {
-///   "Checkbox": {
+///   "Phone Number": {
 ///     "type": "phone_number",
 ///     "id": "Se%3Dp",
-///     "phone_number": "080"
+///     "phone_number": "415-202-4776"
 ///   }
 /// }
 /// ```
@@ -26,7 +26,7 @@ pub struct PagePhoneNumberProperty {
     /// `id` remains constant when the property name changes.
     pub id: String,
 
-    // TODO: documentation
+    /// A string representing a phone number. No phone number format is enforced.
     pub phone_number: Option<String>,
 }
 
@@ -38,5 +38,28 @@ pub struct PagePhoneNumberProperty {
 
 #[cfg(test)]
 mod tests {
-    // TODO: test
+    use super::*;
+
+    #[test]
+    fn unit_test_deserialize_phone_number_property() {
+        let json_data = r#"
+        {
+            "Phone Number": {
+                "type": "phone_number",
+                "id": "Se%3Dp",
+                "phone_number": "415-202-4776"
+            }
+        }
+        "#;
+
+        let phone_number_map = serde_json::from_str::<
+            std::collections::HashMap<String, PagePhoneNumberProperty>,
+        >(json_data)
+        .unwrap();
+
+        let phone_number = phone_number_map.get("Phone Number").unwrap();
+
+        assert_eq!(phone_number.id, "Se%3Dp");
+        assert_eq!(phone_number.phone_number, Some("415-202-4776".to_string()));
+    }
 }

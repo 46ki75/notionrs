@@ -4,12 +4,12 @@ use serde::{Deserialize, Serialize};
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
 ///                 `id` remains constant when the property name changes.
-/// - `$.['*'].type`: Always `"__________"` // TODO: documentation replace placeholder
-/// - `$.['*'].__________`: // TODO: documentation
+/// - `$.['*'].type`: Always `"people"`
+/// - `$.['*'].people`: An array of user objects.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
-/// Example __________ page property value // TODO: documentation replace placeholder
+/// Example people page property value
 ///
 /// ```json
 /// {
@@ -35,7 +35,7 @@ pub struct PagePeopleProperty {
     /// `id` remains constant when the property name changes.
     pub id: String,
 
-    // TODO: documentation
+    /// An array of user objects.
     pub people: Vec<crate::user::User>,
 }
 
@@ -47,5 +47,56 @@ pub struct PagePeopleProperty {
 
 #[cfg(test)]
 mod tests {
-    // TODO: test
+    use core::panic;
+
+    use super::*;
+
+    #[test]
+    fn unit_test_deserialize_people_property() {
+        let json_data = r#"
+        {
+            "Person": {
+                "type": "people",
+                "id": "pAoV",
+                "people": [
+                    {
+                        "object": "user",
+                        "id": "4050d499-9586-4352-85a2-d4cb55a68200",
+                        "name": "46ki75",
+                        "avatar_url": null,
+                        "type": "person",
+                        "person": {
+                            "email": "46ki75@example.com"
+                        }
+                    }
+                ]
+            }
+        }
+        "#;
+
+        let people_map = serde_json::from_str::<
+            std::collections::HashMap<String, PagePeopleProperty>,
+        >(json_data)
+        .unwrap();
+
+        let people = people_map.get("Person").unwrap();
+
+        assert_eq!(people.id, "pAoV");
+
+        match &people.people.first().unwrap() {
+            crate::user::User::Person(p) => {
+                assert_eq!(p.id, "4050d499-9586-4352-85a2-d4cb55a68200");
+                assert_eq!(p.name, Some("46ki75".to_string()));
+                assert_eq!(p.avatar_url, None);
+                assert_eq!(p.r#type, Some("person".to_string()));
+                assert_eq!(
+                    p.person.as_ref().unwrap().email,
+                    Some("46ki75@example.com".to_string())
+                );
+            }
+            crate::user::User::Bot(_) => {
+                panic!()
+            }
+        }
+    }
 }
