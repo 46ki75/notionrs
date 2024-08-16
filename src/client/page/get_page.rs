@@ -40,9 +40,11 @@ impl GetPageClient {
                     return Err(NotionError::NotionApiError(Box::new(error_json)));
                 }
 
-                let body = response.json::<PageResponse<T>>().await?;
+                let body = response.text().await?;
 
-                Ok(body)
+                let page: PageResponse<T> = serde_json::from_str::<PageResponse<T>>(&body)?;
+
+                Ok(page)
             }
             None => Err(NotionError::NotionRequestParameterError(
                 "user_id is empty".to_string(),

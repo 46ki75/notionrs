@@ -103,9 +103,11 @@ impl ListUsersClient {
                 return Err(NotionError::NotionApiError(Box::new(error_json)));
             }
 
-            let body = response.json::<ListResponse<User>>().await?;
+            let body = response.text().await?;
 
-            Ok(body)
+            let users = serde_json::from_str::<ListResponse<User>>(&body)?;
+
+            Ok(users)
         }
     }
 

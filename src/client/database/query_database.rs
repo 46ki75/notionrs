@@ -67,15 +67,18 @@ impl QueryDatabaseClient {
                             return Err(NotionError::NotionApiError(Box::new(error_json)));
                         }
 
-                        let mut body = response.json::<ListResponse<PageResponse<T>>>().await?;
+                        let body = response.text().await?;
 
-                        results.extend(body.results);
+                        let mut pages =
+                            serde_json::from_str::<ListResponse<PageResponse<T>>>(&body)?;
 
-                        if body.has_more.unwrap_or(false) {
-                            self.body.start_cursor = body.next_cursor;
+                        results.extend(pages.results);
+
+                        if pages.has_more.unwrap_or(false) {
+                            self.body.start_cursor = pages.next_cursor;
                         } else {
-                            body.results = results;
-                            return Ok(body);
+                            pages.results = results;
+                            return Ok(pages);
                         }
                     }
                 } else {
@@ -99,9 +102,11 @@ impl QueryDatabaseClient {
                         return Err(NotionError::NotionApiError(Box::new(error_json)));
                     }
 
-                    let body = response.json::<ListResponse<PageResponse<T>>>().await?;
+                    let body = response.text().await?;
 
-                    Ok(body)
+                    let pages = serde_json::from_str::<ListResponse<PageResponse<T>>>(&body)?;
+
+                    Ok(pages)
                 }
             }
             None => Err(NotionError::NotionRequestParameterError(
