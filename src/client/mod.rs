@@ -23,7 +23,7 @@ impl NotionClient {
 
         dotenv().ok();
 
-        let secret = env::var("NOTION_API_KEY").unwrap_or_else(|_| String::new());
+        let secret = env::var("NOTION_TOKEN").unwrap_or_else(|_| String::new());
 
         headers.insert("Notion-Version", HeaderValue::from_static("2022-06-28"));
         headers.insert(
@@ -41,6 +41,18 @@ impl NotionClient {
         }
     }
 
+    /// This method sets the token used for calling the Notion API.
+    /// If you don't set it, the client will automatically read
+    /// and use the environment variable named `NOTION_TOKEN` during initialization.
+    ///
+    /// For details on obtaining a Notion token, please refer to the
+    /// [Notion Developer Documentation](https://developers.notion.com/docs/authorization).
+    ///
+    /// ```no_run
+    /// use notionrs::client::NotionClient;
+    /// // ...
+    /// let client = NotionClient::new().secret("secret_XXXXXXXXXXXXXX");
+    /// ```
     pub fn secret<T: AsRef<str>>(mut self, notion_api_key: T) -> Self {
         let mut headers = HeaderMap::new();
         let secret = notion_api_key.as_ref().to_string();
