@@ -76,6 +76,11 @@ impl NotionClient {
     //
     // # --------------------------------------------------------------------------------
 
+    /// This endpoint requires an integration to have user information capabilities.
+    /// Attempting to call this API without user information capabilities will
+    /// return an HTTP response with a 403 status code. For more information
+    /// on integration capabilities, see the [capabilities guide](https://developers.notion.com/reference/capabilities#user-capabilities).
+    ///
     /// <https://developers.notion.com/reference/get-users>
     ///
     /// This method can fetch a list of users present in the current Notion workspace.
@@ -191,6 +196,11 @@ impl NotionClient {
         }
     }
 
+    /// This endpoint requires an integration to have user information capabilities.
+    /// Attempting to call this API without user information capabilities will
+    /// return an HTTP response with a 403 status code. For more information
+    /// on integration capabilities, see the [capabilities guide](https://developers.notion.com/reference/capabilities#user-capabilities).
+    ///
     /// <https://developers.notion.com/reference/get-user>
     ///
     /// Can be used to retrieve a specific user.
@@ -240,6 +250,11 @@ impl NotionClient {
         }
     }
 
+    /// This endpoint requires an integration to have user information capabilities.
+    /// Attempting to call this API without user information capabilities will
+    /// return an HTTP response with a 403 status code. For more information
+    /// on integration capabilities, see the [capabilities guide](https://developers.notion.com/reference/capabilities#user-capabilities).
+    ///
     /// <https://developers.notion.com/reference/get-self>
     ///
     /// Retrieves information about the user (bot) associated with the currently used token.
