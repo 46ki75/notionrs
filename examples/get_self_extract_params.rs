@@ -1,3 +1,5 @@
+// ## Extract Params
+//
 #[tokio::main]
 async fn main() -> Result<(), notionrs::error::NotionError> {
     let client = notionrs::client::NotionClient::new();
@@ -6,16 +8,13 @@ async fn main() -> Result<(), notionrs::error::NotionError> {
 
     let response = request.send().await?;
 
-    match response {
-        notionrs::user::User::Bot(bot) => {
-            let id = bot.id;
+    let id = response.id;
+    let name = response.name.unwrap();
 
-            let name = bot.name.unwrap();
-
-            println!("The integration name being used is `{}` (ID: {})", name, id);
-        }
-        notionrs::user::User::Person(_) => panic!("Unexpected !"),
-    }
+    println!("The integration name being used is `{}` (ID: {})", name, id);
 
     Ok(())
 }
+// ```
+// The integration name being used is `integration-name` (ID: b610aa5b-800e-4c2e-9d5c-72b72b5dedc0)
+// ```
