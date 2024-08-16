@@ -236,8 +236,6 @@ pub struct PeopleFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement phone_number
-
 #[derive(Debug, Default, Deserialize, Serialize, Clone)]
 
 pub struct PhoneNumberFilter {
@@ -777,15 +775,13 @@ impl Filter {
         }
     }
 
-    // TODO: implement formula
-
     // # --------------------------------------------------------------------------------
     //
     // Formula <https://developers.notion.com/reference/post-database-query-filter#formula>
     //
     // # --------------------------------------------------------------------------------
 
-    // TODO: implement multi_select
+    // TODO: implement formula
 
     // # --------------------------------------------------------------------------------
     //
