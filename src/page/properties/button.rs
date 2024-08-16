@@ -35,13 +35,13 @@ pub struct PageButtonProperty {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
 
     use super::*;
     use serde_json;
 
     #[test]
-    fn unit_test_deserialize_page_button_property() {
+    fn deserialize_page_button_property() {
         let json_data = r#"
         {
             "Button": {

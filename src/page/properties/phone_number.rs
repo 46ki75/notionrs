@@ -37,11 +37,11 @@ pub struct PagePhoneNumberProperty {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use super::*;
 
     #[test]
-    fn unit_test_deserialize_phone_number_property() {
+    fn deserialize_phone_number_property() {
         let json_data = r#"
         {
             "Phone Number": {

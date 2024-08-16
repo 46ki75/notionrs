@@ -46,13 +46,13 @@ pub struct PagePeopleProperty {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use core::panic;
 
     use super::*;
 
     #[test]
-    fn unit_test_deserialize_people_property() {
+    fn deserialize_people_property() {
         let json_data = r#"
         {
             "Person": {

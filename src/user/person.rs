@@ -37,12 +37,12 @@ pub struct PersonDetail {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use super::*;
     use serde_json;
 
     #[test]
-    fn unit_test_deserialize_person() {
+    fn deserialize_person() {
         let json_data = r#"
         {
             "object": "user",

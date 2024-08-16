@@ -71,11 +71,11 @@ pub struct PageDatePropertyParameter {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use super::PageDateProperty;
 
     #[test]
-    fn unit_test_deserialize_page_date_property() {
+    fn deserialize_page_date_property() {
         let json_data = r#"
         {
             "Date": {

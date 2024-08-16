@@ -1,35 +1,38 @@
-use notionrs::to_json::ToJson;
+mod integration_tests {
 
-use dotenv::dotenv;
+    use notionrs::to_json::ToJson;
 
-/// This integration test cannot be run unless explicit permission
-/// for user reading is granted in the Notion API key issuance settings.
-///
-/// To conduct integration testing, write the following in the `.env` file.
-/// ```ini
-/// NOTION_USER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-/// ```
-#[tokio::test]
-async fn integration_test_get_user() -> Result<(), notionrs::error::NotionError> {
-    dotenv().ok();
-    let user_id = std::env::var("NOTION_USER_ID").unwrap_or_else(|_| String::new());
+    use dotenv::dotenv;
 
-    let client = notionrs::client::NotionClient::new();
+    /// This integration test cannot be run unless explicit permission
+    /// for user reading is granted in the Notion API key issuance settings.
+    ///
+    /// To conduct integration testing, write the following in the `.env` file.
+    /// ```ini
+    /// NOTION_USER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    /// ```
+    #[tokio::test]
+    async fn get_user() -> Result<(), notionrs::error::NotionError> {
+        dotenv().ok();
+        let user_id = std::env::var("NOTION_USER_ID").unwrap_or_else(|_| String::new());
 
-    let request = client.get_user().user_id(user_id);
+        let client = notionrs::client::NotionClient::new();
 
-    let response = request.send().await?;
+        let request = client.get_user().user_id(user_id);
 
-    println!("{}", response.to_json());
+        let response = request.send().await?;
 
-    match response {
-        notionrs::user::User::Bot(bot) => {
-            assert_eq!(bot.r#type, Some("bot".to_string()))
+        println!("{}", response.to_json());
+
+        match response {
+            notionrs::user::User::Bot(bot) => {
+                assert_eq!(bot.r#type, Some("bot".to_string()))
+            }
+            notionrs::user::User::Person(person) => {
+                assert_eq!(person.r#type, Some("person".to_string()))
+            }
         }
-        notionrs::user::User::Person(person) => {
-            assert_eq!(person.r#type, Some("person".to_string()))
-        }
+
+        Ok(())
     }
-
-    Ok(())
 }

@@ -37,12 +37,12 @@ pub struct PageLastEditedTimeProperty {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
 
     use super::*;
 
     #[test]
-    fn unit_test_deserialize_page_last_edited_time_property() {
+    fn deserialize_page_last_edited_time_property() {
         let json_data = r#"
         {
             "Last edited time": {

@@ -57,14 +57,14 @@ pub enum PageProperty {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use crate::prelude::ToJson;
 
     use super::*;
     use serde_json;
 
     #[test]
-    fn unit_test_deserialize_page_property() {
+    fn deserialize_page_property() {
         let json_data = r#"
         {
             "Button": {

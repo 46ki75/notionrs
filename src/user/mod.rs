@@ -20,11 +20,11 @@ pub enum User {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use super::*;
 
     #[test]
-    fn unit_test_deserialize_user_bot() -> Result<(), crate::error::NotionError> {
+    fn deserialize_user_bot() -> Result<(), crate::error::NotionError> {
         let json_data = r#"
         {
             "object": "user",
@@ -61,7 +61,7 @@ mod tests {
     }
 
     #[test]
-    fn unit_test_deserialize_user_person() -> Result<(), crate::error::NotionError> {
+    fn deserialize_user_person() -> Result<(), crate::error::NotionError> {
         let json_data = r#"
         {
             "object": "user",

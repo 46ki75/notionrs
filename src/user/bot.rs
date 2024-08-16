@@ -53,12 +53,12 @@ pub struct BotOwner {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use super::*;
     use serde_json;
 
     #[test]
-    fn unit_test_deserialize_bot() {
+    fn deserialize_bot() {
         let json_data = r#"
         {
             "object": "user",

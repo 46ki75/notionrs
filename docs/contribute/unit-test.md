@@ -8,11 +8,11 @@ These tests are written as `tests` modules within the files where each `struct` 
 
 ```rust
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use super::*;
 
     #[test]
-    fn unit_test_deserialize_page_checkbox_property() {
+    fn deserialize_page_checkbox_property() {
         let json_data = r#"
         {
             "Task completed": {

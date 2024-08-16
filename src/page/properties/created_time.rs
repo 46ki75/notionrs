@@ -39,11 +39,11 @@ pub struct PageCreatedTimeProperty {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use super::*;
 
     #[test]
-    fn unit_test_deserialize_page_created_time_property() {
+    fn deserialize_page_created_time_property() {
         let json_data = r#"
         {
             "Created time": {

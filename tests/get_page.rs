@@ -1,67 +1,70 @@
-use notionrs::to_json::ToJson;
+mod integration_tests {
 
-use serde::{Deserialize, Serialize};
+    use notionrs::to_json::ToJson;
 
-/// This integration test cannot be run unless explicit permission
-/// for user reading is granted in the Notion API key issuance settings.
-///
-/// To conduct integration testing, write the following in the `.env` file.
-/// ```ini
-/// NOTION_PAGE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-/// ```
-#[tokio::test]
-async fn integration_test_get_page() -> Result<(), notionrs::error::NotionError> {
-    dotenv::dotenv().ok();
+    use serde::{Deserialize, Serialize};
 
-    let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
+    /// This integration test cannot be run unless explicit permission
+    /// for user reading is granted in the Notion API key issuance settings.
+    ///
+    /// To conduct integration testing, write the following in the `.env` file.
+    /// ```ini
+    /// NOTION_PAGE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    /// ```
+    #[tokio::test]
+    async fn get_page() -> Result<(), notionrs::error::NotionError> {
+        dotenv::dotenv().ok();
 
-    let client = notionrs::client::NotionClient::new();
+        let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
 
-    let request = client.get_page().page_id(page_id);
+        let client = notionrs::client::NotionClient::new();
 
-    let response = request
-        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-        .await?;
+        let request = client.get_page().page_id(page_id);
 
-    let id_property = response.properties.get("ID").unwrap();
+        let response = request
+            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+            .await?;
 
-    let unique_id = match id_property {
-        notionrs::page::properties::PageProperty::UniqueId(i) => i.unique_id.number,
-        _ => todo!(),
-    };
+        let id_property = response.properties.get("ID").unwrap();
 
-    println!("ID is {}", unique_id);
+        let unique_id = match id_property {
+            notionrs::page::properties::PageProperty::UniqueId(i) => i.unique_id.number,
+            _ => todo!(),
+        };
 
-    println!("{}", response.to_json());
+        println!("ID is {}", unique_id);
 
-    Ok(())
-}
+        println!("{}", response.to_json());
 
-// # --------------------------------------------------------------------------------
-//
-// working with struct
-//
-// # --------------------------------------------------------------------------------
+        Ok(())
+    }
 
-#[derive(Serialize, Deserialize, Debug)]
-struct MyResponse {
-    #[serde(rename = "Title")]
-    title: notionrs::page::properties::title::PageTitleProperty,
-}
+    // # --------------------------------------------------------------------------------
+    //
+    // working with struct
+    //
+    // # --------------------------------------------------------------------------------
 
-#[tokio::test]
-async fn integration_test_get_page_with_struct() -> Result<(), notionrs::error::NotionError> {
-    dotenv::dotenv().ok();
+    #[derive(Serialize, Deserialize, Debug)]
+    struct MyResponse {
+        #[serde(rename = "Title")]
+        title: notionrs::page::properties::title::PageTitleProperty,
+    }
 
-    let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
+    #[tokio::test]
+    async fn get_page_with_struct() -> Result<(), notionrs::error::NotionError> {
+        dotenv::dotenv().ok();
 
-    let client = notionrs::client::NotionClient::new();
+        let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
 
-    let request = client.get_page().page_id(page_id);
+        let client = notionrs::client::NotionClient::new();
 
-    let response = request.send::<MyResponse>().await?;
+        let request = client.get_page().page_id(page_id);
 
-    println!("{:?}", response.properties.title);
+        let response = request.send::<MyResponse>().await?;
 
-    Ok(())
+        println!("{:?}", response.properties.title);
+
+        Ok(())
+    }
 }

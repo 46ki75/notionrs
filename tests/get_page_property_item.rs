@@ -1,28 +1,31 @@
-use notionrs::to_json::ToJson;
+mod integration_tests {
 
-/// This integration test cannot be run unless explicit permission
-/// for user reading is granted in the Notion API key issuance settings.
-#[tokio::test]
-async fn integration_test_get_page_property_item() -> Result<(), notionrs::error::NotionError> {
-    dotenv::dotenv().ok();
+    use notionrs::to_json::ToJson;
 
-    let page_id = std::env::var("NOTION_PAGE_ID").unwrap();
+    /// This integration test cannot be run unless explicit permission
+    /// for user reading is granted in the Notion API key issuance settings.
+    #[tokio::test]
+    async fn get_page_property_item() -> Result<(), notionrs::error::NotionError> {
+        dotenv::dotenv().ok();
 
-    let client = notionrs::client::NotionClient::new();
+        let page_id = std::env::var("NOTION_PAGE_ID").unwrap();
 
-    let request = client
-        .get_page_property_item()
-        .page_id(page_id)
-        .property_id("%3AlnV");
+        let client = notionrs::client::NotionClient::new();
 
-    let response = request.send().await?;
+        let request = client
+            .get_page_property_item()
+            .page_id(page_id)
+            .property_id("%3AlnV");
 
-    match response {
-        notionrs::page::properties::PageProperty::Files(f) => {
-            println!("{:?}", f.to_json())
+        let response = request.send().await?;
+
+        match response {
+            notionrs::page::properties::PageProperty::Files(f) => {
+                println!("{:?}", f.to_json())
+            }
+            _ => panic!("An unexpected type"),
         }
-        _ => panic!("An unexpected type"),
-    }
 
-    Ok(())
+        Ok(())
+    }
 }

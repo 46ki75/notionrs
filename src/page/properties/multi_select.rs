@@ -48,11 +48,11 @@ pub struct PageMultiSelectProperty {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use super::*;
 
     #[test]
-    fn unit_test_deserialize_page_multi_select_property() {
+    fn deserialize_page_multi_select_property() {
         let json_data = r#"
         {
             "Multi-select": {

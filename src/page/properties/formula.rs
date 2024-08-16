@@ -103,12 +103,12 @@ pub struct FormulaString {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
 
     use super::*;
 
     #[test]
-    pub fn unit_test_deserialize_page_forlula_property() {
+    pub fn deserialize_page_forlula_property() {
         let json_data = r#"
         {
             "Formula": {
