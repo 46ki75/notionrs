@@ -2,7 +2,7 @@
 
 Unit tests primarily focus on verifying the deserialization of JSON.
 
-These tests are written as `tests` modules within the files where each `struct` is defined. The test functions are named with a `unit_test_` prefix.
+These tests are written within `unit_tests` modules in the files where each `struct` is defined.
 
 ### Example of a Unit Test
 
@@ -38,11 +38,13 @@ mod unit_tests {
 
 ### Running the Tests
 
-To run only the tests with the `unit_test_` prefix, use the following command:
+To run only the unit tests within the `unit_tests` modules, use the following command, specifying the `unit_tests` module:
 
 ```bash
-cargo test unit_test_
+cargo test unit_tests
 ```
+
+This command will execute all tests defined within the `unit_tests` modules.
 
 ::: warning
 The integration tests under the `tests/` directory make actual API requests. Therefore, you need to have a Notion workspace set up to run the integration tests. (Details will be explained on the integration tests page.)

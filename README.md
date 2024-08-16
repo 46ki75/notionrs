@@ -9,8 +9,8 @@ NOTION_TOKEN=secret_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 To perform testing while outputting to standard output, do the following.
 
 ```bash
-cargo test integration_test
-cargo test integration_test -- --nocapture
+cargo test integration_tests
+cargo test integration_tests -- --nocapture
 ```
 
 - `RUST_TEST_THREADS=1`: Sets the number of concurrent test threads to 1. This is to ensure you can check the values in the standard output.
@@ -27,9 +27,3 @@ NOTION_USER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 NOTION_PAGE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 NOTION_DATABASE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
-
-### Rules for creating integration tests
-
-- Add **`integration_test_`** as a prefix to the test functions.
-- Mark with `#[ignore]` to exclude them from normal test runs unless `--ignored` is passed during test execution.
-- Values (such as IDs) used in tests should be specified as environment variables.

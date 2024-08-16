@@ -1,6 +1,6 @@
 # Integration Tests
 
-Integration tests are stored in the `/tests/` directory.
+Integration tests are written within the `integration_tests` module and stored in the `/tests/` directory.
 
 ## Integration Test Strategy
 
@@ -24,10 +24,12 @@ NOTION_TOKEN=secret_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 You can also export the `NOTION_TOKEN` environment variable or pass it directly as a shell variable when running the tests.
 :::
 
-Integration tests have the `integration_test_` prefix. You can run only the integration tests with the following command:
+To run only the integration tests, you can use the following command, specifying the `integration_tests` module:
 
 ```bash
-cargo test integration_test_
+cargo test integration_tests
 ```
+
+This command will execute all tests defined within the `integration_tests` module.
 
 // TODO: docs: Document the preparation of a Notion workspace for integration tests
