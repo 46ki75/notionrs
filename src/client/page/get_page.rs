@@ -1,5 +1,3 @@
-use serde::de::DeserializeOwned;
-
 use crate::{
     error::{api_error::NotionApiError, NotionError},
     page::page_response::PageResponse,
@@ -20,10 +18,7 @@ impl GetPageClient {
     /// When the response type is not specific,
     /// use `send::<HashMap<String, PageProperty>>()`.
     /// (Type inference for the property field cannot be used.)
-    pub async fn send<T>(self) -> Result<PageResponse<T>, NotionError>
-    where
-        T: DeserializeOwned,
-    {
+    pub async fn send(self) -> Result<PageResponse, NotionError> {
         match self.page_id {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/pages/{}", id);
@@ -42,7 +37,7 @@ impl GetPageClient {
 
                 let body = response.text().await?;
 
-                let page: PageResponse<T> = serde_json::from_str::<PageResponse<T>>(&body)?;
+                let page: PageResponse = serde_json::from_str::<PageResponse>(&body)?;
 
                 Ok(page)
             }

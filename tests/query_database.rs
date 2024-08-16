@@ -3,7 +3,6 @@ mod integration_tests {
     use notionrs::to_json::ToJson;
 
     use dotenv::dotenv;
-    use serde::{Deserialize, Serialize};
 
     #[tokio::test]
     async fn query_database() -> Result<(), notionrs::error::NotionError> {
@@ -14,37 +13,9 @@ mod integration_tests {
         let res = client
             .query_database()
             .database_id(database_id)
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+            .send()
             .await?;
         println!("{}", res.to_json());
-
-        Ok(())
-    }
-
-    // # --------------------------------------------------------------------------------
-    //
-    // working with struct
-    //
-    // # --------------------------------------------------------------------------------
-
-    #[derive(Serialize, Deserialize, Debug)]
-    struct MyResponse {
-        #[serde(rename = "Title")]
-        title: notionrs::page::properties::title::PageTitleProperty,
-    }
-
-    #[tokio::test]
-    async fn query_database_with_struct() -> Result<(), notionrs::error::NotionError> {
-        dotenv().ok();
-        let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
-
-        let client = notionrs::client::NotionClient::new();
-        let res = client
-            .query_database()
-            .database_id(database_id)
-            .send::<MyResponse>()
-            .await?;
-        println!("{:?}", res);
 
         Ok(())
     }
@@ -65,7 +36,7 @@ mod integration_tests {
             .query_database()
             .database_id(database_id)
             .page_size(1)
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+            .send()
             .await?;
         println!("{}", res.to_json());
 
@@ -88,7 +59,7 @@ mod integration_tests {
             .query_database()
             .database_id(database_id)
             .recursive()
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+            .send()
             .await?;
         println!("{}", res.to_json());
 
@@ -115,9 +86,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -141,9 +110,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -179,9 +146,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -205,9 +170,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -236,9 +199,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -268,9 +229,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -302,9 +261,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -335,9 +292,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -369,9 +324,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -397,9 +350,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -425,9 +376,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -463,9 +412,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 
@@ -493,9 +440,7 @@ mod integration_tests {
             .database_id(database_id)
             .filter(filter);
 
-        let response = request
-            .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", response.to_json());
 

@@ -1,4 +1,4 @@
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 
 use crate::{
     error::{api_error::NotionApiError, NotionError},
@@ -35,14 +35,11 @@ pub struct QueryDatabaseRequestBody {
 }
 
 impl QueryDatabaseClient {
-    pub async fn send<T>(mut self) -> Result<ListResponse<PageResponse<T>>, NotionError>
-    where
-        T: DeserializeOwned,
-    {
+    pub async fn send(mut self) -> Result<ListResponse<PageResponse>, NotionError> {
         match self.database_id {
             Some(id) => {
                 if self.recursive {
-                    let mut results: Vec<PageResponse<T>> = vec![];
+                    let mut results: Vec<PageResponse> = vec![];
 
                     self.body.page_size = Some(100);
 
@@ -69,8 +66,7 @@ impl QueryDatabaseClient {
 
                         let body = response.text().await?;
 
-                        let mut pages =
-                            serde_json::from_str::<ListResponse<PageResponse<T>>>(&body)?;
+                        let mut pages = serde_json::from_str::<ListResponse<PageResponse>>(&body)?;
 
                         results.extend(pages.results);
 
@@ -104,7 +100,7 @@ impl QueryDatabaseClient {
 
                     let body = response.text().await?;
 
-                    let pages = serde_json::from_str::<ListResponse<PageResponse<T>>>(&body)?;
+                    let pages = serde_json::from_str::<ListResponse<PageResponse>>(&body)?;
 
                     Ok(pages)
                 }

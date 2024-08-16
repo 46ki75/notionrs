@@ -7,7 +7,7 @@ use crate::{
 
 /// <https://developers.notion.com/reference/page>
 #[derive(Deserialize, Serialize, Debug)]
-pub struct PageResponse<T> {
+pub struct PageResponse {
     pub id: String,
     pub created_time: String,
     pub last_edited_time: String,
@@ -17,7 +17,7 @@ pub struct PageResponse<T> {
     pub icon: Option<Icon>,
     pub parent: Parent,
     pub archived: bool,
-    pub properties: T,
+    pub properties: std::collections::HashMap<String, crate::page::properties::PageProperty>,
     pub url: String,
     pub public_url: Option<String>,
     pub developer_survey: Option<String>,
