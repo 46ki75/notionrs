@@ -190,7 +190,7 @@ async fn integration_test_query_database_filter_date_filter(
 }
 
 #[tokio::test]
-async fn integration_test_query_database_filter_date_files(
+async fn integration_test_query_database_filter_files_filter(
 ) -> Result<(), notionrs::error::NotionError> {
     dotenv().ok();
     let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
@@ -200,6 +200,226 @@ async fn integration_test_query_database_filter_date_files(
     let filter = notionrs::filter::Filter::or(vec![
         notionrs::filter::Filter::files_is_empty("Files & media"),
         notionrs::filter::Filter::files_is_not_empty("Files & media"),
+    ]);
+
+    let request = client
+        .query_database()
+        .database_id(database_id)
+        .filter(filter);
+
+    let response = request
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+        .await?;
+
+    println!("{}", response.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn integration_test_query_database_filter_number_filter(
+) -> Result<(), notionrs::error::NotionError> {
+    dotenv().ok();
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = notionrs::client::NotionClient::new();
+
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::number_does_not_equal("Number", 20),
+        notionrs::filter::Filter::number_equals("Number", 20),
+        notionrs::filter::Filter::number_greater_than("Number", 20),
+        notionrs::filter::Filter::number_greater_than_or_equal_to("Number", 20),
+        notionrs::filter::Filter::number_is_empty("Number"),
+        notionrs::filter::Filter::number_is_not_empty("Number"),
+        notionrs::filter::Filter::number_less_than("Number", 20),
+        notionrs::filter::Filter::number_less_than_or_equal_to("Number", 20),
+    ]);
+
+    let request = client
+        .query_database()
+        .database_id(database_id)
+        .filter(filter);
+
+    let response = request
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+        .await?;
+
+    println!("{}", response.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn integration_test_query_database_filter_people_filter(
+) -> Result<(), notionrs::error::NotionError> {
+    dotenv().ok();
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = notionrs::client::NotionClient::new();
+
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::people_contains("User", "c3abcbc1-126b-42b2-975f-43e204986ea3"),
+        notionrs::filter::Filter::people_does_not_contain(
+            "User",
+            "c3abcbc1-126b-42b2-975f-43e204986ea3",
+        ),
+        notionrs::filter::Filter::people_is_empty("User"),
+        notionrs::filter::Filter::people_is_not_empty("User"),
+    ]);
+
+    let request = client
+        .query_database()
+        .database_id(database_id)
+        .filter(filter);
+
+    let response = request
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+        .await?;
+
+    println!("{}", response.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn integration_test_query_database_filter_phone_number_filter(
+) -> Result<(), notionrs::error::NotionError> {
+    dotenv().ok();
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = notionrs::client::NotionClient::new();
+
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::phone_number_contains("Phone Number", "0"),
+        notionrs::filter::Filter::phone_number_does_not_contain("Phone Number", "0"),
+        notionrs::filter::Filter::phone_number_does_not_equal("Phone Number", "0"),
+        notionrs::filter::Filter::phone_number_ends_with("Phone Number", "0"),
+        notionrs::filter::Filter::phone_number_does_not_contain("Phone Number", "0"),
+        notionrs::filter::Filter::phone_number_is_empty("Phone Number"),
+        notionrs::filter::Filter::phone_number_is_not_empty("Phone Number"),
+        notionrs::filter::Filter::phone_number_starts_with("Phone Number", "0"),
+    ]);
+
+    let request = client
+        .query_database()
+        .database_id(database_id)
+        .filter(filter);
+
+    let response = request
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+        .await?;
+
+    println!("{}", response.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn integration_test_query_database_filter_rich_text_filter(
+) -> Result<(), notionrs::error::NotionError> {
+    dotenv().ok();
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = notionrs::client::NotionClient::new();
+
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::rich_text_contains("Text", "0"),
+        notionrs::filter::Filter::rich_text_does_not_contain("Text", "0"),
+        notionrs::filter::Filter::rich_text_does_not_equal("Text", "0"),
+        notionrs::filter::Filter::rich_text_ends_with("Text", "0"),
+        notionrs::filter::Filter::rich_text_does_not_contain("Text", "0"),
+        notionrs::filter::Filter::rich_text_is_empty("Text"),
+        notionrs::filter::Filter::rich_text_is_not_empty("Text"),
+        notionrs::filter::Filter::rich_text_starts_with("Text", "0"),
+    ]);
+
+    let request = client
+        .query_database()
+        .database_id(database_id)
+        .filter(filter);
+
+    let response = request
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+        .await?;
+
+    println!("{}", response.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn integration_test_query_database_filter_select_filter(
+) -> Result<(), notionrs::error::NotionError> {
+    dotenv().ok();
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = notionrs::client::NotionClient::new();
+
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::select_does_not_equal("Select", "0"),
+        notionrs::filter::Filter::select_equals("Select", "0"),
+        notionrs::filter::Filter::select_is_empty("Select"),
+        notionrs::filter::Filter::select_is_not_empty("Select"),
+    ]);
+
+    let request = client
+        .query_database()
+        .database_id(database_id)
+        .filter(filter);
+
+    let response = request
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+        .await?;
+
+    println!("{}", response.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn integration_test_query_database_filter_status_filter(
+) -> Result<(), notionrs::error::NotionError> {
+    dotenv().ok();
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = notionrs::client::NotionClient::new();
+
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::status_does_not_equal("Status", "0"),
+        notionrs::filter::Filter::status_equals("Status", "0"),
+        notionrs::filter::Filter::status_is_empty("Status"),
+        notionrs::filter::Filter::status_is_not_empty("Status"),
+    ]);
+
+    let request = client
+        .query_database()
+        .database_id(database_id)
+        .filter(filter);
+
+    let response = request
+        .send::<std::collections::HashMap<String, notionrs::page::properties::PageProperty>>()
+        .await?;
+
+    println!("{}", response.to_json());
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn integration_test_query_database_filter_unique_id_filter(
+) -> Result<(), notionrs::error::NotionError> {
+    dotenv().ok();
+    let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+    let client = notionrs::client::NotionClient::new();
+
+    let filter = notionrs::filter::Filter::or(vec![
+        notionrs::filter::Filter::unique_id_does_not_equal("ID", 20),
+        notionrs::filter::Filter::unique_id_equals("ID", 20),
+        notionrs::filter::Filter::unique_id_greater_than("ID", 20),
+        notionrs::filter::Filter::unique_id_greater_than_or_equal_to("ID", 20),
+        notionrs::filter::Filter::unique_id_less_than("ID", 20),
+        notionrs::filter::Filter::unique_id_less_than_or_equal_to("ID", 20),
     ]);
 
     let request = client

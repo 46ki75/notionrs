@@ -35,15 +35,15 @@ pub enum Condition {
     Files(FilesFilter),
     // TODO: implement formula
     // TODO: implement multi_select
-    // TODO: implement number
-    // TODO: implement people
-    // TODO: implement phone_number
+    Number(NumberFilter),
+    People(PeopleFilter),
+    PhoneNumber(PhoneNumberFilter),
     // TODO: implement relation
-    // TODO: implement rich_text
-    // TODO: implement select
-    // TODO: implement status
+    RichText(RichTextFilter),
+    Select(SelectFilter),
+    Status(StatusFilter),
     // TODO: implement timestamp
-    // TODO: implement ID
+    UniqueId(UniqueIdFilter),
 }
 
 // # --------------------------------------------------------------------------------
@@ -126,11 +126,26 @@ pub struct FilesFilter {
 
 // # --------------------------------------------------------------------------------
 //
-// formula
+// formula  https://developers.notion.com/reference/post-database-query-filter#formula
 //
 // # --------------------------------------------------------------------------------
 
 // TODO: implement formula
+
+// #[derive(Debug, Default, Deserialize, Serialize)]
+// pub struct FormulaFilter {
+//     #[serde(skip_serializing_if = "Option::is_none")]
+//     pub checkbox: Option<CheckboxFilter>,
+
+//     #[serde(skip_serializing_if = "Option::is_none")]
+//     pub date: Option<DateFilter>,
+
+//     #[serde(skip_serializing_if = "Option::is_none")]
+//     pub number: Option<NumberFilter>,
+
+//     #[serde(skip_serializing_if = "Option::is_none")]
+//     pub string: Option<>,
+// }
 
 // # --------------------------------------------------------------------------------
 //
@@ -146,7 +161,32 @@ pub struct FilesFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement number
+#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
+pub struct NumberFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_equal: Option<f64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub equals: Option<f64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub greater_than: Option<f64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub greater_than_or_equal_to: Option<f64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_not_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub less_than: Option<f64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub less_than_or_equal_to: Option<f64>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -154,7 +194,21 @@ pub struct FilesFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement people
+#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+
+pub struct PeopleFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub contains: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_contain: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_not_empty: Option<bool>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -163,6 +217,34 @@ pub struct FilesFilter {
 // # --------------------------------------------------------------------------------
 
 // TODO: implement phone_number
+
+#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+
+pub struct PhoneNumberFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub contains: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_contain: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_equal: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub ends_with: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub equals: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_not_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub starts_with: Option<String>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -178,7 +260,33 @@ pub struct FilesFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement rich_text
+/// <https://developers.notion.com/reference/post-database-query-filter#rich-text>
+#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+pub struct RichTextFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub contains: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_contain: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_equal: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub ends_with: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub equals: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_not_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub starts_with: Option<String>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -186,7 +294,21 @@ pub struct FilesFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement select
+/// <https://developers.notion.com/reference/post-database-query-filter#select>
+#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+pub struct SelectFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_equal: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub equals: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_not_empty: Option<bool>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -194,7 +316,21 @@ pub struct FilesFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement status
+/// <https://developers.notion.com/reference/post-database-query-filter#status>
+#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+pub struct StatusFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_equal: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub equals: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_not_empty: Option<bool>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -210,8 +346,27 @@ pub struct FilesFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement ID
+/// <https://developers.notion.com/reference/post-database-query-filter#id>
+#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
+pub struct UniqueIdFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_equal: Option<u64>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub equals: Option<u64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub greater_than: Option<u64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub greater_than_or_equal_to: Option<u64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub less_than: Option<u64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub less_than_or_equal_to: Option<u64>,
+}
 // # --------------------------------------------------------------------------------
 //
 // Filter
@@ -239,7 +394,7 @@ impl Filter {
 
     // # --------------------------------------------------------------------------------
     //
-    // Checkbox
+    // Checkbox <https://developers.notion.com/reference/post-database-query-filter#checkbox>
     //
     // # --------------------------------------------------------------------------------
 
@@ -271,7 +426,7 @@ impl Filter {
 
     // # --------------------------------------------------------------------------------
     //
-    // Date
+    // Date <https://developers.notion.com/reference/post-database-query-filter#date>
     //
     // # --------------------------------------------------------------------------------
 
@@ -505,7 +660,7 @@ impl Filter {
 
     // # --------------------------------------------------------------------------------
     //
-    // Files
+    // Files <https://developers.notion.com/reference/post-database-query-filter#files>
     //
     // # --------------------------------------------------------------------------------
 
@@ -540,14 +695,851 @@ impl Filter {
     }
 
     // TODO: implement formula
+
+    // # --------------------------------------------------------------------------------
+    //
+    // Formula <https://developers.notion.com/reference/post-database-query-filter#formula>
+    //
+    // # --------------------------------------------------------------------------------
+
     // TODO: implement multi_select
-    // TODO: implement number
-    // TODO: implement people
-    // TODO: implement phone_number
+
+    // # --------------------------------------------------------------------------------
+    //
+    // multi select <https://developers.notion.com/reference/post-database-query-filter#multi-select>
+    //
+    // # --------------------------------------------------------------------------------
+
+    // # --------------------------------------------------------------------------------
+    //
+    // number <https://developers.notion.com/reference/post-database-query-filter#number>
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Returns database entries where the number property value differs from the provided number.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `number`: The number to compare the number property value against.
+    pub fn number_does_not_equal<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Number(NumberFilter {
+                does_not_equal: Some(number.into()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the number property value is the same as the provided number.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `number`: The number to compare the number property value against.
+    pub fn number_equals<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Number(NumberFilter {
+                equals: Some(number.into()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the number property value exceeds the provided number.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `number`: The number to compare the number property value against.
+    pub fn number_greater_than<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Number(NumberFilter {
+                greater_than: Some(number.into()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the number property value is equal to or exceeds the provided number.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `number`: The number to compare the number property value against.
+    pub fn number_greater_than_or_equal_to<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Number(NumberFilter {
+                greater_than_or_equal_to: Some(number.into()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the number property value does not contain any data.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn number_is_empty<T>(property_name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Number(NumberFilter {
+                is_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the number property value contains data.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn number_is_not_empty<T>(property_name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Number(NumberFilter {
+                is_not_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the number property value is less than the provided number.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `number`: The number to compare the number property value against.
+    pub fn number_less_than<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Number(NumberFilter {
+                less_than: Some(number.into()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the number property value is equal to or is less than the provided number.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `number`: The number to compare the number property value against.
+    pub fn number_less_than_or_equal_to<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Number(NumberFilter {
+                less_than_or_equal_to: Some(number.into()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // people <https://developers.notion.com/reference/post-database-query-filter#people>
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Returns database entries where the people property value contains the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `id`: The value to compare the people property value against.
+    pub fn people_contains<S, T>(property_name: S, id: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::People(PeopleFilter {
+                contains: Some(id.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the people property value does not contain the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `id`: The value to compare the people property value against.
+    pub fn people_does_not_contain<S, T>(property_name: S, id: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::People(PeopleFilter {
+                does_not_contain: Some(id.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the people property value does not contain any data.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn people_is_empty<T>(property_name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::People(PeopleFilter {
+                is_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the people property value is not empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn people_is_not_empty<T>(property_name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::People(PeopleFilter {
+                is_not_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // phone number (No official documentation)
+    //
+    // # --------------------------------------------------------------------------------
+
+    pub fn phone_number_contains<S, T>(property_name: S, phone_number: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
+                contains: Some(phone_number.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    pub fn phone_number_does_not_contain<S, T>(property_name: S, phone_number: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
+                does_not_contain: Some(phone_number.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    pub fn phone_number_does_not_equal<S, T>(property_name: S, phone_number: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
+                does_not_equal: Some(phone_number.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    pub fn phone_number_ends_with<S, T>(property_name: S, phone_number: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
+                ends_with: Some(phone_number.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    pub fn phone_number_equals<S, T>(property_name: S, phone_number: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
+                equals: Some(phone_number.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    pub fn phone_number_is_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
+                is_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    pub fn phone_number_is_not_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
+                is_not_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    pub fn phone_number_starts_with<S, T>(property_name: S, phone_number: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
+                starts_with: Some(phone_number.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
     // TODO: implement relation
-    // TODO: implement rich_text
-    // TODO: implement select
-    // TODO: implement status
+
+    // # --------------------------------------------------------------------------------
+    //
+    // rich text <https://developers.notion.com/reference/post-database-query-filter#rich-text>
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Returns database entries with a text property value that includes the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `text`: The string to compare the text property value against.
+    pub fn rich_text_contains<S, T>(property_name: S, text: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::RichText(RichTextFilter {
+                contains: Some(text.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries with a text property value that does not include the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `text`: The string to compare the text property value against.
+    pub fn rich_text_does_not_contain<S, T>(property_name: S, text: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::RichText(RichTextFilter {
+                does_not_contain: Some(text.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries with a text property value that does not match the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `text`: The string to compare the text property value against.
+    pub fn rich_text_does_not_equal<S, T>(property_name: S, text: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::RichText(RichTextFilter {
+                does_not_equal: Some(text.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries with a text property value that ends with the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `text`: The string to compare the text property value against.
+    pub fn rich_text_ends_with<S, T>(property_name: S, text: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::RichText(RichTextFilter {
+                ends_with: Some(text.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries with a text property value that matches the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `text`: The string to compare the text property value against.
+    pub fn rich_text_equals<S, T>(property_name: S, text: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::RichText(RichTextFilter {
+                equals: Some(text.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries with a text property value that is empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn rich_text_is_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::RichText(RichTextFilter {
+                is_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries with a text property value that contains data.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn rich_text_is_not_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::RichText(RichTextFilter {
+                is_not_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries with a text property value that starts with the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `text`: The string to compare the text property value against.
+    pub fn rich_text_starts_with<S, T>(property_name: S, text: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::RichText(RichTextFilter {
+                starts_with: Some(text.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // select <https://developers.notion.com/reference/post-database-query-filter#select>
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Returns database entries where the select property value matches the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_name`: The string to compare the select property value against.
+    pub fn select_does_not_equal<S, T>(property_name: S, option_name: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Select(SelectFilter {
+                does_not_equal: Some(option_name.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the select property value does not match the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_name`: The string to compare the select property value against.
+    pub fn select_equals<S, T>(property_name: S, option_name: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Select(SelectFilter {
+                equals: Some(option_name.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the select property value is empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn select_is_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Select(SelectFilter {
+                is_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the select property value is not empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn select_is_not_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Select(SelectFilter {
+                is_not_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // status <https://developers.notion.com/reference/post-database-query-filter#status>
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Returns database entries where the status property value matches the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_name`: The string to compare the status property value against.
+    pub fn status_does_not_equal<S, T>(property_name: S, option_name: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Status(StatusFilter {
+                does_not_equal: Some(option_name.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the status property value does not match the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_name`: The string to compare the status property value against.
+    pub fn status_equals<S, T>(property_name: S, option_name: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Status(StatusFilter {
+                equals: Some(option_name.as_ref().to_string()),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the status property value is empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn status_is_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Status(StatusFilter {
+                is_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the status property value is not empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn status_is_not_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Status(StatusFilter {
+                is_not_empty: Some(true),
+                ..Default::default()
+            })),
+        }
+    }
+
     // TODO: implement timestamp
     // TODO: implement ID
+
+    // # --------------------------------------------------------------------------------
+    //
+    // ID <https://developers.notion.com/reference/post-database-query-filter#id>
+    //
+    // # --------------------------------------------------------------------------------
+
+    // # --------------------------------------------------------------------------------
+    //
+    // ID unique_id <https://developers.notion.com/reference/post-database-query-filter#id>
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Returns database entries where the unique_id property value differs from the provided unique_id.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `unique_id`: The unique_id to compare the unique_id property value against.
+    pub fn unique_id_does_not_equal<T>(property_name: T, unique_id: u64) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::UniqueId(UniqueIdFilter {
+                does_not_equal: Some(unique_id),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the unique_id property value is the same as the provided unique_id.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `unique_id`: The unique_id to compare the unique_id property value against.
+    pub fn unique_id_equals<T>(property_name: T, unique_id: u64) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::UniqueId(UniqueIdFilter {
+                equals: Some(unique_id),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the unique_id property value exceeds the provided unique_id.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `unique_id`: The unique_id to compare the unique_id property value against.
+    pub fn unique_id_greater_than<T>(property_name: T, unique_id: u64) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::UniqueId(UniqueIdFilter {
+                greater_than: Some(unique_id),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the unique_id property value is equal to or exceeds the provided unique_id.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `unique_id`: The unique_id to compare the unique_id property value against.
+    pub fn unique_id_greater_than_or_equal_to<T>(property_name: T, unique_id: u64) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::UniqueId(UniqueIdFilter {
+                greater_than_or_equal_to: Some(unique_id),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the unique_id property value is less than the provided unique_id.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `unique_id`: The unique_id to compare the unique_id property value against.
+    pub fn unique_id_less_than<T>(property_name: T, unique_id: u64) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::UniqueId(UniqueIdFilter {
+                less_than: Some(unique_id),
+                ..Default::default()
+            })),
+        }
+    }
+
+    /// Returns database entries where the unique_id property value is equal to or is less than the provided unique_id.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `unique_id`: The unique_id to compare the unique_id property value against.
+    pub fn unique_id_less_than_or_equal_to<T>(property_name: T, unique_id: u64) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::UniqueId(UniqueIdFilter {
+                less_than_or_equal_to: Some(unique_id),
+                ..Default::default()
+            })),
+        }
+    }
 }
