@@ -1,15 +1,15 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
-pub struct BulletedListItemRequest {
+pub struct BulletedListItemBlockRequest {
     pub r#type: String,
 
     pub bulleted_list_item: crate::block::bulleted_list_item::BulletedListItemBlock,
 }
 
-impl BulletedListItemRequest {
+impl BulletedListItemBlockRequest {
     pub fn new() -> Self {
-        BulletedListItemRequest {
+        BulletedListItemBlockRequest {
             r#type: "bulleted_list_item".to_string(),
             bulleted_list_item: crate::block::bulleted_list_item::BulletedListItemBlock {
                 rich_text: vec![],
@@ -138,7 +138,7 @@ impl BulletedListItemRequest {
     }
 }
 
-impl Default for BulletedListItemRequest {
+impl Default for BulletedListItemBlockRequest {
     fn default() -> Self {
         Self::new()
     }
