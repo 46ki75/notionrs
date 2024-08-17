@@ -33,7 +33,7 @@ impl RichText {
         T: AsRef<str>,
     {
         RichText {
-            r#type: "rich_text".to_string(),
+            r#type: "text".to_string(),
             text: RichTextContent {
                 content: plain_text.as_ref().to_string(),
                 link: None,
@@ -88,5 +88,95 @@ impl RichText {
     pub fn code(mut self) -> Self {
         self.annotations.code = true;
         self
+    }
+}
+
+// # --------------------------------------------------------------------------------
+//
+// unit test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod unit_tests {
+
+    use super::*;
+
+    #[test]
+    fn deserialize_rich_text() {
+        let json_data = r#"
+        {
+            "type": "text",
+            "text": {
+                "content": "rich text",
+                "link": null
+            },
+            "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+            },
+            "plain_text": "rich text",
+            "href": null
+        }
+        "#;
+
+        let rich_text = serde_json::from_str::<RichText>(json_data).unwrap();
+
+        assert_eq!(rich_text.plain_text, "rich text");
+        assert_eq!(rich_text.href, None);
+
+        assert!(!rich_text.annotations.bold);
+        assert!(!rich_text.annotations.italic);
+        assert!(!rich_text.annotations.strikethrough);
+        assert!(!rich_text.annotations.underline);
+        assert!(!rich_text.annotations.code);
+        assert_eq!(
+            rich_text.annotations.color,
+            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+        );
+    }
+
+    #[test]
+    fn serialize_rich_text() {
+        let rich_text = RichText::new("My Text")
+            .bold()
+            .italic()
+            .strikethrough()
+            .code()
+            .color(crate::others::color::Color::FG(
+                crate::others::color::ColorFG::Red,
+            ))
+            .href("https://example.com");
+
+        let expected_json = r#"
+        {
+            "type": "text",
+            "text": {
+                "content": "My Text",
+                "link": "https://example.com"
+            },
+            "annotations": {
+                "bold": true,
+                "italic": true,
+                "strikethrough": true,
+                "underline": false,
+                "code": true,
+                "color": "red"
+            },
+            "plain_text": "My Text",
+            "href": "https://example.com"
+        }
+        "#;
+
+        let serialized = serde_json::to_string_pretty(&rich_text).unwrap();
+
+        let expected_value: serde_json::Value = serde_json::from_str(expected_json).unwrap();
+        let serialized_value: serde_json::Value = serde_json::from_str(&serialized).unwrap();
+
+        assert_eq!(serialized_value, expected_value);
     }
 }
