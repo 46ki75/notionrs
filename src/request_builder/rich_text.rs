@@ -3,25 +3,45 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 pub struct RichTextRequest {
     pub r#type: String,
+
     pub text: RichTextContentRequest,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub annotations: Option<RichTextAnnotationsRequest>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub plain_text: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 pub struct RichTextContentRequest {
     pub content: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub link: Option<RichTextLinkRequest>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Default)]
 pub struct RichTextAnnotationsRequest {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub bold: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub italic: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub strikethrough: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub underline: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub code: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub color: Option<crate::others::color::Color>,
 }
 
