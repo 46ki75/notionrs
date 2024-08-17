@@ -164,7 +164,9 @@ mod unit_tests {
             "type": "text",
             "text": {
                 "content": "My Text",
-                "link": "https://example.com"
+                "link": {
+                    "url": "https://example.com"
+                }
             },
             "annotations": {
                 "bold": true,
