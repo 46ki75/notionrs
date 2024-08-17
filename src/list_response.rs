@@ -9,6 +9,4 @@ pub struct ListResponse<T> {
     pub next_cursor: Option<String>,
     pub has_more: Option<bool>,
     pub r#type: Option<String>,
-    pub developer_survey: Option<String>,
-    pub request_id: Option<String>,
 }

@@ -82,8 +82,6 @@ impl GetBlockChildrenClient {
             next_cursor: start_cursor.clone(),
             has_more: Some(start_cursor.is_some()),
             r#type: Some("list".into()),
-            developer_survey: None,
-            request_id: None,
         })
     }
 

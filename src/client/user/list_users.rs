@@ -82,8 +82,6 @@ impl ListUsersClient {
                 results,
                 next_cursor: None,
                 has_more: Some(false),
-                developer_survey: None,
-                request_id: None,
             })
         } else {
             let params = LinsUserQueryParams {
