@@ -121,12 +121,15 @@ pub enum BlockType {
     File {
         file: crate::others::file::File,
     },
+    #[serde(rename = "heading_1")]
     Heading1 {
         heading_1: heading::HeadingBlock,
     },
+    #[serde(rename = "heading_2")]
     Heading2 {
         heading_2: heading::HeadingBlock,
     },
+    #[serde(rename = "heading_3")]
     Heading3 {
         heading_3: heading::HeadingBlock,
     },
