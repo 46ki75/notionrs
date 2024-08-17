@@ -37,6 +37,22 @@ pub enum File {
     File(FileFile),
 }
 
+impl File {
+    pub fn new<T>(url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        File::External(FileExternal {
+            r#type: "external".to_string(),
+            external: FileExternalParameter {
+                url: url.as_ref().to_string(),
+            },
+            name: None,
+            caption: None,
+        })
+    }
+}
+
 /// When a link to an external file is set,
 /// it becomes an object like the one shown below.
 ///
