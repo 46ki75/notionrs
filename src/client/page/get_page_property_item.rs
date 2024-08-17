@@ -56,8 +56,8 @@ impl GetPagePropertyItemClient {
     }
 
     // TODO: docs for property_id
-    pub fn property_id<T: AsRef<str>>(mut self, page_id: T) -> Self {
-        self.property_id = Some(page_id.as_ref().to_string());
+    pub fn property_id<T: AsRef<str>>(mut self, property_id: T) -> Self {
+        self.property_id = Some(property_id.as_ref().to_string());
         self
     }
 }
