@@ -13,6 +13,23 @@ pub struct BookmarkBlock {
     pub url: String,
 }
 
+impl BookmarkBlock {
+    pub fn new<T>(url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        BookmarkBlock {
+            caption: vec![],
+            url: url.as_ref().to_string(),
+        }
+    }
+
+    pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
+        self.caption = caption;
+        self
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test
