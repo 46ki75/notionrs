@@ -8,3 +8,19 @@ pub enum Icon {
     File(File),
     Emoji(Emoji),
 }
+
+impl Icon {
+    pub fn new_file<T>(url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Icon::File(File::new(url))
+    }
+
+    pub fn new_emoji<T>(icon: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Icon::Emoji(Emoji::new(icon))
+    }
+}
