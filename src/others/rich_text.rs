@@ -14,7 +14,7 @@ pub struct RichText {
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 pub struct RichTextContent {
     pub content: String,
-    pub link: Option<String>,
+    pub link: Option<RichTextLink>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
@@ -25,6 +25,11 @@ pub struct RichTextAnnotations {
     pub underline: bool,
     pub code: bool,
     pub color: Color,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+pub struct RichTextLink {
+    pub url: String,
 }
 
 impl RichText {
@@ -56,7 +61,9 @@ impl RichText {
         T: AsRef<str>,
     {
         self.href = Some(href.as_ref().to_string());
-        self.text.link = Some(href.as_ref().to_string());
+        self.text.link = Some(RichTextLink {
+            url: href.as_ref().to_string(),
+        });
         self
     }
 

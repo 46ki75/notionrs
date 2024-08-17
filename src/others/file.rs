@@ -57,6 +57,7 @@ pub struct FileExternal {
     pub external: FileExternalParameter,
 
     /// File caption (can only be set in the file type block or database properties)
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 
     /// File caption (setting is available only in the file type block)
