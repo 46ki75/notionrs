@@ -1,7 +1,9 @@
+pub mod block;
 pub mod database;
 pub mod page;
 pub mod user;
 
+use block::get_block::GetBlockClient;
 use database::query_database::{QueryDatabaseClient, QueryDatabaseRequestBody};
 use page::get_page_property_item::GetPagePropertyItemClient;
 use reqwest::header::{HeaderMap, HeaderValue};
@@ -142,6 +144,20 @@ impl NotionClient {
                 page_size: None,
             },
             recursive: false,
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // Block
+    //
+    // # --------------------------------------------------------------------------------
+
+    // TODO: docs
+    pub fn get_block(&self) -> GetBlockClient {
+        GetBlockClient {
+            reqwest_client: self.reqwest_client.clone(),
+            block_id: None,
         }
     }
 }
