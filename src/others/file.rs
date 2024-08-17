@@ -94,6 +94,7 @@ pub struct FileExternal {
     pub name: Option<String>,
 
     /// File caption (setting is available only in the file type block)
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<Vec<crate::others::rich_text::RichText>>,
 }
 
