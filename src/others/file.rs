@@ -51,6 +51,23 @@ impl File {
             caption: None,
         })
     }
+
+    pub fn name<T>(mut self, name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        if let File::External(ref mut external) = self {
+            external.name = Some(name.as_ref().to_string())
+        }
+        self
+    }
+
+    pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
+        if let File::External(ref mut external) = self {
+            external.caption = Some(caption)
+        }
+        self
+    }
 }
 
 /// When a link to an external file is set,
