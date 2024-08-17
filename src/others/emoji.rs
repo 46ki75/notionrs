@@ -8,13 +8,13 @@ pub struct Emoji {
 }
 
 impl Emoji {
-    pub fn new<T>(icon: T) -> Self
+    pub fn new<T>(emoji: T) -> Self
     where
         T: AsRef<str>,
     {
         Emoji {
             r#type: "emoji".to_string(),
-            emoji: icon.as_ref().to_string(),
+            emoji: emoji.as_ref().to_string(),
         }
     }
 }

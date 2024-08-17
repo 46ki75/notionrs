@@ -17,10 +17,10 @@ impl Icon {
         Icon::File(File::new(url))
     }
 
-    pub fn new_emoji<T>(icon: T) -> Self
+    pub fn new_emoji<T>(emoji: T) -> Self
     where
         T: AsRef<str>,
     {
-        Icon::Emoji(Emoji::new(icon))
+        Icon::Emoji(Emoji::new(emoji))
     }
 }
