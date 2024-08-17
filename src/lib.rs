@@ -1,6 +1,7 @@
 #![deny(missing_debug_implementations)]
 #![deny(missing_copy_implementations)]
 
+pub mod block;
 pub mod client;
 pub mod error;
 pub mod filter;
