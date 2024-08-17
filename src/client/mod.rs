@@ -3,7 +3,10 @@ pub mod database;
 pub mod page;
 pub mod user;
 
-use block::{get_block::GetBlockClient, get_block_children::GetBlockChildrenClient};
+use block::{
+    delete_block::DeleteBlockClient, get_block::GetBlockClient,
+    get_block_children::GetBlockChildrenClient,
+};
 use database::query_database::{QueryDatabaseClient, QueryDatabaseRequestBody};
 use page::get_page_property_item::GetPagePropertyItemClient;
 use reqwest::header::{HeaderMap, HeaderValue};
@@ -169,6 +172,14 @@ impl NotionClient {
             page_size: 100,
             start_cursor: None,
             recursive: false,
+        }
+    }
+
+    // TODO: docs
+    pub fn delete_block(&self) -> DeleteBlockClient {
+        DeleteBlockClient {
+            reqwest_client: self.reqwest_client.clone(),
+            block_id: None,
         }
     }
 }
