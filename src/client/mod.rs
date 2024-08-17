@@ -3,19 +3,7 @@ pub mod database;
 pub mod page;
 pub mod user;
 
-use block::{
-    delete_block::DeleteBlockClient, get_block::GetBlockClient,
-    get_block_children::GetBlockChildrenClient,
-};
-use database::query_database::{QueryDatabaseClient, QueryDatabaseRequestBody};
-use page::get_page_property_item::GetPagePropertyItemClient;
-use reqwest::header::{HeaderMap, HeaderValue};
 use std::env;
-
-use self::{
-    page::get_page::GetPageClient,
-    user::{get_self::GetSelfClient, get_user::GetUserClient, list_users::ListUsersClient},
-};
 
 #[derive(Default, Debug)]
 pub struct NotionClient {
@@ -25,16 +13,20 @@ pub struct NotionClient {
 impl NotionClient {
     // TODO: docs: new method
     pub fn new() -> Self {
-        let mut headers = HeaderMap::new();
+        let mut headers = reqwest::header::HeaderMap::new();
 
         dotenvy::dotenv().ok();
 
         let secret = env::var("NOTION_TOKEN").unwrap_or_else(|_| String::new());
 
-        headers.insert("Notion-Version", HeaderValue::from_static("2022-06-28"));
+        headers.insert(
+            "Notion-Version",
+            reqwest::header::HeaderValue::from_static("2022-06-28"),
+        );
         headers.insert(
             "Authorization",
-            HeaderValue::from_str(&format!("Bearer {}", secret)).expect("Invalid header value"),
+            reqwest::header::HeaderValue::from_str(&format!("Bearer {}", secret))
+                .expect("Invalid header value"),
         );
 
         let client = reqwest::Client::builder()
@@ -59,14 +51,21 @@ impl NotionClient {
     /// // ...
     /// let client = NotionClient::new().secret("secret_XXXXXXXXXXXXXX");
     /// ```
-    pub fn secret<T: AsRef<str>>(mut self, notion_api_key: T) -> Self {
-        let mut headers = HeaderMap::new();
+    pub fn secret<T>(mut self, notion_api_key: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        let mut headers = reqwest::header::HeaderMap::new();
         let secret = notion_api_key.as_ref().to_string();
 
-        headers.insert("Notion-Version", HeaderValue::from_static("2022-06-28"));
+        headers.insert(
+            "Notion-Version",
+            reqwest::header::HeaderValue::from_static("2022-06-28"),
+        );
         headers.insert(
             "Authorization",
-            HeaderValue::from_str(&format!("Bearer {}", secret)).expect("Invalid header value"),
+            reqwest::header::HeaderValue::from_str(&format!("Bearer {}", secret))
+                .expect("Invalid header value"),
         );
 
         self.reqwest_client = reqwest::Client::builder()
@@ -83,8 +82,8 @@ impl NotionClient {
     // # --------------------------------------------------------------------------------
 
     // TODO: docs: list_users method
-    pub fn list_users(&self) -> ListUsersClient {
-        ListUsersClient {
+    pub fn list_users(&self) -> crate::client::user::list_users::ListUsersClient {
+        crate::client::user::list_users::ListUsersClient {
             reqwest_client: self.reqwest_client.clone(),
             start_cursor: None,
             page_size: None,
@@ -93,16 +92,16 @@ impl NotionClient {
     }
 
     // TODO: docs: get_user method
-    pub fn get_user(&self) -> GetUserClient {
-        GetUserClient {
+    pub fn get_user(&self) -> crate::client::user::get_user::GetUserClient {
+        crate::client::user::get_user::GetUserClient {
             reqwest_client: self.reqwest_client.clone(),
             user_id: None,
         }
     }
 
     // TODO: docs: get_self method
-    pub fn get_self(&self) -> GetSelfClient {
-        GetSelfClient {
+    pub fn get_self(&self) -> crate::client::user::get_self::GetSelfClient {
+        crate::client::user::get_self::GetSelfClient {
             reqwest_client: self.reqwest_client.clone(),
         }
     }
@@ -114,16 +113,18 @@ impl NotionClient {
     // # --------------------------------------------------------------------------------
 
     // TODO: docs: get_page method
-    pub fn get_page(&self) -> GetPageClient {
-        GetPageClient {
+    pub fn get_page(&self) -> crate::client::page::get_page::GetPageClient {
+        crate::client::page::get_page::GetPageClient {
             reqwest_client: self.reqwest_client.clone(),
             page_id: None,
         }
     }
 
     // TODO: docs: get_page_property_item method
-    pub fn get_page_property_item(&self) -> GetPagePropertyItemClient {
-        GetPagePropertyItemClient {
+    pub fn get_page_property_item(
+        &self,
+    ) -> crate::client::page::get_page_property_item::GetPagePropertyItemClient {
+        crate::client::page::get_page_property_item::GetPagePropertyItemClient {
             reqwest_client: self.reqwest_client.clone(),
             page_id: None,
             property_id: None,
@@ -137,11 +138,11 @@ impl NotionClient {
     // # --------------------------------------------------------------------------------
 
     // TODO: docs
-    pub fn query_database(&self) -> QueryDatabaseClient {
-        QueryDatabaseClient {
+    pub fn query_database(&self) -> crate::client::database::query_database::QueryDatabaseClient {
+        crate::client::database::query_database::QueryDatabaseClient {
             reqwest_client: self.reqwest_client.clone(),
             database_id: None,
-            body: QueryDatabaseRequestBody {
+            body: crate::client::database::query_database::QueryDatabaseRequestBody {
                 filter: None,
                 start_cursor: None,
                 page_size: None,
@@ -157,16 +158,18 @@ impl NotionClient {
     // # --------------------------------------------------------------------------------
 
     // TODO: docs
-    pub fn get_block(&self) -> GetBlockClient {
-        GetBlockClient {
+    pub fn get_block(&self) -> crate::client::block::get_block::GetBlockClient {
+        crate::client::block::get_block::GetBlockClient {
             reqwest_client: self.reqwest_client.clone(),
             block_id: None,
         }
     }
 
     // TODO: docs
-    pub fn get_block_children(&self) -> GetBlockChildrenClient {
-        GetBlockChildrenClient {
+    pub fn get_block_children(
+        &self,
+    ) -> crate::client::block::get_block_children::GetBlockChildrenClient {
+        crate::client::block::get_block_children::GetBlockChildrenClient {
             reqwest_client: self.reqwest_client.clone(),
             block_id: None,
             page_size: 100,
@@ -176,8 +179,8 @@ impl NotionClient {
     }
 
     // TODO: docs
-    pub fn delete_block(&self) -> DeleteBlockClient {
-        DeleteBlockClient {
+    pub fn delete_block(&self) -> crate::client::block::delete_block::DeleteBlockClient {
+        crate::client::block::delete_block::DeleteBlockClient {
             reqwest_client: self.reqwest_client.clone(),
             block_id: None,
         }
