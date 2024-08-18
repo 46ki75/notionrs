@@ -23,6 +23,17 @@ impl BulletedListItemBlock {
     pub fn new() -> Self {
         Self::default()
     }
+
+    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+        self.rich_text = rich_text;
+        self
+    }
+}
+
+impl From<Vec<crate::others::rich_text::RichText>> for BulletedListItemBlock {
+    fn from(rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+        Self::new().rich_text(rich_text)
+    }
 }
 
 // # --------------------------------------------------------------------------------
