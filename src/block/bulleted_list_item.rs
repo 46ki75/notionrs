@@ -4,13 +4,25 @@ use serde::{Deserialize, Serialize};
 ///
 ///  Bulleted list item block objects contain the following
 /// information within the bulleted_list_item property:
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 pub struct BulletedListItemBlock {
     /// The rich text in the bulleted_list_item block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
 
     /// The color of the block.
     pub color: crate::others::color::Color,
+}
+
+impl BulletedListItemBlock {
+    pub fn build(self) -> super::BlockType {
+        super::BlockType::BulletedListItem {
+            bulleted_list_item: self,
+        }
+    }
+
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 // # --------------------------------------------------------------------------------

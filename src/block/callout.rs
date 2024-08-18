@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Callout block objects contain the following
 /// information within the callout property:
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 pub struct CalloutBlock {
     /// The rich text in the callout block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -14,6 +14,12 @@ pub struct CalloutBlock {
 
     /// The color of the block.
     pub color: crate::others::color::Color,
+}
+
+impl CalloutBlock {
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 // # --------------------------------------------------------------------------------
