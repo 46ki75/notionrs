@@ -24,3 +24,9 @@ impl Icon {
         Icon::Emoji(Emoji::new(emoji))
     }
 }
+
+impl Default for Icon {
+    fn default() -> Self {
+        Icon::Emoji(Emoji::default())
+    }
+}
