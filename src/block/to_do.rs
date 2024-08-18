@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/block#to-do>
 ///
 /// To do block objects contain the following information within the to_do property:
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug,Default)]
 pub struct ToDoBlock {
     /// The rich text displayed in the To do block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -13,6 +13,16 @@ pub struct ToDoBlock {
 
     /// The color of the block.
     pub color: crate::others::color::Color,
+}
+
+impl ToDoBlock {
+    pub fn build(self) -> super::BlockType {
+        super::BlockType::ToDo { to_do: self }
+    }
+
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 // # --------------------------------------------------------------------------------
