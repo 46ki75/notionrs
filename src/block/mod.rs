@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+pub mod audio;
 pub mod bookmark;
 pub mod bulleted_list_item;
 pub mod callout;
@@ -80,9 +81,7 @@ pub struct Block {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum BlockType {
-    Audio {
-        audio: crate::others::file::File,
-    },
+    Audio(audio::AudioBlock),
     Bookmark {
         bookmark: bookmark::BookmarkBlock,
     },
