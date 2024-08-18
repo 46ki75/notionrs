@@ -27,6 +27,27 @@ impl TableBlock {
     pub fn new() -> Self {
         Self::default()
     }
+
+    pub fn table_width(mut self, table_width: u16) -> Self {
+        self.table_width = table_width;
+        self
+    }
+
+    pub fn has_column_header(mut self, has_column_header: bool) -> Self {
+        self.has_column_header = has_column_header;
+        self
+    }
+
+    pub fn has_row_header(mut self, has_row_header: bool) -> Self {
+        self.has_row_header = has_row_header;
+        self
+    }
+}
+
+impl From<u16> for TableBlock {
+    fn from(table_width: u16) -> Self {
+        Self::new().table_width(table_width)
+    }
 }
 
 // # --------------------------------------------------------------------------------
