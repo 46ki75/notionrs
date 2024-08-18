@@ -7,8 +7,10 @@ pub struct AppendBlockChildrenClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
+    /// Identifier for a block. Also accepts a page ID.
     pub(crate) block_id: Option<String>,
 
+    /// The ID of the existing block that the new block should be appended after.
     pub(crate) after: Option<String>,
 
     pub(crate) children: Vec<crate::request_builder::block::BlockRequest>,
@@ -68,7 +70,7 @@ impl AppendBlockChildrenClient {
         Ok(block)
     }
 
-    // TODO: docs for block_id
+    /// Identifier for a block. Also accepts a page ID.
     pub fn block_id<T: AsRef<str>>(mut self, block_id: T) -> Self {
         self.block_id = Some(block_id.as_ref().to_string());
         self
@@ -80,7 +82,7 @@ impl AppendBlockChildrenClient {
         self
     }
 
-    // TODO: docs for children
+    /// The ID of the existing block that the new block should be appended after.
     pub fn children(mut self, children: Vec<crate::request_builder::block::BlockRequest>) -> Self {
         self.children = children;
         self
