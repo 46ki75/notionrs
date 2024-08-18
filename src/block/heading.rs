@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// All heading block objects, heading_1, heading_2, and heading_3,
 /// contain the following information within their corresponding objects:
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 pub struct HeadingBlock {
     /// The rich text of the heading.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -16,6 +16,24 @@ pub struct HeadingBlock {
     /// If true, then the heading block toggles and can support children.
     /// If false, then the heading block is a static heading block.
     pub is_toggleable: bool,
+}
+
+impl HeadingBlock {
+    pub fn build_heading_1(self) -> super::BlockType {
+        super::BlockType::Heading1 { heading_1: self }
+    }
+
+    pub fn build_heading_2(self) -> super::BlockType {
+        super::BlockType::Heading2 { heading_2: self }
+    }
+
+    pub fn build_heading_3(self) -> super::BlockType {
+        super::BlockType::Heading3 { heading_3: self }
+    }
+
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 // # --------------------------------------------------------------------------------
