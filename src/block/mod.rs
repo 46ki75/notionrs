@@ -11,6 +11,7 @@ pub mod embed;
 pub mod equation;
 pub mod file;
 pub mod heading;
+pub mod image;
 pub mod link_preview;
 pub mod numbered_list_tem;
 pub mod paragraph;
@@ -131,9 +132,7 @@ pub enum BlockType {
     Heading3 {
         heading_3: heading::HeadingBlock,
     },
-    Image {
-        image: crate::others::file::File,
-    },
+    Image(image::ImageBlock),
     LinkPreview {
         link_preview: link_preview::LinkPreviewBlock,
     },
@@ -306,57 +305,57 @@ mod unit_tests {
         }
     }
 
-    // #[test]
-    // fn deserialize_block_file() {
-    //     let json_data = r#"
-    //     {
-    //         "object": "block",
-    //         "id": "9d6fe494-cbf5-4971-bb5f-f7934fadec49",
-    //         "parent": {
-    //             "type": "page_id",
-    //             "page_id": "6669fc5c-8483-4560-9810-06de1873c7cb"
-    //         },
-    //         "created_time": "2024-08-17T05:45:00.000Z",
-    //         "last_edited_time": "2024-08-17T05:46:00.000Z",
-    //         "created_by": {
-    //             "object": "user",
-    //             "id": "f388d469-3ad9-4127-86c7-48c8972af3a6"
-    //         },
-    //         "last_edited_by": {
-    //             "object": "user",
-    //             "id": "f388d469-3ad9-4127-86c7-48c8972af3a6"
-    //         },
-    //         "has_children": false,
-    //         "archived": false,
-    //         "in_trash": false,
-    //         "type": "file",
-    //         "file": {
-    //             "caption": [],
-    //             "type": "file",
-    //             "file": {
-    //                 "url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/",
-    //                 "expiry_time": "2024-08-17T06:46:12.698Z"
-    //             },
-    //             "name": "2024-07-18 202106.png"
-    //         }
-    //     }
-    //     "#;
+    #[test]
+    fn deserialize_block_file() {
+        let json_data = r#"
+        {
+            "object": "block",
+            "id": "9d6fe494-cbf5-4971-bb5f-f7934fadec49",
+            "parent": {
+                "type": "page_id",
+                "page_id": "6669fc5c-8483-4560-9810-06de1873c7cb"
+            },
+            "created_time": "2024-08-17T05:45:00.000Z",
+            "last_edited_time": "2024-08-17T05:46:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "f388d469-3ad9-4127-86c7-48c8972af3a6"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "f388d469-3ad9-4127-86c7-48c8972af3a6"
+            },
+            "has_children": false,
+            "archived": false,
+            "in_trash": false,
+            "type": "file",
+            "file": {
+                "caption": [],
+                "type": "file",
+                "file": {
+                    "url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/",
+                    "expiry_time": "2024-08-17T06:46:12.698Z"
+                },
+                "name": "2024-07-18 202106.png"
+            }
+        }
+        "#;
 
-    //     let block = serde_json::from_str::<Block>(json_data).unwrap();
+        let block = serde_json::from_str::<Block>(json_data).unwrap();
 
-    //     match block.details {
-    //         BlockType::File { file } => match file {
-    //             crate::others::file::File::File(uploaded_file) => {
-    //                 assert_eq!(
-    //                     uploaded_file.name,
-    //                     Some("2024-07-18 202106.png".to_string())
-    //                 )
-    //             }
-    //             crate::others::file::File::External(_) => panic!("Unexpected!"),
-    //         },
-    //         _ => panic!("Unexpected!"),
-    //     }
-    // }
+        match block.details {
+            BlockType::File(file) => match file.file {
+                crate::others::file::File::File(uploaded_file) => {
+                    assert_eq!(
+                        uploaded_file.name,
+                        Some("2024-07-18 202106.png".to_string())
+                    )
+                }
+                crate::others::file::File::External(_) => panic!("Unexpected!"),
+            },
+            _ => panic!("Unexpected!"),
+        }
+    }
 
     #[test]
     fn deserialize_block_image() {
@@ -395,8 +394,10 @@ mod unit_tests {
 
         let block = serde_json::from_str::<Block>(json_data).unwrap();
 
+        println!("{:?}", block);
+
         match block.details {
-            BlockType::Image { image } => match image {
+            BlockType::Image(image) => match image.image {
                 crate::others::file::File::File(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.file.url,
