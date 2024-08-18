@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/block#to-do>
 ///
 /// To do block objects contain the following information within the to_do property:
-#[derive(Deserialize, Serialize, Debug,Default)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 pub struct ToDoBlock {
     /// The rich text displayed in the To do block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -22,6 +22,26 @@ impl ToDoBlock {
 
     pub fn new() -> Self {
         Self::default()
+    }
+
+    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+        self.rich_text = rich_text;
+        self
+    }
+
+    pub fn checked(mut self, checked: bool) -> Self {
+        self.checked = checked;
+        self
+    }
+}
+
+impl<T> From<T> for ToDoBlock
+where
+    T: AsRef<str>,
+{
+    fn from(plain_text: T) -> Self {
+        let rich_text = crate::others::rich_text::RichText::from(plain_text.as_ref().to_string());
+        Self::default().rich_text(vec![rich_text])
     }
 }
 
