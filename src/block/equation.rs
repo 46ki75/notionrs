@@ -19,6 +19,23 @@ impl EquationBlock {
     pub fn new() -> Self {
         Self::default()
     }
+
+    pub fn expression<T>(mut self, url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.expression = url.as_ref().to_string();
+        self
+    }
+}
+
+impl<T> From<T> for EquationBlock
+where
+    T: AsRef<str>,
+{
+    fn from(expression: T) -> Self {
+        Self::new().expression(expression)
+    }
 }
 
 // # --------------------------------------------------------------------------------
