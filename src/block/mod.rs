@@ -22,6 +22,7 @@ pub mod table_row;
 pub mod template;
 pub mod to_do;
 pub mod toggle;
+pub mod video;
 
 /// ```json
 /// {
@@ -166,9 +167,7 @@ pub enum BlockType {
     Toggle {
         toggle: toggle::ToggleBlock,
     },
-    Video {
-        video: crate::others::file::File,
-    },
+    Video(video::VideoBlock),
     Unknown(serde_json::Value),
 }
 
