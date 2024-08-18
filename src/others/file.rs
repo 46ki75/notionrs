@@ -151,25 +151,28 @@ impl FileExternal {
         }
     }
 
-    pub fn from<T>(url: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        Self::new().url(url)
-    }
-
-    pub fn url<T>(mut self, url: T) -> Self
+    pub fn url<T>(&mut self, url: T)
     where
         T: AsRef<str>,
     {
         self.external.url = url.as_ref().to_string();
-        self
     }
 }
 
 impl Default for FileExternal {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+impl<T> From<T> for FileExternal
+where
+    T: AsRef<str>,
+{
+    fn from(url: T) -> Self {
+        let mut instance = Self::new();
+        instance.url(url);
+        instance
     }
 }
 
