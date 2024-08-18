@@ -181,3 +181,9 @@ pub enum Language {
     #[serde(rename = "java/c/c++/c#")]
     JavaCCPlusPlusCSharp,
 }
+
+impl Default for Language {
+    fn default() -> Self {
+        Language::PlainText
+    }
+}
