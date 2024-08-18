@@ -14,17 +14,6 @@ impl AudioBlock {
         Self::default()
     }
 
-    pub fn from<T>(url: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        Self {
-            audio: crate::others::file::File::External(crate::others::file::FileExternal::from(
-                url,
-            )),
-        }
-    }
-
     /// Set the external URL for the file.
     pub fn url<T>(mut self, url: T) -> Self
     where
@@ -53,5 +42,18 @@ impl AudioBlock {
             external.name = Some(name.as_ref().to_string());
         }
         self
+    }
+}
+
+impl<T> From<T> for AudioBlock
+where
+    T: AsRef<str>,
+{
+    fn from(url: T) -> Self {
+        Self {
+            audio: crate::others::file::File::External(crate::others::file::FileExternal::from(
+                url,
+            )),
+        }
     }
 }
