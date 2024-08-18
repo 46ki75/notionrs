@@ -25,7 +25,32 @@ impl SyncedBlock {
     }
 
     pub fn new() -> Self {
-        Self::default()
+        Self {
+            synced_from: Some(SyncedBlockParams {
+                r#type: "block_id".to_string(),
+                block_id: String::new(),
+            }),
+        }
+    }
+
+    pub fn block_id<T>(mut self, block_id: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.synced_from = Some(SyncedBlockParams {
+            r#type: "block_id".to_string(),
+            block_id: block_id.as_ref().to_string(),
+        });
+        self
+    }
+}
+
+impl<T> From<T> for SyncedBlock
+where
+    T: AsRef<str>,
+{
+    fn from(block_id: T) -> Self {
+        Self::new().block_id(block_id)
     }
 }
 
