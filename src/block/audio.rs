@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct AudioBlock {
-    pub file: crate::others::file::File,
+    pub audio: crate::others::file::File,
 }
 
 impl AudioBlock {
@@ -15,7 +15,7 @@ impl AudioBlock {
     where
         T: AsRef<str>,
     {
-        if let crate::others::file::File::External(ref mut external) = self.file {
+        if let crate::others::file::File::External(ref mut external) = self.audio {
             external.external.url = url.as_ref().to_string();
         }
         self
@@ -23,7 +23,7 @@ impl AudioBlock {
 
     /// Add a caption to the file.
     pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
-        if let crate::others::file::File::External(ref mut external) = self.file {
+        if let crate::others::file::File::External(ref mut external) = self.audio {
             external.caption = Some(caption);
         }
         self
@@ -34,7 +34,7 @@ impl AudioBlock {
     where
         T: AsRef<str>,
     {
-        if let crate::others::file::File::External(ref mut external) = self.file {
+        if let crate::others::file::File::External(ref mut external) = self.audio {
             external.name = Some(name.as_ref().to_string());
         }
         self
