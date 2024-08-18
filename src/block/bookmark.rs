@@ -22,13 +22,6 @@ impl BookmarkBlock {
         Self::default()
     }
 
-    pub fn from<T>(url: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        Self::default().url(url)
-    }
-
     pub fn url<T>(mut self, url: T) -> Self
     where
         T: AsRef<str>,
@@ -40,6 +33,15 @@ impl BookmarkBlock {
     pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
         self.caption = caption;
         self
+    }
+}
+
+impl<T> From<T> for BookmarkBlock
+where
+    T: AsRef<str>,
+{
+    fn from(url: T) -> Self {
+        Self::default().url(url)
     }
 }
 
