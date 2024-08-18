@@ -190,11 +190,8 @@ impl BlockType {
         }
     }
 
-    pub fn file<T>(url: T) -> file::FileBlock
-    where
-        T: AsRef<str>,
-    {
-        file::FileBlock::new(url)
+    pub fn file() -> file::FileBlock {
+        file::FileBlock::new()
     }
 }
 

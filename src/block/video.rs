@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 pub struct VideoBlock {
     pub video: crate::others::file::File,
 }
@@ -10,13 +10,8 @@ impl VideoBlock {
         super::BlockType::Video(self)
     }
 
-    pub fn new<T>(url: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        VideoBlock {
-            video: crate::others::file::File::new(url),
-        }
+    pub fn new() -> Self {
+        Self::default()
     }
 
     /// Set the external URL for the file.

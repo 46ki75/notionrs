@@ -38,15 +38,10 @@ pub enum File {
 }
 
 impl File {
-    pub fn new<T>(url: T) -> Self
-    where
-        T: AsRef<str>,
-    {
+    pub fn new() -> Self {
         File::External(FileExternal {
             r#type: "external".to_string(),
-            external: FileExternalParameter {
-                url: url.as_ref().to_string(),
-            },
+            external: FileExternalParameter::default(),
             name: None,
             caption: None,
         })
@@ -70,6 +65,12 @@ impl File {
     }
 }
 
+impl Default for File {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 /// When a link to an external file is set,
 /// it becomes an object like the one shown below.
 ///
@@ -81,7 +82,7 @@ impl File {
 ///     }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Default)]
 pub struct FileExternal {
     /// always "external"
     pub r#type: String,
@@ -98,7 +99,7 @@ pub struct FileExternal {
     pub caption: Option<Vec<crate::others::rich_text::RichText>>,
 }
 
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Default)]
 pub struct FileExternalParameter {
     /// URL of the file
     pub url: String,

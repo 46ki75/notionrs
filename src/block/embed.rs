@@ -4,10 +4,20 @@ use serde::{Deserialize, Serialize};
 ///
 /// Embed block objects include information about another website displayed within the Notion UI.
 /// The embed property contains the following information:
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 pub struct EmbedBlock {
     /// The link to the website that the embed block displays.
     pub url: String,
+}
+
+impl EmbedBlock {
+    pub fn build(self) -> super::BlockType {
+        super::BlockType::Embed { embed: self }
+    }
+
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 // # --------------------------------------------------------------------------------
