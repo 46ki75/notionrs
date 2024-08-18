@@ -36,11 +36,11 @@ impl BlockRequest {
     }
 
     pub fn callout() -> callout::CalloutBlockRequest {
-        callout::CalloutBlockRequest::default()
+        callout::CalloutBlockRequest::new()
     }
 
     pub fn code() -> code::CodeBlockRequest {
-        code::CodeBlockRequest::default()
+        code::CodeBlockRequest::new()
     }
 }
 
