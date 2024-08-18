@@ -39,6 +39,8 @@ mod integration_tests {
                 .build(),
         );
 
+        blocks.push(notionrs::block::BlockType::build_breadcrumb());
+
         blocks.push(
             notionrs::block::BlockType::callout()
                 .rich_text(vec![rich_text.clone()])
@@ -50,6 +52,8 @@ mod integration_tests {
                 .rich_text(vec![rich_text.clone()])
                 .build(),
         );
+
+        blocks.push(notionrs::block::BlockType::build_divider());
 
         blocks.push(
             notionrs::block::BlockType::embed()

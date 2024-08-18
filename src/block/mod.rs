@@ -194,8 +194,23 @@ impl BlockType {
         callout::CalloutBlock::new()
     }
 
+    pub fn build_breadcrumb() -> BlockType {
+        BlockType::Breadcrumb {
+            breadcrumb: std::collections::HashMap::new(),
+        }
+    }
+
     pub fn code() -> code::CodeBlock {
         code::CodeBlock::new()
+    }
+
+    // TODO: implement ColumnList
+    // TODO: implement Column
+
+    pub fn build_divider() -> BlockType {
+        BlockType::Divider {
+            divider: std::collections::HashMap::new(),
+        }
     }
 
     pub fn embed() -> embed::EmbedBlock {
