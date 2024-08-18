@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::color_setters;
+
 use super::color::Color;
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
@@ -71,6 +73,8 @@ impl RichText {
         self.annotations.color = color;
         self
     }
+
+    color_setters!(self, self.annotations.color);
 
     pub fn bold(mut self) -> Self {
         self.annotations.bold = true;
