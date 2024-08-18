@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::color_setters;
+
 /// <https://developers.notion.com/reference/block#callout>
 ///
 /// Callout block objects contain the following
@@ -23,6 +25,43 @@ impl CalloutBlock {
 
     pub fn new() -> Self {
         Self::default()
+    }
+
+    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+        self.rich_text = rich_text;
+        self
+    }
+
+    pub fn icon_emoji(mut self, emoji: char) -> Self {
+        self.icon = crate::others::icon::Icon::new_emoji(emoji);
+        self
+    }
+
+    pub fn icon_file<T>(mut self, url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        let mut icon_file = crate::others::icon::Icon::new_file();
+        if let crate::others::icon::Icon::File(crate::others::file::File::External(
+            ref mut external,
+        )) = icon_file
+        {
+            external.url(url);
+        }
+        self.icon = icon_file;
+        self
+    }
+
+    color_setters!(self, self.color);
+}
+
+impl<T> From<T> for CalloutBlock
+where
+    T: AsRef<str>,
+{
+    fn from(plain_text: T) -> Self {
+        let rich_text = crate::others::rich_text::RichText::from(plain_text.as_ref().to_string());
+        Self::default().rich_text(vec![rich_text])
     }
 }
 
