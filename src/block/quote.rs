@@ -4,13 +4,23 @@ use serde::{Deserialize, Serialize};
 ///
 /// Paragraph block objects contain the following
 /// information within the quote property:
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 pub struct QuoteBlock {
     /// The rich text displayed in the quote block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
 
     /// The color of the block.
     pub color: crate::others::color::Color,
+}
+
+impl QuoteBlock {
+    pub fn build(self) -> super::BlockType {
+        super::BlockType::Quote { quote: self }
+    }
+
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 // # --------------------------------------------------------------------------------
