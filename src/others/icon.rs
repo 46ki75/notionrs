@@ -10,11 +10,8 @@ pub enum Icon {
 }
 
 impl Icon {
-    pub fn new_file<T>(url: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        Icon::File(File::new(url))
+    pub fn new_file() -> Self {
+        Icon::File(File::new())
     }
 
     pub fn new_emoji(emoji: char) -> Self {

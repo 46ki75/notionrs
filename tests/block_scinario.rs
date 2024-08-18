@@ -32,7 +32,8 @@ mod integration_tests {
         let mut blocks = vec![notionrs::block::BlockType::bookmark("https://example.com").build()];
 
         blocks.push(
-            notionrs::block::BlockType::file("https://companywebsite.com/files/doc.txt")
+            notionrs::block::BlockType::file()
+                .url("https://companywebsite.com/files/doc.txt")
                 .name("My TXT File")
                 .build(),
         );
