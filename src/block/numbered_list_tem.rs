@@ -4,13 +4,25 @@ use serde::{Deserialize, Serialize};
 ///
 /// Numbered list item block objects contain the following
 /// information within the numbered_list_item property:
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 pub struct NumberedListItemBlock {
     /// The rich text displayed in the numbered_list_item block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
 
     /// The color of the block.
     pub color: crate::others::color::Color,
+}
+
+impl NumberedListItemBlock {
+    pub fn build(self) -> super::BlockType {
+        super::BlockType::NumberedListItem {
+            numbered_list_item: self,
+        }
+    }
+
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 // # --------------------------------------------------------------------------------
