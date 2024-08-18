@@ -185,4 +185,16 @@ impl NotionClient {
             block_id: None,
         }
     }
+
+    // TODO: docs
+    pub fn append_block_children(
+        &self,
+    ) -> crate::client::block::append_block_children::AppendBlockChildrenClient {
+        crate::client::block::append_block_children::AppendBlockChildrenClient {
+            reqwest_client: self.reqwest_client.clone(),
+            block_id: None,
+            after: None,
+            children: vec![],
+        }
+    }
 }

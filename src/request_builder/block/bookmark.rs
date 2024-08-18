@@ -13,6 +13,10 @@ pub struct BookmarkBlockRequestParams {
 }
 
 impl BookmarkBlockRequest {
+    pub fn build(self) -> super::BlockRequest {
+        super::BlockRequest::Bookmark(self)
+    }
+
     pub fn new<T>(url: T) -> Self
     where
         T: AsRef<str>,
@@ -24,6 +28,14 @@ impl BookmarkBlockRequest {
                 caption: vec![],
             },
         }
+    }
+
+    pub fn url<T>(mut self, url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.bookmark.url = url.as_ref().to_string();
+        self
     }
 
     pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
