@@ -15,7 +15,7 @@ pub enum NotionError {
     NotionRequestParameterError(String),
 
     #[error("deserialization error: {0}")]
-    NotionDeserializationError(#[from] serde_json::Error),
+    NotionSerdeError(#[from] serde_json::Error),
 
     #[error("unknown error: {0}")]
     NotionUnknownError(String),
