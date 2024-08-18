@@ -11,7 +11,7 @@ pub struct BulletedListItemBlockRequest {
 #[derive(Debug, Deserialize, Serialize, Default)]
 pub struct BulletedListItemBlockRequestParams {
     /// The rich text in the bulleted_list_item block.
-    pub rich_text: Vec<crate::others::rich_text::RichText>,
+    pub rich_text: Vec<super::super::rich_text::RichTextRequest>,
 
     /// The color of the block.
     pub color: crate::others::color::Color,
@@ -32,7 +32,7 @@ impl BulletedListItemBlockRequest {
         }
     }
 
-    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+    pub fn rich_text(mut self, rich_text: Vec<super::super::rich_text::RichTextRequest>) -> Self {
         self.bulleted_list_item.rich_text = rich_text;
         self
     }
