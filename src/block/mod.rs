@@ -190,8 +190,80 @@ impl BlockType {
         }
     }
 
+    pub fn callout() -> callout::CalloutBlock {
+        callout::CalloutBlock::new()
+    }
+
+    pub fn code() -> code::CodeBlock {
+        code::CodeBlock::new()
+    }
+
+    pub fn embed() -> embed::EmbedBlock {
+        embed::EmbedBlock::new()
+    }
+
+    pub fn equation() -> equation::EquationBlock {
+        equation::EquationBlock::new()
+    }
+
     pub fn file() -> file::FileBlock {
         file::FileBlock::new()
+    }
+
+    pub fn heading_1() -> heading::HeadingBlock {
+        heading::HeadingBlock::new()
+    }
+
+    pub fn heading_2() -> heading::HeadingBlock {
+        heading::HeadingBlock::new()
+    }
+
+    pub fn heading_3() -> heading::HeadingBlock {
+        heading::HeadingBlock::new()
+    }
+
+    pub fn image() -> image::ImageBlock {
+        image::ImageBlock::new()
+    }
+
+    pub fn numbered_list_tem() -> numbered_list_tem::NumberedListItemBlock {
+        numbered_list_tem::NumberedListItemBlock::new()
+    }
+
+    pub fn paragraph() -> paragraph::ParagraphBlock {
+        paragraph::ParagraphBlock::new()
+    }
+
+    pub fn pdf() -> pdf::PdfBlock {
+        pdf::PdfBlock::new()
+    }
+
+    pub fn quote() -> quote::QuoteBlock {
+        quote::QuoteBlock::new()
+    }
+
+    pub fn synced_block() -> synced_block::SyncedBlock {
+        synced_block::SyncedBlock::new()
+    }
+
+    pub fn table() -> table::TableBlock {
+        table::TableBlock::new()
+    }
+
+    pub fn table_row() -> table_row::TableRowBlock {
+        table_row::TableRowBlock::new()
+    }
+
+    pub fn to_do() -> to_do::ToDoBlock {
+        to_do::ToDoBlock::new()
+    }
+
+    pub fn toggle() -> toggle::ToggleBlock {
+        toggle::ToggleBlock::new()
+    }
+
+    pub fn video() -> video::VideoBlock {
+        video::VideoBlock::new()
     }
 }
 

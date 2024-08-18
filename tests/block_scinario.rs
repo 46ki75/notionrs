@@ -29,49 +29,93 @@ mod integration_tests {
 
         // bookmark
 
-        let mut blocks = vec![notionrs::block::BlockType::bookmark("https://example.com").build()];
+        let mut blocks: Vec<notionrs::block::BlockType> = vec![];
+
+        let rich_text = notionrs::others::rich_text::RichText::from("Rich Text");
 
         blocks.push(
-            notionrs::block::BlockType::file()
-                .url("https://companywebsite.com/files/doc.txt")
-                .name("My TXT File")
+            notionrs::block::BlockType::bookmark("https://example.com")
+                .caption(vec![])
                 .build(),
         );
 
-        // bulleted_list_item
+        blocks.push(
+            notionrs::block::BlockType::callout()
+                .rich_text(vec![rich_text.clone()])
+                .build(),
+        );
 
-        // blocks.push(
-        //     notionrs::request_builder::block::BlockRequest::bulleted_list_item()
-        //         .rich_text(vec![
-        //             notionrs::request_builder::rich_text::RichTextRequest::new(
-        //                 "const message = 'Hello, Rust!'",
-        //             ),
-        //         ])
-        //         .build(),
-        // );
+        blocks.push(
+            notionrs::block::BlockType::code()
+                .rich_text(vec![rich_text.clone()])
+                .build(),
+        );
 
-        // blocks.push(
-        //     notionrs::request_builder::block::BlockRequest::callout()
-        //         .rich_text(vec![
-        //             notionrs::request_builder::rich_text::RichTextRequest::new(
-        //                 "const message = 'Hello, Rust!'",
-        //             ),
-        //         ])
-        //         .build(),
-        // );
+        blocks.push(
+            notionrs::block::BlockType::embed()
+                .url("https://example.com")
+                .build(),
+        );
 
-        // // code
+        blocks.push(
+            notionrs::block::BlockType::file()
+                .url("https://example.com/file.txt")
+                .build(),
+        );
 
-        // blocks.push(
-        //     notionrs::request_builder::block::BlockRequest::code()
-        //         .rich_text(vec![
-        //             notionrs::request_builder::rich_text::RichTextRequest::new(
-        //                 "const message = 'Hello, Rust!'",
-        //             ),
-        //         ])
-        //         .language(notionrs::others::language::Language::Typescript)
-        //         .build(),
-        // );
+        blocks.push(
+            notionrs::block::BlockType::heading_1()
+                .rich_text(vec![rich_text.clone()])
+                .build_heading_1(),
+        );
+
+        blocks.push(
+            notionrs::block::BlockType::heading_2()
+                .rich_text(vec![rich_text.clone()])
+                .build_heading_2(),
+        );
+
+        blocks.push(
+            notionrs::block::BlockType::heading_3()
+                .rich_text(vec![rich_text.clone()])
+                .build_heading_3(),
+        );
+
+        blocks.push(
+            notionrs::block::BlockType::image()
+                .url("https://fastly.picsum.photos/id/938/200/300.jpg?hmac=MVXKrDXBUPK5fv_Ev3FTdCFeYf9rvJE2Tz9xynjeelM")
+                .build(),
+        );
+
+        blocks.push(
+            notionrs::block::BlockType::numbered_list_tem()
+                .rich_text(vec![rich_text.clone()])
+                .build(),
+        );
+
+        blocks.push(
+            notionrs::block::BlockType::paragraph()
+                .rich_text(vec![rich_text.clone()])
+                .build(),
+        );
+
+        blocks.push(
+            notionrs::block::BlockType::quote()
+                .rich_text(vec![rich_text.clone()])
+                .build(),
+        );
+
+        blocks.push(
+            notionrs::block::BlockType::to_do()
+                .rich_text(vec![rich_text.clone()])
+                .build(),
+        );
+
+        blocks.push(
+            notionrs::block::BlockType::toggle()
+                .rich_text(vec![rich_text.clone()])
+                .build(),
+        );
 
         let request = client
             .append_block_children()
