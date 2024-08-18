@@ -8,11 +8,21 @@ use serde::{Deserialize, Serialize};
 /// 2. Get the table_rows from a query to Retrieve block children for the table.
 ///
 /// A table_row block object contains the following fields within the table_row property:
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 pub struct TableRowBlock {
     /// An array of cell contents in horizontal display order.
     /// Each cell is an array of rich text objects.
     pub cells: Vec<Vec<crate::others::rich_text::RichText>>,
+}
+
+impl TableRowBlock {
+    pub fn build(self) -> super::BlockType {
+        super::BlockType::TableRow { table_row: self }
+    }
+
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 // # --------------------------------------------------------------------------------
