@@ -2,12 +2,14 @@ use serde::{Deserialize, Serialize};
 
 pub mod audio;
 pub mod bookmark;
+pub mod bulleted_list_item;
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum BlockRequest {
     Audio(audio::AudioBlockRequest),
     Bookmark(bookmark::BookmarkBlockRequest),
+    BulletedListItem(bulleted_list_item::BulletedListItemBlockRequest),
 }
 
 impl BlockRequest {
@@ -23,6 +25,10 @@ impl BlockRequest {
         T: AsRef<str>,
     {
         bookmark::BookmarkBlockRequest::new(url)
+    }
+
+    pub fn bulleted_list_item() -> bulleted_list_item::BulletedListItemBlockRequest {
+        bulleted_list_item::BulletedListItemBlockRequest::new()
     }
 }
 
