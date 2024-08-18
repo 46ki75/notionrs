@@ -36,6 +36,12 @@ pub enum Color {
     BG(ColorBG),
 }
 
+impl Default for Color {
+    fn default() -> Self {
+        Color::FG(ColorFG::Default)
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test
