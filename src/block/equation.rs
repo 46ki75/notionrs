@@ -20,11 +20,11 @@ impl EquationBlock {
         Self::default()
     }
 
-    pub fn expression<T>(mut self, url: T) -> Self
+    pub fn expression<T>(mut self, expression: T) -> Self
     where
         T: AsRef<str>,
     {
-        self.expression = url.as_ref().to_string();
+        self.expression = expression.as_ref().to_string();
         self
     }
 }
