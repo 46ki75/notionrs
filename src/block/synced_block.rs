@@ -5,18 +5,28 @@ use serde::{Deserialize, Serialize};
 /// Similar to the Notion UI, there are two versions of a synced_block object:
 /// the original block that was created first and doesn't yet sync with anything else,
 /// and the duplicate block or blocks synced to the original.
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 pub struct SyncedBlock {
     pub synced_from: Option<SyncedBlockParams>,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 pub struct SyncedBlockParams {
     /// always "block_id"
     pub r#type: String,
 
     /// An identifier for the original synced_block.
     pub block_id: String,
+}
+
+impl SyncedBlock {
+    pub fn build(self) -> super::BlockType {
+        super::BlockType::SyncedBlock { synced_block: self }
+    }
+
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 // # --------------------------------------------------------------------------------
