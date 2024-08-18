@@ -13,12 +13,12 @@ pub struct AppendBlockChildrenClient {
     /// The ID of the existing block that the new block should be appended after.
     pub(crate) after: Option<String>,
 
-    pub(crate) children: Vec<crate::request_builder::block::BlockRequest>,
+    pub(crate) children: Vec<crate::block::BlockType>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AppendBlockChildrenRequestBody {
-    pub(crate) children: Vec<crate::request_builder::block::BlockRequest>,
+    pub(crate) children: Vec<crate::block::BlockType>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) after: Option<String>,
@@ -83,7 +83,7 @@ impl AppendBlockChildrenClient {
     }
 
     /// The ID of the existing block that the new block should be appended after.
-    pub fn children(mut self, children: Vec<crate::request_builder::block::BlockRequest>) -> Self {
+    pub fn children(mut self, children: Vec<crate::block::BlockType>) -> Self {
         self.children = children;
         self
     }

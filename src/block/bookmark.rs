@@ -14,6 +14,10 @@ pub struct BookmarkBlock {
 }
 
 impl BookmarkBlock {
+    pub fn build(self) -> super::BlockType {
+        super::BlockType::Bookmark { bookmark: self }
+    }
+
     pub fn new<T>(url: T) -> Self
     where
         T: AsRef<str>,
