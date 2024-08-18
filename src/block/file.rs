@@ -10,6 +10,7 @@ impl FileBlock {
         super::BlockType::File(self)
     }
 
+    /// Set the external URL for the file.
     pub fn url<T>(mut self, url: T) -> Self
     where
         T: AsRef<str>,
@@ -20,6 +21,7 @@ impl FileBlock {
         self
     }
 
+    /// Add a caption to the file.
     pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
         if let crate::others::file::File::External(ref mut external) = self.file {
             external.caption = Some(caption);
@@ -27,6 +29,7 @@ impl FileBlock {
         self
     }
 
+    /// Assign a file name
     pub fn name<T>(mut self, name: T) -> Self
     where
         T: AsRef<str>,
