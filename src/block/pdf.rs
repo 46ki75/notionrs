@@ -14,6 +14,15 @@ impl PdfBlock {
         Self::default()
     }
 
+    pub fn from<T>(url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Self {
+            pdf: crate::others::file::File::External(crate::others::file::FileExternal::from(url)),
+        }
+    }
+
     /// Set the external URL for the file.
     pub fn url<T>(mut self, url: T) -> Self
     where
