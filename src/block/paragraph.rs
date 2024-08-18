@@ -4,13 +4,23 @@ use serde::{Deserialize, Serialize};
 ///
 /// Paragraph block objects contain the following
 /// information within the paragraph property:
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 pub struct ParagraphBlock {
     /// The rich text displayed in the paragraph block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
 
     /// The color of the block.
     pub color: crate::others::color::Color,
+}
+
+impl ParagraphBlock {
+    pub fn build(self) -> super::BlockType {
+        super::BlockType::Paragraph { paragraph: self }
+    }
+
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 // # --------------------------------------------------------------------------------
