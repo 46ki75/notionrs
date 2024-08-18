@@ -18,6 +18,23 @@ impl EmbedBlock {
     pub fn new() -> Self {
         Self::default()
     }
+
+    pub fn url<T>(mut self, url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.url = url.as_ref().to_string();
+        self
+    }
+}
+
+impl<T> From<T> for EmbedBlock
+where
+    T: AsRef<str>,
+{
+    fn from(url: T) -> Self {
+        Self::new().url(url)
+    }
 }
 
 // # --------------------------------------------------------------------------------
