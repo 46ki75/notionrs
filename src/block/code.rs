@@ -24,6 +24,31 @@ impl CodeBlock {
     pub fn new() -> Self {
         Self::default()
     }
+
+    pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
+        self.caption = caption;
+        self
+    }
+
+    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+        self.rich_text = rich_text;
+        self
+    }
+
+    pub fn lnaguage(mut self, language: crate::others::language::Language) -> Self {
+        self.language = language;
+        self
+    }
+}
+
+impl<T> From<T> for CodeBlock
+where
+    T: AsRef<str>,
+{
+    fn from(code: T) -> Self {
+        let rich_text = crate::others::rich_text::RichText::from(code.as_ref().to_string());
+        Self::new().rich_text(vec![rich_text])
+    }
 }
 
 // # --------------------------------------------------------------------------------
