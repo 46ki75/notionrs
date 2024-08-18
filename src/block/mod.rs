@@ -163,7 +163,7 @@ pub enum BlockType {
     Template {
         template: template::TemplateBlock,
     },
-    ToDO {
+    ToDo {
         to_do: to_do::ToDoBlock,
     },
     Toggle {
