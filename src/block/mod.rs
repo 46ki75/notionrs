@@ -15,6 +15,7 @@ pub mod image;
 pub mod link_preview;
 pub mod numbered_list_tem;
 pub mod paragraph;
+pub mod pdf;
 pub mod quote;
 pub mod synced_block;
 pub mod table;
@@ -143,9 +144,7 @@ pub enum BlockType {
     Paragraph {
         paragraph: paragraph::ParagraphBlock,
     },
-    Pdf {
-        pdf: crate::others::file::File,
-    },
+    Pdf(pdf::PdfBlock),
     Quote {
         quote: quote::QuoteBlock,
     },
