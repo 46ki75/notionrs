@@ -57,3 +57,59 @@ where
         }
     }
 }
+
+// # --------------------------------------------------------------------------------
+//
+// unit test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod unit_tests {
+
+    use super::*;
+
+    #[test]
+    fn deserialize_block_audio() {
+        let json_data = r#"
+        {
+            "audio": {
+                "caption": [],
+                "type": "file",
+                "file": {
+                    "url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/",
+                    "expiry_time": "2024-08-18T22:12:45.122Z"
+                }
+            }
+        }
+        "#;
+
+        let audio_block = serde_json::from_str::<AudioBlock>(json_data).unwrap();
+
+        match audio_block.audio {
+            crate::others::file::File::File(file) => {
+                assert_eq!(
+                    file.file.url,
+                    "https://prod-files-secure.s3.us-west-2.amazonaws.com/"
+                );
+            }
+            crate::others::file::File::External(_) => panic!(),
+        }
+    }
+
+    #[test]
+    fn serialize_block_audio() {
+        let audio_block = AudioBlock::new().url("https://example.com/audio.wav");
+
+        let audio_block_json = serde_json::to_string(&audio_block).unwrap();
+
+        let audio_block = serde_json::from_str::<AudioBlock>(&audio_block_json).unwrap();
+
+        match audio_block.audio {
+            crate::others::file::File::External(file) => {
+                assert_eq!(file.external.url, "https://example.com/audio.wav");
+            }
+            crate::others::file::File::File(_) => panic!(),
+        }
+    }
+}
