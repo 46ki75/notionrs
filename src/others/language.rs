@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// which is more up-to-date than the Notion API documentation.
 ///
 /// Please look for the union type of the `type LanguageRequest` string in the codebase of `notion-sdk-js`.
-#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialEq, Eq, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum Language {
     #[serde(rename = "abap")]
@@ -123,6 +123,7 @@ pub enum Language {
     #[serde(rename = "php")]
     Php,
     #[serde(rename = "plain text")]
+    #[default]
     PlainText,
     #[serde(rename = "powershell")]
     Powershell,
@@ -180,10 +181,4 @@ pub enum Language {
     Yaml,
     #[serde(rename = "java/c/c++/c#")]
     JavaCCPlusPlusCSharp,
-}
-
-impl Default for Language {
-    fn default() -> Self {
-        Language::PlainText
-    }
 }
