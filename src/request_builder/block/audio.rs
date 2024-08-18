@@ -6,6 +6,7 @@ pub struct AudioBlockRequest {
     audio: crate::others::file::File,
 }
 
+/// Uploading files via the API is not supported; only specifying an external URL is supported.
 impl AudioBlockRequest {
     pub fn build(self) -> super::BlockRequest {
         super::BlockRequest::Audio(self)
