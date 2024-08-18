@@ -4,23 +4,20 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Emoji {
     pub r#type: String,
-    pub emoji: String,
+    pub emoji: char,
 }
 
 impl Emoji {
-    pub fn new<T>(emoji: T) -> Self
-    where
-        T: AsRef<str>,
-    {
+    pub fn new(emoji: char) -> Self {
         Emoji {
             r#type: "emoji".to_string(),
-            emoji: emoji.as_ref().to_string(),
+            emoji,
         }
     }
 }
 
 impl Default for Emoji {
     fn default() -> Self {
-        Emoji::new("💡")
+        Emoji::new('💡')
     }
 }
