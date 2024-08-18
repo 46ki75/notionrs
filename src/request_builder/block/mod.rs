@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 pub mod audio;
 pub mod bookmark;
 pub mod bulleted_list_item;
+pub mod callout;
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(untagged)]
@@ -10,6 +11,7 @@ pub enum BlockRequest {
     Audio(audio::AudioBlockRequest),
     Bookmark(bookmark::BookmarkBlockRequest),
     BulletedListItem(bulleted_list_item::BulletedListItemBlockRequest),
+    Callout(callout::CalloutBlockRequest),
 }
 
 impl BlockRequest {
@@ -29,6 +31,10 @@ impl BlockRequest {
 
     pub fn bulleted_list_item() -> bulleted_list_item::BulletedListItemBlockRequest {
         bulleted_list_item::BulletedListItemBlockRequest::new()
+    }
+
+    pub fn callout() -> callout::CalloutBlockRequest {
+        callout::CalloutBlockRequest::default()
     }
 }
 
