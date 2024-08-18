@@ -4,6 +4,7 @@ pub mod audio;
 pub mod bookmark;
 pub mod bulleted_list_item;
 pub mod callout;
+pub mod code;
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(untagged)]
@@ -12,6 +13,7 @@ pub enum BlockRequest {
     Bookmark(bookmark::BookmarkBlockRequest),
     BulletedListItem(bulleted_list_item::BulletedListItemBlockRequest),
     Callout(callout::CalloutBlockRequest),
+    Code(code::CodeBlockRequest),
 }
 
 impl BlockRequest {
