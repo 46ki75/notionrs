@@ -17,9 +17,9 @@ pub struct AppendBlockChildrenClient {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AppendBlockChildrenRequestBody {
     pub(crate) children: Vec<crate::request_builder::block::BlockRequest>,
-    // #[serde(skip_serializing_if = "Option::is_none")]
-    // pub(crate) start_cursor: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) after: Option<String>,
     // #[serde(skip_serializing_if = "Option::is_none")]
     // pub(crate) page_size: Option<u32>,
 }
@@ -37,6 +37,7 @@ impl AppendBlockChildrenClient {
 
         let request_body_struct = AppendBlockChildrenRequestBody {
             children: self.children,
+            after: self.after,
         };
 
         let request_body = serde_json::to_string(&request_body_struct)?;
