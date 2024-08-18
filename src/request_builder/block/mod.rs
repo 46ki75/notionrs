@@ -38,6 +38,10 @@ impl BlockRequest {
     pub fn callout() -> callout::CalloutBlockRequest {
         callout::CalloutBlockRequest::default()
     }
+
+    pub fn code() -> code::CodeBlockRequest {
+        code::CodeBlockRequest::default()
+    }
 }
 
 #[cfg(test)]
