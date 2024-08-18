@@ -149,7 +149,7 @@ pub enum BlockType {
         pdf: crate::others::file::File,
     },
     Quote {
-        paragraph: quote::QuoteBlock,
+        quote: quote::QuoteBlock,
     },
     SyncedBlock {
         synced_block: synced_block::SyncedBlock,
