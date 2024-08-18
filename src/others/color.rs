@@ -42,6 +42,80 @@ impl Default for Color {
     }
 }
 
+impl Color {
+    pub fn blue() -> Self {
+        Color::FG(ColorFG::Blue)
+    }
+
+    pub fn brown() -> Self {
+        Color::FG(ColorFG::Brown)
+    }
+
+    pub fn gray() -> Self {
+        Color::FG(ColorFG::Gray)
+    }
+
+    pub fn green() -> Self {
+        Color::FG(ColorFG::Green)
+    }
+
+    pub fn orange() -> Self {
+        Color::FG(ColorFG::Orange)
+    }
+
+    pub fn pink() -> Self {
+        Color::FG(ColorFG::Pink)
+    }
+
+    pub fn purple() -> Self {
+        Color::FG(ColorFG::Purple)
+    }
+
+    pub fn red() -> Self {
+        Color::FG(ColorFG::Red)
+    }
+
+    pub fn yellow() -> Self {
+        Color::FG(ColorFG::Yellow)
+    }
+
+    pub fn blue_background() -> Self {
+        Color::BG(ColorBG::BlueBackground)
+    }
+
+    pub fn brown_background() -> Self {
+        Color::BG(ColorBG::BrownBackground)
+    }
+
+    pub fn gray_background() -> Self {
+        Color::BG(ColorBG::GrayBackground)
+    }
+
+    pub fn green_background() -> Self {
+        Color::BG(ColorBG::GreenBackground)
+    }
+
+    pub fn orange_background() -> Self {
+        Color::BG(ColorBG::OrangeBackground)
+    }
+
+    pub fn pink_background() -> Self {
+        Color::BG(ColorBG::PinkBackground)
+    }
+
+    pub fn purple_background() -> Self {
+        Color::BG(ColorBG::PurpleBackground)
+    }
+
+    pub fn red_background() -> Self {
+        Color::BG(ColorBG::RedBackground)
+    }
+
+    pub fn yellow_background() -> Self {
+        Color::BG(ColorBG::YellowBackground)
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test
