@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::color_setters;
+
 /// <https://developers.notion.com/reference/block#numbered-list-item>
 ///
 /// Numbered list item block objects contain the following
@@ -22,6 +24,23 @@ impl NumberedListItemBlock {
 
     pub fn new() -> Self {
         Self::default()
+    }
+
+    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+        self.rich_text = rich_text;
+        self
+    }
+
+    color_setters!(self, self.color);
+}
+
+impl<T> From<T> for NumberedListItemBlock
+where
+    T: AsRef<str>,
+{
+    fn from(plain_text: T) -> Self {
+        let rich_text = crate::others::rich_text::RichText::from(plain_text.as_ref().to_string());
+        Self::default().rich_text(vec![rich_text])
     }
 }
 
