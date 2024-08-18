@@ -118,6 +118,94 @@ impl Color {
 
 // # --------------------------------------------------------------------------------
 //
+// macro
+//
+// # --------------------------------------------------------------------------------
+
+#[macro_export]
+macro_rules! color_setters {
+    ($self:ident, $color_target:expr) => {
+        pub fn default_color(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::default();
+            $self
+        }
+        pub fn blue(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::blue();
+            $self
+        }
+        pub fn brown(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::brown();
+            $self
+        }
+        pub fn gray(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::gray();
+            $self
+        }
+        pub fn green(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::green();
+            $self
+        }
+        pub fn orange(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::orange();
+            $self
+        }
+        pub fn pink(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::pink();
+            $self
+        }
+        pub fn purple(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::purple();
+            $self
+        }
+        pub fn red(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::red();
+            $self
+        }
+        pub fn yellow(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::yellow();
+            $self
+        }
+        pub fn blue_background(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::blue_background();
+            $self
+        }
+        pub fn brown_background(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::brown_background();
+            $self
+        }
+        pub fn gray_background(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::gray_background();
+            $self
+        }
+        pub fn green_background(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::green_background();
+            $self
+        }
+        pub fn orange_background(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::orange_background();
+            $self
+        }
+        pub fn pink_background(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::pink_background();
+            $self
+        }
+        pub fn purple_background(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::purple_background();
+            $self
+        }
+        pub fn red_background(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::red_background();
+            $self
+        }
+        pub fn yellow_background(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::yellow_background();
+            $self
+        }
+    };
+}
+
+// # --------------------------------------------------------------------------------
+//
 // unit test
 //
 // # --------------------------------------------------------------------------------

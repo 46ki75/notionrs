@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::color_setters;
+
 #[derive(Debug, Deserialize, Serialize, Default)]
 pub struct BulletedListItemBlockRequest {
     r#type: String,
@@ -14,17 +16,6 @@ pub struct BulletedListItemBlockRequestParams {
     /// The color of the block.
     pub color: crate::others::color::Color,
 }
-
-macro_rules! color_setters {
-        ($($color:ident),*) => {
-            $(
-                pub fn $color(mut self) -> Self {
-                    self.bulleted_list_item.color = crate::others::color::Color::$color();
-                    self
-                }
-            )*
-        }
-    }
 
 impl BulletedListItemBlockRequest {
     pub fn build(self) -> super::BlockRequest {
@@ -51,24 +42,5 @@ impl BulletedListItemBlockRequest {
         self
     }
 
-    color_setters! {
-        blue,
-        brown,
-        gray,
-        green,
-        orange,
-        pink,
-        purple,
-        red,
-        yellow,
-        blue_background,
-        brown_background,
-        gray_background,
-        green_background,
-        orange_background,
-        pink_background,
-        purple_background,
-        red_background,
-        yellow_background
-    }
+    color_setters!(self, self.bulleted_list_item.color);
 }
