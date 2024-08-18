@@ -7,6 +7,8 @@ pub mod callout;
 pub mod child_database;
 pub mod child_page;
 pub mod code;
+pub mod column;
+pub mod column_list;
 pub mod embed;
 pub mod equation;
 pub mod file;
@@ -107,10 +109,10 @@ pub enum BlockType {
         code: code::CodeBlock,
     },
     ColumnList {
-        column_list: std::collections::HashMap<(), ()>,
+        column_list: column_list::ColumnListBlock,
     },
     Column {
-        column: std::collections::HashMap<(), ()>,
+        column: column::ColumnBlock,
     },
     Divider {
         divider: std::collections::HashMap<(), ()>,
@@ -204,8 +206,13 @@ impl BlockType {
         code::CodeBlock::new()
     }
 
-    // TODO: implement ColumnList
-    // TODO: implement Column
+    pub fn column_list() -> column_list::ColumnListBlock {
+        column_list::ColumnListBlock::new()
+    }
+
+    pub fn column() -> column::ColumnBlock {
+        column::ColumnBlock::new()
+    }
 
     pub fn build_divider() -> BlockType {
         BlockType::Divider {

@@ -53,6 +53,24 @@ mod integration_tests {
                 .build(),
         );
 
+        let column_left = notionrs::block::BlockType::column()
+            .children(vec![notionrs::block::BlockType::paragraph()
+                .rich_text(vec![rich_text.clone()])
+                .build()])
+            .build();
+
+        let column_right = notionrs::block::BlockType::column()
+            .children(vec![notionrs::block::BlockType::paragraph()
+                .rich_text(vec![rich_text.clone()])
+                .build()])
+            .build();
+
+        blocks.push(
+            notionrs::block::BlockType::column_list()
+                .children(vec![column_left, column_right])
+                .build(),
+        );
+
         blocks.push(notionrs::block::BlockType::build_divider());
 
         blocks.push(

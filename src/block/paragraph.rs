@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Paragraph block objects contain the following
 /// information within the paragraph property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct ParagraphBlock {
     /// The rich text displayed in the paragraph block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
