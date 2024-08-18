@@ -82,7 +82,7 @@ impl Default for File {
 ///     }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Default)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct FileExternal {
     /// always "external"
     pub r#type: String,
@@ -139,6 +139,38 @@ pub struct FileFileParameter {
 
     /// The expiration time of the signed URL for Amazon S3
     pub expiry_time: String,
+}
+
+impl FileExternal {
+    pub fn new() -> Self {
+        Self {
+            r#type: "external".to_string(),
+            external: FileExternalParameter { url: String::new() },
+            name: None,
+            caption: None,
+        }
+    }
+
+    pub fn from<T>(url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Self::new().url(url)
+    }
+
+    pub fn url<T>(mut self, url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.external.url = url.as_ref().to_string();
+        self
+    }
+}
+
+impl Default for FileExternal {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 #[cfg(test)]
