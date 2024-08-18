@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::color_setters;
+
 /// <https://developers.notion.com/reference/block#headings>
 ///
 /// All heading block objects, heading_1, heading_2, and heading_3,
@@ -33,6 +35,28 @@ impl HeadingBlock {
 
     pub fn new() -> Self {
         Self::default()
+    }
+
+    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+        self.rich_text = rich_text;
+        self
+    }
+
+    color_setters!(self, self.color);
+
+    pub fn is_toggleable(mut self, is_toggleable: bool) -> Self {
+        self.is_toggleable = is_toggleable;
+        self
+    }
+}
+
+impl<T> From<T> for HeadingBlock
+where
+    T: AsRef<str>,
+{
+    fn from(plain_text: T) -> Self {
+        let rich_text = crate::others::rich_text::RichText::from(plain_text.as_ref().to_string());
+        Self::default().rich_text(vec![rich_text])
     }
 }
 
