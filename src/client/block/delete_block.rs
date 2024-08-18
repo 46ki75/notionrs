@@ -39,8 +39,8 @@ impl DeleteBlockClient {
     }
 
     // TODO: docs for block_id
-    pub fn block_id<T: AsRef<str>>(mut self, page_id: T) -> Self {
-        self.block_id = Some(page_id.as_ref().to_string());
+    pub fn block_id<T: AsRef<str>>(mut self, block_id: T) -> Self {
+        self.block_id = Some(block_id.as_ref().to_string());
         self
     }
 }
