@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Table block objects are parent blocks for table row children.
 /// Table block objects contain the following fields within the table property:
-#[derive(Deserialize, Serialize, Debug, Copy, Clone)]
+#[derive(Deserialize, Serialize, Debug, Copy, Clone, Default)]
 pub struct TableBlock {
     /// The number of columns in the table.
     /// Note that this cannot be changed via the public API once a table is created.
@@ -17,6 +17,16 @@ pub struct TableBlock {
     /// Whether the table has a header row. If true,
     /// then the first column in the table appears visually distinct from the other columns.
     pub has_row_header: bool,
+}
+
+impl TableBlock {
+    pub fn build(self) -> super::BlockType {
+        super::BlockType::Table { table: self }
+    }
+
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 // # --------------------------------------------------------------------------------
