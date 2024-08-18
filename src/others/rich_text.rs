@@ -35,14 +35,34 @@ pub struct RichTextLink {
 }
 
 impl RichText {
-    pub fn new<T>(plain_text: T) -> Self
-    where
-        T: AsRef<str>,
-    {
+    // pub fn new<T>(plain_text: T) -> Self
+    // where
+    //     T: AsRef<str>,
+    // {
+    //     RichText {
+    //         r#type: "text".to_string(),
+    //         text: RichTextContent {
+    //             content: plain_text.as_ref().to_string(),
+    //             link: None,
+    //         },
+    //         annotations: RichTextAnnotations {
+    //             bold: false,
+    //             italic: false,
+    //             strikethrough: false,
+    //             underline: false,
+    //             code: false,
+    //             color: crate::others::color::Color::FG(crate::others::color::ColorFG::Default),
+    //         },
+    //         plain_text: plain_text.as_ref().to_string(),
+    //         href: None,
+    //     }
+    // }
+
+    pub fn new() -> Self {
         RichText {
             r#type: "text".to_string(),
             text: RichTextContent {
-                content: plain_text.as_ref().to_string(),
+                content: String::new(),
                 link: None,
             },
             annotations: RichTextAnnotations {
@@ -53,7 +73,7 @@ impl RichText {
                 code: false,
                 color: crate::others::color::Color::FG(crate::others::color::ColorFG::Default),
             },
-            plain_text: plain_text.as_ref().to_string(),
+            plain_text: String::new(),
             href: None,
         }
     }
@@ -66,6 +86,15 @@ impl RichText {
         self.text.link = Some(RichTextLink {
             url: href.as_ref().to_string(),
         });
+        self
+    }
+
+    pub fn plain_text<T>(mut self, plain_text: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.text.content = plain_text.as_ref().to_string();
+        self.plain_text = plain_text.as_ref().to_string();
         self
     }
 
@@ -99,6 +128,21 @@ impl RichText {
     pub fn code(mut self) -> Self {
         self.annotations.code = true;
         self
+    }
+}
+
+impl Default for RichText {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl<T> From<T> for RichText
+where
+    T: AsRef<str>,
+{
+    fn from(plain_text: T) -> Self {
+        Self::new().plain_text(plain_text.as_ref())
     }
 }
 
@@ -153,7 +197,8 @@ mod unit_tests {
 
     #[test]
     fn serialize_rich_text() {
-        let rich_text = RichText::new("My Text")
+        let rich_text = RichText::new()
+            .plain_text("My Text")
             .bold()
             .italic()
             .strikethrough()
