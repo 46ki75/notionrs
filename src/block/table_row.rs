@@ -23,6 +23,11 @@ impl TableRowBlock {
     pub fn new() -> Self {
         Self::default()
     }
+
+    pub fn cells(mut self, rich_text: Vec<Vec<crate::others::rich_text::RichText>>) -> Self {
+        self.cells = rich_text;
+        self
+    }
 }
 
 // # --------------------------------------------------------------------------------
