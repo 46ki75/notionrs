@@ -9,7 +9,7 @@ pub struct BookmarkBlockRequest {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct BookmarkBlockRequestParams {
     url: String,
-    caption: Vec<crate::others::rich_text::RichText>,
+    caption: Vec<super::super::rich_text::RichTextRequest>,
 }
 
 impl BookmarkBlockRequest {
@@ -38,7 +38,7 @@ impl BookmarkBlockRequest {
         self
     }
 
-    pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
+    pub fn caption(mut self, caption: Vec<super::super::rich_text::RichTextRequest>) -> Self {
         self.bookmark.caption = caption;
         self
     }

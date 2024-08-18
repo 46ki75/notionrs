@@ -11,7 +11,7 @@ pub struct CalloutBlockRequest {
 #[derive(Deserialize, Serialize, Debug, Default)]
 pub struct CalloutBlockRequestParams {
     /// The rich text in the callout block.
-    pub rich_text: Vec<crate::others::rich_text::RichText>,
+    pub rich_text: Vec<super::super::rich_text::RichTextRequest>,
 
     /// An emoji or file object that represents the callout's icon. If the callout does not have an icon.
     pub icon: crate::others::icon::Icon,
@@ -47,7 +47,7 @@ impl CalloutBlockRequest {
         self
     }
 
-    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+    pub fn rich_text(mut self, rich_text: Vec<super::super::rich_text::RichTextRequest>) -> Self {
         self.callout.rich_text = rich_text;
         self
     }
