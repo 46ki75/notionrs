@@ -2,6 +2,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default)]
 pub struct ImageBlock {
+    /// When creating an AudioBlock via the API, only files of the External type are accepted.
+    /// (File uploads are not supported.)
+    /// [Documentation](https://developers.notion.com/reference/file-object)
     pub image: crate::others::file::File,
 }
 
