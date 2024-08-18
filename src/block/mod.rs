@@ -194,9 +194,7 @@ impl BlockType {
     where
         T: AsRef<str>,
     {
-        file::FileBlock {
-            file: crate::others::file::File::new(url),
-        }
+        file::FileBlock::new(url)
     }
 }
 

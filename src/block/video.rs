@@ -10,6 +10,15 @@ impl VideoBlock {
         super::BlockType::Video(self)
     }
 
+    pub fn new<T>(url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        VideoBlock {
+            video: crate::others::file::File::new(url),
+        }
+    }
+
     /// Set the external URL for the file.
     pub fn url<T>(mut self, url: T) -> Self
     where

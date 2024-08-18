@@ -10,6 +10,15 @@ impl ImageBlock {
         super::BlockType::Image(self)
     }
 
+    pub fn new<T>(url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        ImageBlock {
+            image: crate::others::file::File::new(url),
+        }
+    }
+
     /// Set the external URL for the file.
     pub fn url<T>(mut self, url: T) -> Self
     where

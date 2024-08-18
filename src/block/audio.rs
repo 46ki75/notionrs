@@ -10,6 +10,15 @@ impl AudioBlock {
         super::BlockType::Audio(self)
     }
 
+    pub fn new<T>(url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        AudioBlock {
+            audio: crate::others::file::File::new(url),
+        }
+    }
+
     /// Set the external URL for the file.
     pub fn url<T>(mut self, url: T) -> Self
     where

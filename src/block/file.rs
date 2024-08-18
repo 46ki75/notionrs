@@ -10,6 +10,15 @@ impl FileBlock {
         super::BlockType::File(self)
     }
 
+    pub fn new<T>(url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        FileBlock {
+            file: crate::others::file::File::new(url),
+        }
+    }
+
     /// Set the external URL for the file.
     pub fn url<T>(mut self, url: T) -> Self
     where

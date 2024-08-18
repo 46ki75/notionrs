@@ -10,6 +10,15 @@ impl PdfBlock {
         super::BlockType::Pdf(self)
     }
 
+    pub fn new<T>(url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        PdfBlock {
+            pdf: crate::others::file::File::new(url),
+        }
+    }
+
     /// Set the external URL for the file.
     pub fn url<T>(mut self, url: T) -> Self
     where
