@@ -96,9 +96,14 @@ mod integration_tests {
                 .build(),
         );
 
+        let heading_block_child = notionrs::block::BlockType::paragraph()
+            .rich_text(vec![rich_text.clone()])
+            .build();
+
         blocks.push(
             notionrs::block::BlockType::heading_1()
                 .rich_text(vec![rich_text.clone()])
+                .children(vec![heading_block_child])
                 .build_heading_1(),
         );
 
