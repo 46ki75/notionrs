@@ -182,14 +182,8 @@ impl BlockType {
     //     }
     // }
 
-    pub fn bookmark<T>(url: T) -> bookmark::BookmarkBlock
-    where
-        T: AsRef<str>,
-    {
-        bookmark::BookmarkBlock {
-            caption: vec![],
-            url: url.as_ref().to_string(),
-        }
+    pub fn bookmark() -> bookmark::BookmarkBlock {
+        bookmark::BookmarkBlock::new()
     }
 
     pub fn bulleted_list_item() -> bulleted_list_item::BulletedListItemBlock {

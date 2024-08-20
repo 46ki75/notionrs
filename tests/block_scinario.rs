@@ -32,7 +32,8 @@ mod integration_tests {
         let mut blocks: Vec<notionrs::block::BlockType> = vec![];
 
         blocks.push(
-            notionrs::block::BlockType::bookmark("https://example.com")
+            notionrs::block::BlockType::bookmark()
+                .url("https://example.com")
                 .caption(vec![])
                 .build(),
         );
@@ -217,10 +218,11 @@ mod integration_tests {
 
         let block_id = block_id_list.first().unwrap();
 
-        let request = client
-            .update_block()
-            .block_id(block_id)
-            .block(notionrs::block::BlockType::bookmark("https://www.example.com").build());
+        let request = client.update_block().block_id(block_id).block(
+            notionrs::block::BlockType::bookmark()
+                .url("https://www.example.com")
+                .build(),
+        );
 
         request.send().await?;
 
