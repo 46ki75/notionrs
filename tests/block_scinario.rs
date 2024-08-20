@@ -137,9 +137,14 @@ mod integration_tests {
                 .build(),
         );
 
+        let quote_children = vec![notionrs::block::BlockType::paragraph()
+            .rich_text(vec![rich_text.clone()])
+            .build()];
+
         blocks.push(
             notionrs::block::BlockType::quote()
                 .rich_text(vec![rich_text.clone()])
+                .children(quote_children)
                 .build(),
         );
 
