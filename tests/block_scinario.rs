@@ -32,6 +32,12 @@ mod integration_tests {
         let mut blocks: Vec<notionrs::block::BlockType> = vec![];
 
         blocks.push(
+            notionrs::block::audio::AudioBlock::new()
+                .url("https://example.com/sample.wav")
+                .build(),
+        );
+
+        blocks.push(
             notionrs::block::BlockType::bookmark()
                 .url("https://example.com")
                 .caption(vec![])
@@ -117,6 +123,12 @@ mod integration_tests {
             notionrs::block::BlockType::heading_3()
                 .rich_text(vec![rich_text!("heading_3 content")])
                 .build_heading_3(),
+        );
+
+        blocks.push(
+            notionrs::block::BlockType::pdf()
+                .url("https://example.com/sample.pdf")
+                .build(),
         );
 
         blocks.push(

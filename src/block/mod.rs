@@ -173,14 +173,9 @@ pub enum BlockType {
 }
 
 impl BlockType {
-    // pub fn audio<T>(url: T) -> Self
-    // where
-    //     T: AsRef<str>,
-    // {
-    //     BlockType::Audio {
-    //         audio: crate::others::file::File::new(url.as_ref()),
-    //     }
-    // }
+    pub fn audio() -> audio::AudioBlock {
+        audio::AudioBlock::new()
+    }
 
     pub fn bookmark() -> bookmark::BookmarkBlock {
         bookmark::BookmarkBlock::new()
@@ -266,12 +261,12 @@ impl BlockType {
         synced_block::SyncedBlock::new()
     }
 
-    pub fn table() -> table::TableBlock {
-        table::TableBlock::new()
-    }
-
     pub fn table_row() -> table_row::TableRowBlock {
         table_row::TableRowBlock::new()
+    }
+
+    pub fn table() -> table::TableBlock {
+        table::TableBlock::new()
     }
 
     pub fn to_do() -> to_do::ToDoBlock {
