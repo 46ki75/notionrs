@@ -192,6 +192,10 @@ impl BlockType {
         }
     }
 
+    pub fn bulleted_list_item() -> bulleted_list_item::BulletedListItemBlock {
+        bulleted_list_item::BulletedListItemBlock::new()
+    }
+
     pub fn callout() -> callout::CalloutBlock {
         callout::CalloutBlock::new()
     }

@@ -41,6 +41,17 @@ mod integration_tests {
 
         blocks.push(notionrs::block::BlockType::build_breadcrumb());
 
+        let bulleted_list_item_children = vec![notionrs::block::BlockType::paragraph()
+            .rich_text(vec![rich_text.clone()])
+            .build()];
+
+        blocks.push(
+            notionrs::block::BlockType::bulleted_list_item()
+                .rich_text(vec![rich_text.clone()])
+                .children(bulleted_list_item_children)
+                .build(),
+        );
+
         blocks.push(
             notionrs::block::BlockType::callout()
                 .rich_text(vec![rich_text.clone()])
