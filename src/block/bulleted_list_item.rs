@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::color_setters;
+
 /// <https://developers.notion.com/reference/block#bulleted-list-item>
 ///
 ///  Bulleted list item block objects contain the following
@@ -38,6 +40,8 @@ impl BulletedListItemBlock {
         self.children = Some(children);
         self
     }
+
+    color_setters!(self, self.color);
 }
 
 impl From<Vec<crate::others::rich_text::RichText>> for BulletedListItemBlock {
