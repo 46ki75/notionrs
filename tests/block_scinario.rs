@@ -1,5 +1,5 @@
 mod integration_tests {
-    use notionrs::to_json::ToJson;
+    use notionrs::{rich_text, to_json::ToJson};
 
     #[tokio::test]
     async fn block_scinario() -> Result<(), notionrs::error::NotionError> {
@@ -31,8 +31,6 @@ mod integration_tests {
 
         let mut blocks: Vec<notionrs::block::BlockType> = vec![];
 
-        let rich_text = notionrs::others::rich_text::RichText::from("Rich Text");
-
         blocks.push(
             notionrs::block::BlockType::bookmark("https://example.com")
                 .caption(vec![])
@@ -42,37 +40,38 @@ mod integration_tests {
         blocks.push(notionrs::block::BlockType::build_breadcrumb());
 
         let bulleted_list_item_children = vec![notionrs::block::BlockType::paragraph()
-            .rich_text(vec![rich_text.clone()])
+            .rich_text(vec![rich_text!("bulleted_list_item child content")])
             .build()];
 
         blocks.push(
             notionrs::block::BlockType::bulleted_list_item()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("bulleted_list_item content")])
                 .children(bulleted_list_item_children)
                 .build(),
         );
 
         blocks.push(
             notionrs::block::BlockType::callout()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("callout content")])
                 .build(),
         );
 
         blocks.push(
             notionrs::block::BlockType::code()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("const message = 'Hello, world!'")])
+                .lnaguage(notionrs::others::language::Language::Typescript)
                 .build(),
         );
 
         let column_left = notionrs::block::BlockType::column()
             .children(vec![notionrs::block::BlockType::paragraph()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("column_left content")])
                 .build()])
             .build();
 
         let column_right = notionrs::block::BlockType::column()
             .children(vec![notionrs::block::BlockType::paragraph()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("column_right content")])
                 .build()])
             .build();
 
@@ -97,25 +96,25 @@ mod integration_tests {
         );
 
         let heading_block_child = notionrs::block::BlockType::paragraph()
-            .rich_text(vec![rich_text.clone()])
+            .rich_text(vec![rich_text!("heading_1 toggle content")])
             .build();
 
         blocks.push(
             notionrs::block::BlockType::heading_1()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("heading_1 content")])
                 .children(vec![heading_block_child])
                 .build_heading_1(),
         );
 
         blocks.push(
             notionrs::block::BlockType::heading_2()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("heading_2 content")])
                 .build_heading_2(),
         );
 
         blocks.push(
             notionrs::block::BlockType::heading_3()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("heading_3 content")])
                 .build_heading_3(),
         );
 
@@ -126,35 +125,38 @@ mod integration_tests {
         );
 
         let numbered_list_item_children = vec![notionrs::block::BlockType::paragraph()
-            .rich_text(vec![rich_text.clone()])
+            .rich_text(vec![rich_text!("numbered_list_item content")])
             .build()];
 
         blocks.push(
             notionrs::block::BlockType::numbered_list_tem()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("numbered_list_item content")])
                 .children(numbered_list_item_children)
                 .build(),
         );
 
         blocks.push(
             notionrs::block::BlockType::paragraph()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("paragraph content")])
                 .build(),
         );
 
         let quote_children = vec![notionrs::block::BlockType::paragraph()
-            .rich_text(vec![rich_text.clone()])
+            .rich_text(vec![rich_text!("quote block child content")])
             .build()];
 
         blocks.push(
             notionrs::block::BlockType::quote()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("numbered_list_item content")])
                 .children(quote_children)
                 .build(),
         );
 
         let table_rows = vec![notionrs::block::BlockType::table_row()
-            .cells(vec![vec![rich_text.clone()], vec![rich_text.clone()]])
+            .cells(vec![
+                vec![rich_text!("table cell content").red()],
+                vec![rich_text!("table cell content").red()],
+            ])
             .build()];
 
         blocks.push(
@@ -165,17 +167,17 @@ mod integration_tests {
 
         blocks.push(
             notionrs::block::BlockType::to_do()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("TODO")])
                 .build(),
         );
 
         let toggle_block_child = notionrs::block::BlockType::paragraph()
-            .rich_text(vec![rich_text.clone()])
+            .rich_text(vec![rich_text!("toggle details")])
             .build();
 
         blocks.push(
             notionrs::block::BlockType::toggle()
-                .rich_text(vec![rich_text.clone()])
+                .rich_text(vec![rich_text!("toggle summary")])
                 .children(vec![toggle_block_child])
                 .build(),
         );
