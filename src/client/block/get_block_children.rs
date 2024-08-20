@@ -23,6 +23,10 @@ impl GetBlockChildrenClient {
 
         let mut page_size_remain = self.page_size;
 
+        if self.recursive {
+            page_size_remain = u64::MAX;
+        }
+
         let block_id = &self
             .block_id
             .ok_or(NotionError::NotionRequestParameterError(
