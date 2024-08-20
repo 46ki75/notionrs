@@ -169,9 +169,14 @@ mod integration_tests {
                 .build(),
         );
 
+        let toggle_block_child = notionrs::block::BlockType::paragraph()
+            .rich_text(vec![rich_text.clone()])
+            .build();
+
         blocks.push(
             notionrs::block::BlockType::toggle()
                 .rich_text(vec![rich_text.clone()])
+                .children(vec![toggle_block_child])
                 .build(),
         );
 
