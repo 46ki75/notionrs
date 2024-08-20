@@ -58,3 +58,48 @@ where
         }
     }
 }
+
+// # --------------------------------------------------------------------------------
+//
+// unit test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod unit_tests {
+
+    use core::panic;
+
+    use super::*;
+
+    #[test]
+    fn deserialize_block_file_() {
+        let json_data = r#"
+        {
+            "pdf": {
+                "caption": [],
+                "type": "file",
+                "file": {
+                    "url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/",
+                    "expiry_time": "2024-08-20T11:07:14.256Z"
+                }
+            }
+        }
+        "#;
+
+        let pdf_block = serde_json::from_str::<PdfBlock>(json_data).unwrap();
+
+        match pdf_block.pdf {
+            crate::others::file::File::File(f) => {
+                assert_eq!(f.caption, Some(vec![]));
+                assert_eq!(f.r#type, "file");
+                assert_eq!(
+                    f.file.url,
+                    "https://prod-files-secure.s3.us-west-2.amazonaws.com/"
+                );
+                assert_eq!(f.file.expiry_time, "2024-08-20T11:07:14.256Z");
+            }
+            crate::others::file::File::External(_) => panic!(),
+        }
+    }
+}
