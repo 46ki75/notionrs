@@ -120,9 +120,14 @@ mod integration_tests {
                 .build(),
         );
 
+        let numbered_list_item_children = vec![notionrs::block::BlockType::paragraph()
+            .rich_text(vec![rich_text.clone()])
+            .build()];
+
         blocks.push(
             notionrs::block::BlockType::numbered_list_tem()
                 .rich_text(vec![rich_text.clone()])
+                .children(numbered_list_item_children)
                 .build(),
         );
 
