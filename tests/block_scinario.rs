@@ -195,10 +195,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let request = client
-            .get_block_children()
-            .block_id(block_id.clone())
-            .recursive();
+        let request = client.get_block_children().block_id(block_id.clone());
 
         let response = request.send().await?;
 
