@@ -75,7 +75,7 @@ mod unit_tests {
     use super::*;
 
     #[test]
-    fn deserialize_block_file_() {
+    fn deserialize_block_image() {
         let json_data = r#"
         {
             "image": {
