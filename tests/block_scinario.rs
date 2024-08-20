@@ -129,7 +129,7 @@ mod integration_tests {
             .build()];
 
         blocks.push(
-            notionrs::block::BlockType::numbered_list_tem()
+            notionrs::block::BlockType::numbered_list_item()
                 .rich_text(vec![rich_text!("numbered_list_item content")])
                 .children(numbered_list_item_children)
                 .build(),
