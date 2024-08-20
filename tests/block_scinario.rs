@@ -153,6 +153,16 @@ mod integration_tests {
                 .build(),
         );
 
+        let table_rows = vec![notionrs::block::BlockType::table_row()
+            .cells(vec![vec![rich_text.clone()], vec![rich_text.clone()]])
+            .build()];
+
+        blocks.push(
+            notionrs::block::BlockType::table()
+                .children(table_rows)
+                .build(),
+        );
+
         blocks.push(
             notionrs::block::BlockType::to_do()
                 .rich_text(vec![rich_text.clone()])
