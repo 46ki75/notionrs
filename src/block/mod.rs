@@ -15,7 +15,7 @@ pub mod file;
 pub mod heading;
 pub mod image;
 pub mod link_preview;
-pub mod numbered_list_tem;
+pub mod numbered_list_item;
 pub mod paragraph;
 pub mod pdf;
 pub mod quote;
@@ -141,7 +141,7 @@ pub enum BlockType {
         link_preview: link_preview::LinkPreviewBlock,
     },
     NumberedListItem {
-        numbered_list_item: numbered_list_tem::NumberedListItemBlock,
+        numbered_list_item: numbered_list_item::NumberedListItemBlock,
     },
     Paragraph {
         paragraph: paragraph::ParagraphBlock,
@@ -252,8 +252,8 @@ impl BlockType {
         image::ImageBlock::new()
     }
 
-    pub fn numbered_list_tem() -> numbered_list_tem::NumberedListItemBlock {
-        numbered_list_tem::NumberedListItemBlock::new()
+    pub fn numbered_list_item() -> numbered_list_item::NumberedListItemBlock {
+        numbered_list_item::NumberedListItemBlock::new()
     }
 
     pub fn paragraph() -> paragraph::ParagraphBlock {
