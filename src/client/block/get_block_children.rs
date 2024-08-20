@@ -10,8 +10,6 @@ pub struct GetBlockChildrenClient {
     pub(crate) page_size: u64,
 
     pub(crate) start_cursor: Option<String>,
-
-    pub(crate) recursive: bool,
 }
 
 impl GetBlockChildrenClient {
@@ -22,10 +20,6 @@ impl GetBlockChildrenClient {
         let mut result_blocks: Vec<crate::block::Block> = vec![];
 
         let mut page_size_remain = self.page_size;
-
-        if self.recursive {
-            page_size_remain = u64::MAX;
-        }
 
         let block_id = &self
             .block_id
@@ -110,12 +104,6 @@ impl GetBlockChildrenClient {
     // TODO: docs for page_size
     pub fn page_size(mut self, page_size: u64) -> Self {
         self.page_size = page_size;
-        self
-    }
-
-    // TODO: docs for recursive
-    pub fn recursive(mut self) -> Self {
-        self.recursive = true;
         self
     }
 }

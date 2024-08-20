@@ -174,7 +174,6 @@ impl NotionClient {
             block_id: None,
             page_size: 100,
             start_cursor: None,
-            recursive: false,
         }
     }
 
