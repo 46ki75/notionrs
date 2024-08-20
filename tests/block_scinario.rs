@@ -179,17 +179,32 @@ mod integration_tests {
 
         println!("{:?}", response.to_json());
 
-        // # --------------------------------------------------------------------------------
-        //
-        // delete_block
-        //
-        // # --------------------------------------------------------------------------------
-
         let block_id_list = response
             .results
             .into_iter()
             .map(|block| block.id)
             .collect::<Vec<String>>();
+
+        // # --------------------------------------------------------------------------------
+        //
+        // update_block
+        //
+        // # --------------------------------------------------------------------------------
+
+        let block_id = block_id_list.first().unwrap();
+
+        let request = client
+            .update_block()
+            .block_id(block_id)
+            .block(notionrs::block::BlockType::bookmark("https://www.example.com").build());
+
+        request.send().await?;
+
+        // # --------------------------------------------------------------------------------
+        //
+        // delete_block
+        //
+        // # --------------------------------------------------------------------------------
 
         for id in block_id_list {
             let request = client.delete_block().block_id(id);

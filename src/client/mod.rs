@@ -197,4 +197,14 @@ impl NotionClient {
             children: vec![],
         }
     }
+
+    // TODO: docs
+    pub fn update_block(&self) -> crate::client::block::update_block::UpdateBlockClient {
+        crate::client::block::update_block::UpdateBlockClient {
+            reqwest_client: self.reqwest_client.clone(),
+            block_id: None,
+            archived: None,
+            block: None,
+        }
+    }
 }
