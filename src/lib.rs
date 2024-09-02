@@ -3,6 +3,7 @@
 
 pub mod block;
 pub mod client;
+pub mod database;
 pub mod error;
 pub mod filter;
 pub mod list_response;
