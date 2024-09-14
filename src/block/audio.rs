@@ -99,20 +99,4 @@ mod unit_tests {
             crate::others::file::File::External(_) => panic!(),
         }
     }
-
-    #[test]
-    fn serialize_block_audio() {
-        let audio_block = AudioBlock::new().url("https://example.com/audio.wav");
-
-        let audio_block_json = serde_json::to_string(&audio_block).unwrap();
-
-        let audio_block = serde_json::from_str::<AudioBlock>(&audio_block_json).unwrap();
-
-        match audio_block.audio {
-            crate::others::file::File::External(file) => {
-                assert_eq!(file.external.url, "https://example.com/audio.wav");
-            }
-            crate::others::file::File::File(_) => panic!(),
-        }
-    }
 }

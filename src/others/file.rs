@@ -85,6 +85,8 @@ impl Default for File {
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct FileExternal {
     /// always "external"
+    // An error occurs if this field is present when calling the block creation API.
+    #[serde(skip_serializing)]
     pub r#type: String,
 
     /// file
