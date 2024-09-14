@@ -11,7 +11,7 @@ mod integration_tests {
 
         let client = notionrs::client::NotionClient::new();
 
-        let block = notionrs::block::BlockType::bookmark()
+        let block = notionrs::block::BlockType::new_bookmark()
             .url("https://example.com")
             .caption(vec![])
             .build();

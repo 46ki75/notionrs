@@ -38,13 +38,13 @@ mod integration_tests {
         );
 
         blocks.push(
-            notionrs::block::BlockType::bookmark()
+            notionrs::block::BlockType::new_bookmark()
                 .url("https://example.com")
                 .caption(vec![])
                 .build(),
         );
 
-        blocks.push(notionrs::block::BlockType::new_build_breadcrumb());
+        blocks.push(notionrs::block::BlockType::build_breadcrumb());
 
         let bulleted_list_item_children = vec![notionrs::block::BlockType::new_paragraph()
             .rich_text(vec![rich_text!("bulleted_list_item child content")])
@@ -107,20 +107,20 @@ mod integration_tests {
             .build();
 
         blocks.push(
-            notionrs::block::BlockType::new_heading_1()
+            notionrs::block::BlockType::new_heading()
                 .rich_text(vec![rich_text!("heading_1 content")])
                 .children(vec![heading_block_child])
                 .build_heading_1(),
         );
 
         blocks.push(
-            notionrs::block::BlockType::new_heading_2()
+            notionrs::block::BlockType::new_heading()
                 .rich_text(vec![rich_text!("heading_2 content")])
                 .build_heading_2(),
         );
 
         blocks.push(
-            notionrs::block::BlockType::new_heading_3()
+            notionrs::block::BlockType::new_heading()
                 .rich_text(vec![rich_text!("heading_3 content")])
                 .build_heading_3(),
         );
@@ -231,7 +231,7 @@ mod integration_tests {
         let block_id = block_id_list.first().unwrap();
 
         let request = client.update_block().block_id(block_id).block(
-            notionrs::block::BlockType::bookmark()
+            notionrs::block::BlockType::new_bookmark()
                 .url("https://www.example.com")
                 .build(),
         );
