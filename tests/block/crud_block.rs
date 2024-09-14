@@ -53,6 +53,18 @@ mod integration_tests {
 
         // println!("{:?}", response);
 
+        // # --------------------------------------------------------------------------------
+        //
+        // delete_block
+        //
+        // # --------------------------------------------------------------------------------
+
+        let request = client.delete_block().block_id(response.id.clone());
+
+        let response = request.send().await?;
+
+        println!("{:?}", response);
+
         Ok(())
     }
 }
