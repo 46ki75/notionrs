@@ -173,7 +173,7 @@ pub enum BlockType {
 }
 
 impl BlockType {
-    pub fn audio() -> audio::AudioBlock {
+    pub fn new_audio() -> audio::AudioBlock {
         audio::AudioBlock::new()
     }
 
@@ -181,29 +181,29 @@ impl BlockType {
         bookmark::BookmarkBlock::new()
     }
 
-    pub fn bulleted_list_item() -> bulleted_list_item::BulletedListItemBlock {
+    pub fn new_bulleted_list_item() -> bulleted_list_item::BulletedListItemBlock {
         bulleted_list_item::BulletedListItemBlock::new()
     }
 
-    pub fn callout() -> callout::CalloutBlock {
+    pub fn new_callout() -> callout::CalloutBlock {
         callout::CalloutBlock::new()
     }
 
-    pub fn build_breadcrumb() -> BlockType {
+    pub fn new_build_breadcrumb() -> BlockType {
         BlockType::Breadcrumb {
             breadcrumb: std::collections::HashMap::new(),
         }
     }
 
-    pub fn code() -> code::CodeBlock {
+    pub fn new_code() -> code::CodeBlock {
         code::CodeBlock::new()
     }
 
-    pub fn column_list() -> column_list::ColumnListBlock {
+    pub fn new_column_list() -> column_list::ColumnListBlock {
         column_list::ColumnListBlock::new()
     }
 
-    pub fn column() -> column::ColumnBlock {
+    pub fn new_column() -> column::ColumnBlock {
         column::ColumnBlock::new()
     }
 
@@ -213,71 +213,71 @@ impl BlockType {
         }
     }
 
-    pub fn embed() -> embed::EmbedBlock {
+    pub fn new_embed() -> embed::EmbedBlock {
         embed::EmbedBlock::new()
     }
 
-    pub fn equation() -> equation::EquationBlock {
+    pub fn new_equation() -> equation::EquationBlock {
         equation::EquationBlock::new()
     }
 
-    pub fn file() -> file::FileBlock {
+    pub fn new_file() -> file::FileBlock {
         file::FileBlock::new()
     }
 
-    pub fn heading_1() -> heading::HeadingBlock {
+    pub fn new_heading_1() -> heading::HeadingBlock {
         heading::HeadingBlock::new()
     }
 
-    pub fn heading_2() -> heading::HeadingBlock {
+    pub fn new_heading_2() -> heading::HeadingBlock {
         heading::HeadingBlock::new()
     }
 
-    pub fn heading_3() -> heading::HeadingBlock {
+    pub fn new_heading_3() -> heading::HeadingBlock {
         heading::HeadingBlock::new()
     }
 
-    pub fn image() -> image::ImageBlock {
+    pub fn new_image() -> image::ImageBlock {
         image::ImageBlock::new()
     }
 
-    pub fn numbered_list_item() -> numbered_list_item::NumberedListItemBlock {
+    pub fn new_numbered_list_item() -> numbered_list_item::NumberedListItemBlock {
         numbered_list_item::NumberedListItemBlock::new()
     }
 
-    pub fn paragraph() -> paragraph::ParagraphBlock {
+    pub fn new_paragraph() -> paragraph::ParagraphBlock {
         paragraph::ParagraphBlock::new()
     }
 
-    pub fn pdf() -> pdf::PdfBlock {
+    pub fn new_pdf() -> pdf::PdfBlock {
         pdf::PdfBlock::new()
     }
 
-    pub fn quote() -> quote::QuoteBlock {
+    pub fn new_quote() -> quote::QuoteBlock {
         quote::QuoteBlock::new()
     }
 
-    pub fn synced_block() -> synced_block::SyncedBlock {
+    pub fn new_synced_block() -> synced_block::SyncedBlock {
         synced_block::SyncedBlock::new()
     }
 
-    pub fn table_row() -> table_row::TableRowBlock {
+    pub fn new_table_row() -> table_row::TableRowBlock {
         table_row::TableRowBlock::new()
     }
 
-    pub fn table() -> table::TableBlock {
+    pub fn new_table() -> table::TableBlock {
         table::TableBlock::new()
     }
 
-    pub fn to_do() -> to_do::ToDoBlock {
+    pub fn new_to_do() -> to_do::ToDoBlock {
         to_do::ToDoBlock::new()
     }
 
-    pub fn toggle() -> toggle::ToggleBlock {
+    pub fn new_toggle() -> toggle::ToggleBlock {
         toggle::ToggleBlock::new()
     }
 
-    pub fn video() -> video::VideoBlock {
+    pub fn new_video() -> video::VideoBlock {
         video::VideoBlock::new()
     }
 }

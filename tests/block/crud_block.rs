@@ -18,7 +18,7 @@ mod integration_tests {
         let request = client
             .append_block_children()
             .block_id(block_id)
-            .children(vec![notionrs::block::BlockType::audio()
+            .children(vec![notionrs::block::BlockType::new_audio()
                 .url("https://example.com/sample.wav")
                 .build()]);
 

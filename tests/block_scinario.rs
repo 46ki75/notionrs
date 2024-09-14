@@ -44,46 +44,46 @@ mod integration_tests {
                 .build(),
         );
 
-        blocks.push(notionrs::block::BlockType::build_breadcrumb());
+        blocks.push(notionrs::block::BlockType::new_build_breadcrumb());
 
-        let bulleted_list_item_children = vec![notionrs::block::BlockType::paragraph()
+        let bulleted_list_item_children = vec![notionrs::block::BlockType::new_paragraph()
             .rich_text(vec![rich_text!("bulleted_list_item child content")])
             .build()];
 
         blocks.push(
-            notionrs::block::BlockType::bulleted_list_item()
+            notionrs::block::BlockType::new_bulleted_list_item()
                 .rich_text(vec![rich_text!("bulleted_list_item content")])
                 .children(bulleted_list_item_children)
                 .build(),
         );
 
         blocks.push(
-            notionrs::block::BlockType::callout()
+            notionrs::block::BlockType::new_callout()
                 .rich_text(vec![rich_text!("callout content")])
                 .build(),
         );
 
         blocks.push(
-            notionrs::block::BlockType::code()
+            notionrs::block::BlockType::new_code()
                 .rich_text(vec![rich_text!("const message = 'Hello, world!'")])
                 .lnaguage(notionrs::others::language::Language::Typescript)
                 .build(),
         );
 
-        let column_left = notionrs::block::BlockType::column()
-            .children(vec![notionrs::block::BlockType::paragraph()
+        let column_left = notionrs::block::BlockType::new_column()
+            .children(vec![notionrs::block::BlockType::new_paragraph()
                 .rich_text(vec![rich_text!("column_left content")])
                 .build()])
             .build();
 
-        let column_right = notionrs::block::BlockType::column()
-            .children(vec![notionrs::block::BlockType::paragraph()
+        let column_right = notionrs::block::BlockType::new_column()
+            .children(vec![notionrs::block::BlockType::new_paragraph()
                 .rich_text(vec![rich_text!("column_right content")])
                 .build()])
             .build();
 
         blocks.push(
-            notionrs::block::BlockType::column_list()
+            notionrs::block::BlockType::new_column_list()
                 .children(vec![column_left, column_right])
                 .build(),
         );
@@ -91,81 +91,81 @@ mod integration_tests {
         blocks.push(notionrs::block::BlockType::build_divider());
 
         blocks.push(
-            notionrs::block::BlockType::embed()
+            notionrs::block::BlockType::new_embed()
                 .url("https://example.com")
                 .build(),
         );
 
         blocks.push(
-            notionrs::block::BlockType::file()
+            notionrs::block::BlockType::new_file()
                 .url("https://example.com/file.txt")
                 .build(),
         );
 
-        let heading_block_child = notionrs::block::BlockType::paragraph()
+        let heading_block_child = notionrs::block::BlockType::new_paragraph()
             .rich_text(vec![rich_text!("heading_1 toggle content")])
             .build();
 
         blocks.push(
-            notionrs::block::BlockType::heading_1()
+            notionrs::block::BlockType::new_heading_1()
                 .rich_text(vec![rich_text!("heading_1 content")])
                 .children(vec![heading_block_child])
                 .build_heading_1(),
         );
 
         blocks.push(
-            notionrs::block::BlockType::heading_2()
+            notionrs::block::BlockType::new_heading_2()
                 .rich_text(vec![rich_text!("heading_2 content")])
                 .build_heading_2(),
         );
 
         blocks.push(
-            notionrs::block::BlockType::heading_3()
+            notionrs::block::BlockType::new_heading_3()
                 .rich_text(vec![rich_text!("heading_3 content")])
                 .build_heading_3(),
         );
 
         blocks.push(
-            notionrs::block::BlockType::pdf()
+            notionrs::block::BlockType::new_pdf()
                 .url("https://example.com/sample.pdf")
                 .build(),
         );
 
         blocks.push(
-            notionrs::block::BlockType::image()
+            notionrs::block::BlockType::new_image()
                 .url("https://fastly.picsum.photos/id/938/200/300.jpg?hmac=MVXKrDXBUPK5fv_Ev3FTdCFeYf9rvJE2Tz9xynjeelM")
                 .build(),
         );
 
-        let numbered_list_item_children = vec![notionrs::block::BlockType::paragraph()
+        let numbered_list_item_children = vec![notionrs::block::BlockType::new_paragraph()
             .rich_text(vec![rich_text!("numbered_list_item content")])
             .build()];
 
         blocks.push(
-            notionrs::block::BlockType::numbered_list_item()
+            notionrs::block::BlockType::new_numbered_list_item()
                 .rich_text(vec![rich_text!("numbered_list_item content")])
                 .children(numbered_list_item_children)
                 .build(),
         );
 
         blocks.push(
-            notionrs::block::BlockType::paragraph()
+            notionrs::block::BlockType::new_paragraph()
                 .rich_text(vec![rich_text!("paragraph content")])
                 .build(),
         );
 
-        let quote_children = vec![notionrs::block::BlockType::paragraph()
+        let quote_children = vec![notionrs::block::BlockType::new_paragraph()
             .rich_text(vec![rich_text!("quote block child content")])
             .build()];
 
         blocks.push(
-            notionrs::block::BlockType::quote()
+            notionrs::block::BlockType::new_quote()
                 .rich_text(vec![rich_text!("numbered_list_item content")])
                 .children(quote_children)
                 .build(),
         );
 
-        let table_rows = vec![notionrs::block::BlockType::table_row()
+        let table_rows = vec![notionrs::block::BlockType::new_table_row()
             .cells(vec![
                 vec![rich_text!("table cell content").red()],
                 vec![rich_text!("table cell content").red()],
@@ -173,23 +173,23 @@ mod integration_tests {
             .build()];
 
         blocks.push(
-            notionrs::block::BlockType::table()
+            notionrs::block::BlockType::new_table()
                 .children(table_rows)
                 .build(),
         );
 
         blocks.push(
-            notionrs::block::BlockType::to_do()
+            notionrs::block::BlockType::new_to_do()
                 .rich_text(vec![rich_text!("TODO")])
                 .build(),
         );
 
-        let toggle_block_child = notionrs::block::BlockType::paragraph()
+        let toggle_block_child = notionrs::block::BlockType::new_paragraph()
             .rich_text(vec![rich_text!("toggle details")])
             .build();
 
         blocks.push(
-            notionrs::block::BlockType::toggle()
+            notionrs::block::BlockType::new_toggle()
                 .rich_text(vec![rich_text!("toggle summary")])
                 .children(vec![toggle_block_child])
                 .build(),
