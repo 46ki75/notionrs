@@ -17,12 +17,24 @@ mod integration_tests {
 
         let request = client
             .append_block_children()
-            .block_id(block_id)
+            .block_id(block_id.clone())
             .children(vec![notionrs::block::BlockType::new_audio()
                 .url("https://example.com/sample.wav")
                 .build()]);
 
+        let _ = request.send().await?;
+
+        // # --------------------------------------------------------------------------------
+        //
+        // get_block_children
+        //
+        // # --------------------------------------------------------------------------------
+
+        let request = client.get_block_children().block_id(block_id);
+
         let response = request.send().await?;
+
+        println!("{:?}", response);
 
         // # --------------------------------------------------------------------------------
         //
@@ -36,22 +48,27 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{:?}", response);
-
         // # --------------------------------------------------------------------------------
         //
         // update_block
         //
         // # --------------------------------------------------------------------------------
 
-        // let request = client
-        //     .update_block()
-        //     .block_id(response.clone().id)
-        //     .block(response);
+        let audio_block = match response.details {
+            notionrs::block::BlockType::Audio(audio) => audio,
+            e => panic!("{:?}", e),
+        };
 
-        // let response = request.send().await?;
+        let builded_audio_block = audio_block.url("https://example.com/foobar.wav").build();
 
-        // println!("{:?}", response);
+        let request = client
+            .update_block()
+            .block_id(response.id.clone())
+            .block(builded_audio_block);
+
+        let response = request.send().await?;
+
+        println!("{:?}", response);
 
         // # --------------------------------------------------------------------------------
         //
