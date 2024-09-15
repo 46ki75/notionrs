@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, PartialEq, Eq, Clone)]
 pub struct AudioBlock {
     /// When creating an AudioBlock via the API, only files of the External type are accepted.
     /// (File uploads are not supported.)
@@ -54,7 +54,7 @@ where
 {
     fn from(url: T) -> Self {
         Self {
-            audio: crate::others::file::File::External(crate::others::file::FileExternal::from(
+            audio: crate::others::file::File::External(crate::others::file::ExternalFile::from(
                 url,
             )),
         }
@@ -89,7 +89,7 @@ mod unit_tests {
 
         let audio_block = serde_json::from_str::<AudioBlock>(json_data).unwrap();
 
-        match audio_block.audio {
+        match audio_block.clone().audio {
             crate::others::file::File::File(file) => {
                 assert_eq!(
                     file.file.url,
@@ -98,5 +98,7 @@ mod unit_tests {
             }
             crate::others::file::File::External(_) => panic!(),
         }
+
+        assert!(audio_block.clone() == audio_block);
     }
 }

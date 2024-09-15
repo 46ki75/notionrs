@@ -54,7 +54,7 @@ where
 {
     fn from(url: T) -> Self {
         Self {
-            file: crate::others::file::File::External(crate::others::file::FileExternal::from(url)),
+            file: crate::others::file::File::External(crate::others::file::ExternalFile::from(url)),
         }
     }
 }
