@@ -668,7 +668,7 @@ mod unit_tests {
 
         match block.details {
             BlockType::File(file) => match file.file {
-                crate::others::file::File::File(uploaded_file) => {
+                crate::others::file::File::Uploaded(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.name,
                         Some("2024-07-18 202106.png".to_string())
@@ -721,7 +721,7 @@ mod unit_tests {
 
         match block.details {
             BlockType::Image(image) => match image.image {
-                crate::others::file::File::File(uploaded_file) => {
+                crate::others::file::File::Uploaded(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.file.url,
                         "https://prod-files-secure.s3.us-west-2.amazonaws.com/"

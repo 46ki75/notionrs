@@ -91,7 +91,7 @@ mod unit_tests {
         let file = serde_json::from_str::<FileBlock>(json_data).unwrap();
 
         match file.file {
-            crate::others::file::File::File(f) => {
+            crate::others::file::File::Uploaded(f) => {
                 assert_eq!(f.caption, Some(vec![]));
                 assert_eq!(f.r#type, "file");
                 assert_eq!(f.name, Some("sample.mp3".to_string()));

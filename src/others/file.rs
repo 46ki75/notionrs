@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 /// **Note**: The Notion API does not support file uploads.
 /// Therefore, for creating or updating, you are only allowed to
-/// specify an external URL using the `FileExternal` variant of the enum.
+/// specify an external URL using the `ExternalFile` variant of the enum.
 ///
 /// <https://developers.notion.com/reference/file-object>
 ///
@@ -40,7 +40,7 @@ use serde::{Deserialize, Serialize};
 #[serde(untagged)]
 pub enum File {
     External(ExternalFile),
-    File(UploadedFile),
+    Uploaded(UploadedFile),
 }
 
 impl File {
@@ -51,6 +51,15 @@ impl File {
             name: None,
             caption: None,
         })
+    }
+
+    /// This utility returns the URL regardless of whether the File variant is External or Uploaded.
+    /// (You can retrieve the URL without having to check the variant).
+    pub fn get_url(&self) -> String {
+        match self {
+            File::External(f) => f.external.url.clone(),
+            File::Uploaded(f) => f.file.url.clone(),
+        }
     }
 
     pub fn name<T>(mut self, name: T) -> Self

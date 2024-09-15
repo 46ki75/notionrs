@@ -90,7 +90,7 @@ mod unit_tests {
         let audio_block = serde_json::from_str::<AudioBlock>(json_data).unwrap();
 
         match audio_block.clone().audio {
-            crate::others::file::File::File(file) => {
+            crate::others::file::File::Uploaded(file) => {
                 assert_eq!(
                     file.file.url,
                     "https://prod-files-secure.s3.us-west-2.amazonaws.com/"

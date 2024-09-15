@@ -92,7 +92,7 @@ mod unit_tests {
         let image_block = serde_json::from_str::<ImageBlock>(json_data).unwrap();
 
         match image_block.image {
-            crate::others::file::File::File(f) => {
+            crate::others::file::File::Uploaded(f) => {
                 assert_eq!(f.caption, Some(vec![]));
                 assert_eq!(f.r#type, "file");
                 assert_eq!(

@@ -90,7 +90,7 @@ mod unit_tests {
         let pdf_block = serde_json::from_str::<PdfBlock>(json_data).unwrap();
 
         match pdf_block.pdf {
-            crate::others::file::File::File(f) => {
+            crate::others::file::File::Uploaded(f) => {
                 assert_eq!(f.caption, Some(vec![]));
                 assert_eq!(f.r#type, "file");
                 assert_eq!(

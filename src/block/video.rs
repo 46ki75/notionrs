@@ -86,7 +86,7 @@ mod unit_tests {
         let video_block = serde_json::from_str::<VideoBlock>(json_data).unwrap();
 
         match video_block.video {
-            crate::others::file::File::File(f) => {
+            crate::others::file::File::Uploaded(f) => {
                 assert_eq!(f.caption, Some(vec![]));
                 assert_eq!(f.r#type, "file");
                 assert_eq!(
