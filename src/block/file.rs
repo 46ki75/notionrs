@@ -54,7 +54,54 @@ where
 {
     fn from(url: T) -> Self {
         Self {
-            file: crate::others::file::File::External(crate::others::file::FileExternal::from(url)),
+            file: crate::others::file::File::External(crate::others::file::ExternalFile::from(url)),
+        }
+    }
+}
+
+// # --------------------------------------------------------------------------------
+//
+// unit test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod unit_tests {
+
+    use core::panic;
+
+    use super::*;
+
+    #[test]
+    fn deserialize_block_file_() {
+        let json_data = r#"
+        {
+            "file": {
+                "caption": [],
+                "type": "file",
+                "file": {
+                    "url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/",
+                    "expiry_time": "2024-08-20T10:54:16.569Z"
+                },
+                "name": "sample.mp3"
+            }
+        }
+        "#;
+
+        let file = serde_json::from_str::<FileBlock>(json_data).unwrap();
+
+        match file.file {
+            crate::others::file::File::Uploaded(f) => {
+                assert_eq!(f.caption, Some(vec![]));
+                assert_eq!(f.r#type, "file");
+                assert_eq!(f.name, Some("sample.mp3".to_string()));
+                assert_eq!(
+                    f.file.url,
+                    "https://prod-files-secure.s3.us-west-2.amazonaws.com/"
+                );
+                assert_eq!(f.file.expiry_time, "2024-08-20T10:54:16.569Z");
+            }
+            crate::others::file::File::External(_) => panic!(),
         }
     }
 }

@@ -11,6 +11,11 @@ pub struct QuoteBlock {
 
     /// The color of the block.
     pub color: crate::others::color::Color,
+
+    /// It can only be specified when making a block creation request.
+    /// If you need to retrieve the child blocks, you will have to send a request to this block again.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub children: Option<Vec<super::BlockType>>,
 }
 
 impl QuoteBlock {
@@ -24,6 +29,11 @@ impl QuoteBlock {
 
     pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
         self.rich_text = rich_text;
+        self
+    }
+
+    pub fn children(mut self, children: Vec<super::BlockType>) -> Self {
+        self.children = Some(children);
         self
     }
 

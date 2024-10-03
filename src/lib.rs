@@ -3,9 +3,11 @@
 
 pub mod block;
 pub mod client;
+pub mod database;
 pub mod error;
 pub mod filter;
 pub mod list_response;
+pub mod macros;
 pub mod others;
 pub mod page;
 pub mod prelude;

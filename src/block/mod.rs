@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::rich_text;
+
 pub mod audio;
 pub mod bookmark;
 pub mod bulleted_list_item;
@@ -15,7 +17,7 @@ pub mod file;
 pub mod heading;
 pub mod image;
 pub mod link_preview;
-pub mod numbered_list_tem;
+pub mod numbered_list_item;
 pub mod paragraph;
 pub mod pdf;
 pub mod quote;
@@ -141,7 +143,7 @@ pub enum BlockType {
         link_preview: link_preview::LinkPreviewBlock,
     },
     NumberedListItem {
-        numbered_list_item: numbered_list_tem::NumberedListItemBlock,
+        numbered_list_item: numbered_list_item::NumberedListItemBlock,
     },
     Paragraph {
         paragraph: paragraph::ParagraphBlock,
@@ -173,32 +175,73 @@ pub enum BlockType {
 }
 
 impl BlockType {
-    // pub fn audio<T>(url: T) -> Self
-    // where
-    //     T: AsRef<str>,
-    // {
-    //     BlockType::Audio {
-    //         audio: crate::others::file::File::new(url.as_ref()),
-    //     }
-    // }
+    // AudioBlock
 
-    pub fn bookmark<T>(url: T) -> bookmark::BookmarkBlock
+    pub fn new_audio() -> audio::AudioBlock {
+        audio::AudioBlock::new()
+    }
+
+    pub fn new_audio_with_url<T>(url: T) -> audio::AudioBlock
     where
         T: AsRef<str>,
     {
-        bookmark::BookmarkBlock {
-            caption: vec![],
-            url: url.as_ref().to_string(),
-        }
+        audio::AudioBlock::new().url(url.as_ref())
     }
 
-    pub fn bulleted_list_item() -> bulleted_list_item::BulletedListItemBlock {
+    // BookmarkBlock
+
+    pub fn new_bookmark() -> bookmark::BookmarkBlock {
+        bookmark::BookmarkBlock::new()
+    }
+
+    pub fn new_bookmark_with_url<T>(url: T) -> bookmark::BookmarkBlock
+    where
+        T: AsRef<str>,
+    {
+        bookmark::BookmarkBlock::new().url(url)
+    }
+
+    // BulletedListItemBlock
+
+    pub fn new_bulleted_list_item() -> bulleted_list_item::BulletedListItemBlock {
         bulleted_list_item::BulletedListItemBlock::new()
     }
 
-    pub fn callout() -> callout::CalloutBlock {
+    pub fn new_bulleted_list_item_with_children(
+        children: Vec<BlockType>,
+    ) -> bulleted_list_item::BulletedListItemBlock {
+        bulleted_list_item::BulletedListItemBlock::new().children(children)
+    }
+
+    pub fn new_bulleted_list_item_with_rich_text<T>(
+        rich_text: Vec<crate::others::rich_text::RichText>,
+    ) -> bulleted_list_item::BulletedListItemBlock {
+        bulleted_list_item::BulletedListItemBlock::new().rich_text(rich_text)
+    }
+
+    pub fn new_bulleted_list_item_with_plain_text<T>(
+        plain_text: T,
+    ) -> bulleted_list_item::BulletedListItemBlock
+    where
+        T: AsRef<str>,
+    {
+        bulleted_list_item::BulletedListItemBlock::new().rich_text(vec![rich_text!(plain_text)])
+    }
+
+    // CalloutBlock
+
+    pub fn new_callout() -> callout::CalloutBlock {
         callout::CalloutBlock::new()
     }
+
+    pub fn new_callout_with_plain_text<T>(plain_text: T) -> callout::CalloutBlock
+    where
+        T: AsRef<str>,
+    {
+        callout::CalloutBlock::new().rich_text(vec![rich_text!(plain_text)])
+    }
+
+    // BreadcrumbBlock
 
     pub fn build_breadcrumb() -> BlockType {
         BlockType::Breadcrumb {
@@ -206,17 +249,47 @@ impl BlockType {
         }
     }
 
-    pub fn code() -> code::CodeBlock {
+    // CodeBlock
+
+    pub fn new_code() -> code::CodeBlock {
         code::CodeBlock::new()
     }
 
-    pub fn column_list() -> column_list::ColumnListBlock {
+    pub fn new_code_with_plain_text<T>(plain_text: T) -> code::CodeBlock
+    where
+        T: AsRef<str>,
+    {
+        code::CodeBlock::new().rich_text(vec![rich_text!(plain_text)])
+    }
+
+    // ColumnListBlock
+
+    pub fn new_column_list() -> column_list::ColumnListBlock {
         column_list::ColumnListBlock::new()
     }
 
-    pub fn column() -> column::ColumnBlock {
+    pub fn new_column_list_with_children_columns(
+        children: Vec<column::ColumnBlock>,
+    ) -> column_list::ColumnListBlock {
+        column_list::ColumnListBlock::new().children(
+            children
+                .into_iter()
+                .map(|column_block| column_block.build())
+                .collect(),
+        )
+    }
+
+    // ColumnBlock
+
+    pub fn new_column() -> column::ColumnBlock {
         column::ColumnBlock::new()
     }
+
+    pub fn new_column_with_children(children: Vec<BlockType>) -> column::ColumnBlock {
+        column::ColumnBlock::new().children(children)
+    }
+
+    // DividerBlock
 
     pub fn build_divider() -> BlockType {
         BlockType::Divider {
@@ -224,72 +297,231 @@ impl BlockType {
         }
     }
 
-    pub fn embed() -> embed::EmbedBlock {
+    // EmbedBlock
+
+    pub fn new_embed() -> embed::EmbedBlock {
         embed::EmbedBlock::new()
     }
 
-    pub fn equation() -> equation::EquationBlock {
+    pub fn new_embed_with_url<T>(url: T) -> embed::EmbedBlock
+    where
+        T: AsRef<str>,
+    {
+        embed::EmbedBlock::new().url(url)
+    }
+
+    // EquationBlock
+
+    pub fn new_equation() -> equation::EquationBlock {
         equation::EquationBlock::new()
     }
 
-    pub fn file() -> file::FileBlock {
+    pub fn new_equation_with_expression<T>(expression: T) -> equation::EquationBlock
+    where
+        T: AsRef<str>,
+    {
+        equation::EquationBlock::new().expression(expression)
+    }
+
+    // FileBlock
+
+    pub fn new_file() -> file::FileBlock {
         file::FileBlock::new()
     }
 
-    pub fn heading_1() -> heading::HeadingBlock {
+    pub fn new_file_with_url<T>(url: T) -> file::FileBlock
+    where
+        T: AsRef<str>,
+    {
+        file::FileBlock::new().url(url)
+    }
+
+    // HeadingBlock
+
+    pub fn new_heading() -> heading::HeadingBlock {
         heading::HeadingBlock::new()
     }
 
-    pub fn heading_2() -> heading::HeadingBlock {
-        heading::HeadingBlock::new()
+    pub fn new_heading_with_plain_text<T>(plain_text: T) -> heading::HeadingBlock
+    where
+        T: AsRef<str>,
+    {
+        heading::HeadingBlock::new().rich_text(vec![rich_text!(plain_text)])
     }
 
-    pub fn heading_3() -> heading::HeadingBlock {
-        heading::HeadingBlock::new()
-    }
+    // ImageBlock
 
-    pub fn image() -> image::ImageBlock {
+    pub fn new_image() -> image::ImageBlock {
         image::ImageBlock::new()
     }
 
-    pub fn numbered_list_tem() -> numbered_list_tem::NumberedListItemBlock {
-        numbered_list_tem::NumberedListItemBlock::new()
+    pub fn new_image_with_url<T>(url: T) -> image::ImageBlock
+    where
+        T: AsRef<str>,
+    {
+        image::ImageBlock::new().url(url)
     }
 
-    pub fn paragraph() -> paragraph::ParagraphBlock {
+    // NumberedListItemBlock
+
+    pub fn new_numbered_list_item() -> numbered_list_item::NumberedListItemBlock {
+        numbered_list_item::NumberedListItemBlock::new()
+    }
+
+    pub fn new_numbered_list_item_with_children(
+        children: Vec<BlockType>,
+    ) -> numbered_list_item::NumberedListItemBlock {
+        numbered_list_item::NumberedListItemBlock::new().children(children)
+    }
+
+    pub fn new_numbered_list_item_with_rich_text<T>(
+        rich_text: Vec<crate::others::rich_text::RichText>,
+    ) -> numbered_list_item::NumberedListItemBlock {
+        numbered_list_item::NumberedListItemBlock::new().rich_text(rich_text)
+    }
+
+    pub fn new_numbered_list_item_with_plain_text<T>(
+        plain_text: T,
+    ) -> numbered_list_item::NumberedListItemBlock
+    where
+        T: AsRef<str>,
+    {
+        numbered_list_item::NumberedListItemBlock::new().rich_text(vec![rich_text!(plain_text)])
+    }
+
+    // ParagraphBlock
+
+    pub fn new_paragraph() -> paragraph::ParagraphBlock {
         paragraph::ParagraphBlock::new()
     }
 
-    pub fn pdf() -> pdf::PdfBlock {
+    pub fn new_paragraph_with_rich_text(
+        rich_text: Vec<crate::others::rich_text::RichText>,
+    ) -> paragraph::ParagraphBlock {
+        paragraph::ParagraphBlock::new().rich_text(rich_text)
+    }
+
+    pub fn new_paragraph_with_plain_text<T>(plain_text: T) -> paragraph::ParagraphBlock
+    where
+        T: AsRef<str>,
+    {
+        paragraph::ParagraphBlock::new().rich_text(vec![rich_text!(plain_text)])
+    }
+
+    // PdfBlock
+
+    pub fn new_pdf() -> pdf::PdfBlock {
         pdf::PdfBlock::new()
     }
 
-    pub fn quote() -> quote::QuoteBlock {
+    pub fn new_pdf_with_url<T>(url: T) -> pdf::PdfBlock
+    where
+        T: AsRef<str>,
+    {
+        pdf::PdfBlock::new().url(url)
+    }
+
+    // QuoteBlock
+
+    pub fn new_quote() -> quote::QuoteBlock {
         quote::QuoteBlock::new()
     }
 
-    pub fn synced_block() -> synced_block::SyncedBlock {
+    pub fn new_quote_with_children(children: Vec<BlockType>) -> quote::QuoteBlock {
+        quote::QuoteBlock::new().children(children)
+    }
+
+    pub fn new_quote_with_rich_text(
+        rich_text: Vec<crate::others::rich_text::RichText>,
+    ) -> quote::QuoteBlock {
+        quote::QuoteBlock::new().rich_text(rich_text)
+    }
+
+    pub fn new_quote_with_plain_text<T>(plain_text: T) -> quote::QuoteBlock
+    where
+        T: AsRef<str>,
+    {
+        quote::QuoteBlock::new().rich_text(vec![rich_text!(plain_text)])
+    }
+
+    // SyncedBlock
+
+    pub fn new_synced_block() -> synced_block::SyncedBlock {
         synced_block::SyncedBlock::new()
     }
 
-    pub fn table() -> table::TableBlock {
-        table::TableBlock::new()
+    pub fn new_synced_block_whti_block_id<T>(block_id: T) -> synced_block::SyncedBlock
+    where
+        T: AsRef<str>,
+    {
+        synced_block::SyncedBlock::new().block_id(block_id)
     }
 
-    pub fn table_row() -> table_row::TableRowBlock {
+    // TableRowBlock
+
+    pub fn new_table_row() -> table_row::TableRowBlock {
         table_row::TableRowBlock::new()
     }
 
-    pub fn to_do() -> to_do::ToDoBlock {
+    pub fn new_table_row_with_cells(
+        cells: Vec<Vec<crate::others::rich_text::RichText>>,
+    ) -> table_row::TableRowBlock {
+        table_row::TableRowBlock::new().cells(cells)
+    }
+
+    // TableBlock
+
+    pub fn new_table() -> table::TableBlock {
+        table::TableBlock::new()
+    }
+
+    pub fn new_table_with_table_rows(
+        table_rows: Vec<table_row::TableRowBlock>,
+    ) -> table::TableBlock {
+        table::TableBlock::new().children(
+            table_rows
+                .into_iter()
+                .map(|table_row| table_row.build())
+                .collect(),
+        )
+    }
+
+    // ToDoBlock
+
+    pub fn new_to_do() -> to_do::ToDoBlock {
         to_do::ToDoBlock::new()
     }
 
-    pub fn toggle() -> toggle::ToggleBlock {
+    // ToggleBlock
+
+    pub fn new_toggle() -> toggle::ToggleBlock {
         toggle::ToggleBlock::new()
     }
 
-    pub fn video() -> video::VideoBlock {
+    pub fn new_toggle_with_summary_rich_text(
+        rich_text: Vec<crate::others::rich_text::RichText>,
+    ) -> toggle::ToggleBlock {
+        toggle::ToggleBlock::new().rich_text(rich_text)
+    }
+
+    pub fn new_toggle_with_summary_plain_text<T>(plain_text: T) -> toggle::ToggleBlock
+    where
+        T: AsRef<str>,
+    {
+        toggle::ToggleBlock::new().rich_text(vec![rich_text!(plain_text)])
+    }
+
+    // VideoBlock
+
+    pub fn new_video() -> video::VideoBlock {
         video::VideoBlock::new()
+    }
+
+    pub fn new_video_with_url<T>(url: T) -> video::VideoBlock
+    where
+        T: AsRef<str>,
+    {
+        video::VideoBlock::new().url(url)
     }
 }
 
@@ -436,7 +668,7 @@ mod unit_tests {
 
         match block.details {
             BlockType::File(file) => match file.file {
-                crate::others::file::File::File(uploaded_file) => {
+                crate::others::file::File::Uploaded(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.name,
                         Some("2024-07-18 202106.png".to_string())
@@ -489,7 +721,7 @@ mod unit_tests {
 
         match block.details {
             BlockType::Image(image) => match image.image {
-                crate::others::file::File::File(uploaded_file) => {
+                crate::others::file::File::Uploaded(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.file.url,
                         "https://prod-files-secure.s3.us-west-2.amazonaws.com/"

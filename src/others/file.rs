@@ -1,6 +1,12 @@
 use serde::{Deserialize, Serialize};
 
+/// **Note**: The Notion API does not support file uploads.
+/// Therefore, for creating or updating, you are only allowed to
+/// specify an external URL using the `ExternalFile` variant of the enum.
+///
 /// <https://developers.notion.com/reference/file-object>
+///
+/// ## File
 ///
 /// File objects contain data about a file that is uploaded to Notion,
 /// or data about an external file that is linked to in Notion.
@@ -30,21 +36,30 @@ use serde::{Deserialize, Serialize};
 ///     }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
 #[serde(untagged)]
 pub enum File {
-    External(FileExternal),
-    File(FileFile),
+    External(ExternalFile),
+    Uploaded(UploadedFile),
 }
 
 impl File {
     pub fn new() -> Self {
-        File::External(FileExternal {
+        File::External(ExternalFile {
             r#type: "external".to_string(),
-            external: FileExternalParameter::default(),
+            external: ExternalFileParameter::default(),
             name: None,
             caption: None,
         })
+    }
+
+    /// This utility returns the URL regardless of whether the File variant is External or Uploaded.
+    /// (You can retrieve the URL without having to check the variant).
+    pub fn get_url(&self) -> String {
+        match self {
+            File::External(f) => f.external.url.clone(),
+            File::Uploaded(f) => f.file.url.clone(),
+        }
     }
 
     pub fn name<T>(mut self, name: T) -> Self
@@ -71,6 +86,14 @@ impl Default for File {
     }
 }
 
+// # --------------------------------------------------------------------------------
+//
+// external
+//
+// # --------------------------------------------------------------------------------
+
+/// ## ExternalFile
+///
 /// When a link to an external file is set,
 /// it becomes an object like the one shown below.
 ///
@@ -82,13 +105,15 @@ impl Default for File {
 ///     }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
-pub struct FileExternal {
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
+pub struct ExternalFile {
     /// always "external"
+    // An error occurs if this field is present when calling the block creation API.
+    #[serde(skip_serializing)]
     pub r#type: String,
 
     /// file
-    pub external: FileExternalParameter,
+    pub external: ExternalFileParameter,
 
     /// File caption (can only be set in the file type block or database properties)
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -99,53 +124,17 @@ pub struct FileExternal {
     pub caption: Option<Vec<crate::others::rich_text::RichText>>,
 }
 
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Default)]
-pub struct FileExternalParameter {
+#[derive(Debug, Deserialize, Serialize, Default, PartialEq, Eq, Clone)]
+pub struct ExternalFileParameter {
     /// URL of the file
     pub url: String,
 }
 
-/// When a file is uploaded to Notion, it becomes an object as shown below.
-///
-/// json```
-/// {
-///     "type": "file",
-///     "file": {
-///         "url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/daa95f86-2d56-4e18-be3b-16d81b31dc0d",
-///         "expiry_time": "2024-04-04T10:45:54.308Z"
-///     }
-/// }
-/// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
-pub struct FileFile {
-    /// always "file"
-    pub r#type: String,
-
-    /// file
-    pub file: FileFileParameter,
-
-    /// File caption (can only be set in the file type block or database properties)
-    pub name: Option<String>,
-
-    /// File caption (setting is available only in the file type block)
-    pub caption: Option<Vec<crate::others::rich_text::RichText>>,
-}
-
-/// file
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
-pub struct FileFileParameter {
-    /// Signed URL for the file (Amazon S3)
-    pub url: String,
-
-    /// The expiration time of the signed URL for Amazon S3
-    pub expiry_time: String,
-}
-
-impl FileExternal {
+impl ExternalFile {
     pub fn new() -> Self {
         Self {
             r#type: "external".to_string(),
-            external: FileExternalParameter { url: String::new() },
+            external: ExternalFileParameter::default(),
             name: None,
             caption: None,
         }
@@ -159,13 +148,13 @@ impl FileExternal {
     }
 }
 
-impl Default for FileExternal {
+impl Default for ExternalFile {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> From<T> for FileExternal
+impl<T> From<T> for ExternalFile
 where
     T: AsRef<str>,
 {
@@ -175,6 +164,84 @@ where
         instance
     }
 }
+
+impl std::fmt::Display for ExternalFile {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.external.url)
+    }
+}
+
+impl std::fmt::Display for ExternalFileParameter {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.url)
+    }
+}
+
+// # --------------------------------------------------------------------------------
+//
+// file (uploaded via web ui)
+//
+// # --------------------------------------------------------------------------------
+
+/// ## UploadedFile
+///
+/// **This struct is read-only.**
+///
+/// **Note**: The Notion API does not support file uploads.
+///
+/// When a file is uploaded to Notion, it becomes an object as shown below.
+///
+/// ```json
+/// {
+///     "type": "file",
+///     "file": {
+///         "url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/daa95f86-2d56-4e18-be3b-16d81b31dc0d",
+///         "expiry_time": "2024-04-04T10:45:54.308Z"
+///     }
+/// }
+/// ```
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
+pub struct UploadedFile {
+    /// always "file"
+    pub r#type: String,
+
+    /// file
+    pub file: UploadedFileParameter,
+
+    /// File caption (can only be set in the file type block or database properties)
+    pub name: Option<String>,
+
+    /// File caption (setting is available only in the file type block)
+    pub caption: Option<Vec<crate::others::rich_text::RichText>>,
+}
+
+impl std::fmt::Display for UploadedFile {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.file.url)
+    }
+}
+
+/// file
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
+pub struct UploadedFileParameter {
+    /// Signed URL for the file (Amazon S3)
+    pub url: String,
+
+    /// The expiration time of the signed URL for Amazon S3
+    pub expiry_time: String,
+}
+
+impl std::fmt::Display for UploadedFileParameter {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.url)
+    }
+}
+
+// # --------------------------------------------------------------------------------
+//
+// unit test
+//
+// # --------------------------------------------------------------------------------
 
 #[cfg(test)]
 mod unit_tests {
@@ -191,7 +258,7 @@ mod unit_tests {
         }
         "#;
 
-        let file = serde_json::from_str::<FileExternal>(json_data).unwrap();
+        let file = serde_json::from_str::<ExternalFile>(json_data).unwrap();
 
         assert_eq!(file.name, None);
         assert_eq!(file.caption, None);
@@ -214,7 +281,7 @@ mod unit_tests {
         }
         "#;
 
-        let file = serde_json::from_str::<FileFile>(json_data).unwrap();
+        let file = serde_json::from_str::<UploadedFile>(json_data).unwrap();
 
         assert_eq!(file.name, None);
         assert_eq!(file.caption, None);

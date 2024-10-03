@@ -91,7 +91,7 @@ mod unit_tests {
 
         for file in &file.files {
             match &file {
-                crate::others::file::File::File(f) => {
+                crate::others::file::File::Uploaded(f) => {
                     assert_eq!(f.name, Some("0208a.jpg".to_string()));
                     assert_eq!(
                         f.file.url,

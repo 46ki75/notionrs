@@ -9,10 +9,10 @@ repository = "https://github.com/46ki75/notionrs"
 
 [dependencies]
 async-recursion = "~1.1.0"
-async-trait = "~0.1.79"
-dotenvy = "~0.15.0"
-reqwest = "~0.12.2"
-serde = { version = "~1.0.197", features = ["derive"] }
-serde_json = "~1.0.115"
-thiserror = "~1.0.58"
-tokio = { version = "~1.39", features = ["full"] }
+async-trait = "0.1.82"
+dotenvy = "0.15.0"
+reqwest = "0.12.7"
+serde = { version = "1.0.210", features = ["derive"] }
+serde_json = "1.0.128"
+thiserror = "1.0.58"
+tokio = { version = "1.40.0", features = ["full"] }

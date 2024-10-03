@@ -10,8 +10,6 @@ pub struct GetBlockChildrenClient {
     pub(crate) page_size: u64,
 
     pub(crate) start_cursor: Option<String>,
-
-    pub(crate) recursive: bool,
 }
 
 impl GetBlockChildrenClient {
@@ -106,12 +104,6 @@ impl GetBlockChildrenClient {
     // TODO: docs for page_size
     pub fn page_size(mut self, page_size: u64) -> Self {
         self.page_size = page_size;
-        self
-    }
-
-    // TODO: docs for recursive
-    pub fn recursive(mut self) -> Self {
-        self.recursive = true;
         self
     }
 }

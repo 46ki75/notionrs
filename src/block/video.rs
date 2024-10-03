@@ -54,9 +54,48 @@ where
 {
     fn from(url: T) -> Self {
         Self {
-            video: crate::others::file::File::External(crate::others::file::FileExternal::from(
+            video: crate::others::file::File::External(crate::others::file::ExternalFile::from(
                 url,
             )),
+        }
+    }
+}
+
+#[cfg(test)]
+mod unit_tests {
+
+    use core::panic;
+
+    use super::*;
+
+    #[test]
+    fn deserialize_block_video() {
+        let json_data = r#"
+        {
+            "video": {
+                "caption": [],
+                "type": "file",
+                "file": {
+                    "url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/",
+                    "expiry_time": "2024-08-20T11:07:14.256Z"
+                }
+            }
+        }
+        "#;
+
+        let video_block = serde_json::from_str::<VideoBlock>(json_data).unwrap();
+
+        match video_block.video {
+            crate::others::file::File::Uploaded(f) => {
+                assert_eq!(f.caption, Some(vec![]));
+                assert_eq!(f.r#type, "file");
+                assert_eq!(
+                    f.file.url,
+                    "https://prod-files-secure.s3.us-west-2.amazonaws.com/"
+                );
+                assert_eq!(f.file.expiry_time, "2024-08-20T11:07:14.256Z");
+            }
+            crate::others::file::File::External(_) => panic!(),
         }
     }
 }
