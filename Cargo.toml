@@ -9,7 +9,7 @@ repository = "https://github.com/46ki75/notionrs"
 
 [dependencies]
 async-recursion = "~1.1.0"
-async-trait = "0.1.82"
+async-trait = "0.1.83"
 dotenvy = "0.15.0"
 reqwest = "0.12.8"
 serde = { version = "1.0.210", features = ["derive"] }
