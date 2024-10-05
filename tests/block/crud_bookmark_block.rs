@@ -44,9 +44,12 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Bookmark { bookmark } => notionrs::block::Block::Bookmark {
-                bookmark: bookmark.url("https://example.com/index.html"),
-            },
+            notionrs::block::Block::Bookmark { bookmark } => {
+                assert_eq!(bookmark.url, "https://example.com");
+                notionrs::block::Block::Bookmark {
+                    bookmark: bookmark.url("https://example.com/index.html"),
+                }
+            }
             e => panic!("{:?}", e),
         };
 
