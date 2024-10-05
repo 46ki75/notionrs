@@ -14,9 +14,9 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = notionrs::block::Block::Audio(
-            notionrs::block::AudioBlock::new().url("https://example.com/sample.wav"),
-        );
+        let block = notionrs::block::Block::Audio {
+            audio: notionrs::others::file::File::new().url("https://example.com/sample.wav"),
+        };
 
         let request = client
             .append_block_children()
@@ -43,10 +43,10 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = match response.details {
-            notionrs::block::Block::Audio(audio) => {
-                notionrs::block::Block::Audio(audio.url("https://example.com/foobar.wav"))
-            }
+        let block = match response.block {
+            notionrs::block::Block::Audio { audio } => notionrs::block::Block::Audio {
+                audio: audio.url("https://example.com/foobar.wav"),
+            },
             e => panic!("{:?}", e),
         };
 
