@@ -17,8 +17,8 @@ pub struct CodeBlock {
 }
 
 impl CodeBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Code { code: self }
+    pub fn build(self) -> super::Block {
+        super::Block::Code { code: self }
     }
 
     pub fn new() -> Self {

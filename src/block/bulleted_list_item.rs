@@ -17,12 +17,12 @@ pub struct BulletedListItemBlock {
     /// It can only be specified when making a block creation request.
     /// If you need to retrieve the child blocks, you will have to send a request to this block again.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub children: Option<Vec<super::BlockType>>,
+    pub children: Option<Vec<super::Block>>,
 }
 
 impl BulletedListItemBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::BulletedListItem {
+    pub fn build(self) -> super::Block {
+        super::Block::BulletedListItem {
             bulleted_list_item: self,
         }
     }
@@ -36,7 +36,7 @@ impl BulletedListItemBlock {
         self
     }
 
-    pub fn children(mut self, children: Vec<super::BlockType>) -> Self {
+    pub fn children(mut self, children: Vec<super::Block>) -> Self {
         self.children = Some(children);
         self
     }

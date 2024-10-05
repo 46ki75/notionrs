@@ -9,8 +9,8 @@ pub struct FileBlock {
 }
 
 impl FileBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::File(self)
+    pub fn build(self) -> super::Block {
+        super::Block::File(self)
     }
 
     pub fn new() -> Self {

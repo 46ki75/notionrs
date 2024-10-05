@@ -12,8 +12,8 @@ pub struct EquationBlock {
 }
 
 impl EquationBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Equation { equation: self }
+    pub fn build(self) -> super::Block {
+        super::Block::Equation { equation: self }
     }
 
     pub fn new() -> Self {

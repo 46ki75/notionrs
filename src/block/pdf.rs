@@ -9,8 +9,8 @@ pub struct PdfBlock {
 }
 
 impl PdfBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Pdf(self)
+    pub fn build(self) -> super::Block {
+        super::Block::Pdf(self)
     }
 
     pub fn new() -> Self {

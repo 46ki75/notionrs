@@ -20,8 +20,8 @@ pub struct SyncedBlockParams {
 }
 
 impl SyncedBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::SyncedBlock { synced_block: self }
+    pub fn build(self) -> super::Block {
+        super::Block::SyncedBlock { synced_block: self }
     }
 
     pub fn new() -> Self {

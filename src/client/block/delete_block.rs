@@ -10,7 +10,7 @@ pub struct DeleteBlockClient {
 
 impl DeleteBlockClient {
     // TODO: docs for send
-    pub async fn send(self) -> Result<crate::block::Block, NotionError> {
+    pub async fn send(self) -> Result<crate::block::BlockResponse, NotionError> {
         let block_id = self
             .block_id
             .ok_or(NotionError::NotionRequestParameterError(
@@ -33,7 +33,7 @@ impl DeleteBlockClient {
 
         let body = response.text().await?;
 
-        let block = serde_json::from_str::<crate::block::Block>(&body)?;
+        let block = serde_json::from_str::<crate::block::BlockResponse>(&body)?;
 
         Ok(block)
     }

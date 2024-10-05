@@ -17,7 +17,7 @@ mod integration_tests {
         let request = client
             .append_block_children()
             .block_id(block_id.clone())
-            .children(vec![notionrs::block::BlockType::new_audio()
+            .children(vec![notionrs::block::Block::new_audio()
                 .url("https://example.com/sample.wav")
                 .build()]);
 
@@ -54,7 +54,7 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let audio_block = match response.details {
-            notionrs::block::BlockType::Audio(audio) => audio,
+            notionrs::block::Block::Audio(audio) => audio,
             e => panic!("{:?}", e),
         };
 

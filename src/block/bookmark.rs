@@ -14,8 +14,8 @@ pub struct BookmarkBlock {
 }
 
 impl BookmarkBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Bookmark { bookmark: self }
+    pub fn build(self) -> super::Block {
+        super::Block::Bookmark { bookmark: self }
     }
 
     pub fn new() -> Self {

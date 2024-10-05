@@ -15,7 +15,7 @@ mod integration_tests {
         let response = request.send().await?;
 
         match response.details {
-            notionrs::block::BlockType::ChildPage { child_page } => {
+            notionrs::block::Block::ChildPage { child_page } => {
                 println!("Title: {}", child_page.title);
             }
             _ => panic!("Unexpected block type!"),

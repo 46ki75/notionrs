@@ -59,7 +59,7 @@ pub mod video;
 /// }
 /// ```
 #[derive(Deserialize, Serialize, Debug)]
-pub struct Block {
+pub struct BlockResponse {
     pub object: String,
 
     pub id: String,
@@ -81,13 +81,13 @@ pub struct Block {
     pub in_trash: bool,
 
     #[serde(flatten)]
-    pub details: BlockType,
+    pub details: Block,
 }
 
 /// <https://developers.notion.com/reference/block#block-type-objects>
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
-pub enum BlockType {
+pub enum Block {
     Audio(audio::AudioBlock),
     Bookmark {
         bookmark: bookmark::BookmarkBlock,
@@ -174,7 +174,7 @@ pub enum BlockType {
     Unknown(serde_json::Value),
 }
 
-impl BlockType {
+impl Block {
     // AudioBlock
 
     pub fn new_audio() -> audio::AudioBlock {
@@ -208,7 +208,7 @@ impl BlockType {
     }
 
     pub fn new_bulleted_list_item_with_children(
-        children: Vec<BlockType>,
+        children: Vec<Block>,
     ) -> bulleted_list_item::BulletedListItemBlock {
         bulleted_list_item::BulletedListItemBlock::new().children(children)
     }
@@ -243,8 +243,8 @@ impl BlockType {
 
     // BreadcrumbBlock
 
-    pub fn build_breadcrumb() -> BlockType {
-        BlockType::Breadcrumb {
+    pub fn build_breadcrumb() -> Block {
+        Block::Breadcrumb {
             breadcrumb: std::collections::HashMap::new(),
         }
     }
@@ -285,14 +285,14 @@ impl BlockType {
         column::ColumnBlock::new()
     }
 
-    pub fn new_column_with_children(children: Vec<BlockType>) -> column::ColumnBlock {
+    pub fn new_column_with_children(children: Vec<Block>) -> column::ColumnBlock {
         column::ColumnBlock::new().children(children)
     }
 
     // DividerBlock
 
-    pub fn build_divider() -> BlockType {
-        BlockType::Divider {
+    pub fn build_divider() -> Block {
+        Block::Divider {
             divider: std::collections::HashMap::new(),
         }
     }
@@ -369,7 +369,7 @@ impl BlockType {
     }
 
     pub fn new_numbered_list_item_with_children(
-        children: Vec<BlockType>,
+        children: Vec<Block>,
     ) -> numbered_list_item::NumberedListItemBlock {
         numbered_list_item::NumberedListItemBlock::new().children(children)
     }
@@ -427,7 +427,7 @@ impl BlockType {
         quote::QuoteBlock::new()
     }
 
-    pub fn new_quote_with_children(children: Vec<BlockType>) -> quote::QuoteBlock {
+    pub fn new_quote_with_children(children: Vec<Block>) -> quote::QuoteBlock {
         quote::QuoteBlock::new().children(children)
     }
 
@@ -584,7 +584,7 @@ mod unit_tests {
         }
         "#;
 
-        let block = serde_json::from_str::<Block>(json_data).unwrap();
+        let block = serde_json::from_str::<BlockResponse>(json_data).unwrap();
 
         assert_eq!(block.object, "block");
         assert_eq!(block.id, "b943dc57-3260-4486-a1c8-f83cf8c12fc3");
@@ -616,7 +616,7 @@ mod unit_tests {
         assert!(!block.in_trash);
 
         match block.details {
-            BlockType::Bookmark { bookmark } => {
+            Block::Bookmark { bookmark } => {
                 assert_eq!(bookmark.url, "https://example.com");
 
                 let rich_text = bookmark.caption.first().unwrap();
@@ -664,10 +664,10 @@ mod unit_tests {
         }
         "#;
 
-        let block = serde_json::from_str::<Block>(json_data).unwrap();
+        let block = serde_json::from_str::<BlockResponse>(json_data).unwrap();
 
         match block.details {
-            BlockType::File(file) => match file.file {
+            Block::File(file) => match file.file {
                 crate::others::file::File::Uploaded(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.name,
@@ -715,12 +715,12 @@ mod unit_tests {
         }
         "#;
 
-        let block = serde_json::from_str::<Block>(json_data).unwrap();
+        let block = serde_json::from_str::<BlockResponse>(json_data).unwrap();
 
         println!("{:?}", block);
 
         match block.details {
-            BlockType::Image(image) => match image.image {
+            Block::Image(image) => match image.image {
                 crate::others::file::File::Uploaded(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.file.url,

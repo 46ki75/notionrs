@@ -22,12 +22,12 @@ pub struct TableBlock {
     /// It can only be specified when making a block creation request.
     /// If you need to retrieve the child blocks, you will have to send a request to this block again.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub children: Option<Vec<super::BlockType>>,
+    pub children: Option<Vec<super::Block>>,
 }
 
 impl TableBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Table { table: self }
+    pub fn build(self) -> super::Block {
+        super::Block::Table { table: self }
     }
 
     pub fn new() -> Self {
@@ -50,7 +50,7 @@ impl TableBlock {
     }
 
     /// Only `table_row` can be specified.
-    pub fn children(mut self, children: Vec<super::BlockType>) -> Self {
+    pub fn children(mut self, children: Vec<super::Block>) -> Self {
         if children.len() > u16::MAX as usize {
             panic!("The number of children exceeds the maximum table width.");
         }
