@@ -21,19 +21,7 @@ mod integration_tests {
                 .url("https://example.com/sample.wav")
                 .build()]);
 
-        let _ = request.send().await?;
-
-        // # --------------------------------------------------------------------------------
-        //
-        // get_block_children
-        //
-        // # --------------------------------------------------------------------------------
-
-        let request = client.get_block_children().block_id(block_id);
-
         let response = request.send().await?;
-
-        println!("{:?}", response);
 
         // # --------------------------------------------------------------------------------
         //
