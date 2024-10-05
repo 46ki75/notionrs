@@ -15,7 +15,9 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = notionrs::block::Block::Audio {
-            audio: notionrs::others::file::File::new().url("https://example.com/sample.wav"),
+            audio: notionrs::others::file::File::new()
+                .url("https://example.com/sample.wav")
+                .caption(vec![notionrs::rich_text!("my caption")]),
         };
 
         let request = client
@@ -44,9 +46,12 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Audio { audio } => notionrs::block::Block::Audio {
-                audio: audio.url("https://example.com/foobar.wav"),
-            },
+            notionrs::block::Block::Audio { audio } => {
+                assert_eq!(audio.get_url(), "https://example.com/sample.wav");
+                notionrs::block::Block::Audio {
+                    audio: audio.url("https://example.com/foobar.wav"),
+                }
+            }
             e => panic!("{:?}", e),
         };
 

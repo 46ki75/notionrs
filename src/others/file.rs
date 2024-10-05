@@ -64,6 +64,8 @@ impl File {
         }
     }
 
+    /// This function can only be used if the File variant is External.
+    /// If the File variant is Uploaded, it returns Self without changing the value.
     pub fn name<T>(mut self, name: T) -> Self
     where
         T: AsRef<str>,
@@ -74,6 +76,8 @@ impl File {
         self
     }
 
+    /// This function can only be used if the File variant is External.
+    /// If the File variant is Uploaded, it returns Self without changing the value.
     pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
         if let File::External(ref mut external) = self {
             external.caption = Some(caption)
@@ -81,6 +85,8 @@ impl File {
         self
     }
 
+    /// This function can only be used if the File variant is External.
+    /// If the File variant is Uploaded, it returns Self without changing the value.
     pub fn url<T>(mut self, url: T) -> Self
     where
         T: AsRef<str>,
