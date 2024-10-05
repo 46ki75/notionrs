@@ -35,29 +35,6 @@ pub struct RichTextLink {
 }
 
 impl RichText {
-    // pub fn new<T>(plain_text: T) -> Self
-    // where
-    //     T: AsRef<str>,
-    // {
-    //     RichText {
-    //         r#type: "text".to_string(),
-    //         text: RichTextContent {
-    //             content: plain_text.as_ref().to_string(),
-    //             link: None,
-    //         },
-    //         annotations: RichTextAnnotations {
-    //             bold: false,
-    //             italic: false,
-    //             strikethrough: false,
-    //             underline: false,
-    //             code: false,
-    //             color: crate::others::color::Color::FG(crate::others::color::ColorFG::Default),
-    //         },
-    //         plain_text: plain_text.as_ref().to_string(),
-    //         href: None,
-    //     }
-    // }
-
     pub fn new() -> Self {
         RichText {
             r#type: "text".to_string(),
@@ -143,6 +120,18 @@ where
 {
     fn from(plain_text: T) -> Self {
         Self::new().plain_text(plain_text.as_ref())
+    }
+}
+
+impl std::fmt::Display for RichText {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.plain_text)
+    }
+}
+
+impl From<RichText> for String {
+    fn from(rich_text: RichText) -> Self {
+        rich_text.to_string()
     }
 }
 
