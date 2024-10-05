@@ -14,13 +14,16 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
+        let rich_text = notionrs::rich_text!("Heading2 !");
+
+        let block = notionrs::block::Block::Heading2 {
+            heading_2: notionrs::block::HeadingBlock::new().rich_text(vec![rich_text]),
+        };
+
         let request = client
             .append_block_children()
             .block_id(block_id.clone())
-            .children(vec![notionrs::block::Block::new_heading()
-                .rich_text(vec![notionrs::rich_text!("my heading")])
-                .level(2)
-                .build()]);
+            .children(vec![block]);
 
         let response = request.send().await?;
 
@@ -43,19 +46,16 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.details {
-            notionrs::block::Block::Heading2 { heading_2 } => heading_2,
+            notionrs::block::Block::Heading2 { heading_2 } => notionrs::block::Block::Heading2 {
+                heading_2: heading_2.red(),
+            },
             e => panic!("{:?}", e),
         };
-
-        let builded_block = block
-            .rich_text(vec![notionrs::rich_text!("my heading?")])
-            .level(2)
-            .build();
 
         let request = client
             .update_block()
             .block_id(response.id.clone())
-            .block(builded_block);
+            .block(block);
 
         let response = request.send().await?;
 

@@ -14,12 +14,14 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
+        let block = notionrs::block::Block::Audio(
+            notionrs::block::AudioBlock::new().url("https://example.com/sample.wav"),
+        );
+
         let request = client
             .append_block_children()
             .block_id(block_id.clone())
-            .children(vec![notionrs::block::Block::new_audio()
-                .url("https://example.com/sample.wav")
-                .build()]);
+            .children(vec![block]);
 
         let response = request.send().await?;
 
@@ -41,17 +43,17 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let audio_block = match response.details {
-            notionrs::block::Block::Audio(audio) => audio,
+        let block = match response.details {
+            notionrs::block::Block::Audio(audio) => {
+                notionrs::block::Block::Audio(audio.url("https://example.com/foobar.wav"))
+            }
             e => panic!("{:?}", e),
         };
-
-        let builded_audio_block = audio_block.url("https://example.com/foobar.wav").build();
 
         let request = client
             .update_block()
             .block_id(response.id.clone())
-            .block(builded_audio_block);
+            .block(block);
 
         let response = request.send().await?;
 
