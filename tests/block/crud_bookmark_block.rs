@@ -43,7 +43,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = match response.details {
+        let block = match response.block {
             notionrs::block::Block::Bookmark { bookmark } => bookmark,
             e => panic!("{:?}", e),
         };

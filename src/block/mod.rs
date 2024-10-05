@@ -11,13 +11,13 @@ pub use self::column::ColumnBlock;
 pub use self::column_list::ColumnListBlock;
 pub use self::embed::EmbedBlock;
 pub use self::equation::EquationBlock;
-pub use self::file::FileBlock;
+// pub use self::file::FileBlock;
 pub use self::heading::HeadingBlock;
-pub use self::image::ImageBlock;
+// pub use self::image::ImageBlock;
 pub use self::link_preview::LinkPreviewBlock;
 pub use self::numbered_list_item::NumberedListItemBlock;
 pub use self::paragraph::ParagraphBlock;
-pub use self::pdf::PdfBlock;
+// pub use self::pdf::PdfBlock;
 pub use self::quote::QuoteBlock;
 pub use self::synced_block::SyncedBlock;
 pub use self::table::TableBlock;
@@ -25,7 +25,7 @@ pub use self::table_row::TableRowBlock;
 pub use self::template::TemplateBlock;
 pub use self::to_do::ToDoBlock;
 pub use self::toggle::ToggleBlock;
-pub use self::video::VideoBlock;
+// pub use self::video::VideoBlock;
 
 pub mod audio;
 pub mod bookmark;
@@ -106,14 +106,16 @@ pub struct BlockResponse {
     pub in_trash: bool,
 
     #[serde(flatten)]
-    pub details: Block,
+    pub block: Block,
 }
 
 /// <https://developers.notion.com/reference/block#block-type-objects>
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Block {
-    Audio(audio::AudioBlock),
+    Audio {
+        audio: crate::others::file::File,
+    },
     Bookmark {
         bookmark: bookmark::BookmarkBlock,
     },
@@ -150,7 +152,9 @@ pub enum Block {
     Equation {
         equation: equation::EquationBlock,
     },
-    File(file::FileBlock),
+    File {
+        file: crate::others::file::File,
+    },
     #[serde(rename = "heading_1")]
     Heading1 {
         heading_1: heading::HeadingBlock,
@@ -163,7 +167,9 @@ pub enum Block {
     Heading3 {
         heading_3: heading::HeadingBlock,
     },
-    Image(image::ImageBlock),
+    Image {
+        image: crate::others::file::File,
+    },
     LinkPreview {
         link_preview: link_preview::LinkPreviewBlock,
     },
@@ -173,7 +179,9 @@ pub enum Block {
     Paragraph {
         paragraph: paragraph::ParagraphBlock,
     },
-    Pdf(pdf::PdfBlock),
+    Pdf {
+        pdf: crate::others::file::File,
+    },
     Quote {
         quote: quote::QuoteBlock,
     },
@@ -195,7 +203,9 @@ pub enum Block {
     Toggle {
         toggle: toggle::ToggleBlock,
     },
-    Video(video::VideoBlock),
+    Video {
+        video: crate::others::file::File,
+    },
     Unknown(serde_json::Value),
 }
 
@@ -289,7 +299,7 @@ mod unit_tests {
         assert!(!block.archived);
         assert!(!block.in_trash);
 
-        match block.details {
+        match block.block {
             Block::Bookmark { bookmark } => {
                 assert_eq!(bookmark.url, "https://example.com");
 
@@ -340,8 +350,8 @@ mod unit_tests {
 
         let block = serde_json::from_str::<BlockResponse>(json_data).unwrap();
 
-        match block.details {
-            Block::File(file) => match file.file {
+        match block.block {
+            Block::File { file } => match file {
                 crate::others::file::File::Uploaded(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.name,
@@ -393,8 +403,8 @@ mod unit_tests {
 
         println!("{:?}", block);
 
-        match block.details {
-            Block::Image(image) => match image.image {
+        match block.block {
+            Block::Image { image } => match image {
                 crate::others::file::File::Uploaded(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.file.url,

@@ -45,7 +45,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = match response.details {
+        let block = match response.block {
             notionrs::block::Block::Heading2 { heading_2 } => notionrs::block::Block::Heading2 {
                 heading_2: heading_2.red(),
             },

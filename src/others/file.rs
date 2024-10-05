@@ -44,6 +44,8 @@ pub enum File {
 }
 
 impl File {
+    /// Note that while `File` is an enum, this function will return the `External` variant of `File`.
+    /// This is because the Notion API does not support uploading new files.
     pub fn new() -> Self {
         File::External(ExternalFile {
             r#type: "external".to_string(),
@@ -75,6 +77,16 @@ impl File {
     pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
         if let File::External(ref mut external) = self {
             external.caption = Some(caption)
+        }
+        self
+    }
+
+    pub fn url<T>(mut self, url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        if let File::External(ref mut external) = self {
+            external.external.url = url.as_ref().to_string()
         }
         self
     }
