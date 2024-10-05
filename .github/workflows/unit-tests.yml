@@ -2,13 +2,10 @@ name: Unit Test
 
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
-      - develop
-      - "release/*"
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   test:
