@@ -9,8 +9,8 @@ pub struct ImageBlock {
 }
 
 impl ImageBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Image(self)
+    pub fn build(self) -> super::Block {
+        super::Block::Image(self)
     }
 
     pub fn new() -> Self {

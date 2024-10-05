@@ -16,8 +16,8 @@ impl GetBlockChildrenClient {
     // TODO: docs for send
     pub async fn send(
         self,
-    ) -> Result<crate::list_response::ListResponse<crate::block::Block>, NotionError> {
-        let mut result_blocks: Vec<crate::block::Block> = vec![];
+    ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, NotionError> {
+        let mut result_blocks: Vec<crate::block::BlockResponse> = vec![];
 
         let mut page_size_remain = self.page_size;
 
@@ -62,7 +62,7 @@ impl GetBlockChildrenClient {
             let body = response.text().await?;
 
             let block_list_response = serde_json::from_str::<
-                crate::list_response::ListResponse<crate::block::Block>,
+                crate::list_response::ListResponse<crate::block::BlockResponse>,
             >(&body)?;
 
             result_blocks.extend(block_list_response.results);

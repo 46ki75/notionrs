@@ -9,8 +9,8 @@ pub struct VideoBlock {
 }
 
 impl VideoBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Video(self)
+    pub fn build(self) -> super::Block {
+        super::Block::Video(self)
     }
 
     pub fn new() -> Self {

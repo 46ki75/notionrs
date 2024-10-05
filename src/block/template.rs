@@ -12,8 +12,8 @@ pub struct TemplateBlock {
 }
 
 impl TemplateBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Template { template: self }
+    pub fn build(self) -> super::Block {
+        super::Block::Template { template: self }
     }
 
     pub fn new() -> Self {

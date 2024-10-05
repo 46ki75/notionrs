@@ -23,20 +23,20 @@ pub struct HeadingBlock {
     /// It can only be specified when making a block creation request.
     /// If you need to retrieve the child blocks, you will have to send a request to this block again.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub children: Option<Vec<super::BlockType>>,
+    pub children: Option<Vec<super::Block>>,
 }
 
 impl HeadingBlock {
-    pub fn build_heading_1(self) -> super::BlockType {
-        super::BlockType::Heading1 { heading_1: self }
+    pub fn build_heading_1(self) -> super::Block {
+        super::Block::Heading1 { heading_1: self }
     }
 
-    pub fn build_heading_2(self) -> super::BlockType {
-        super::BlockType::Heading2 { heading_2: self }
+    pub fn build_heading_2(self) -> super::Block {
+        super::Block::Heading2 { heading_2: self }
     }
 
-    pub fn build_heading_3(self) -> super::BlockType {
-        super::BlockType::Heading3 { heading_3: self }
+    pub fn build_heading_3(self) -> super::Block {
+        super::Block::Heading3 { heading_3: self }
     }
 
     pub fn new() -> Self {
@@ -48,7 +48,7 @@ impl HeadingBlock {
         self
     }
 
-    pub fn children(mut self, children: Vec<super::BlockType>) -> Self {
+    pub fn children(mut self, children: Vec<super::Block>) -> Self {
         self.children = Some(children);
         self
     }

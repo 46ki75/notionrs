@@ -9,8 +9,8 @@ pub struct AudioBlock {
 }
 
 impl AudioBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Audio(self)
+    pub fn build(self) -> super::Block {
+        super::Block::Audio(self)
     }
 
     pub fn new() -> Self {

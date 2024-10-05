@@ -19,8 +19,8 @@ pub struct CalloutBlock {
 }
 
 impl CalloutBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Callout { callout: self }
+    pub fn build(self) -> super::Block {
+        super::Block::Callout { callout: self }
     }
 
     pub fn new() -> Self {
