@@ -19,10 +19,6 @@ pub struct QuoteBlock {
 }
 
 impl QuoteBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::Quote { quote: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }

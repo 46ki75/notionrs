@@ -20,10 +20,6 @@ pub struct SyncedBlockParams {
 }
 
 impl SyncedBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::SyncedBlock { synced_block: self }
-    }
-
     pub fn new() -> Self {
         Self {
             synced_from: Some(SyncedBlockParams {

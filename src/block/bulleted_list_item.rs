@@ -21,12 +21,6 @@ pub struct BulletedListItemBlock {
 }
 
 impl BulletedListItemBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::BulletedListItem {
-            bulleted_list_item: self,
-        }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }

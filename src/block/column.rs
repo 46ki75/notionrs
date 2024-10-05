@@ -9,10 +9,6 @@ pub struct ColumnBlock {
 }
 
 impl ColumnBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::Column { column: self }
-    }
-
     pub fn new() -> Self {
         ColumnBlock {
             children: Some(vec![]),

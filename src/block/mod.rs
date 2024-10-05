@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-pub use self::audio::AudioBlock;
 pub use self::bookmark::BookmarkBlock;
 pub use self::bulleted_list_item::BulletedListItemBlock;
 pub use self::callout::CalloutBlock;
@@ -11,13 +10,10 @@ pub use self::column::ColumnBlock;
 pub use self::column_list::ColumnListBlock;
 pub use self::embed::EmbedBlock;
 pub use self::equation::EquationBlock;
-// pub use self::file::FileBlock;
 pub use self::heading::HeadingBlock;
-// pub use self::image::ImageBlock;
 pub use self::link_preview::LinkPreviewBlock;
 pub use self::numbered_list_item::NumberedListItemBlock;
 pub use self::paragraph::ParagraphBlock;
-// pub use self::pdf::PdfBlock;
 pub use self::quote::QuoteBlock;
 pub use self::synced_block::SyncedBlock;
 pub use self::table::TableBlock;
@@ -25,9 +21,7 @@ pub use self::table_row::TableRowBlock;
 pub use self::template::TemplateBlock;
 pub use self::to_do::ToDoBlock;
 pub use self::toggle::ToggleBlock;
-// pub use self::video::VideoBlock;
 
-pub mod audio;
 pub mod bookmark;
 pub mod bulleted_list_item;
 pub mod callout;
@@ -38,13 +32,10 @@ pub mod column;
 pub mod column_list;
 pub mod embed;
 pub mod equation;
-pub mod file;
 pub mod heading;
-pub mod image;
 pub mod link_preview;
 pub mod numbered_list_item;
 pub mod paragraph;
-pub mod pdf;
 pub mod quote;
 pub mod synced_block;
 pub mod table;
@@ -52,7 +43,6 @@ pub mod table_row;
 pub mod template;
 pub mod to_do;
 pub mod toggle;
-pub mod video;
 
 /// ```json
 /// {

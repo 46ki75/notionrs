@@ -21,12 +21,6 @@ pub struct NumberedListItemBlock {
 }
 
 impl NumberedListItemBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::NumberedListItem {
-            numbered_list_item: self,
-        }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }

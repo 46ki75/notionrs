@@ -26,10 +26,6 @@ pub struct TableBlock {
 }
 
 impl TableBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::Table { table: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
