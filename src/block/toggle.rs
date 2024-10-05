@@ -18,10 +18,6 @@ pub struct ToggleBlock {
 }
 
 impl ToggleBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::Toggle { toggle: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }

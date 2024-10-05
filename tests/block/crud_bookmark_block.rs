@@ -44,19 +44,16 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Bookmark { bookmark } => bookmark,
+            notionrs::block::Block::Bookmark { bookmark } => notionrs::block::Block::Bookmark {
+                bookmark: bookmark.url("https://example.com/index.html"),
+            },
             e => panic!("{:?}", e),
         };
-
-        let builded_block = block
-            .url("https://example.com/index.html")
-            .caption(vec![])
-            .build();
 
         let request = client
             .update_block()
             .block_id(response.id.clone())
-            .block(builded_block);
+            .block(block);
 
         let response = request.send().await?;
 

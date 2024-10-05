@@ -11,10 +11,6 @@ pub struct EmbedBlock {
 }
 
 impl EmbedBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::Embed { embed: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }

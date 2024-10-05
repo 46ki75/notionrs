@@ -16,10 +16,6 @@ pub struct ToDoBlock {
 }
 
 impl ToDoBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::ToDo { to_do: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }

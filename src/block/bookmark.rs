@@ -14,10 +14,6 @@ pub struct BookmarkBlock {
 }
 
 impl BookmarkBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::Bookmark { bookmark: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }

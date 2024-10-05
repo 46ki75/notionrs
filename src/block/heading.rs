@@ -24,25 +24,9 @@ pub struct HeadingBlock {
     /// If you need to retrieve the child blocks, you will have to send a request to this block again.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub children: Option<Vec<super::Block>>,
-
-    #[serde(skip)]
-    pub level: Option<u8>,
 }
 
 impl HeadingBlock {
-    pub fn build(self) -> super::Block {
-        match self.level {
-            Some(level) => {
-                if level == 2 {
-                    super::Block::Heading2 { heading_2: self }
-                } else {
-                    super::Block::Heading3 { heading_3: self }
-                }
-            }
-            None => super::Block::Heading1 { heading_1: self },
-        }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
@@ -54,11 +38,6 @@ impl HeadingBlock {
 
     pub fn children(mut self, children: Vec<super::Block>) -> Self {
         self.children = Some(children);
-        self
-    }
-
-    pub fn level(mut self, level: u8) -> Self {
-        self.level = Some(level);
         self
     }
 
