@@ -9,10 +9,6 @@ pub struct AudioBlock {
 }
 
 impl AudioBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::Audio(self)
-    }
-
     pub fn new() -> Self {
         Self::default()
     }

@@ -14,13 +14,14 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
+        let block = notionrs::block::Block::Bookmark {
+            bookmark: notionrs::block::BookmarkBlock::new().url("https://example.com"),
+        };
+
         let request = client
             .append_block_children()
             .block_id(block_id.clone())
-            .children(vec![notionrs::block::Block::new_bookmark()
-                .url("https://example.com")
-                .caption(vec![notionrs::rich_text!("my caption")])
-                .build()]);
+            .children(vec![block]);
 
         let response = request.send().await?;
 
