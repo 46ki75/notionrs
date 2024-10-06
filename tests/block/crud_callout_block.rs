@@ -14,7 +14,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::rich_text!("callout!");
+        let rich_text = notionrs::RichText::from("callout!");
 
         let block = notionrs::block::Block::Callout {
             callout: notionrs::block::CalloutBlock::new()

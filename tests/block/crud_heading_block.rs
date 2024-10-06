@@ -14,7 +14,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::rich_text!("Heading2 !");
+        let rich_text = notionrs::RichText::from("Heading2 !");
 
         let block = notionrs::block::Block::Heading2 {
             heading_2: notionrs::block::HeadingBlock::new()
