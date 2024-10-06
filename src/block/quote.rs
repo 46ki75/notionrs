@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Paragraph block objects contain the following
 /// information within the quote property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct QuoteBlock {
     /// The rich text displayed in the quote block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -86,10 +86,7 @@ mod unit_tests {
 
         let quote: QuoteBlock = serde_json::from_str::<QuoteBlock>(json_data).unwrap();
 
-        assert_eq!(
-            quote.color,
-            crate::others::color::Color::Default
-        );
+        assert_eq!(quote.color, crate::others::color::Color::Default);
 
         let rich_text = quote.rich_text.first().unwrap();
 

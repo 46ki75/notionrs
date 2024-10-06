@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// Equation block objects are represented as children of paragraph blocks.
 /// They are nested within a rich text object and contain
 /// the following information within the equation property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct EquationBlock {
     /// A KaTeX compatible string.
     pub expression: String,

@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Table block objects are parent blocks for table row children.
 /// Table block objects contain the following fields within the table property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct TableBlock {
     /// The number of columns in the table.
     /// Note that this cannot be changed via the public API once a table is created.

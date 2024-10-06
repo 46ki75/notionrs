@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// <https://developers.notion.com/reference/emoji-object>
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Emoji {
     pub r#type: String,
     pub emoji: char,

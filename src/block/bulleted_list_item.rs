@@ -6,7 +6,7 @@ use crate::color_setters;
 ///
 ///  Bulleted list item block objects contain the following
 /// information within the bulleted_list_item property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct BulletedListItemBlock {
     /// The rich text in the bulleted_list_item block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,

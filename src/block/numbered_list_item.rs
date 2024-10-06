@@ -6,7 +6,7 @@ use crate::color_setters;
 ///
 /// Numbered list item block objects contain the following
 /// information within the numbered_list_item property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct NumberedListItemBlock {
     /// The rich text displayed in the numbered_list_item block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,

@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/block#to-do>
 ///
 /// To do block objects contain the following information within the to_do property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct ToDoBlock {
     /// The rich text displayed in the To do block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
