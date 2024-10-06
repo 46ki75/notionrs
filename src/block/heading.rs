@@ -100,10 +100,7 @@ mod unit_tests {
 
         let heading: HeadingBlock = serde_json::from_str::<HeadingBlock>(json_data).unwrap();
 
-        assert_eq!(
-            heading.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
-        );
+        assert_eq!(heading.color, crate::others::color::Color::Default);
 
         assert!(!heading.is_toggleable);
 
@@ -119,7 +116,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
     }
 }

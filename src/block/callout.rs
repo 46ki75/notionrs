@@ -105,10 +105,7 @@ mod unit_tests {
 
         let callout: CalloutBlock = serde_json::from_str::<CalloutBlock>(json_data).unwrap();
 
-        assert_eq!(
-            callout.color,
-            crate::others::color::Color::BG(crate::others::color::ColorBG::BlueBackground)
-        );
+        assert_eq!(callout.color, crate::others::color::Color::BlueBackground);
 
         let rich_text = callout.rich_text.first().unwrap();
 
@@ -122,7 +119,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
 
         match callout.icon {
