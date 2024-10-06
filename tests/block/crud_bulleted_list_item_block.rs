@@ -14,7 +14,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::rich_text!("list item");
+        let rich_text = notionrs::RichText::from("list item");
 
         let block = notionrs::block::Block::BulletedListItem {
             bulleted_list_item: notionrs::block::BulletedListItemBlock::new()
