@@ -4,5 +4,6 @@ mod crud_breadcrumb_block;
 mod crud_bulleted_list_item_block;
 mod crud_callout_block;
 mod crud_code_block;
+mod crud_column_list_block;
 mod crud_heading_block;
 mod get_block_children;

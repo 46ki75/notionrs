@@ -100,7 +100,7 @@ pub struct BlockResponse {
 }
 
 /// <https://developers.notion.com/reference/block#block-type-objects>
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Block {
     Audio {

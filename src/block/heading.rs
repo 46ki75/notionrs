@@ -6,7 +6,7 @@ use crate::color_setters;
 ///
 /// All heading block objects, heading_1, heading_2, and heading_3,
 /// contain the following information within their corresponding objects:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct HeadingBlock {
     /// The rich text of the heading.
     pub rich_text: Vec<crate::others::rich_text::RichText>,

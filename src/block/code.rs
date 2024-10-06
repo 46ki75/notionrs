@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Code block objects contain the following
 /// information within the code property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct CodeBlock {
     /// The rich text in the caption of the code block.
     pub caption: Vec<crate::others::rich_text::RichText>,

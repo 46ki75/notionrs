@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// Template blocks represent template buttons in the Notion UI.
 /// Template block objects contain the following information within the template property:
 
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct TemplateBlock {
     /// The rich text displayed in the title of the template
     pub rich_text: Vec<crate::others::rich_text::RichText>,

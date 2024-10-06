@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 /// use the [Create a page](https://developers.notion.com/reference/post-page)
 /// and the [Update page](https://developers.notion.com/reference/patch-page) endpoints,
 /// specifying the ID of the parent page in the parent body param.
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct ChildPageBlock {
     /// The plain text title of the page.
     pub title: String,

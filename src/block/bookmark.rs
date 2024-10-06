@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Bookmark block objects contain the following
 /// information within the bookmark property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct BookmarkBlock {
     /// The caption for the bookmark.
     pub caption: Vec<crate::others::rich_text::RichText>,

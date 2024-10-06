@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/block#link-preview>
 ///
 /// Link Preview block objects contain the originally pasted url:
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct LinkPreviewBlock {
     pub url: String,
 }

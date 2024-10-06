@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/block#toggle-blocks>
 ///
 /// Toggle block objects contain the following information within the toggle property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct ToggleBlock {
     /// The rich text displayed in the Toggle block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
