@@ -1,12 +1,10 @@
 use serde::{Deserialize, Serialize};
 
-use super::color::Color;
-
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Select {
     pub id: String,
     pub name: String,
-    pub color: Color, // TODO: add restriction (FG)
+    pub color: SelectColor,
 }
 
 /// <https://developers.notion.com/reference/property-object#status>
@@ -14,6 +12,23 @@ pub struct Select {
 pub struct SelectGroup {
     pub id: String,
     pub name: String,
-    pub color: Color, // TODO: add restriction (FG)
+    pub color: SelectColor,
     pub option_ids: Vec<String>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Default)]
+#[serde(rename_all = "snake_case")]
+pub enum SelectColor {
+    #[default]
+    Default,
+
+    Blue,
+    Brown,
+    Gray,
+    Green,
+    Orange,
+    Pink,
+    Purple,
+    Red,
+    Yellow,
 }

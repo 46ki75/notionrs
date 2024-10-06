@@ -15,3 +15,4 @@ pub mod user;
 
 pub use crate::others::color::Color;
 pub use crate::others::rich_text::RichText;
+pub use crate::others::select::{Select, SelectColor, SelectGroup};
