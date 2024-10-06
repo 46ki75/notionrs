@@ -1,7 +1,7 @@
 // ## Extract Params
 //
 #[tokio::main]
-async fn main() -> Result<(), notionrs::error::NotionError> {
+async fn main() -> Result<(), notionrs::error::Error> {
     let client = notionrs::client::NotionClient::new();
 
     let request = client.get_self();

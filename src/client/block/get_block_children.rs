@@ -1,4 +1,4 @@
-use crate::error::{api_error::NotionApiError, NotionError};
+use crate::error::{api_error::NotionApiError, Error};
 
 #[derive(Debug)]
 pub struct GetBlockChildrenClient {
@@ -16,14 +16,14 @@ impl GetBlockChildrenClient {
     // TODO: docs for send
     pub async fn send(
         self,
-    ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, NotionError> {
+    ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, Error> {
         let mut result_blocks: Vec<crate::block::BlockResponse> = vec![];
 
         let mut page_size_remain = self.page_size;
 
         let block_id = &self
             .block_id
-            .ok_or(NotionError::NotionRequestParameterError(
+            .ok_or(Error::NotionRequestParameterError(
                 "`block_id` has not been set.".to_string(),
             ))?;
 
@@ -56,7 +56,7 @@ impl GetBlockChildrenClient {
 
                 let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
 
-                return Err(NotionError::NotionApiError(Box::new(error_json)));
+                return Err(Error::NotionApiError(Box::new(error_json)));
             }
 
             let body = response.text().await?;

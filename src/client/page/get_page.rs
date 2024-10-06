@@ -1,5 +1,5 @@
 use crate::{
-    error::{api_error::NotionApiError, NotionError},
+    error::{api_error::NotionApiError, Error},
     page::page_response::PageResponse,
 };
 
@@ -18,7 +18,7 @@ impl GetPageClient {
     /// When the response type is not specific,
     /// use `send::<HashMap<String, PageProperty>>()`.
     /// (Type inference for the property field cannot be used.)
-    pub async fn send(self) -> Result<PageResponse, NotionError> {
+    pub async fn send(self) -> Result<PageResponse, Error> {
         match self.page_id {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/pages/{}", id);
@@ -32,7 +32,7 @@ impl GetPageClient {
 
                     let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
 
-                    return Err(NotionError::NotionApiError(Box::new(error_json)));
+                    return Err(Error::NotionApiError(Box::new(error_json)));
                 }
 
                 let body = response.text().await?;
@@ -41,7 +41,7 @@ impl GetPageClient {
 
                 Ok(page)
             }
-            None => Err(NotionError::NotionRequestParameterError(
+            None => Err(Error::NotionRequestParameterError(
                 "user_id is empty".to_string(),
             )),
         }

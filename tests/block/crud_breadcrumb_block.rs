@@ -1,7 +1,7 @@
 mod integration_tests {
 
     #[tokio::test]
-    async fn crud_breadcrumb_block() -> Result<(), notionrs::error::NotionError> {
+    async fn crud_breadcrumb_block() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
 
         let block_id = std::env::var("NOTION_PAGE_ID").unwrap();

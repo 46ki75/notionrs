@@ -1,7 +1,7 @@
 pub mod api_error;
 
 #[derive(thiserror::Error, Debug)]
-pub enum NotionError {
+pub enum Error {
     #[error("network error: {0}")]
     NetworkError(#[from] reqwest::Error),
 

@@ -10,7 +10,7 @@ mod integration_tests {
     /// NOTION_PAGE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     /// ```
     #[tokio::test]
-    async fn get_page() -> Result<(), notionrs::error::NotionError> {
+    async fn get_page() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
 
         let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
