@@ -15,7 +15,7 @@ use thiserror::Error;
 /// ```
 #[derive(Error, Debug, Deserialize, Serialize)]
 #[error("Notion API error: status {status}, code: {code}, message: {message}")]
-pub struct NotionApiError {
+pub struct ApiError {
     /// always "error"
     object: String,
 

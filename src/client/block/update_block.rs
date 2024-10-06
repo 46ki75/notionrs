@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::error::{api_error::NotionApiError, Error};
+use crate::error::{api_error::ApiError, Error};
 
 #[derive(Debug)]
 pub struct UpdateBlockClient {
@@ -28,13 +28,11 @@ pub struct UpdateBlockRequestBody {
 impl UpdateBlockClient {
     // TODO: docs for send
     pub async fn send(self) -> Result<crate::block::BlockResponse, Error> {
-        let block_id = self
-            .block_id
-            .ok_or(Error::NotionRequestParameterError(
-                "`block_id` has not been set.".to_string(),
-            ))?;
+        let block_id = self.block_id.ok_or(Error::RequestParameter(
+            "`block_id` has not been set.".to_string(),
+        ))?;
 
-        let block = self.block.ok_or(Error::NotionRequestParameterError(
+        let block = self.block.ok_or(Error::RequestParameter(
             "`block` has not been set.".to_string(),
         ))?;
 
@@ -58,9 +56,9 @@ impl UpdateBlockClient {
         if !response.status().is_success() {
             let error_body = response.text().await?;
 
-            let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+            let error_json = serde_json::from_str::<ApiError>(&error_body)?;
 
-            return Err(Error::NotionApiError(Box::new(error_json)));
+            return Err(Error::Api(Box::new(error_json)));
         }
 
         let body = response.text().await?;

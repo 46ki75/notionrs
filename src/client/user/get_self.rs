@@ -17,9 +17,9 @@ impl GetSelfClient {
             let error_body = response.text().await?;
 
             let error_json =
-                serde_json::from_str::<crate::error::api_error::NotionApiError>(&error_body)?;
+                serde_json::from_str::<crate::error::api_error::ApiError>(&error_body)?;
 
-            return Err(crate::error::Error::NotionApiError(Box::new(error_json)));
+            return Err(crate::error::Error::Api(Box::new(error_json)));
         }
 
         let body = response.text().await?;

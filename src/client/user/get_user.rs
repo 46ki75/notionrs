@@ -1,5 +1,5 @@
 use crate::{
-    error::{api_error::NotionApiError, Error},
+    error::{api_error::ApiError, Error},
     user::User,
 };
 
@@ -25,9 +25,9 @@ impl GetUserClient {
                 if !response.status().is_success() {
                     let error_body = response.text().await?;
 
-                    let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+                    let error_json = serde_json::from_str::<ApiError>(&error_body)?;
 
-                    return Err(Error::NotionApiError(Box::new(error_json)));
+                    return Err(Error::Api(Box::new(error_json)));
                 }
 
                 let body = response.text().await?;
@@ -36,9 +36,7 @@ impl GetUserClient {
 
                 Ok(user)
             }
-            None => Err(Error::NotionRequestParameterError(
-                "user_id is empty".to_string(),
-            )),
+            None => Err(Error::RequestParameter("user_id is empty".to_string())),
         }
     }
 
