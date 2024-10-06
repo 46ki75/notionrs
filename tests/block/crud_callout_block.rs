@@ -52,7 +52,7 @@ mod integration_tests {
                 assert_eq!(callout.rich_text, vec![rich_text]);
                 assert_eq!(
                     callout.color,
-                    notionrs::others::color::Color::blue_background()
+                    notionrs::others::color::Color::BlueBackground
                 );
                 notionrs::block::Block::Callout {
                     callout: callout.green_background(),

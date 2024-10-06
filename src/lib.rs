@@ -13,4 +13,5 @@ pub mod prelude;
 pub mod to_json;
 pub mod user;
 
+pub use crate::others::color::Color;
 pub use crate::others::rich_text::RichText;

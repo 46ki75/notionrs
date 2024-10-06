@@ -1,9 +1,11 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Default)]
 #[serde(rename_all = "snake_case")]
-pub enum ColorFG {
+pub enum Color {
+    #[default]
     Default,
+
     Blue,
     Brown,
     Gray,
@@ -13,11 +15,7 @@ pub enum ColorFG {
     Purple,
     Red,
     Yellow,
-}
 
-#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum ColorBG {
     BlueBackground,
     BrownBackground,
     GrayBackground,
@@ -27,93 +25,6 @@ pub enum ColorBG {
     PurpleBackground,
     RedBackground,
     YellowBackground,
-}
-
-#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
-#[serde(untagged)]
-pub enum Color {
-    FG(ColorFG),
-    BG(ColorBG),
-}
-
-impl Default for Color {
-    fn default() -> Self {
-        Color::FG(ColorFG::Default)
-    }
-}
-
-impl Color {
-    pub fn blue() -> Self {
-        Color::FG(ColorFG::Blue)
-    }
-
-    pub fn brown() -> Self {
-        Color::FG(ColorFG::Brown)
-    }
-
-    pub fn gray() -> Self {
-        Color::FG(ColorFG::Gray)
-    }
-
-    pub fn green() -> Self {
-        Color::FG(ColorFG::Green)
-    }
-
-    pub fn orange() -> Self {
-        Color::FG(ColorFG::Orange)
-    }
-
-    pub fn pink() -> Self {
-        Color::FG(ColorFG::Pink)
-    }
-
-    pub fn purple() -> Self {
-        Color::FG(ColorFG::Purple)
-    }
-
-    pub fn red() -> Self {
-        Color::FG(ColorFG::Red)
-    }
-
-    pub fn yellow() -> Self {
-        Color::FG(ColorFG::Yellow)
-    }
-
-    pub fn blue_background() -> Self {
-        Color::BG(ColorBG::BlueBackground)
-    }
-
-    pub fn brown_background() -> Self {
-        Color::BG(ColorBG::BrownBackground)
-    }
-
-    pub fn gray_background() -> Self {
-        Color::BG(ColorBG::GrayBackground)
-    }
-
-    pub fn green_background() -> Self {
-        Color::BG(ColorBG::GreenBackground)
-    }
-
-    pub fn orange_background() -> Self {
-        Color::BG(ColorBG::OrangeBackground)
-    }
-
-    pub fn pink_background() -> Self {
-        Color::BG(ColorBG::PinkBackground)
-    }
-
-    pub fn purple_background() -> Self {
-        Color::BG(ColorBG::PurpleBackground)
-    }
-
-    pub fn red_background() -> Self {
-        Color::BG(ColorBG::RedBackground)
-    }
-
-    pub fn yellow_background() -> Self {
-        Color::BG(ColorBG::YellowBackground)
-    }
 }
 
 // # --------------------------------------------------------------------------------
@@ -126,79 +37,79 @@ impl Color {
 macro_rules! color_setters {
     ($self:ident, $color_target:expr) => {
         pub fn default_color(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::default();
+            $color_target = $crate::others::color::Color::Default;
             $self
         }
         pub fn blue(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::blue();
+            $color_target = $crate::others::color::Color::Blue;
             $self
         }
         pub fn brown(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::brown();
+            $color_target = $crate::others::color::Color::Brown;
             $self
         }
         pub fn gray(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::gray();
+            $color_target = $crate::others::color::Color::Gray;
             $self
         }
         pub fn green(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::green();
+            $color_target = $crate::others::color::Color::Green;
             $self
         }
         pub fn orange(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::orange();
+            $color_target = $crate::others::color::Color::Orange;
             $self
         }
         pub fn pink(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::pink();
+            $color_target = $crate::others::color::Color::Pink;
             $self
         }
         pub fn purple(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::purple();
+            $color_target = $crate::others::color::Color::Purple;
             $self
         }
         pub fn red(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::red();
+            $color_target = $crate::others::color::Color::Red;
             $self
         }
         pub fn yellow(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::yellow();
+            $color_target = $crate::others::color::Color::Yellow;
             $self
         }
         pub fn blue_background(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::blue_background();
+            $color_target = $crate::others::color::Color::BlueBackground;
             $self
         }
         pub fn brown_background(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::brown_background();
+            $color_target = $crate::others::color::Color::BrownBackground;
             $self
         }
         pub fn gray_background(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::gray_background();
+            $color_target = $crate::others::color::Color::GrayBackground;
             $self
         }
         pub fn green_background(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::green_background();
+            $color_target = $crate::others::color::Color::GreenBackground;
             $self
         }
         pub fn orange_background(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::orange_background();
+            $color_target = $crate::others::color::Color::OrangeBackground;
             $self
         }
         pub fn pink_background(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::pink_background();
+            $color_target = $crate::others::color::Color::PinkBackground;
             $self
         }
         pub fn purple_background(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::purple_background();
+            $color_target = $crate::others::color::Color::PurpleBackground;
             $self
         }
         pub fn red_background(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::red_background();
+            $color_target = $crate::others::color::Color::RedBackground;
             $self
         }
         pub fn yellow_background(mut $self) -> Self {
-            $color_target = $crate::others::color::Color::yellow_background();
+            $color_target = $crate::others::color::Color::YellowBackground;
             $self
         }
     };
@@ -221,7 +132,7 @@ mod unit_tests {
 
         let color: Color = serde_json::from_value(json_data).unwrap();
 
-        assert_eq!(color, Color::FG(ColorFG::Blue));
+        assert_eq!(color, Color::Blue);
     }
 
     #[test]
@@ -230,7 +141,7 @@ mod unit_tests {
 
         let color: Color = serde_json::from_value(json_data).unwrap();
 
-        assert_eq!(color, Color::BG(ColorBG::BlueBackground));
+        assert_eq!(color, Color::BlueBackground);
     }
 
     #[test]

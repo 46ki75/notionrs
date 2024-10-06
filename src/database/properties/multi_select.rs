@@ -67,18 +67,18 @@ mod unit_tests {
 
         assert_eq!(options[0].id, "5de29601-9c24-4b04-8629-0bca891c5120");
         assert_eq!(options[0].name, "Duc Loi Market");
-        assert_eq!(options[0].color, crate::others::color::ColorFG::Blue);
+        assert_eq!(options[0].color, crate::others::color::Color::Blue);
 
         assert_eq!(options[1].id, "385890b8-fe15-421b-b214-b02959b0f8d9");
         assert_eq!(options[1].name, "Rainbow Grocery");
-        assert_eq!(options[1].color, crate::others::color::ColorFG::Gray);
+        assert_eq!(options[1].color, crate::others::color::Color::Gray);
 
         assert_eq!(options[2].id, "72ac0a6c-9e00-4e8c-80c5-720e4373e0b9");
         assert_eq!(options[2].name, "Nijiya Market");
-        assert_eq!(options[2].color, crate::others::color::ColorFG::Purple);
+        assert_eq!(options[2].color, crate::others::color::Color::Purple);
 
         assert_eq!(options[3].id, "9556a8f7-f4b0-4e11-b277-f0af1f8c9490");
         assert_eq!(options[3].name, "Gus's Community Market");
-        assert_eq!(options[3].color, crate::others::color::ColorFG::Yellow);
+        assert_eq!(options[3].color, crate::others::color::Color::Yellow);
     }
 }

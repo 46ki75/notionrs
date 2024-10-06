@@ -76,7 +76,7 @@ mod unit_tests {
         assert_eq!(select.select.as_ref().unwrap().name, "TODO");
         assert_eq!(
             select.select.as_ref().unwrap().color,
-            crate::others::color::ColorFG::Default
+            crate::others::color::Color::Default
         );
     }
 }

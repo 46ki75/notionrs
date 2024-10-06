@@ -78,7 +78,7 @@ mod unit_tests {
 
         assert_eq!(
             paragraph.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
 
         let rich_text = paragraph.rich_text.first().unwrap();
@@ -93,7 +93,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
     }
 }

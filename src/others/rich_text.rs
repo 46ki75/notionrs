@@ -48,7 +48,7 @@ impl RichText {
                 strikethrough: false,
                 underline: false,
                 code: false,
-                color: crate::others::color::Color::FG(crate::others::color::ColorFG::Default),
+                color: crate::others::color::Color::Default,
             },
             plain_text: String::new(),
             href: None,
@@ -180,7 +180,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
     }
 
@@ -192,9 +192,7 @@ mod unit_tests {
             .italic()
             .strikethrough()
             .code()
-            .color(crate::others::color::Color::FG(
-                crate::others::color::ColorFG::Red,
-            ))
+            .color(crate::others::color::Color::Red)
             .href("https://example.com");
 
         let expected_json = r#"
