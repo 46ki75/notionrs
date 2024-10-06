@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::error::{api_error::NotionApiError, Error};
+use crate::error::{api_error::ApiError, Error};
 
 #[derive(Debug)]
 pub struct AppendBlockChildrenClient {
@@ -33,7 +33,7 @@ impl AppendBlockChildrenClient {
     ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, Error> {
         let block_id = self
             .block_id
-            .ok_or(Error::NotionRequestParameterError(
+            .ok_or(Error::RequestParameter(
                 "`block_id` has not been set.".to_string(),
             ))?;
 
@@ -57,9 +57,9 @@ impl AppendBlockChildrenClient {
         if !response.status().is_success() {
             let error_body = response.text().await?;
 
-            let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+            let error_json = serde_json::from_str::<ApiError>(&error_body)?;
 
-            return Err(Error::NotionApiError(Box::new(error_json)));
+            return Err(Error::Api(Box::new(error_json)));
         }
 
         let body = response.text().await?;

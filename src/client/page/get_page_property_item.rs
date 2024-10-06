@@ -1,4 +1,4 @@
-use crate::error::{api_error::NotionApiError, Error};
+use crate::error::{api_error::ApiError, Error};
 
 #[derive(Debug)]
 pub struct GetPagePropertyItemClient {
@@ -15,13 +15,13 @@ impl GetPagePropertyItemClient {
     pub async fn send(self) -> Result<crate::page::properties::PageProperty, Error> {
         let page_id = self
             .page_id
-            .ok_or(Error::NotionRequestParameterError(
+            .ok_or(Error::RequestParameter(
                 "`page_id` has not been set.".to_string(),
             ))?;
 
         let property_id = self
             .property_id
-            .ok_or(Error::NotionRequestParameterError(
+            .ok_or(Error::RequestParameter(
                 "`property_id` has not been set.".to_string(),
             ))?;
 
@@ -37,9 +37,9 @@ impl GetPagePropertyItemClient {
         if !response.status().is_success() {
             let error_body = response.text().await?;
 
-            let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+            let error_json = serde_json::from_str::<ApiError>(&error_body)?;
 
-            return Err(Error::NotionApiError(Box::new(error_json)));
+            return Err(Error::Api(Box::new(error_json)));
         }
 
         let body = response.text().await?;
