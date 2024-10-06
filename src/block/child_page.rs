@@ -2,8 +2,10 @@ use serde::{Deserialize, Serialize};
 
 /// <https://developers.notion.com/reference/block#child-page>
 ///
-/// Child database block objects contain the following
-/// information within the child_page property:
+/// To create or update child_page type blocks,
+/// use the [Create a page](https://developers.notion.com/reference/post-page)
+/// and the [Update page](https://developers.notion.com/reference/patch-page) endpoints,
+/// specifying the ID of the parent page in the parent body param.
 #[derive(Deserialize, Serialize, Debug)]
 pub struct ChildPageBlock {
     /// The plain text title of the page.
