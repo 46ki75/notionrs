@@ -1,5 +1,5 @@
 use crate::{
-    error::{api_error::NotionApiError, NotionError},
+    error::{api_error::NotionApiError, Error},
     user::User,
 };
 
@@ -13,7 +13,7 @@ pub struct GetUserClient {
 
 impl GetUserClient {
     /// Send a request to the API endpoint of Notion.
-    pub async fn send(self) -> Result<User, NotionError> {
+    pub async fn send(self) -> Result<User, Error> {
         match self.user_id {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/users/{}", id);
@@ -27,7 +27,7 @@ impl GetUserClient {
 
                     let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
 
-                    return Err(NotionError::NotionApiError(Box::new(error_json)));
+                    return Err(Error::NotionApiError(Box::new(error_json)));
                 }
 
                 let body = response.text().await?;
@@ -36,7 +36,7 @@ impl GetUserClient {
 
                 Ok(user)
             }
-            None => Err(NotionError::NotionRequestParameterError(
+            None => Err(Error::NotionRequestParameterError(
                 "user_id is empty".to_string(),
             )),
         }

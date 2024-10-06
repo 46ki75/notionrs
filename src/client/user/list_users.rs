@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 use crate::{
-    error::{api_error::NotionApiError, NotionError},
+    error::{api_error::NotionApiError, Error},
     list_response::ListResponse,
     user::User,
 };
@@ -39,7 +39,7 @@ struct LinsUserQueryParams {
 
 impl ListUsersClient {
     /// Send a request to the API endpoint of Notion.
-    pub async fn send(&mut self) -> Result<ListResponse<User>, NotionError> {
+    pub async fn send(&mut self) -> Result<ListResponse<User>, Error> {
         let url = "https://api.notion.com/v1/users";
         let mut results = Vec::new();
 
@@ -59,7 +59,7 @@ impl ListUsersClient {
 
                     let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
 
-                    return Err(NotionError::NotionApiError(Box::new(error_json)));
+                    return Err(Error::NotionApiError(Box::new(error_json)));
                 }
 
                 let body = response.text().await?;
@@ -98,7 +98,7 @@ impl ListUsersClient {
 
                 let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
 
-                return Err(NotionError::NotionApiError(Box::new(error_json)));
+                return Err(Error::NotionApiError(Box::new(error_json)));
             }
 
             let body = response.text().await?;

@@ -6,11 +6,11 @@ pub trait ToJson {
     ///
     /// ```no_run
     /// use notionrs::client::NotionClient;
-    /// use notionrs::error::NotionError;
+    /// use notionrs::error::Error;
     /// use notionrs::prelude::ToJson;
     ///
     /// #[tokio::main]
-    /// async fn main() -> Result<(), NotionError> {
+    /// async fn main() -> Result<(), Error> {
     ///     let notion = NotionClient::new();
     ///     let result = notion.get_self().send().await?;
     ///     println!("{}", result.to_json());
@@ -24,11 +24,11 @@ pub trait ToJson {
     ///
     /// ```no_run
     /// use notionrs::client::NotionClient;
-    /// use notionrs::error::NotionError;
+    /// use notionrs::error::Error;
     /// use notionrs::prelude::ToJson;
     ///
     /// #[tokio::main]
-    /// async fn main() -> Result<(), NotionError> {
+    /// async fn main() -> Result<(), Error> {
     ///     let notion = NotionClient::new();
     ///     let result = notion.get_self().send().await?;
     ///     println!("{}", result.to_json());

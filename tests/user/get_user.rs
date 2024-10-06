@@ -10,7 +10,7 @@ mod integration_tests {
     /// NOTION_USER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     /// ```
     #[tokio::test]
-    async fn get_user() -> Result<(), notionrs::error::NotionError> {
+    async fn get_user() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let user_id = std::env::var("NOTION_USER_ID").unwrap_or_else(|_| String::new());
 

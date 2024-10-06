@@ -3,7 +3,7 @@ mod integration_tests {
     /// This integration test cannot be run unless explicit permission
     /// for user reading is granted in the Notion API key issuance settings.
     #[tokio::test]
-    async fn get_block_children() -> Result<(), notionrs::error::NotionError> {
+    async fn get_block_children() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
 
         let block_id = std::env::var("NOTION_PAGE_ID").unwrap();
