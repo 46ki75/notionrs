@@ -13,7 +13,7 @@ pub mod prelude;
 pub mod to_json;
 pub mod user;
 
-pub use crate::client::NotionClient;
+pub use crate::client::Client;
 pub use crate::others::color::Color;
 pub use crate::others::file::File;
 pub use crate::others::language::Language;

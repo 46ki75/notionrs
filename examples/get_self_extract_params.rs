@@ -2,7 +2,7 @@
 //
 #[tokio::main]
 async fn main() -> Result<(), notionrs::error::Error> {
-    let client = notionrs::client::NotionClient::new();
+    let client = notionrs::client::Client::new();
 
     let request = client.get_self();
 

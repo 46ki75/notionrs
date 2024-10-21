@@ -8,7 +8,7 @@ mod integration_tests {
 
         let block_id = std::env::var("NOTION_PAGE_ID").unwrap();
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let request = client.get_block_children().block_id(block_id);
 

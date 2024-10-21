@@ -6,11 +6,11 @@ pub mod user;
 use std::env;
 
 #[derive(Default, Debug)]
-pub struct NotionClient {
+pub struct Client {
     reqwest_client: reqwest::Client,
 }
 
-impl NotionClient {
+impl Client {
     // TODO: docs: new method
     pub fn new() -> Self {
         let mut headers = reqwest::header::HeaderMap::new();
@@ -34,7 +34,7 @@ impl NotionClient {
             .build()
             .unwrap();
 
-        NotionClient {
+        Client {
             reqwest_client: client,
         }
     }
@@ -47,9 +47,9 @@ impl NotionClient {
     /// [Notion Developer Documentation](https://developers.notion.com/docs/authorization).
     ///
     /// ```no_run
-    /// use notionrs::client::NotionClient;
+    /// use notionrs::client::Client;
     /// // ...
-    /// let client = NotionClient::new().secret("secret_XXXXXXXXXXXXXX");
+    /// let client = Client::new().secret("secret_XXXXXXXXXXXXXX");
     /// ```
     pub fn secret<T>(mut self, notion_api_key: T) -> Self
     where

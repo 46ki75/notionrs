@@ -1,10 +1,10 @@
-use notionrs::{block::Block, error::Error, NotionClient};
+use notionrs::{block::Block, error::Error, Client};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     dotenvy::dotenv().ok();
 
-    let client = NotionClient::new();
+    let client = Client::new();
 
     // Here, we're retrieving the ID from an environment variable,
     // but you can change the method of retrieval to suit your needs.

@@ -8,7 +8,7 @@ mod integration_tests {
     /// for user reading is granted in the Notion API key issuance settings.
     #[tokio::test]
     async fn list_users() -> Result<(), Error> {
-        let client = client::NotionClient::new();
+        let client = client::Client::new();
         let res = client.list_users().send().await?;
         println!("{}", res.to_json());
 

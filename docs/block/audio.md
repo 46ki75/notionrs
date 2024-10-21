@@ -14,7 +14,7 @@ use notionrs::{block::Block, error::Error, File};
 async fn main() -> Result<(), Error> {
     dotenvy::dotenv().ok();
 
-    let client = notionrs::client::NotionClient::new();
+    let client = notionrs::client::Client::new();
 
     // Here, we're retrieving the ID from an environment variable,
     // but you can change the method of retrieval to suit your needs.
@@ -47,13 +47,13 @@ async fn main() -> Result<(), Error> {
 Below is an example of sending a request to update an Audio Block by modifying some of its parameters after retrieving it.
 
 ```rs
-use notionrs::{block::Block, error::Error, NotionClient};
+use notionrs::{block::Block, error::Error, Client};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     dotenvy::dotenv().ok();
 
-    let client = NotionClient::new();
+    let client = Client::new();
 
     // Here, we're retrieving the ID from an environment variable,
     // but you can change the method of retrieval to suit your needs.

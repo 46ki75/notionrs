@@ -10,7 +10,7 @@ mod integration_tests {
 
         let page_id = std::env::var("NOTION_PAGE_ID").unwrap();
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let request = client
             .get_page_property_item()
