@@ -28,6 +28,8 @@ impl QuoteBlock {
         self
     }
 
+    /// It can only be specified when making a block creation request.
+    /// If you need to retrieve the child blocks, you will have to send a request to this block again.
     pub fn children(mut self, children: Vec<super::Block>) -> Self {
         self.children = Some(children);
         self
