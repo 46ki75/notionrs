@@ -10,4 +10,5 @@ mod crud_equation_block;
 mod crud_heading_block;
 mod crud_numbered_list_item_block;
 mod crud_paragraph_block;
+mod crud_quote_block;
 mod get_block_children;
