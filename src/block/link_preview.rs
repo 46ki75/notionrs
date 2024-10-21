@@ -3,6 +3,9 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/block#link-preview>
 ///
 /// Link Preview block objects contain the originally pasted url:
+///
+/// The link_preview block can only be returned as part of a response.
+/// The API does not support creating or appending link_preview blocks.
 #[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct LinkPreviewBlock {
     pub url: String,
