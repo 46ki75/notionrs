@@ -5,9 +5,15 @@ use serde::{Deserialize, Serialize};
 /// Similar to the Notion UI, there are two versions of a synced_block object:
 /// the original block that was created first and doesn't yet sync with anything else,
 /// and the duplicate block or blocks synced to the original.
+///
+/// First, set `synced_from` to null and add the blocks you want to sync to the children,
+/// then send the request. After that, you can create two or more synced blocks
+/// by sending a request with the ID of the initially created block set in `synced_from.block_id`.
 #[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct SyncedBlock {
     pub synced_from: Option<SyncedBlockParams>,
+
+    pub children: Option<Vec<super::Block>>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone)]
@@ -22,10 +28,8 @@ pub struct SyncedBlockParams {
 impl SyncedBlock {
     pub fn new() -> Self {
         Self {
-            synced_from: Some(SyncedBlockParams {
-                r#type: "block_id".to_string(),
-                block_id: String::new(),
-            }),
+            synced_from: None,
+            children: Some(vec![]),
         }
     }
 
@@ -37,6 +41,11 @@ impl SyncedBlock {
             r#type: "block_id".to_string(),
             block_id: block_id.as_ref().to_string(),
         });
+        self
+    }
+
+    pub fn children(mut self, children: Vec<super::Block>) -> Self {
+        self.children = Some(children);
         self
     }
 }
