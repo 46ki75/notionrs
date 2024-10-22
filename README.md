@@ -2,6 +2,7 @@
 
 [![Unit Test](https://github.com/46ki75/notionrs/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/46ki75/notionrs/actions/workflows/unit-tests.yml)
 [![Check Documentation Build](https://github.com/46ki75/notionrs/actions/workflows/build-documentation.yml/badge.svg)](https://github.com/46ki75/notionrs/actions/workflows/build-documentation.yml)
+[![Crates.io](https://img.shields.io/crates/v/notionrs?logo=rust)](https://crates.io/crates/notionrs/)
 
 **Status: Alpha Release! (Under Construction**) 🚧
 
