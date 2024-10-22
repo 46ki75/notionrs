@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Paragraph block objects contain the following
 /// information within the quote property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct QuoteBlock {
     /// The rich text displayed in the quote block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -15,14 +15,10 @@ pub struct QuoteBlock {
     /// It can only be specified when making a block creation request.
     /// If you need to retrieve the child blocks, you will have to send a request to this block again.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub children: Option<Vec<super::BlockType>>,
+    pub children: Option<Vec<super::Block>>,
 }
 
 impl QuoteBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Quote { quote: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
@@ -32,7 +28,9 @@ impl QuoteBlock {
         self
     }
 
-    pub fn children(mut self, children: Vec<super::BlockType>) -> Self {
+    /// It can only be specified when making a block creation request.
+    /// If you need to retrieve the child blocks, you will have to send a request to this block again.
+    pub fn children(mut self, children: Vec<super::Block>) -> Self {
         self.children = Some(children);
         self
     }
@@ -90,10 +88,7 @@ mod unit_tests {
 
         let quote: QuoteBlock = serde_json::from_str::<QuoteBlock>(json_data).unwrap();
 
-        assert_eq!(
-            quote.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
-        );
+        assert_eq!(quote.color, crate::others::color::Color::Default);
 
         let rich_text = quote.rich_text.first().unwrap();
 
@@ -107,7 +102,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
     }
 }

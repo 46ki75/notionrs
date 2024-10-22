@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::error::{api_error::NotionApiError, NotionError};
+use crate::error::{api_error::ApiError, Error};
 
 #[derive(Debug)]
 pub struct AppendBlockChildrenClient {
@@ -13,12 +13,12 @@ pub struct AppendBlockChildrenClient {
     /// The ID of the existing block that the new block should be appended after.
     pub(crate) after: Option<String>,
 
-    pub(crate) children: Vec<crate::block::BlockType>,
+    pub(crate) children: Vec<crate::block::Block>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AppendBlockChildrenRequestBody {
-    pub(crate) children: Vec<crate::block::BlockType>,
+    pub(crate) children: Vec<crate::block::Block>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) after: Option<String>,
@@ -30,10 +30,10 @@ impl AppendBlockChildrenClient {
     // TODO: docs for send
     pub async fn send(
         self,
-    ) -> Result<crate::list_response::ListResponse<crate::block::Block>, NotionError> {
+    ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, Error> {
         let block_id = self
             .block_id
-            .ok_or(NotionError::NotionRequestParameterError(
+            .ok_or(Error::RequestParameter(
                 "`block_id` has not been set.".to_string(),
             ))?;
 
@@ -57,15 +57,16 @@ impl AppendBlockChildrenClient {
         if !response.status().is_success() {
             let error_body = response.text().await?;
 
-            let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+            let error_json = serde_json::from_str::<ApiError>(&error_body)?;
 
-            return Err(NotionError::NotionApiError(Box::new(error_json)));
+            return Err(Error::Api(Box::new(error_json)));
         }
 
         let body = response.text().await?;
 
-        let block =
-            serde_json::from_str::<crate::list_response::ListResponse<crate::block::Block>>(&body)?;
+        let block = serde_json::from_str::<
+            crate::list_response::ListResponse<crate::block::BlockResponse>,
+        >(&body)?;
 
         Ok(block)
     }
@@ -83,7 +84,7 @@ impl AppendBlockChildrenClient {
     }
 
     /// The ID of the existing block that the new block should be appended after.
-    pub fn children(mut self, children: Vec<crate::block::BlockType>) -> Self {
+    pub fn children(mut self, children: Vec<crate::block::Block>) -> Self {
         self.children = children;
         self
     }

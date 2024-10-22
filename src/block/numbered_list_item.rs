@@ -6,7 +6,7 @@ use crate::color_setters;
 ///
 /// Numbered list item block objects contain the following
 /// information within the numbered_list_item property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct NumberedListItemBlock {
     /// The rich text displayed in the numbered_list_item block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -17,16 +17,10 @@ pub struct NumberedListItemBlock {
     /// It can only be specified when making a block creation request.
     /// If you need to retrieve the child blocks, you will have to send a request to this block again.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub children: Option<Vec<super::BlockType>>,
+    pub children: Option<Vec<super::Block>>,
 }
 
 impl NumberedListItemBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::NumberedListItem {
-            numbered_list_item: self,
-        }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
@@ -36,7 +30,7 @@ impl NumberedListItemBlock {
         self
     }
 
-    pub fn children(mut self, children: Vec<super::BlockType>) -> Self {
+    pub fn children(mut self, children: Vec<super::Block>) -> Self {
         self.children = Some(children);
         self
     }
@@ -97,7 +91,7 @@ mod unit_tests {
 
         assert_eq!(
             numbered_list_item.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
 
         let rich_text = numbered_list_item.rich_text.first().unwrap();
@@ -112,7 +106,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
     }
 }

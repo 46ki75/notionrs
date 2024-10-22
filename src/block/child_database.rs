@@ -2,9 +2,11 @@ use serde::{Deserialize, Serialize};
 
 /// <https://developers.notion.com/reference/block#child-database>
 ///
-/// Child database block objects contain the following
-/// information within the child_database property:
-#[derive(Deserialize, Serialize, Debug)]
+/// To create or update child_database type blocks,
+/// use the [Create a database](https://developers.notion.com/reference/create-a-database)
+/// and the [Update a database](https://developers.notion.com/reference/update-a-database) endpoints,
+/// specifying the ID of the parent page in the parent body param.
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct ChildDatabaseBlock {
     /// The plain text title of the database.
     pub title: String,

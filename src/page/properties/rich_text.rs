@@ -118,7 +118,7 @@ mod unit_tests {
         assert!(!rich_text.rich_text.first().unwrap().annotations.code);
         assert_eq!(
             rich_text.rich_text.first().unwrap().annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
 
         assert_eq!(

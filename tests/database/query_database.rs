@@ -3,11 +3,11 @@ mod integration_tests {
     use notionrs::to_json::ToJson;
 
     #[tokio::test]
-    async fn query_database() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
         let res = client
             .query_database()
             .database_id(database_id)
@@ -25,11 +25,11 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    async fn query_database_page_size() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_page_size() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
         let res = client
             .query_database()
             .database_id(database_id)
@@ -48,11 +48,11 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    async fn query_database_recursive() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_recursive() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
         let res = client
             .query_database()
             .database_id(database_id)
@@ -71,11 +71,11 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    async fn query_database_filter_simple() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_filter_simple() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::date_before("Created time", "2024-07-01");
 
@@ -92,11 +92,11 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_database_filter_checkbox() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_filter_checkbox() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::checkbox_is_checked("Checkbox"),
@@ -116,11 +116,11 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_database_filter_date_filter() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_filter_date_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::date_after("Created time", "2024-07-01"),
@@ -152,11 +152,11 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_database_filter_files_filter() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_filter_files_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::files_is_empty("Files & media"),
@@ -178,12 +178,12 @@ mod integration_tests {
     // TODO: TEST formula
 
     #[tokio::test]
-    async fn query_database_filter_multi_select_filter() -> Result<(), notionrs::error::NotionError>
+    async fn query_database_filter_multi_select_filter() -> Result<(), notionrs::error::Error>
     {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::multi_select_contains("Multi-select", "0"),
@@ -205,11 +205,11 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_database_filter_number_filter() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_filter_number_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::number_does_not_equal("Number", 20),
@@ -235,11 +235,11 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_database_filter_people_filter() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_filter_people_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::people_contains(
@@ -267,12 +267,12 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_database_filter_phone_number_filter() -> Result<(), notionrs::error::NotionError>
+    async fn query_database_filter_phone_number_filter() -> Result<(), notionrs::error::Error>
     {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::phone_number_contains("Phone Number", "0"),
@@ -300,11 +300,11 @@ mod integration_tests {
     // TODO: TEST rollup
 
     #[tokio::test]
-    async fn query_database_filter_rich_text_filter() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_filter_rich_text_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::rich_text_contains("Text", "0"),
@@ -330,11 +330,11 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_database_filter_select_filter() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_filter_select_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::select_does_not_equal("Select", "0"),
@@ -356,11 +356,11 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_database_filter_status_filter() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_filter_status_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::status_does_not_equal("Status", "0"),
@@ -382,11 +382,11 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_database_filter_timestamp_filter() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_filter_timestamp_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::timestamp_after("2024-07-01"),
@@ -418,11 +418,11 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_database_filter_unique_id_filter() -> Result<(), notionrs::error::NotionError> {
+    async fn query_database_filter_unique_id_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let filter = notionrs::filter::Filter::or(vec![
             notionrs::filter::Filter::unique_id_does_not_equal("ID", 20),

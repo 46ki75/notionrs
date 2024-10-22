@@ -16,10 +16,6 @@ pub struct TableRowBlock {
 }
 
 impl TableRowBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::TableRow { table_row: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }

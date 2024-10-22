@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::error::{api_error::NotionApiError, NotionError};
+use crate::error::{api_error::ApiError, Error};
 
 #[derive(Debug)]
 pub struct UpdateBlockClient {
@@ -13,13 +13,13 @@ pub struct UpdateBlockClient {
     /// The ID of the existing block that the new block should be appended after.
     pub(crate) archived: Option<bool>,
 
-    pub(crate) block: Option<crate::block::BlockType>,
+    pub(crate) block: Option<crate::block::Block>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdateBlockRequestBody {
     #[serde(flatten)]
-    pub(crate) block: crate::block::BlockType,
+    pub(crate) block: crate::block::Block,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) archived: Option<bool>,
@@ -27,14 +27,12 @@ pub struct UpdateBlockRequestBody {
 
 impl UpdateBlockClient {
     // TODO: docs for send
-    pub async fn send(self) -> Result<crate::block::Block, NotionError> {
-        let block_id = self
-            .block_id
-            .ok_or(NotionError::NotionRequestParameterError(
-                "`block_id` has not been set.".to_string(),
-            ))?;
+    pub async fn send(self) -> Result<crate::block::BlockResponse, Error> {
+        let block_id = self.block_id.ok_or(Error::RequestParameter(
+            "`block_id` has not been set.".to_string(),
+        ))?;
 
-        let block = self.block.ok_or(NotionError::NotionRequestParameterError(
+        let block = self.block.ok_or(Error::RequestParameter(
             "`block` has not been set.".to_string(),
         ))?;
 
@@ -58,14 +56,14 @@ impl UpdateBlockClient {
         if !response.status().is_success() {
             let error_body = response.text().await?;
 
-            let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+            let error_json = serde_json::from_str::<ApiError>(&error_body)?;
 
-            return Err(NotionError::NotionApiError(Box::new(error_json)));
+            return Err(Error::Api(Box::new(error_json)));
         }
 
         let body = response.text().await?;
 
-        let block = serde_json::from_str::<crate::block::Block>(&body)?;
+        let block = serde_json::from_str::<crate::block::BlockResponse>(&body)?;
 
         Ok(block)
     }
@@ -76,7 +74,7 @@ impl UpdateBlockClient {
         self
     }
 
-    pub fn block(mut self, block: crate::block::BlockType) -> Self {
+    pub fn block(mut self, block: crate::block::Block) -> Self {
         self.block = Some(block);
         self
     }

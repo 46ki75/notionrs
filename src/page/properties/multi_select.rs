@@ -90,7 +90,7 @@ mod unit_tests {
         assert_eq!(multi_select.multi_select.first().unwrap().name, "HTML");
         assert_eq!(
             multi_select.multi_select.first().unwrap().color,
-            crate::others::color::ColorFG::Orange
+            crate::others::select::SelectColor::Orange
         );
 
         assert_eq!(
@@ -100,7 +100,7 @@ mod unit_tests {
         assert_eq!(multi_select.multi_select.get(1).unwrap().name, "CSS");
         assert_eq!(
             multi_select.multi_select.get(1).unwrap().color,
-            crate::others::color::ColorFG::Blue
+            crate::others::select::SelectColor::Blue
         );
     }
 }

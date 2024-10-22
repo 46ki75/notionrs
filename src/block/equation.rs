@@ -5,17 +5,13 @@ use serde::{Deserialize, Serialize};
 /// Equation block objects are represented as children of paragraph blocks.
 /// They are nested within a rich text object and contain
 /// the following information within the equation property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct EquationBlock {
     /// A KaTeX compatible string.
     pub expression: String,
 }
 
 impl EquationBlock {
-    pub fn build(self) -> super::BlockType {
-        super::BlockType::Equation { equation: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
