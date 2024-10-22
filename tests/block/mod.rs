@@ -12,4 +12,5 @@ mod crud_numbered_list_item_block;
 mod crud_paragraph_block;
 mod crud_quote_block;
 mod crud_synced_block;
+mod crud_to_do_block;
 mod get_block_children;

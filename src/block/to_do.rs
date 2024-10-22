@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::color_setters;
+
 /// <https://developers.notion.com/reference/block#to-do>
 ///
 /// To do block objects contain the following information within the to_do property:
@@ -29,6 +31,8 @@ impl ToDoBlock {
         self.checked = checked;
         self
     }
+
+    color_setters!(self, self.color);
 }
 
 impl<T> From<T> for ToDoBlock
