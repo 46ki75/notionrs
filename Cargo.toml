@@ -1,5 +1,6 @@
 [package]
 name = "notionrs"
+description = "A Notion API client that provides type-safe request serialization and response deserialization"
 version = "1.0.0-alpha.1"
 edition = "2021"
 authors = ["Chomolungma Shirayuki"]
