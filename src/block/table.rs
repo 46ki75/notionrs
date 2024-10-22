@@ -50,7 +50,6 @@ impl TableBlock {
         if children.len() > u16::MAX as usize {
             panic!("The number of children exceeds the maximum table width.");
         }
-        self.table_width = (children.len() + 1) as u16;
         self.children = Some(children);
         self
     }
