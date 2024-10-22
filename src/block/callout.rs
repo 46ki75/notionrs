@@ -6,7 +6,7 @@ use crate::color_setters;
 ///
 /// Callout block objects contain the following
 /// information within the callout property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct CalloutBlock {
     /// The rich text in the callout block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -19,10 +19,6 @@ pub struct CalloutBlock {
 }
 
 impl CalloutBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::Callout { callout: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
@@ -109,10 +105,7 @@ mod unit_tests {
 
         let callout: CalloutBlock = serde_json::from_str::<CalloutBlock>(json_data).unwrap();
 
-        assert_eq!(
-            callout.color,
-            crate::others::color::Color::BG(crate::others::color::ColorBG::BlueBackground)
-        );
+        assert_eq!(callout.color, crate::others::color::Color::BlueBackground);
 
         let rich_text = callout.rich_text.first().unwrap();
 
@@ -126,7 +119,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
 
         match callout.icon {

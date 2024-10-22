@@ -1,9 +1,11 @@
 use serde::{Deserialize, Serialize};
 
+use crate::color_setters;
+
 /// <https://developers.notion.com/reference/block#to-do>
 ///
 /// To do block objects contain the following information within the to_do property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct ToDoBlock {
     /// The rich text displayed in the To do block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -16,10 +18,6 @@ pub struct ToDoBlock {
 }
 
 impl ToDoBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::ToDo { to_do: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
@@ -33,6 +31,8 @@ impl ToDoBlock {
         self.checked = checked;
         self
     }
+
+    color_setters!(self, self.color);
 }
 
 impl<T> From<T> for ToDoBlock
@@ -98,7 +98,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
     }
 }

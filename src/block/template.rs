@@ -5,17 +5,13 @@ use serde::{Deserialize, Serialize};
 /// Template blocks represent template buttons in the Notion UI.
 /// Template block objects contain the following information within the template property:
 
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct TemplateBlock {
     /// The rich text displayed in the title of the template
     pub rich_text: Vec<crate::others::rich_text::RichText>,
 }
 
 impl TemplateBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::Template { template: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
@@ -72,7 +68,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
     }
 }

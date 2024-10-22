@@ -5,12 +5,12 @@ mod integration_tests {
     /// This integration test cannot be run unless explicit permission
     /// for user reading is granted in the Notion API key issuance settings.
     #[tokio::test]
-    async fn get_page_property_item() -> Result<(), notionrs::error::NotionError> {
+    async fn get_page_property_item() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
 
         let page_id = std::env::var("NOTION_PAGE_ID").unwrap();
 
-        let client = notionrs::client::NotionClient::new();
+        let client = notionrs::client::Client::new();
 
         let request = client
             .get_page_property_item()

@@ -1,4 +1,4 @@
-use crate::error::{api_error::NotionApiError, NotionError};
+use crate::error::{api_error::ApiError, Error};
 
 #[derive(Debug)]
 pub struct GetBlockClient {
@@ -10,12 +10,10 @@ pub struct GetBlockClient {
 
 impl GetBlockClient {
     // TODO: docs for send
-    pub async fn send(self) -> Result<crate::block::BlockResponse, NotionError> {
-        let block_id = self
-            .block_id
-            .ok_or(NotionError::NotionRequestParameterError(
-                "`block_id` has not been set.".to_string(),
-            ))?;
+    pub async fn send(self) -> Result<crate::block::BlockResponse, Error> {
+        let block_id = self.block_id.ok_or(Error::RequestParameter(
+            "`block_id` has not been set.".to_string(),
+        ))?;
 
         let url = format!("https://api.notion.com/v1/blocks/{}", block_id);
 
@@ -26,9 +24,9 @@ impl GetBlockClient {
         if !response.status().is_success() {
             let error_body = response.text().await?;
 
-            let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+            let error_json = serde_json::from_str::<ApiError>(&error_body)?;
 
-            return Err(NotionError::NotionApiError(Box::new(error_json)));
+            return Err(Error::Api(Box::new(error_json)));
         }
 
         let body = response.text().await?;

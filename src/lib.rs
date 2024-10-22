@@ -7,9 +7,15 @@ pub mod database;
 pub mod error;
 pub mod filter;
 pub mod list_response;
-pub mod macros;
 pub mod others;
 pub mod page;
 pub mod prelude;
 pub mod to_json;
 pub mod user;
+
+pub use crate::client::Client;
+pub use crate::others::color::Color;
+pub use crate::others::file::File;
+pub use crate::others::language::Language;
+pub use crate::others::rich_text::RichText;
+pub use crate::others::select::{Select, SelectColor, SelectGroup};

@@ -71,6 +71,9 @@ mod unit_tests {
         assert_eq!(status.id, "xx%7Cd");
         assert_eq!(status.status.id, "4a1accbf-6716-4cf2-9034-5877581fc5f6");
         assert_eq!(status.status.name, "Not started");
-        assert_eq!(status.status.color, crate::others::color::ColorFG::Default);
+        assert_eq!(
+            status.status.color,
+            crate::others::select::SelectColor::Default
+        );
     }
 }

@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Table block objects are parent blocks for table row children.
 /// Table block objects contain the following fields within the table property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct TableBlock {
     /// The number of columns in the table.
     /// Note that this cannot be changed via the public API once a table is created.
@@ -26,10 +26,6 @@ pub struct TableBlock {
 }
 
 impl TableBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::Table { table: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
@@ -54,7 +50,6 @@ impl TableBlock {
         if children.len() > u16::MAX as usize {
             panic!("The number of children exceeds the maximum table width.");
         }
-        self.table_width = (children.len() + 1) as u16;
         self.children = Some(children);
         self
     }

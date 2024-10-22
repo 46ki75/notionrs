@@ -9,19 +9,19 @@ NOTION_TOKEN=secret_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 By doing this, the `NOTION_TOKEN` environment variable will be automatically loaded when you initialize the client.
 
 ```rs
-let client = notionrs::client::NotionClient::new();
+let client = notionrs::client::Client::new();
 ```
 
 Although `NOT recommended`, you can also hard-code the token using the `.secret()` method.
 
 ```rs
 let client =
-    notionrs::client::NotionClient::new().secret("secret_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    notionrs::client::Client::new().secret("secret_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 ```
 
 Example of retrieving the secret from a secret store:
 
 ```rs
 let secret = get_notion_token_from_secret_store().await.unwrap();
-let client = notionrs::client::NotionClient::new().secret(secret);
+let client = notionrs::client::Client::new().secret(secret);
 ```

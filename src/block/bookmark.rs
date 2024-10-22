@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Bookmark block objects contain the following
 /// information within the bookmark property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct BookmarkBlock {
     /// The caption for the bookmark.
     pub caption: Vec<crate::others::rich_text::RichText>,
@@ -14,10 +14,6 @@ pub struct BookmarkBlock {
 }
 
 impl BookmarkBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::Bookmark { bookmark: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
@@ -99,7 +95,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
     }
 }

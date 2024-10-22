@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    error::{api_error::NotionApiError, NotionError},
+    error::{api_error::ApiError, Error},
     filter::Filter,
     list_response::ListResponse,
     page::page_response::PageResponse,
@@ -35,7 +35,7 @@ pub struct QueryDatabaseRequestBody {
 }
 
 impl QueryDatabaseClient {
-    pub async fn send(mut self) -> Result<ListResponse<PageResponse>, NotionError> {
+    pub async fn send(mut self) -> Result<ListResponse<PageResponse>, Error> {
         match self.database_id {
             Some(id) => {
                 if self.recursive {
@@ -59,9 +59,9 @@ impl QueryDatabaseClient {
                         if !response.status().is_success() {
                             let error_body = response.text().await?;
 
-                            let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+                            let error_json = serde_json::from_str::<ApiError>(&error_body)?;
 
-                            return Err(NotionError::NotionApiError(Box::new(error_json)));
+                            return Err(Error::Api(Box::new(error_json)));
                         }
 
                         let body = response.text().await?;
@@ -93,9 +93,9 @@ impl QueryDatabaseClient {
                     if !response.status().is_success() {
                         let error_body = response.text().await?;
 
-                        let error_json = serde_json::from_str::<NotionApiError>(&error_body)?;
+                        let error_json = serde_json::from_str::<ApiError>(&error_body)?;
 
-                        return Err(NotionError::NotionApiError(Box::new(error_json)));
+                        return Err(Error::Api(Box::new(error_json)));
                     }
 
                     let body = response.text().await?;
@@ -105,7 +105,7 @@ impl QueryDatabaseClient {
                     Ok(pages)
                 }
             }
-            None => Err(NotionError::NotionRequestParameterError(
+            None => Err(Error::RequestParameter(
                 "database_id is empty".to_string(),
             )),
         }

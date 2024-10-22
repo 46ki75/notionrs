@@ -6,7 +6,7 @@ use crate::color_setters;
 ///
 /// All heading block objects, heading_1, heading_2, and heading_3,
 /// contain the following information within their corresponding objects:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct HeadingBlock {
     /// The rich text of the heading.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -27,18 +27,6 @@ pub struct HeadingBlock {
 }
 
 impl HeadingBlock {
-    pub fn build_heading_1(self) -> super::Block {
-        super::Block::Heading1 { heading_1: self }
-    }
-
-    pub fn build_heading_2(self) -> super::Block {
-        super::Block::Heading2 { heading_2: self }
-    }
-
-    pub fn build_heading_3(self) -> super::Block {
-        super::Block::Heading3 { heading_3: self }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
@@ -112,10 +100,7 @@ mod unit_tests {
 
         let heading: HeadingBlock = serde_json::from_str::<HeadingBlock>(json_data).unwrap();
 
-        assert_eq!(
-            heading.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
-        );
+        assert_eq!(heading.color, crate::others::color::Color::Default);
 
         assert!(!heading.is_toggleable);
 
@@ -131,7 +116,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
     }
 }

@@ -35,29 +35,6 @@ pub struct RichTextLink {
 }
 
 impl RichText {
-    // pub fn new<T>(plain_text: T) -> Self
-    // where
-    //     T: AsRef<str>,
-    // {
-    //     RichText {
-    //         r#type: "text".to_string(),
-    //         text: RichTextContent {
-    //             content: plain_text.as_ref().to_string(),
-    //             link: None,
-    //         },
-    //         annotations: RichTextAnnotations {
-    //             bold: false,
-    //             italic: false,
-    //             strikethrough: false,
-    //             underline: false,
-    //             code: false,
-    //             color: crate::others::color::Color::FG(crate::others::color::ColorFG::Default),
-    //         },
-    //         plain_text: plain_text.as_ref().to_string(),
-    //         href: None,
-    //     }
-    // }
-
     pub fn new() -> Self {
         RichText {
             r#type: "text".to_string(),
@@ -71,7 +48,7 @@ impl RichText {
                 strikethrough: false,
                 underline: false,
                 code: false,
-                color: crate::others::color::Color::FG(crate::others::color::ColorFG::Default),
+                color: crate::others::color::Color::Default,
             },
             plain_text: String::new(),
             href: None,
@@ -146,6 +123,18 @@ where
     }
 }
 
+impl std::fmt::Display for RichText {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.plain_text)
+    }
+}
+
+impl From<RichText> for String {
+    fn from(rich_text: RichText) -> Self {
+        rich_text.to_string()
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test
@@ -191,7 +180,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
     }
 
@@ -203,9 +192,7 @@ mod unit_tests {
             .italic()
             .strikethrough()
             .code()
-            .color(crate::others::color::Color::FG(
-                crate::others::color::ColorFG::Red,
-            ))
+            .color(crate::others::color::Color::Red)
             .href("https://example.com");
 
         let expected_json = r#"

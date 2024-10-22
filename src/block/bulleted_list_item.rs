@@ -6,7 +6,7 @@ use crate::color_setters;
 ///
 ///  Bulleted list item block objects contain the following
 /// information within the bulleted_list_item property:
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct BulletedListItemBlock {
     /// The rich text in the bulleted_list_item block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -21,12 +21,6 @@ pub struct BulletedListItemBlock {
 }
 
 impl BulletedListItemBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::BulletedListItem {
-            bulleted_list_item: self,
-        }
-    }
-
     pub fn new() -> Self {
         Self::default()
     }
@@ -93,7 +87,7 @@ mod unit_tests {
 
         assert_eq!(
             bulleted_list_item.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
 
         let rich_text = bulleted_list_item.rich_text.first().unwrap();
@@ -108,7 +102,7 @@ mod unit_tests {
         assert!(!rich_text.annotations.code);
         assert_eq!(
             rich_text.annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
     }
 }

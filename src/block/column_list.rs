@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct ColumnListBlock {
     /// Only `column` can be specified.
     /// It can only be specified when making a block creation request.
@@ -10,10 +10,6 @@ pub struct ColumnListBlock {
 }
 
 impl ColumnListBlock {
-    pub fn build(self) -> super::Block {
-        super::Block::ColumnList { column_list: self }
-    }
-
     pub fn new() -> Self {
         ColumnListBlock {
             children: Some(vec![]),

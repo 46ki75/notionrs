@@ -107,7 +107,7 @@ mod unit_tests {
         assert!(!title.title.first().unwrap().annotations.code);
         assert_eq!(
             title.title.first().unwrap().annotations.color,
-            crate::others::color::Color::FG(crate::others::color::ColorFG::Default)
+            crate::others::color::Color::Default
         );
 
         assert_eq!(title.title.first().unwrap().plain_text, "My Title");

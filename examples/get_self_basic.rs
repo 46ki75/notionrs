@@ -16,8 +16,8 @@
 use notionrs::to_json::ToJson; // When you need to use the `.to_json()` method
 
 #[tokio::main]
-async fn main() -> Result<(), notionrs::error::NotionError> {
-    let client = notionrs::client::NotionClient::new();
+async fn main() -> Result<(), notionrs::error::Error> {
+    let client = notionrs::client::Client::new();
 
     let request = client.get_self();
 

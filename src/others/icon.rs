@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use super::{emoji::Emoji, file::File};
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(untagged)]
 pub enum Icon {
     File(File),
