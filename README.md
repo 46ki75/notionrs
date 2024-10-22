@@ -16,3 +16,42 @@ As part of the alpha release, the following features are available. Please note 
 - Retrieve block children
 - Update a block
 - Delete a block
+
+## Basic Usage
+
+Below is a basic example. (More detailed documentation is coming soon, so please stay tuned!)
+
+```rs
+use notionrs::{
+    block::{Block, ParagraphBlock},
+    error::Error,
+    Client, RichText,
+};
+
+#[tokio::main]
+async fn main() -> Result<(), Error> {
+    dotenvy::dotenv().ok();
+
+    let client = Client::new();
+
+    // Here, we're retrieving the ID from an environment variable,
+    // but you can change the method of retrieval to suit your needs.
+    let block_id = std::env::var("NOTION_PAGE_ID").unwrap();
+
+    let block = Block::Paragraph {
+        paragraph: ParagraphBlock::new()
+            .rich_text(vec![RichText::from("Time to start with Notion in Rust")]),
+    };
+
+    let request = client
+        .append_block_children()
+        .block_id(block_id.clone())
+        .children(vec![block]);
+
+    let response = request.send().await?;
+
+    println!("{:?}", response);
+
+    Ok(())
+}
+```
