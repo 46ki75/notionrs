@@ -23,6 +23,7 @@ export default defineConfig({
       {
         text: "Introduction",
         items: [
+          { text: "What is notionrs?", link: "/introduction/what-is-notionrs" },
           { text: "Getting Started", link: "/introduction/getting-started" },
         ],
       },
