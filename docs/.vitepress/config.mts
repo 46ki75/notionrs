@@ -21,6 +21,12 @@ export default defineConfig({
         ],
       },
       {
+        text: "Introduction",
+        items: [
+          { text: "Getting Started", link: "/introduction/getting-started" },
+        ],
+      },
+      {
         text: "Guide - Block",
         items: [{ text: "Audio Block", link: "/block/audio" }],
       },
