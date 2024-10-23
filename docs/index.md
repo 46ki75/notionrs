@@ -4,21 +4,26 @@ layout: home
 
 hero:
   name: "NotionRs"
-  text: "🦀 Rust Notion API client with full deserialization and secure property access! 🔒"
-  tagline: My great project tagline
+  text: "Rust Notion API client"
+  tagline: A simple Notion API crate that combines response deserialization, request serialization, and secure access to properties.
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: Getting Started
+      link: /introduction/getting-started
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: What is NotionRs?
+      link: /introduction/what-is-notionrs
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Easy to use
+    details: You can get started quickly with just your Notion secret token.
+    icon: <img src="https://dev.notion.so/front-static/favicon.ico" alt="notion icon" />
+
+  - title: Powered by Rust
+    details: Written in Rust, this crate takes full advantage of Rust’s memory safety, concurrency, and strong type system.
+    icon: <img src="https://www.rust-lang.org/static/images/favicon.svg" alt="rust icon" />
+
+  - title: Type-safe
+    details: The crate supports deserialization of API responses, ensuring type safety.
+    icon: 🔒
 ---
