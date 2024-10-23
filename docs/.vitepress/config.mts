@@ -7,6 +7,9 @@ export default defineConfig({
     "🦀 Community-driven Notion API client for Rust , offering complete deserialization support and providing a secure way to access properties! 🔒",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
+
+    search: { provider: "local" },
+
     nav: [
       { text: "Giude", link: "/introduction/getting-started" },
       { text: "Contribute", link: "/contribute" },
