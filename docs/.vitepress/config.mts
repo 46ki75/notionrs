@@ -14,13 +14,6 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: "Examples",
-        items: [
-          { text: "Markdown Examples", link: "/markdown-examples" },
-          { text: "Runtime API Examples", link: "/api-examples" },
-        ],
-      },
-      {
         text: "Introduction",
         items: [
           { text: "What is notionrs?", link: "/introduction/what-is-notionrs" },
