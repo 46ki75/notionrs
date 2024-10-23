@@ -8,11 +8,20 @@ hero:
   tagline: A simple Notion API crate that combines response deserialization, request serialization, and secure access to properties.
   actions:
     - theme: brand
-      text: Getting Started
-      link: /introduction/getting-started
-    - theme: alt
       text: What is NotionRs?
       link: /introduction/what-is-notionrs
+
+    - theme: alt
+      text: Getting Started
+      link: /introduction/getting-started
+
+    - theme: alt
+      text: GitHub
+      link: https://github.com/46ki75/notionrs
+
+    - theme: alt
+      text: crates.io
+      link: https://crates.io/crates/notionrs
 
 features:
   - title: Easy to use
