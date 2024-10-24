@@ -38,7 +38,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Default, Clone, PartialEq, Eq)]
 pub struct PageTitleProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -49,8 +49,11 @@ pub struct PageTitleProperty {
     pub title: Vec<crate::others::rich_text::RichText>,
 }
 
-impl From<&str> for PageTitleProperty {
-    fn from(value: &str) -> Self {
+impl<T> From<T> for PageTitleProperty
+where
+    T: AsRef<str>,
+{
+    fn from(value: T) -> Self {
         Self {
             id: None,
             title: vec![crate::RichText::from(value)],
@@ -58,12 +61,19 @@ impl From<&str> for PageTitleProperty {
     }
 }
 
-impl From<String> for PageTitleProperty {
-    fn from(value: String) -> Self {
+impl From<crate::RichText> for PageTitleProperty {
+    fn from(rich_text: crate::RichText) -> Self {
         Self {
             id: None,
-            title: vec![crate::RichText::from(value)],
+            title: vec![rich_text],
         }
+    }
+}
+
+impl std::fmt::Display for PageTitleProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let plain_text = self.title.iter().map(|t| t.to_string()).collect::<String>();
+        write!(f, "{}", plain_text)
     }
 }
 
