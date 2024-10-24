@@ -27,6 +27,7 @@ export default defineConfig({
         text: "Guide - Block",
         items: [
           { text: "Audio Block", link: "/block/audio" },
+          { text: "Retrieve a block", link: "/block/retrieve-a-block" },
           { text: "Delete a block", link: "/block/delete-a-block" },
         ],
       },
