@@ -7,22 +7,29 @@ export default defineConfig({
     "🦀 Community-driven Notion API client for Rust , offering complete deserialization support and providing a secure way to access properties! 🔒",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
+
+    search: { provider: "local" },
+
     nav: [
-      { text: "Home", link: "/" },
+      { text: "Giude", link: "/introduction/getting-started" },
       { text: "Contribute", link: "/contribute" },
     ],
 
     sidebar: [
       {
-        text: "Examples",
+        text: "Introduction",
         items: [
-          { text: "Markdown Examples", link: "/markdown-examples" },
-          { text: "Runtime API Examples", link: "/api-examples" },
+          { text: "What is notionrs?", link: "/introduction/what-is-notionrs" },
+          { text: "Getting Started", link: "/introduction/getting-started" },
         ],
       },
       {
         text: "Guide - Block",
-        items: [{ text: "Audio Block", link: "/block/audio" }],
+        items: [
+          { text: "Audio Block", link: "/block/audio" },
+          { text: "Retrieve a block", link: "/block/retrieve-a-block" },
+          { text: "Delete a block", link: "/block/delete-a-block" },
+        ],
       },
       {
         text: "Contribute",

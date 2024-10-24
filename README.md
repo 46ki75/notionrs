@@ -4,6 +4,8 @@
 [![Check Documentation Build](https://github.com/46ki75/notionrs/actions/workflows/build-documentation.yml/badge.svg)](https://github.com/46ki75/notionrs/actions/workflows/build-documentation.yml)
 [![Crates.io](https://img.shields.io/crates/v/notionrs?logo=rust)](https://crates.io/crates/notionrs/)
 
+![ogp](./assets/ogp.webp)
+
 **Status: Alpha Release! (Under Construction**) 🚧
 
 This project is currently under active development and is not yet ready for production use. Features and API stability may change without notice. Contributions and feedback are welcome!
