@@ -81,9 +81,15 @@ pub struct BlockResponse {
 
     pub parent: crate::others::parent::Parent,
 
-    pub created_time: String,
+    /// This value is provided in ISO 8601 format.
+    /// To convert it back to the original string,
+    /// use the `.to_rfc3339()` method from `chrono`.
+    pub created_time: chrono::DateTime<chrono::Utc>,
 
-    pub last_edited_time: String,
+    /// This value is provided in ISO 8601 format.
+    /// To convert it back to the original string,
+    /// use the `.to_rfc3339()` method from `chrono`.
+    pub last_edited_time: chrono::DateTime<chrono::Utc>,
 
     pub created_by: crate::user::User,
 
@@ -207,6 +213,8 @@ pub enum Block {
 
 #[cfg(test)]
 mod unit_tests {
+    use chrono::TimeZone;
+
     use super::*;
 
     #[test]
@@ -271,8 +279,12 @@ mod unit_tests {
             _ => panic!(),
         }
 
-        assert_eq!(block.created_time, "2024-08-17T02:50:00.000Z");
-        assert_eq!(block.last_edited_time, "2024-08-17T02:50:00.000Z");
+        let expected_created_time = chrono::Utc.with_ymd_and_hms(2024, 8, 17, 2, 50, 0).unwrap();
+        assert_eq!(block.created_time, expected_created_time);
+
+        let expected_last_edited_time =
+            chrono::Utc.with_ymd_and_hms(2024, 8, 17, 2, 50, 0).unwrap();
+        assert_eq!(block.last_edited_time, expected_last_edited_time);
 
         match block.created_by {
             crate::user::User::Bot(bot) => {

@@ -16,6 +16,7 @@ readme = "README.md"
 [dependencies]
 async-recursion = "~1.1.0"
 async-trait = "0.1.83"
+chrono = { version = "0.4.38", features = ["serde"] }
 dotenvy = "0.15.0"
 reqwest = "0.12.8"
 serde = { version = "1.0.213", features = ["derive"] }
