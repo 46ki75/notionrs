@@ -1,10 +1,16 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseRichTextProperty {
+    #[serde(skip_serializing)]
     pub id: Option<String>,
+
+    #[serde(skip_serializing)]
     pub name: String,
+
+    #[serde(skip_serializing)]
     pub description: Option<String>,
+
     pub rich_text: std::collections::HashMap<(), ()>,
 }
 

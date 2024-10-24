@@ -1,14 +1,20 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseRollupProperty {
+    #[serde(skip_serializing)]
     pub id: Option<String>,
+
+    #[serde(skip_serializing)]
     pub name: String,
+
+    #[serde(skip_serializing)]
     pub description: Option<String>,
+
     pub rollup: DatabaseRollupDetail,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseRollupDetail {
     pub function: RollupFunction,
 
@@ -25,7 +31,7 @@ pub struct DatabaseRollupDetail {
     pub rollup_property_name: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum RollupFunction {
     Average,
@@ -51,6 +57,8 @@ pub enum RollupFunction {
     Unique,
     ShowOriginal,
     ShowUnique,
+
+    #[default]
     Sum,
 }
 

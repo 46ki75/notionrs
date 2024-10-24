@@ -1,19 +1,25 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseNumberProperty {
+    #[serde(skip_serializing)]
     pub id: Option<String>,
+
+    #[serde(skip_serializing)]
     pub name: String,
+
+    #[serde(skip_serializing)]
     pub description: Option<String>,
+
     pub number: DatabaseNumberFormatProperty,
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone, Copy)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct DatabaseNumberFormatProperty {
     pub format: NumberFormat,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum NumberFormat {
     ArgentinePeso,
@@ -37,6 +43,7 @@ pub enum NumberFormat {
     NewTaiwanDollar,
     NewZealandDollar,
     NorwegianKrone,
+    #[default]
     Number,
     NumberWithCommas,
     Percent,

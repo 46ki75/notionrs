@@ -1,17 +1,30 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseStatusProperty {
+    #[serde(skip_serializing)]
     pub id: Option<String>,
+
+    #[serde(skip_serializing)]
     pub name: String,
+
+    #[serde(skip_serializing)]
     pub description: Option<String>,
+
     pub status: DatabaseSelectOptionProperty,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseSelectOptionProperty {
     options: Vec<crate::others::select::Select>,
     groups: Vec<crate::others::select::SelectGroup>,
+}
+
+impl DatabaseStatusProperty {
+    pub fn options(mut self, options: Vec<crate::others::select::Select>) -> Self {
+        self.status.options = options;
+        self
+    }
 }
 
 // # --------------------------------------------------------------------------------
@@ -87,18 +100,27 @@ mod unit_tests {
         let options = &status.status.options;
         assert_eq!(options.len(), 3);
 
-        assert_eq!(options[0].id, "034ece9a-384d-4d1f-97f7-7f685b29ae9b");
+        assert_eq!(
+            options[0].id,
+            ("034ece9a-384d-4d1f-97f7-7f685b29ae9b".to_string())
+        );
         assert_eq!(options[0].name, "Not started");
         assert_eq!(
             options[0].color,
             crate::others::select::SelectColor::Default
         );
 
-        assert_eq!(options[1].id, "330aeafb-598c-4e1c-bc13-1148aa5963d3");
+        assert_eq!(
+            options[1].id,
+            ("330aeafb-598c-4e1c-bc13-1148aa5963d3".to_string())
+        );
         assert_eq!(options[1].name, "In progress");
         assert_eq!(options[1].color, crate::others::select::SelectColor::Blue);
 
-        assert_eq!(options[2].id, "497e64fb-01e2-41ef-ae2d-8a87a3bb51da");
+        assert_eq!(
+            options[2].id,
+            ("497e64fb-01e2-41ef-ae2d-8a87a3bb51da".to_string())
+        );
         assert_eq!(options[2].name, "Done");
         assert_eq!(options[2].color, crate::others::select::SelectColor::Green);
 

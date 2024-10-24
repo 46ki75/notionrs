@@ -156,6 +156,15 @@ impl Client {
         }
     }
 
+    pub fn create_database(
+        &self,
+    ) -> crate::client::database::create_database::CreateDatabaseClient {
+        crate::client::database::create_database::CreateDatabaseClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
     // Block

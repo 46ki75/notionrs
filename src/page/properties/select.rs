@@ -71,7 +71,7 @@ mod unit_tests {
         assert_eq!(select.id, Some("chOy".to_string()));
         assert_eq!(
             select.select.as_ref().unwrap().id,
-            "eede87ce-52db-4b16-9931-2bc40687d697"
+            ("eede87ce-52db-4b16-9931-2bc40687d697".to_string())
         );
         assert_eq!(select.select.as_ref().unwrap().name, "TODO");
         assert_eq!(

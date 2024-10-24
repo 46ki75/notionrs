@@ -1,16 +1,36 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseFormulaProperty {
+    #[serde(skip_serializing)]
     pub id: Option<String>,
+
+    #[serde(skip_serializing)]
     pub name: String,
+
+    #[serde(skip_serializing)]
     pub description: Option<String>,
+
     pub formula: DatabaseFormulaExpressionProperty,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseFormulaExpressionProperty {
     expression: String,
+}
+
+impl<T> From<T> for DatabaseFormulaProperty
+where
+    T: AsRef<str>,
+{
+    fn from(expression: T) -> Self {
+        Self {
+            formula: DatabaseFormulaExpressionProperty {
+                expression: expression.as_ref().to_string(),
+            },
+            ..Default::default()
+        }
+    }
 }
 
 // # --------------------------------------------------------------------------------
