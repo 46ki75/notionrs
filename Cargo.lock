@@ -562,7 +562,7 @@ dependencies = [
 
 [[package]]
 name = "notionrs"
-version = "1.0.0-alpha.2"
+version = "1.0.0-alpha.3"
 dependencies = [
  "async-recursion",
  "async-trait",
