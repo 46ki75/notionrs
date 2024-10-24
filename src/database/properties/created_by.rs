@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseCreatedByProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub created_by: std::collections::HashMap<(), ()>,
@@ -31,7 +31,7 @@ mod unit_tests {
 
         let created_by = serde_json::from_str::<DatabaseCreatedByProperty>(json_data).unwrap();
 
-        assert_eq!(created_by.id, "%7Cy~C");
+        assert_eq!(created_by.id, Some("%7Cy~C".to_string()));
         assert_eq!(created_by.name, "CreatedBy");
         assert_eq!(created_by.created_by, std::collections::HashMap::new());
     }

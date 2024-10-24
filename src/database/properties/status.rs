@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseStatusProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub status: DatabaseSelectOptionProperty,
@@ -81,7 +81,7 @@ mod unit_tests {
 
         let status = serde_json::from_str::<DatabaseStatusProperty>(json_data).unwrap();
 
-        assert_eq!(status.id, "biOx");
+        assert_eq!(status.id, Some("biOx".to_string()));
         assert_eq!(status.name, "Status");
 
         let options = &status.status.options;

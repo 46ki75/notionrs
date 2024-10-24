@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseFilesProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub files: std::collections::HashMap<(), ()>,
@@ -31,7 +31,7 @@ mod unit_tests {
 
         let files = serde_json::from_str::<DatabaseFilesProperty>(json_data).unwrap();
 
-        assert_eq!(files.id, "pb%3E%5B");
+        assert_eq!(files.id, Some("pb%3E%5B".to_string()));
         assert_eq!(files.name, "Product image");
         assert_eq!(files.files, std::collections::HashMap::new());
     }

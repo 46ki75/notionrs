@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseTitleProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub title: std::collections::HashMap<(), ()>,
@@ -31,7 +31,7 @@ mod unit_tests {
 
         let title = serde_json::from_str::<DatabaseTitleProperty>(json_data).unwrap();
 
-        assert_eq!(title.id, "title");
+        assert_eq!(title.id, Some("title".to_string()));
         assert_eq!(title.name, "Project name");
         assert_eq!(title.title, std::collections::HashMap::new());
     }

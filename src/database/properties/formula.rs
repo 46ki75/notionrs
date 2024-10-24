@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseFormulaProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub formula: DatabaseFormulaExpressionProperty,
@@ -38,7 +38,7 @@ mod unit_tests {
 
         let formula = serde_json::from_str::<DatabaseFormulaProperty>(json_data).unwrap();
 
-        assert_eq!(formula.id, "YU%7C%40");
+        assert_eq!(formula.id, Some("YU%7C%40".to_string()));
         assert_eq!(formula.name, "Updated price");
         assert_eq!(formula.formula.expression, "{{notion:block_property:BtVS:00000000-0000-0000-0000-000000000000:8994905a-074a-415f-9bcf-d1f8b4fa38e4}}/2");
     }

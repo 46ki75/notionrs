@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseMultiSelectProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub multi_select: DatabaseMultiSelectOptionProperty,
@@ -59,7 +59,7 @@ mod unit_tests {
 
         let multi_select = serde_json::from_str::<DatabaseMultiSelectProperty>(json_data).unwrap();
 
-        assert_eq!(multi_select.id, "flsb");
+        assert_eq!(multi_select.id, Some("flsb".to_string()));
         assert_eq!(multi_select.name, "Store availability");
 
         let options = &multi_select.multi_select.options;

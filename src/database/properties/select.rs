@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseSelectProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub select: DatabaseSelectOptionProperty,
@@ -54,7 +54,7 @@ mod unit_tests {
 
         let select = serde_json::from_str::<DatabaseSelectProperty>(json_data).unwrap();
 
-        assert_eq!(select.id, "%40Q%5BM");
+        assert_eq!(select.id, Some("%40Q%5BM".to_string()));
         assert_eq!(select.name, "Food group");
 
         let options = &select.select.options;

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseRichTextProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub rich_text: std::collections::HashMap<(), ()>,
@@ -31,7 +31,7 @@ mod unit_tests {
 
         let rich_text = serde_json::from_str::<DatabaseRichTextProperty>(json_data).unwrap();
 
-        assert_eq!(rich_text.id, "NZZ%3B");
+        assert_eq!(rich_text.id, Some("NZZ%3B".to_string()));
         assert_eq!(rich_text.name, "Project description");
         assert_eq!(rich_text.rich_text, std::collections::HashMap::new());
     }

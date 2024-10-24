@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseRelationProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub relation: DatabaseRelationDetail,
@@ -48,7 +48,7 @@ mod unit_tests {
 
         let relation = serde_json::from_str::<DatabaseRelationProperty>(json_data).unwrap();
 
-        assert_eq!(relation.id, "~pex");
+        assert_eq!(relation.id, Some("~pex".to_string()));
         assert_eq!(relation.name, "Projects");
         assert_eq!(
             relation.relation.database_id,

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseUrlProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub url: std::collections::HashMap<(), ()>,
@@ -31,7 +31,7 @@ mod unit_tests {
 
         let url = serde_json::from_str::<DatabaseUrlProperty>(json_data).unwrap();
 
-        assert_eq!(url.id, "BZKU");
+        assert_eq!(url.id, Some("BZKU".to_string()));
         assert_eq!(url.name, "Project URL");
         assert_eq!(url.url, std::collections::HashMap::new());
     }

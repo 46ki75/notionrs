@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseEmailProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub email: std::collections::HashMap<(), ()>,
@@ -31,7 +31,7 @@ mod unit_tests {
 
         let email = serde_json::from_str::<DatabaseEmailProperty>(json_data).unwrap();
 
-        assert_eq!(email.id, "oZbC");
+        assert_eq!(email.id, Some("oZbC".to_string()));
         assert_eq!(email.name, "Contact email");
         assert_eq!(email.email, std::collections::HashMap::new());
     }

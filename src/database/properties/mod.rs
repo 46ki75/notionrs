@@ -74,7 +74,7 @@ mod unit_tests {
 
         match number {
             DatabaseProperty::Number(num) => {
-                assert_eq!(num.id, "~B%7BT");
+                assert_eq!(num.id, Some("~B%7BT".to_string()));
                 assert_eq!(num.name, "Number");
                 assert_eq!(
                     num.number.format,

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseNumberProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub number: DatabaseNumberFormatProperty,
@@ -84,7 +84,7 @@ mod unit_tests {
 
         let number = serde_json::from_str::<DatabaseNumberProperty>(json_data).unwrap();
 
-        assert_eq!(number.id, "%7B%5D_P");
+        assert_eq!(number.id, Some("%7B%5D_P".to_string()));
         assert_eq!(number.name, "Price");
         assert_eq!(number.number.format, NumberFormat::Dollar);
     }

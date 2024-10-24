@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabasePhoneNumberProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub phone_number: std::collections::HashMap<(), ()>,
@@ -31,7 +31,7 @@ mod unit_tests {
 
         let phone_number = serde_json::from_str::<DatabasePhoneNumberProperty>(json_data).unwrap();
 
-        assert_eq!(phone_number.id, "ULHa");
+        assert_eq!(phone_number.id, Some("ULHa".to_string()));
         assert_eq!(phone_number.name, "Contact phone number");
         assert_eq!(phone_number.phone_number, std::collections::HashMap::new());
     }

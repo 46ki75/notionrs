@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseRollupProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub rollup: DatabaseRollupDetail,
@@ -83,7 +83,7 @@ mod unit_tests {
 
         let rollup = serde_json::from_str::<DatabaseRollupProperty>(json_data).unwrap();
 
-        assert_eq!(rollup.id, "%5E%7Cy%3C");
+        assert_eq!(rollup.id, Some("%5E%7Cy%3C".to_string()));
         assert_eq!(rollup.name, "Estimated total project time");
         assert_eq!(rollup.rollup.rollup_property_name, "Days to complete");
         assert_eq!(rollup.rollup.relation_property_name, "Tasks");

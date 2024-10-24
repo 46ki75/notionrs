@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseCheckboxProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub checkbox: std::collections::HashMap<(), ()>,
@@ -31,7 +31,7 @@ mod unit_tests {
 
         let checkbox = serde_json::from_str::<DatabaseCheckboxProperty>(json_data).unwrap();
 
-        assert_eq!(checkbox.id, "XjE%60");
+        assert_eq!(checkbox.id, Some("XjE%60".to_string()));
         assert_eq!(checkbox.name, "Checkbox");
         assert_eq!(checkbox.checkbox, std::collections::HashMap::new());
     }

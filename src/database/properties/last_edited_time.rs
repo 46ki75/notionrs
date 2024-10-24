@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseLastEditedTimeProperty {
-    pub id: String,
+    pub id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub last_edited_time: std::collections::HashMap<(), ()>,
@@ -32,7 +32,7 @@ mod unit_tests {
         let last_edited_time =
             serde_json::from_str::<DatabaseLastEditedTimeProperty>(json_data).unwrap();
 
-        assert_eq!(last_edited_time.id, "jGdo");
+        assert_eq!(last_edited_time.id, Some("jGdo".to_string()));
         assert_eq!(last_edited_time.name, "Last edited time");
         assert_eq!(
             last_edited_time.last_edited_time,
