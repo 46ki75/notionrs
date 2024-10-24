@@ -129,6 +129,13 @@ impl Client {
         }
     }
 
+    pub fn create_page(&self) -> crate::client::page::create_page::CreatePageClient {
+        crate::client::page::create_page::CreatePageClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
     // Database
