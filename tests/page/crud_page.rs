@@ -14,10 +14,9 @@ mod integration_tests {
 
         properties.insert(
             "title".to_string(),
-            notionrs::page::properties::PageProperty::Title {
-                id: None,
-                title: vec![notionrs::RichText::from("My Page Title")],
-            },
+            notionrs::page::PageProperty::Title(notionrs::page::PageTitleProperty::from(
+                "My Page Title",
+            )),
         );
 
         let request = client.create_page().properties(properties).page_id(page_id);

@@ -42,10 +42,29 @@ use serde::{Deserialize, Serialize};
 pub struct PageTitleProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
 
     /// An array of [rich text](https://developers.notion.com/reference/rich-text) objects.
     pub title: Vec<crate::others::rich_text::RichText>,
+}
+
+impl From<&str> for PageTitleProperty {
+    fn from(value: &str) -> Self {
+        Self {
+            id: None,
+            title: vec![crate::RichText::from(value)],
+        }
+    }
+}
+
+impl From<String> for PageTitleProperty {
+    fn from(value: String) -> Self {
+        Self {
+            id: None,
+            title: vec![crate::RichText::from(value)],
+        }
+    }
 }
 
 // # --------------------------------------------------------------------------------
@@ -95,7 +114,7 @@ mod unit_tests {
 
         let title = title_map.get("Title").unwrap();
 
-        assert_eq!(title.id, "frg3");
+        assert_eq!(title.id, Some("frg3".to_string()));
 
         assert_eq!(title.title.first().unwrap().text.content, "My Title");
         assert_eq!(title.title.first().unwrap().text.link, None);

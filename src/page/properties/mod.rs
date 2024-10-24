@@ -23,27 +23,23 @@ pub mod title;
 pub mod unique_id;
 pub mod url;
 
+pub use {
+    button::PageButtonProperty, checkbox::PageCheckboxProperty, created_by::PageCreatedByProperty,
+    created_time::PageCreatedTimeProperty, date::PageDateProperty, email::PageEmailProperty,
+    files::PageFilesProperty, formula::PageFormulaProperty,
+    last_edited_by::PageLastEditedByProperty, last_edited_time::PageLastEditedTimeProperty,
+    multi_select::PageMultiSelectProperty, number::PageNumberProperty, people::PagePeopleProperty,
+    phone_number::PagePhoneNumberProperty, relation::PageRelationProperty,
+    rich_text::PageRichTextProperty, rollup::PageRollupProperty, select::PageSelectProperty,
+    status::PageStatusProperty, title::PageTitleProperty, unique_id::PageUniqueIdProperty,
+    url::PageUrlProperty,
+};
+
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum PageProperty {
-    Button {
-        /// An underlying identifier for the property.
-        /// `id` remains constant when the property name changes.
-        id: String,
-
-        /// Always `"button"`
-        button: std::collections::HashMap<String, String>,
-    },
-
-    /// <https://developers.notion.com/reference/page-property-values#checkbox>
-    Checkbox {
-        /// An underlying identifier for the property.
-        /// `id` remains constant when the property name changes.
-        id: Option<String>,
-
-        /// Whether the checkbox is checked (`true`) or unchecked (`false`).
-        checkbox: bool,
-    },
+    Button(button::PageButtonProperty),
+    Checkbox(checkbox::PageCheckboxProperty),
     CreatedBy(created_by::PageCreatedByProperty),
     CreatedTime(created_time::PageCreatedTimeProperty),
     Date(date::PageDateProperty),
@@ -61,15 +57,7 @@ pub enum PageProperty {
     Rollup(rollup::PageRollupProperty),
     Select(select::PageSelectProperty),
     Status(status::PageStatusProperty),
-    Title {
-        /// An underlying identifier for the property.
-        /// `id` remains constant when the property name changes.
-        #[serde(skip_serializing_if = "Option::is_none")]
-        id: Option<String>,
-
-        /// An array of [rich text](https://developers.notion.com/reference/rich-text) objects.
-        title: Vec<crate::others::rich_text::RichText>,
-    },
+    Title(title::PageTitleProperty),
     UniqueId(unique_id::PageUniqueIdProperty),
     Url(url::PageUrlProperty),
 }
