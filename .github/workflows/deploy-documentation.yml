@@ -2,6 +2,8 @@ name: Build and Deploy Documentation
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "v*"
   workflow_dispatch:
