@@ -19,4 +19,9 @@ pub enum Error {
 
     #[error("unknown error: {0}")]
     Unknown(String),
+
+    /// If you want to handle multiple errors collectively in the `Error` enum of the `notionrs` crate,
+    /// use this variant to create your own custom error.
+    #[error("custom error: {0}")]
+    Custom(String),
 }
