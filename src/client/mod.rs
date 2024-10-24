@@ -15,8 +15,6 @@ impl Client {
     pub fn new() -> Self {
         let mut headers = reqwest::header::HeaderMap::new();
 
-        dotenvy::dotenv().ok();
-
         let secret = env::var("NOTION_TOKEN").unwrap_or_else(|_| String::new());
 
         headers.insert(
