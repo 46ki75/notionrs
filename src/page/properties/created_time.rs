@@ -29,7 +29,7 @@ pub struct PageCreatedTimeProperty {
 
     /// The date and time that the page was created.
     ///The created_time value can’t be updated.
-    pub created_time: String,
+    pub created_time: chrono::DateTime<chrono::Utc>,
 }
 
 // # --------------------------------------------------------------------------------
@@ -40,6 +40,8 @@ pub struct PageCreatedTimeProperty {
 
 #[cfg(test)]
 mod unit_tests {
+    use chrono::TimeZone;
+
     use super::*;
 
     #[test]
@@ -62,6 +64,8 @@ mod unit_tests {
         let created_time = created_time_map.get("Created time").unwrap();
 
         assert_eq!(created_time.id, "sv%3Fi");
-        assert_eq!(created_time.created_time, "2024-04-03T10:55:00.000Z");
+
+        let expected_created_time = chrono::Utc.with_ymd_and_hms(2024, 4, 3, 10, 55, 0).unwrap();
+        assert_eq!(created_time.created_time, expected_created_time);
     }
 }
