@@ -34,7 +34,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageLastEditedByProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// A [user object](https://developers.notion.com/reference/user)
     /// containing information about the user who last updated the page.
@@ -79,7 +79,7 @@ mod unit_tests {
 
         let last_edited_by = last_edited_by_map.get("Last edited by").unwrap();
 
-        assert_eq!(last_edited_by.id, "fR4s");
+        assert_eq!(last_edited_by.id, Some("fR4s".to_string()));
 
         match &last_edited_by.last_edited_by {
             crate::user::User::Bot(_) => panic!(),

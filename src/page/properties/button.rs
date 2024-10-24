@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageButtonProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// Always `"button"`
     pub button: std::collections::HashMap<String, String>,
@@ -59,7 +59,7 @@ mod unit_tests {
 
         let button = button_map.get("Button").unwrap();
 
-        assert_eq!(button.id, "c%60qZ".to_string());
+        assert_eq!(button.id, Some("c%60qZ".to_string()));
         assert!(button.button.is_empty());
     }
 }

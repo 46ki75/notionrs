@@ -35,7 +35,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageMultiSelectProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// Array of Select object
     pub multi_select: Vec<crate::others::select::Select>,
@@ -81,7 +81,7 @@ mod unit_tests {
 
         let multi_select = multi_select_map.get("Multi-select").unwrap();
 
-        assert_eq!(multi_select.id, "_bnY");
+        assert_eq!(multi_select.id, Some("_bnY".to_string()));
 
         assert_eq!(
             multi_select.multi_select.first().unwrap().id,

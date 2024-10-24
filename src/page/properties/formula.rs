@@ -32,7 +32,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageFormulaProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// Formula property value objects represent the result of evaluating
     /// a formula described in the database's properties.
@@ -129,7 +129,7 @@ mod unit_tests {
 
         let formula = formula_map.get("Formula").unwrap();
 
-        assert_eq!(formula.id, "W~%5BW");
+        assert_eq!(formula.id, Some("W~%5BW".to_string()));
 
         match &formula.formula {
             Formula::String(s) => assert_eq!(s.string, Some("My Title".to_string())),

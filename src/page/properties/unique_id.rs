@@ -27,7 +27,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageUniqueIdProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// A unique ID assigned through auto increment
     pub unique_id: PageUniqueIdPropertyParameter,
@@ -78,7 +78,7 @@ mod unit_tests {
 
         let unique_id = unique_id_map.get("ID").unwrap();
 
-        assert_eq!(unique_id.id, "mBKy");
+        assert_eq!(unique_id.id, Some("mBKy".to_string()));
         assert_eq!(unique_id.unique_id.prefix, Some("TES".to_string()));
         assert_eq!(unique_id.unique_id.number, 434);
     }

@@ -24,7 +24,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageCheckboxProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// Whether the checkbox is checked (`true`) or unchecked (`false`).
     pub checkbox: bool,
@@ -59,7 +59,7 @@ mod unit_tests {
 
         let checkbox = checkbox_map.get("Task completed").unwrap();
 
-        assert_eq!(checkbox.id, "ZI%40W".to_string());
+        assert_eq!(checkbox.id, Some("ZI%40W".to_string()));
         assert!(checkbox.checkbox);
     }
 }

@@ -31,7 +31,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageRelationProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// An array of related page references.
     /// A page reference is an object with an id key and
@@ -84,7 +84,7 @@ mod unit_tests {
 
         let relation = relation_map.get("Related").unwrap();
 
-        assert_eq!(relation.id, "b%7D%3Ek");
+        assert_eq!(relation.id, Some("b%7D%3Ek".to_string()));
         assert!(!relation.has_more);
 
         assert_eq!(

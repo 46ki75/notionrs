@@ -35,7 +35,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageCreatedByProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// A [user object](https://developers.notion.com/reference/user)
     /// containing information about the user who created the page.
@@ -81,6 +81,6 @@ mod unit_tests {
 
         let created_by = created_by_map.get("Created by").unwrap();
 
-        assert_eq!(created_by.id, "fR4s".to_string());
+        assert_eq!(created_by.id, Some("fR4s".to_string()));
     }
 }

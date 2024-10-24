@@ -33,7 +33,7 @@ use serde::{Deserialize, Serialize};
 pub struct PagePeopleProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// An array of user objects.
     pub people: Vec<crate::user::User>,
@@ -81,7 +81,7 @@ mod unit_tests {
 
         let people = people_map.get("Person").unwrap();
 
-        assert_eq!(people.id, "pAoV");
+        assert_eq!(people.id, Some("pAoV".to_string()));
 
         match &people.people.first().unwrap() {
             crate::user::User::Person(p) => {

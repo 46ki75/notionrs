@@ -24,7 +24,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageNumberProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// A number representing some value.
     pub number: Option<f64>,
@@ -59,7 +59,7 @@ mod unit_tests {
 
         let number = number_map.get("Number").unwrap();
 
-        assert_eq!(number.id, "%5Chme");
+        assert_eq!(number.id, Some("%5Chme".to_string()));
         assert_eq!(number.number, Some(20.0));
     }
 }

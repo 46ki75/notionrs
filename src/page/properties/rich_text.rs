@@ -42,7 +42,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageRichTextProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// An array of [rich text objects](https://developers.notion.com/reference/rich-text)
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -96,7 +96,7 @@ mod unit_tests {
 
         let rich_text = rich_text_map.get("Text").unwrap();
 
-        assert_eq!(rich_text.id, "mM%3BV");
+        assert_eq!(rich_text.id, Some("mM%3BV".to_string()));
         assert_eq!(
             rich_text.rich_text.first().unwrap().text.content,
             "My Description"

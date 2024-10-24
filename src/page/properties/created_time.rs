@@ -25,7 +25,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageCreatedTimeProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// The date and time that the page was created.
     ///The created_time value can’t be updated.
@@ -63,7 +63,7 @@ mod unit_tests {
 
         let created_time = created_time_map.get("Created time").unwrap();
 
-        assert_eq!(created_time.id, "sv%3Fi");
+        assert_eq!(created_time.id, Some("sv%3Fi".to_string()));
 
         let expected_created_time = chrono::Utc.with_ymd_and_hms(2024, 4, 3, 10, 55, 0).unwrap();
         assert_eq!(created_time.created_time, expected_created_time);

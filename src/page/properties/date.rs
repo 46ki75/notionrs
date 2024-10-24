@@ -44,7 +44,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageDateProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// If the value is blank, it will be `null`.
     pub date: Option<PageDatePropertyParameter>,
@@ -96,7 +96,7 @@ mod unit_tests {
 
         let date = date_map.get("Date").unwrap();
 
-        assert_eq!(date.id, "w%5E%7DO");
+        assert_eq!(date.id, Some("w%5E%7DO".to_string()));
 
         match &date.date {
             Some(property) => {
