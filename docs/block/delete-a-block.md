@@ -1,6 +1,9 @@
 # Delete a block
 
-You can find the official documentation [here](https://developers.notion.com/reference/delete-a-block).
+This method is used to delete (archive) a block in Notion.
+
+> [!INFO]
+> You can find the official documentation [here](https://developers.notion.com/reference/delete-a-block).
 
 ## Basic Usage
 
