@@ -327,6 +327,40 @@ mod integration_tests {
         Ok(())
     }
 
+    #[tokio::test]
+    async fn query_database_filter_rollup_filter() -> Result<(), notionrs::error::Error> {
+        dotenvy::dotenv().ok();
+        let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+        let client = notionrs::client::Client::new();
+
+        let filter = notionrs::filter::Filter::or(vec![
+            notionrs::filter::Filter::rollup_any(
+                "Rollup",
+                notionrs::filter::Filter::rich_text_contains("Title", "a"),
+            ),
+            notionrs::filter::Filter::rollup_every(
+                "Rollup",
+                notionrs::filter::Filter::rich_text_contains("Title", "a"),
+            ),
+            notionrs::filter::Filter::rollup_none(
+                "Rollup",
+                notionrs::filter::Filter::rich_text_contains("Title", "a"),
+            ),
+        ]);
+
+        let request = client
+            .query_database()
+            .database_id(database_id)
+            .filter(filter);
+
+        let response = request.send().await?;
+
+        println!("{}", response.to_json());
+
+        Ok(())
+    }
+
     // TODO: TEST rollup
 
     #[tokio::test]

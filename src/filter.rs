@@ -1559,25 +1559,56 @@ impl Filter {
     //
     // # --------------------------------------------------------------------------------
 
-    // /// Returns database entries with a text property value that includes the provided string.
-    // ///
-    // /// - `property_name`: Property Name (Column Name) in Notion Database
-    // /// - `text`: The string to compare the text property value against.
-    // pub fn rollup_any<S>(property_name: S, filter: Filter) -> Self
-    // where
-    //     S: AsRef<str>,
-    // {
-    //     Filter {
-    //         and: None,
-    //         or: None,
-    //         property: Some(property_name.as_ref().to_string()),
-    //         condition: Some(Condition::Rollup(RollupFilter {
-    //             any: Some(filter.into_iter().map(Box::new).collect()),
-    //             ..Default::default()
-    //         })),
-    //         timestamp: None,
-    //     }
-    // }
+    /// Returns database entries where the rollup property value matches the provided criteria.
+    pub fn rollup_any<S>(property_name: S, filter: Filter) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Rollup(Box::new(RollupFilter {
+                any: Some(Box::new(filter)),
+                ..Default::default()
+            }))),
+            timestamp: None,
+        }
+    }
+
+    /// Returns database entries where every rollup property value matches the provided criteria.
+    pub fn rollup_every<S>(property_name: S, filter: Filter) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Rollup(Box::new(RollupFilter {
+                every: Some(Box::new(filter)),
+                ..Default::default()
+            }))),
+            timestamp: None,
+        }
+    }
+
+    /// Returns database entries where no rollup property value matches the provided criteria.
+    pub fn rollup_none<S>(property_name: S, filter: Filter) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Rollup(Box::new(RollupFilter {
+                none: Some(Box::new(filter)),
+                ..Default::default()
+            }))),
+            timestamp: None,
+        }
+    }
 
     // # --------------------------------------------------------------------------------
     //
