@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 /// <https://developers.notion.com/reference/user#bots>
 /// A user object's type property is"bot" when the user object represents a bot.
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, PartialEq, Eq, Clone)]
 pub struct Bot {
     /// always "user"
     pub object: String,
@@ -26,7 +26,7 @@ pub struct Bot {
 }
 
 /// This struct can potentially become an empty object since all its fields are optional.
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, PartialEq, Eq, Clone)]
 pub struct BotDetail {
     /// Information about who owns this bot.
     pub owner: Option<BotOwner>,
@@ -38,7 +38,7 @@ pub struct BotDetail {
 }
 
 /// Information about who owns this bot.
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, PartialEq, Eq, Clone)]
 pub struct BotOwner {
     /// The type of owner, either "workspace" or "user".
     pub r#type: String,
@@ -46,6 +46,18 @@ pub struct BotOwner {
     /// Whether the bot's owner is the workspace.
     pub workspace: bool,
 }
+
+impl crate::ToPlainText for Bot {
+    /// Convert Bot to a plain string
+    fn to_plain_text(&self) -> String {
+        if let Some(name) = &self.name {
+            name.clone()
+        } else {
+            self.id.clone()
+        }
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

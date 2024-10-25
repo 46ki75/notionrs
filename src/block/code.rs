@@ -110,34 +110,46 @@ mod unit_tests {
 
         let caption = code.caption.first().unwrap();
 
-        assert_eq!(caption.plain_text, "src/others/emoji.rs");
-        assert_eq!(caption.href, None);
+        match caption {
+            crate::RichText::Text {
+                annotations,
+                plain_text,
+                href,
+                ..
+            } => {
+                assert_eq!(plain_text, "src/others/emoji.rs");
+                assert_eq!(*href, None);
 
-        assert!(!caption.annotations.bold);
-        assert!(!caption.annotations.italic);
-        assert!(!caption.annotations.strikethrough);
-        assert!(!caption.annotations.underline);
-        assert!(!caption.annotations.code);
-        assert_eq!(
-            caption.annotations.color,
-            crate::others::color::Color::Default
-        );
+                assert!(!annotations.bold);
+                assert!(!annotations.code);
+                assert!(!annotations.strikethrough);
+                assert!(!annotations.underline);
+                assert!(!annotations.italic);
+                assert_eq!(annotations.color, crate::others::color::Color::Default)
+            }
+            _ => panic!(),
+        }
 
         let rich_text = code.rich_text.first().unwrap();
 
-        assert!(rich_text
-            .plain_text
-            .contains("use serde::{Deserialize, Serialize};"));
-        assert_eq!(rich_text.href, None);
+        match rich_text {
+            crate::RichText::Text {
+                annotations,
+                plain_text,
+                href,
+                ..
+            } => {
+                assert!(plain_text.contains("use serde::{Deserialize, Serialize};"));
+                assert_eq!(*href, None);
 
-        assert!(!rich_text.annotations.bold);
-        assert!(!rich_text.annotations.italic);
-        assert!(!rich_text.annotations.strikethrough);
-        assert!(!rich_text.annotations.underline);
-        assert!(!rich_text.annotations.code);
-        assert_eq!(
-            rich_text.annotations.color,
-            crate::others::color::Color::Default
-        );
+                assert!(!annotations.bold);
+                assert!(!annotations.code);
+                assert!(!annotations.strikethrough);
+                assert!(!annotations.underline);
+                assert!(!annotations.italic);
+                assert_eq!(annotations.color, crate::others::color::Color::Default)
+            }
+            _ => panic!(),
+        }
     }
 }

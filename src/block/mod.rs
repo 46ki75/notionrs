@@ -307,8 +307,15 @@ mod unit_tests {
 
                 let rich_text = bookmark.caption.first().unwrap();
 
-                assert_eq!(rich_text.plain_text, "example domain");
-                assert_eq!(rich_text.href, None);
+                match rich_text {
+                    crate::RichText::Text {
+                        plain_text, href, ..
+                    } => {
+                        assert_eq!(plain_text, "example domain");
+                        assert_eq!(*href, None);
+                    }
+                    _ => panic!(),
+                }
             }
             _ => panic!("Unexpected block type!"),
         }

@@ -1,4 +1,4 @@
-use notionrs::{block::Block, error::Error, others::rich_text::ToPlainText, Client};
+use notionrs::{block::Block, error::Error, Client, ToPlainText};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {

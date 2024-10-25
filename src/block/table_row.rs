@@ -88,6 +88,11 @@ mod unit_tests {
 
         let cell = table_rows.cells.first().unwrap().first().unwrap();
 
-        assert_eq!(cell.plain_text, "A1-thead");
+        match cell {
+            crate::RichText::Text { plain_text, .. } => {
+                assert_eq!(plain_text, "A1-thead");
+            }
+            _ => panic!(),
+        }
     }
 }
