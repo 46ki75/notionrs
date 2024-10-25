@@ -6,13 +6,13 @@ use serde::{Deserialize, Serialize};
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Filter {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub and: Option<Vec<Filter>>,
+    pub and: Option<Vec<Box<Filter>>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub or: Option<Vec<Filter>>,
+    pub or: Option<Vec<Box<Filter>>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub property: Option<String>,
@@ -32,7 +32,7 @@ pub struct Filter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum Condition {
     Checkbox(CheckboxFilter),
@@ -43,7 +43,7 @@ pub enum Condition {
     Number(NumberFilter),
     People(PeopleFilter),
     PhoneNumber(PhoneNumberFilter),
-    // TODO: implement rollup
+    Rollup(Box<RollupFilter>),
     Relation(RelationFilter),
     RichText(RichTextFilter),
     Select(SelectFilter),
@@ -59,7 +59,7 @@ pub enum Condition {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct CheckboxFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub equals: Option<bool>,
@@ -71,7 +71,7 @@ pub struct CheckboxFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DateFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub after: Option<String>,
@@ -122,7 +122,7 @@ pub struct DateFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct FilesFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_empty: Option<bool>,
@@ -161,7 +161,7 @@ pub struct FilesFilter {
 // # --------------------------------------------------------------------------------
 
 /// <https://developers.notion.com/reference/post-database-query-filter#multi-select>
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct MultiSelectFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub contains: Option<String>,
@@ -182,7 +182,7 @@ pub struct MultiSelectFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq)]
 pub struct NumberFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub does_not_equal: Option<f64>,
@@ -215,7 +215,7 @@ pub struct NumberFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 
 pub struct PeopleFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -237,8 +237,7 @@ pub struct PeopleFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
-
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct PhoneNumberFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub contains: Option<String>,
@@ -272,7 +271,7 @@ pub struct PhoneNumberFilter {
 // # --------------------------------------------------------------------------------
 
 /// <https://developers.notion.com/reference/post-database-query-filter#relation>
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct RelationFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub contains: Option<String>,
@@ -294,7 +293,7 @@ pub struct RelationFilter {
 // # --------------------------------------------------------------------------------
 
 /// <https://developers.notion.com/reference/post-database-query-filter#rich-text>
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct RichTextFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub contains: Option<String>,
@@ -323,12 +322,31 @@ pub struct RichTextFilter {
 
 // # --------------------------------------------------------------------------------
 //
+// rollup
+//
+// # --------------------------------------------------------------------------------
+
+/// <https://developers.notion.com/reference/post-database-query-filter#rollup>
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq)]
+pub struct RollupFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub any: Option<Box<Filter>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub every: Option<Box<Filter>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub none: Option<Box<Filter>>,
+}
+
+// # --------------------------------------------------------------------------------
+//
 // select
 //
 // # --------------------------------------------------------------------------------
 
 /// <https://developers.notion.com/reference/post-database-query-filter#select>
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct SelectFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub does_not_equal: Option<String>,
@@ -350,7 +368,7 @@ pub struct SelectFilter {
 // # --------------------------------------------------------------------------------
 
 /// <https://developers.notion.com/reference/post-database-query-filter#status>
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct StatusFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub does_not_equal: Option<String>,
@@ -371,7 +389,7 @@ pub struct StatusFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct TimestampFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub after: Option<String>,
@@ -423,7 +441,7 @@ pub struct TimestampFilter {
 // # --------------------------------------------------------------------------------
 
 /// <https://developers.notion.com/reference/post-database-query-filter#id>
-#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct UniqueIdFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub does_not_equal: Option<u64>,
@@ -452,7 +470,7 @@ pub struct UniqueIdFilter {
 impl Filter {
     pub fn and(filters: Vec<Filter>) -> Self {
         Filter {
-            and: Some(filters),
+            and: Some(filters.into_iter().map(Box::new).collect()),
             or: None,
             property: None,
             condition: None,
@@ -463,7 +481,7 @@ impl Filter {
     pub fn or(filters: Vec<Filter>) -> Self {
         Filter {
             and: None,
-            or: Some(filters),
+            or: Some(filters.into_iter().map(Box::new).collect()),
             property: None,
             condition: None,
             timestamp: None,
@@ -1534,6 +1552,32 @@ impl Filter {
             timestamp: None,
         }
     }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // rollup <https://developers.notion.com/reference/post-database-query-filter#rollup>
+    //
+    // # --------------------------------------------------------------------------------
+
+    // /// Returns database entries with a text property value that includes the provided string.
+    // ///
+    // /// - `property_name`: Property Name (Column Name) in Notion Database
+    // /// - `text`: The string to compare the text property value against.
+    // pub fn rollup_any<S>(property_name: S, filter: Filter) -> Self
+    // where
+    //     S: AsRef<str>,
+    // {
+    //     Filter {
+    //         and: None,
+    //         or: None,
+    //         property: Some(property_name.as_ref().to_string()),
+    //         condition: Some(Condition::Rollup(RollupFilter {
+    //             any: Some(filter.into_iter().map(Box::new).collect()),
+    //             ..Default::default()
+    //         })),
+    //         timestamp: None,
+    //     }
+    // }
 
     // # --------------------------------------------------------------------------------
     //
