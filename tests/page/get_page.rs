@@ -21,15 +21,6 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        let id_property = response.properties.get("ID").unwrap();
-
-        let unique_id = match id_property {
-            notionrs::page::properties::PageProperty::UniqueId(i) => i.unique_id.number,
-            _ => todo!(),
-        };
-
-        println!("ID is {}", unique_id);
-
         println!("{}", response.to_json());
 
         Ok(())
