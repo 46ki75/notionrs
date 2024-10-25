@@ -10,6 +10,12 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
+        // # --------------------------------------------------------------------------------
+        //
+        // create_page
+        //
+        // # --------------------------------------------------------------------------------
+
         let mut properties = std::collections::HashMap::new();
 
         properties.insert(
@@ -20,6 +26,16 @@ mod integration_tests {
         );
 
         let request = client.create_page().properties(properties).page_id(page_id);
+
+        let response = request.send().await?;
+
+        // # --------------------------------------------------------------------------------
+        //
+        // cleanup
+        //
+        // # --------------------------------------------------------------------------------
+
+        let request = client.delete_block().block_id(response.id);
 
         let response = request.send().await?;
 

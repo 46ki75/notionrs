@@ -33,6 +33,8 @@ mod integration_tests {
 
         let response = request.send().await?;
 
+        let origin_block_id = response.results.first().unwrap().id.clone();
+
         // sync
 
         let block = notionrs::block::Block::SyncedBlock {
@@ -66,6 +68,10 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let request = client.delete_block().block_id(response.id.clone());
+
+        let _ = request.send().await?;
+
+        let request = client.delete_block().block_id(origin_block_id);
 
         let response = request.send().await?;
 
