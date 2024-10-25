@@ -17,7 +17,7 @@ pub struct QueryDatabaseClient {
 
     pub(crate) body: QueryDatabaseRequestBody,
 
-    pub(crate) recursive: bool,
+    pub(crate) fetch_all: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -38,7 +38,7 @@ impl QueryDatabaseClient {
     pub async fn send(mut self) -> Result<ListResponse<PageResponse>, Error> {
         match self.database_id {
             Some(id) => {
-                if self.recursive {
+                if self.fetch_all {
                     let mut results: Vec<PageResponse> = vec![];
 
                     self.body.page_size = Some(100);
@@ -105,9 +105,7 @@ impl QueryDatabaseClient {
                     Ok(pages)
                 }
             }
-            None => Err(Error::RequestParameter(
-                "database_id is empty".to_string(),
-            )),
+            None => Err(Error::RequestParameter("database_id is empty".to_string())),
         }
     }
 
@@ -119,7 +117,7 @@ impl QueryDatabaseClient {
 
     /// The amount of data retrieved in one query.
     /// If not specified, the default is 100.
-    /// When `recursive` is set to true, it will also be 100.
+    /// When `fetch_all` is set to true, it will also be 100.
     pub fn page_size(mut self, page_size: u32) -> Self {
         self.body.page_size = Some(page_size);
         self
@@ -134,9 +132,9 @@ impl QueryDatabaseClient {
     }
 
     /// Normally, you can only retrieve up to 100 records in one query,
-    /// but by setting recursive to true, you can recursively retrieve all the data.
-    pub fn recursive(mut self) -> Self {
-        self.recursive = true;
+    /// but by setting fetch_all to true, you can retrieve all the data.
+    pub fn fetch_all(mut self) -> Self {
+        self.fetch_all = true;
         self
     }
 

@@ -152,7 +152,7 @@ impl Client {
                 start_cursor: None,
                 page_size: None,
             },
-            recursive: false,
+            fetch_all: false,
         }
     }
 
