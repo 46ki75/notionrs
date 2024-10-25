@@ -16,7 +16,10 @@ pub struct DatabaseStatusProperty {
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseSelectOptionProperty {
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     options: Vec<crate::others::select::Select>,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     groups: Vec<crate::others::select::SelectGroup>,
 }
 
