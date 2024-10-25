@@ -25,12 +25,12 @@ mod integration_tests {
 
         let response = request.send().await?;
 
+        let database_id = response.id;
+
         if let notionrs::database::DatabaseProperty::Title(title) =
             response.properties.get("Title").unwrap()
         {
             let mut properties = std::collections::HashMap::new();
-
-            let database_id = response.id;
 
             properties.insert(
                 "Title".to_string(),
@@ -52,7 +52,7 @@ mod integration_tests {
                 "Two-Way-Relation".to_string(),
                 notionrs::database::DatabaseProperty::Relation(
                     notionrs::database::DatabaseRelationProperty::create_tow_way_relation(
-                        database_id,
+                        database_id.clone(),
                         title.clone().id.unwrap(),
                         title.clone().name,
                     ),
@@ -68,6 +68,16 @@ mod integration_tests {
             let response = request.send().await?;
 
             println!("{}", serde_json::to_string(&response).unwrap());
+
+            // delete relation database
+            let request = client.delete_block().block_id(response.id);
+
+            let _ = request.send().await?;
+
+            // delete origin database
+            let request = client.delete_block().block_id(database_id.clone());
+
+            let _ = request.send().await?;
         }
 
         Ok(())

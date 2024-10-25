@@ -157,6 +157,10 @@ mod integration_tests {
 
         println!("{}", serde_json::to_string(&response).unwrap());
 
+        let request = client.delete_block().block_id(response.id);
+
+        let _ = request.send().await?;
+
         Ok(())
     }
 }
