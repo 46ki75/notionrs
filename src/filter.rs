@@ -1288,8 +1288,8 @@ impl Filter {
     /// Returns database entries with a text property value that includes the provided string.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `text`: The string to compare the text property value against.
-    pub fn relation_contains<S, T>(property_name: S, text: T) -> Self
+    /// - `uuid`: The string to compare the text property value against.
+    pub fn relation_contains<S, T>(property_name: S, uuid: T) -> Self
     where
         S: AsRef<str>,
         T: AsRef<str>,
@@ -1299,7 +1299,7 @@ impl Filter {
             or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Relation(RelationFilter {
-                contains: Some(text.as_ref().to_string()),
+                contains: Some(uuid.as_ref().to_string()),
                 ..Default::default()
             })),
             timestamp: None,
@@ -1309,8 +1309,8 @@ impl Filter {
     /// Returns database entries with a text property value that does not include the provided string.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `text`: The string to compare the text property value against.
-    pub fn relation_does_not_contain<S, T>(property_name: S, text: T) -> Self
+    /// - `uuid`: The string to compare the text property value against.
+    pub fn relation_does_not_contain<S, T>(property_name: S, uuid: T) -> Self
     where
         S: AsRef<str>,
         T: AsRef<str>,
@@ -1320,7 +1320,7 @@ impl Filter {
             or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Relation(RelationFilter {
-                does_not_contain: Some(text.as_ref().to_string()),
+                does_not_contain: Some(uuid.as_ref().to_string()),
                 ..Default::default()
             })),
             timestamp: None,
