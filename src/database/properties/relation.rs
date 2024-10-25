@@ -38,6 +38,45 @@ pub struct DatabaseRelationDualProperty {
     pub synced_property_name: String,
 }
 
+impl DatabaseRelationProperty {
+    pub fn create_one_way_relation<T>(database_id: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        Self {
+            relation: DatabaseRelationDetail {
+                database_id: database_id.as_ref().to_string(),
+                single_property: Some(std::collections::HashMap::new()),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+
+    pub fn create_tow_way_relation<S, T, U>(
+        database_id: S,
+        synced_property_id: T,
+        synced_property_name: U,
+    ) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+        U: AsRef<str>,
+    {
+        Self {
+            relation: DatabaseRelationDetail {
+                database_id: database_id.as_ref().to_string(),
+                dual_property: Some(DatabaseRelationDualProperty {
+                    synced_property_id: synced_property_id.as_ref().to_string(),
+                    synced_property_name: synced_property_name.as_ref().to_string(),
+                }),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

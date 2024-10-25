@@ -123,12 +123,14 @@ mod integration_tests {
             ),
         );
 
-        // properties.insert(
-        //     "Relation".to_string(),
-        //     notionrs::database::DatabaseProperty::Relation(
-        //         notionrs::database::DatabaseRelationProperty::default(),
-        //     ),
-        // );
+        properties.insert(
+            "Relation".to_string(),
+            notionrs::database::DatabaseProperty::Relation(
+                notionrs::database::DatabaseRelationProperty::create_one_way_relation(
+                    "12aa03d7-9b26-81ed-bc40-cca996bfc7c4",
+                ),
+            ),
+        );
 
         properties.insert(
             "Rich Text".to_string(),
