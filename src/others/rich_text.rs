@@ -135,6 +135,27 @@ impl From<RichText> for String {
     }
 }
 
+pub trait ToPlainText {
+    fn to_plain_text(&self) -> String;
+}
+
+impl ToPlainText for RichText {
+    /// Convert RichText to a plain string
+    fn to_plain_text(&self) -> String {
+        self.to_string()
+    }
+}
+
+impl ToPlainText for Vec<RichText> {
+    /// Convert a vector of RichText into a plain string
+    fn to_plain_text(&self) -> String {
+        self.iter()
+            .map(|rt| rt.plain_text.clone())
+            .collect::<Vec<_>>()
+            .join("")
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

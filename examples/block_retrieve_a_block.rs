@@ -1,4 +1,4 @@
-use notionrs::{block::Block, error::Error, Client};
+use notionrs::{block::Block, error::Error, others::rich_text::ToPlainText, Client};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
@@ -11,14 +11,7 @@ async fn main() -> Result<(), Error> {
     println!("This block's id is {}", response.id);
 
     if let Block::Paragraph { paragraph } = response.block {
-        print!(
-            "{}",
-            paragraph
-                .rich_text
-                .into_iter()
-                .map(|t| t.to_string())
-                .collect::<String>()
-        );
+        print!("{}", paragraph.rich_text.to_plain_text());
         Ok(())
     } else {
         Err(notionrs::error::Error::Custom(
