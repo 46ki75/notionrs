@@ -165,6 +165,15 @@ impl Client {
         }
     }
 
+    pub fn update_database(
+        &self,
+    ) -> crate::client::database::update_database::UpdateDatabaseClient {
+        crate::client::database::update_database::UpdateDatabaseClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
     // Block
