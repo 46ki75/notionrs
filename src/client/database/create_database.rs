@@ -14,6 +14,10 @@ pub struct CreateDatabaseClient {
 
     pub(crate) title: Vec<RichText>,
 
+    /// Field that can be added, though not documented in Notion's API documentation.
+    /// Can be used as a description for the database.
+    pub(crate) description: Vec<RichText>,
+
     pub(crate) properties: std::collections::HashMap<String, crate::database::DatabaseProperty>,
 }
 
@@ -21,7 +25,13 @@ pub struct CreateDatabaseClient {
 pub struct CreateDatabaseRequestBody {
     pub(crate) parent: crate::others::parent::PageParent,
 
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) title: Vec<RichText>,
+
+    /// Field that can be added, though not documented in Notion's API documentation.
+    /// Can be used as a description for the database.
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) description: Vec<RichText>,
 
     pub(crate) properties: std::collections::HashMap<String, crate::database::DatabaseProperty>,
 }
@@ -34,6 +44,7 @@ impl CreateDatabaseClient {
             parent: crate::others::parent::PageParent::from(page_id),
             properties: self.properties,
             title: self.title,
+            description: self.description,
         };
 
         let request_body = serde_json::to_string(&request_body_struct)?;
@@ -71,6 +82,13 @@ impl CreateDatabaseClient {
 
     pub fn title(mut self, title: Vec<RichText>) -> Self {
         self.title = title;
+        self
+    }
+
+    /// Field that can be added, though not documented in Notion's API documentation.
+    /// Can be used as a description for the database.
+    pub fn description(mut self, title: Vec<RichText>) -> Self {
+        self.description = title;
         self
     }
 

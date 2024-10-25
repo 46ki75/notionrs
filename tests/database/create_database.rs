@@ -124,25 +124,11 @@ mod integration_tests {
         );
 
         properties.insert(
-            "Relation".to_string(),
-            notionrs::database::DatabaseProperty::Relation(
-                notionrs::database::DatabaseRelationProperty::create_one_way_relation(
-                    "12aa03d7-9b26-81ed-bc40-cca996bfc7c4",
-                ),
-            ),
-        );
-
-        properties.insert(
             "Rich Text".to_string(),
             notionrs::database::DatabaseProperty::RichText(
                 notionrs::database::DatabaseRichTextProperty::default(),
             ),
         );
-
-        // properties.insert(
-        //     "Rollup".to_string(),
-        //     notionrs::database::DatabaseProperty::Rollup(notionrs::database::rollup::default()),
-        // );
 
         properties.insert(
             "Select".to_string(),
@@ -150,13 +136,6 @@ mod integration_tests {
                 notionrs::database::DatabaseSelectProperty::default().options(options.clone()),
             ),
         );
-
-        // properties.insert(
-        //     "Status".to_string(),
-        //     notionrs::database::DatabaseProperty::Status(
-        //         notionrs::database::DatabaseStatusProperty::default().options(options),
-        //     ),
-        // );
 
         properties.insert(
             "URL".to_string(),
@@ -169,6 +148,9 @@ mod integration_tests {
             .create_database()
             .page_id(page_id)
             .title(vec![notionrs::RichText::from("Database Title")])
+            .description(vec![notionrs::RichText::from(
+                "Description of the Database",
+            )])
             .properties(properties);
 
         let response = request.send().await?;
