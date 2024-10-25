@@ -178,8 +178,7 @@ mod integration_tests {
     // TODO: TEST formula
 
     #[tokio::test]
-    async fn query_database_filter_multi_select_filter() -> Result<(), notionrs::error::Error>
-    {
+    async fn query_database_filter_multi_select_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
@@ -267,8 +266,7 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_database_filter_phone_number_filter() -> Result<(), notionrs::error::Error>
-    {
+    async fn query_database_filter_phone_number_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
@@ -283,6 +281,38 @@ mod integration_tests {
             notionrs::filter::Filter::phone_number_is_empty("Phone Number"),
             notionrs::filter::Filter::phone_number_is_not_empty("Phone Number"),
             notionrs::filter::Filter::phone_number_starts_with("Phone Number", "0"),
+        ]);
+
+        let request = client
+            .query_database()
+            .database_id(database_id)
+            .filter(filter);
+
+        let response = request.send().await?;
+
+        println!("{}", response.to_json());
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn query_database_filter_relation_filter() -> Result<(), notionrs::error::Error> {
+        dotenvy::dotenv().ok();
+        let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+        let client = notionrs::client::Client::new();
+
+        let filter = notionrs::filter::Filter::or(vec![
+            notionrs::filter::Filter::relation_contains(
+                "Relation",
+                "9804c957-5566-4a9d-b37d-c554bef54e7a",
+            ),
+            notionrs::filter::Filter::relation_does_not_contain(
+                "Relation",
+                "9804c957-5566-4a9d-b37d-c554bef54e7a",
+            ),
+            notionrs::filter::Filter::relation_is_empty("Relation"),
+            notionrs::filter::Filter::relation_is_not_empty("Relation"),
         ]);
 
         let request = client

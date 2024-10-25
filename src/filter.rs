@@ -44,6 +44,7 @@ pub enum Condition {
     People(PeopleFilter),
     PhoneNumber(PhoneNumberFilter),
     // TODO: implement rollup
+    Relation(RelationFilter),
     RichText(RichTextFilter),
     Select(SelectFilter),
     Status(StatusFilter),
@@ -270,7 +271,21 @@ pub struct PhoneNumberFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement relation
+/// <https://developers.notion.com/reference/post-database-query-filter#relation>
+#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+pub struct RelationFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub contains: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_contain: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_not_empty: Option<bool>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -1264,8 +1279,91 @@ impl Filter {
             timestamp: None,
         }
     }
+    // # --------------------------------------------------------------------------------
+    //
+    // relation <https://developers.notion.com/reference/post-database-query-filter#relation>
+    //
+    // # --------------------------------------------------------------------------------
 
-    // TODO: implement relation
+    /// Returns database entries with a text property value that includes the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `text`: The string to compare the text property value against.
+    pub fn relation_contains<S, T>(property_name: S, text: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Relation(RelationFilter {
+                contains: Some(text.as_ref().to_string()),
+                ..Default::default()
+            })),
+            timestamp: None,
+        }
+    }
+
+    /// Returns database entries with a text property value that does not include the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `text`: The string to compare the text property value against.
+    pub fn relation_does_not_contain<S, T>(property_name: S, text: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Relation(RelationFilter {
+                does_not_contain: Some(text.as_ref().to_string()),
+                ..Default::default()
+            })),
+            timestamp: None,
+        }
+    }
+
+    /// Returns database entries with a text property value that is empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn relation_is_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Relation(RelationFilter {
+                is_empty: Some(true),
+                ..Default::default()
+            })),
+            timestamp: None,
+        }
+    }
+
+    /// Returns database entries with a text property value that contains data.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn relation_is_not_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Relation(RelationFilter {
+                is_not_empty: Some(true),
+                ..Default::default()
+            })),
+            timestamp: None,
+        }
+    }
 
     // # --------------------------------------------------------------------------------
     //
