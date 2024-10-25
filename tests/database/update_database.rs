@@ -185,7 +185,11 @@ mod integration_tests {
             .description(vec![notionrs::RichText::from(
                 "Description of the Database (changed)",
             )])
-            .properties(properties);
+            .properties(properties)
+            .icon(notionrs::Icon::Emoji(notionrs::Emoji::from('🚧')))
+            .cover(notionrs::File::External(notionrs::ExternalFile::from(
+                "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
+            )));
 
         let response = request.send().await?;
 
