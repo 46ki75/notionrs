@@ -2,8 +2,6 @@ mod integration_tests {
 
     use notionrs::to_json::ToJson;
 
-    static DATABASE_ID: std::sync::OnceLock<String> = std::sync::OnceLock::new();
-
     // # --------------------------------------------------------------------------------
     //
     // query_database
