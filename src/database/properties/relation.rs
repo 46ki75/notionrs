@@ -20,17 +20,21 @@ pub struct DatabaseRelationDetail {
     /// The corresponding linked page values must belong to the database in order to be valid.
     pub database_id: String,
 
+    /// Used when creating a one-way relation.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub single_property: Option<std::collections::HashMap<(), ()>>,
 
+    /// Used when creating a two-way relation.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub dual_property: Option<DatabaseRelationDualProperty>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseRelationDualProperty {
+    /// The ID of the property for creating a two-way relation.
     pub synced_property_id: String,
 
+    /// The database column name of the property for creating a two-way relation.
     pub synced_property_name: String,
 }
 
