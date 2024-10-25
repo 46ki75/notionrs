@@ -8,16 +8,29 @@ pub struct Emoji {
 }
 
 impl Emoji {
-    pub fn new(emoji: char) -> Self {
-        Emoji {
-            r#type: "emoji".to_string(),
-            emoji,
-        }
+    pub fn new() -> Self {
+        Emoji::default()
+    }
+}
+
+impl Emoji {
+    pub fn emoji(mut self, emoji: char) -> Self {
+        self.emoji = emoji;
+        self
     }
 }
 
 impl Default for Emoji {
     fn default() -> Self {
-        Emoji::new('💡')
+        Emoji {
+            r#type: "emoji".to_string(),
+            emoji: '💡',
+        }
+    }
+}
+
+impl From<char> for Emoji {
+    fn from(value: char) -> Self {
+        Self::new().emoji(value)
     }
 }

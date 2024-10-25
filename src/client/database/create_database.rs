@@ -19,6 +19,12 @@ pub struct CreateDatabaseClient {
     pub(crate) description: Vec<RichText>,
 
     pub(crate) properties: std::collections::HashMap<String, crate::database::DatabaseProperty>,
+
+    /// This can be configured even though it's not in the official Notion API documentation
+    pub(crate) icon: Option<crate::others::icon::Icon>,
+
+    /// This can be configured even though it's not in the official Notion API documentation
+    pub(crate) cover: Option<crate::File>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -34,6 +40,14 @@ pub struct CreateDatabaseRequestBody {
     pub(crate) description: Vec<RichText>,
 
     pub(crate) properties: std::collections::HashMap<String, crate::database::DatabaseProperty>,
+
+    /// This can be configured even though it's not in the official Notion API documentation
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) icon: Option<crate::others::icon::Icon>,
+
+    /// This can be configured even though it's not in the official Notion API documentation
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) cover: Option<crate::File>,
 }
 
 impl CreateDatabaseClient {
@@ -45,6 +59,8 @@ impl CreateDatabaseClient {
             properties: self.properties,
             title: self.title,
             description: self.description,
+            icon: self.icon,
+            cover: self.cover,
         };
 
         let request_body = serde_json::to_string(&request_body_struct)?;
@@ -97,6 +113,16 @@ impl CreateDatabaseClient {
         properties: std::collections::HashMap<String, crate::database::DatabaseProperty>,
     ) -> Self {
         self.properties = properties;
+        self
+    }
+
+    pub fn icon(mut self, icon: crate::others::icon::Icon) -> Self {
+        self.icon = Some(icon);
+        self
+    }
+
+    pub fn cover(mut self, cover: crate::File) -> Self {
+        self.cover = Some(cover);
         self
     }
 }
