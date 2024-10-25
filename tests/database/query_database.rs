@@ -56,7 +56,7 @@ mod integration_tests {
         let res = client
             .query_database()
             .database_id(database_id)
-            .recursive()
+            .fetch_all()
             .send()
             .await?;
         println!("{}", res.to_json());
