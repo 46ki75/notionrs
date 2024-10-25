@@ -175,7 +175,29 @@ mod integration_tests {
         Ok(())
     }
 
-    // TODO: TEST formula
+    #[tokio::test]
+    async fn query_database_filter_formula_filter() -> Result<(), notionrs::error::Error> {
+        dotenvy::dotenv().ok();
+        let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+        let client = notionrs::client::Client::new();
+
+        let filter =
+            notionrs::filter::Filter::or(vec![notionrs::filter::Filter::formula_number_is_empty(
+                "formula",
+            )]);
+
+        let request = client
+            .query_database()
+            .database_id(database_id)
+            .filter(filter);
+
+        let response = request.send().await?;
+
+        println!("{}", response.to_json());
+
+        Ok(())
+    }
 
     #[tokio::test]
     async fn query_database_filter_multi_select_filter() -> Result<(), notionrs::error::Error> {

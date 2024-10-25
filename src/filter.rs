@@ -38,7 +38,7 @@ pub enum Condition {
     Checkbox(CheckboxFilter),
     Date(Box<DateFilter>),
     Files(FilesFilter),
-    // TODO: implement formula
+    Formula(Box<FormulaFilter>),
     MultiSelect(MultiSelectFilter),
     Number(NumberFilter),
     People(PeopleFilter),
@@ -137,22 +137,20 @@ pub struct FilesFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement formula
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq)]
+pub struct FormulaFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub checkbox: Option<CheckboxFilter>,
 
-// #[derive(Debug, Default, Deserialize, Serialize)]
-// pub struct FormulaFilter {
-//     #[serde(skip_serializing_if = "Option::is_none")]
-//     pub checkbox: Option<CheckboxFilter>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub date: Option<DateFilter>,
 
-//     #[serde(skip_serializing_if = "Option::is_none")]
-//     pub date: Option<DateFilter>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub number: Option<NumberFilter>,
 
-//     #[serde(skip_serializing_if = "Option::is_none")]
-//     pub number: Option<NumberFilter>,
-
-//     #[serde(skip_serializing_if = "Option::is_none")]
-//     pub string: Option<>,
-// }
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub string: Option<RichTextFilter>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -814,7 +812,21 @@ impl Filter {
     //
     // # --------------------------------------------------------------------------------
 
-    // TODO: implement formula
+    pub fn formula_number_is_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            and: None,
+            or: None,
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    is_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            timestamp: None,
+        }
+    }
 
     // # --------------------------------------------------------------------------------
     //
