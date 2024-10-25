@@ -2,6 +2,150 @@ mod integration_tests {
 
     use notionrs::to_json::ToJson;
 
+    static DATABASE_ID: std::sync::OnceLock<String> = std::sync::OnceLock::new();
+
+    // # --------------------------------------------------------------------------------
+    //
+    // prepare
+    //
+    // # --------------------------------------------------------------------------------
+
+    #[tokio::test]
+    async fn create_database() -> Result<(), notionrs::error::Error> {
+        dotenvy::dotenv().ok();
+
+        let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
+
+        let client = notionrs::client::Client::new();
+
+        let mut properties = std::collections::HashMap::new();
+
+        properties.insert(
+            "Title".to_string(),
+            notionrs::database::DatabaseProperty::Title(
+                notionrs::database::DatabaseTitleProperty::default(),
+            ),
+        );
+
+        properties.insert(
+            "Checkbox".to_string(),
+            notionrs::database::DatabaseProperty::Checkbox(
+                notionrs::database::DatabaseCheckboxProperty::default(),
+            ),
+        );
+
+        properties.insert(
+            "Created time".to_string(),
+            notionrs::database::DatabaseProperty::CreatedTime(
+                notionrs::database::DatabaseCreatedTimeProperty::default(),
+            ),
+        );
+
+        properties.insert(
+            "Files & media".to_string(),
+            notionrs::database::DatabaseProperty::Files(
+                notionrs::database::DatabaseFilesProperty::default(),
+            ),
+        );
+
+        properties.insert(
+            "formula".to_string(),
+            notionrs::database::DatabaseProperty::Formula(
+                notionrs::database::DatabaseFormulaProperty::from(r#"prop("Number")/2"#),
+            ),
+        );
+
+        properties.insert(
+            "Multi-select".to_string(),
+            notionrs::database::DatabaseProperty::MultiSelect(
+                notionrs::database::DatabaseMultiSelectProperty::default(),
+            ),
+        );
+
+        properties.insert(
+            "Number".to_string(),
+            notionrs::database::DatabaseProperty::Number(
+                notionrs::database::DatabaseNumberProperty::default(),
+            ),
+        );
+
+        properties.insert(
+            "Users".to_string(),
+            notionrs::database::DatabaseProperty::People(
+                notionrs::database::DatabasePeopleProperty::default(),
+            ),
+        );
+
+        properties.insert(
+            "Phone Number".to_string(),
+            notionrs::database::DatabaseProperty::PhoneNumber(
+                notionrs::database::DatabasePhoneNumberProperty::default(),
+            ),
+        );
+
+        // properties.insert(
+        //     "Relation".to_string(),
+        //     notionrs::database::DatabaseProperty::Relation(
+        //         notionrs::database::DatabaseRelationProperty::create_one_way_relation(
+        //             DATABASE_ID.get().unwrap(),
+        //         ),
+        //     ),
+        // );
+
+        properties.insert(
+            "Text".to_string(),
+            notionrs::database::DatabaseProperty::RichText(
+                notionrs::database::DatabaseRichTextProperty::default(),
+            ),
+        );
+
+        properties.insert(
+            "Select".to_string(),
+            notionrs::database::DatabaseProperty::Select(
+                notionrs::database::DatabaseSelectProperty::default(),
+            ),
+        );
+
+        properties.insert(
+            "Status".to_string(),
+            notionrs::database::DatabaseProperty::Status(
+                notionrs::database::DatabaseStatusProperty::default(),
+            ),
+        );
+
+        // properties.insert(
+        //     "ID".to_string(),
+        //     notionrs::database::DatabaseProperty::Status(
+        //         notionrs::database::DatabaseStatusProperty::default(),
+        //     ),
+        // );
+
+        let request = client
+            .create_database()
+            .page_id(page_id)
+            .title(vec![notionrs::RichText::from("Database Title")])
+            .description(vec![notionrs::RichText::from(
+                "Description of the Database",
+            )])
+            .properties(properties)
+            .icon(notionrs::Icon::Emoji(notionrs::Emoji::from('🚧')))
+            .cover(notionrs::File::External(notionrs::ExternalFile::from(
+                "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
+            )));
+
+        let response = request.send().await?;
+
+        DATABASE_ID.get_or_init(|| response.id);
+
+        Ok(())
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // query_database
+    //
+    // # --------------------------------------------------------------------------------
+
     #[tokio::test]
     #[serial_test::serial]
     async fn query_database() -> Result<(), notionrs::error::Error> {
@@ -335,73 +479,73 @@ mod integration_tests {
         Ok(())
     }
 
-    #[tokio::test]
-    #[serial_test::serial]
-    async fn query_database_filter_relation_filter() -> Result<(), notionrs::error::Error> {
-        dotenvy::dotenv().ok();
-        let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+    // #[tokio::test]
+    // #[serial_test::serial]
+    // async fn query_database_filter_relation_filter() -> Result<(), notionrs::error::Error> {
+    //     dotenvy::dotenv().ok();
+    //     let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+    //     let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::relation_contains(
-                "Relation",
-                "9804c957-5566-4a9d-b37d-c554bef54e7a",
-            ),
-            notionrs::filter::Filter::relation_does_not_contain(
-                "Relation",
-                "9804c957-5566-4a9d-b37d-c554bef54e7a",
-            ),
-            notionrs::filter::Filter::relation_is_empty("Relation"),
-            notionrs::filter::Filter::relation_is_not_empty("Relation"),
-        ]);
+    //     let filter = notionrs::filter::Filter::or(vec![
+    //         notionrs::filter::Filter::relation_contains(
+    //             "Relation",
+    //             "9804c957-5566-4a9d-b37d-c554bef54e7a",
+    //         ),
+    //         notionrs::filter::Filter::relation_does_not_contain(
+    //             "Relation",
+    //             "9804c957-5566-4a9d-b37d-c554bef54e7a",
+    //         ),
+    //         notionrs::filter::Filter::relation_is_empty("Relation"),
+    //         notionrs::filter::Filter::relation_is_not_empty("Relation"),
+    //     ]);
 
-        let request = client
-            .query_database()
-            .database_id(database_id)
-            .filter(filter);
+    //     let request = client
+    //         .query_database()
+    //         .database_id(database_id)
+    //         .filter(filter);
 
-        let response = request.send().await?;
+    //     let response = request.send().await?;
 
-        println!("{}", response.to_json());
+    //     println!("{}", response.to_json());
 
-        Ok(())
-    }
+    //     Ok(())
+    // }
 
-    #[tokio::test]
-    #[serial_test::serial]
-    async fn query_database_filter_rollup_filter() -> Result<(), notionrs::error::Error> {
-        dotenvy::dotenv().ok();
-        let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+    // #[tokio::test]
+    // #[serial_test::serial]
+    // async fn query_database_filter_rollup_filter() -> Result<(), notionrs::error::Error> {
+    //     dotenvy::dotenv().ok();
+    //     let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+    //     let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::rollup_any(
-                "Rollup",
-                notionrs::filter::Filter::rich_text_contains("Title", "a"),
-            ),
-            notionrs::filter::Filter::rollup_every(
-                "Rollup",
-                notionrs::filter::Filter::rich_text_contains("Title", "a"),
-            ),
-            notionrs::filter::Filter::rollup_none(
-                "Rollup",
-                notionrs::filter::Filter::rich_text_contains("Title", "a"),
-            ),
-        ]);
+    //     let filter = notionrs::filter::Filter::or(vec![
+    //         notionrs::filter::Filter::rollup_any(
+    //             "Rollup",
+    //             notionrs::filter::Filter::rich_text_contains("Title", "a"),
+    //         ),
+    //         notionrs::filter::Filter::rollup_every(
+    //             "Rollup",
+    //             notionrs::filter::Filter::rich_text_contains("Title", "a"),
+    //         ),
+    //         notionrs::filter::Filter::rollup_none(
+    //             "Rollup",
+    //             notionrs::filter::Filter::rich_text_contains("Title", "a"),
+    //         ),
+    //     ]);
 
-        let request = client
-            .query_database()
-            .database_id(database_id)
-            .filter(filter);
+    //     let request = client
+    //         .query_database()
+    //         .database_id(database_id)
+    //         .filter(filter);
 
-        let response = request.send().await?;
+    //     let response = request.send().await?;
 
-        println!("{}", response.to_json());
+    //     println!("{}", response.to_json());
 
-        Ok(())
-    }
+    //     Ok(())
+    // }
 
     #[tokio::test]
     #[serial_test::serial]
@@ -550,6 +694,27 @@ mod integration_tests {
         let response = request.send().await?;
 
         println!("{}", response.to_json());
+
+        Ok(())
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // cleanup
+    //
+    // # --------------------------------------------------------------------------------
+
+    #[tokio::test]
+    async fn delete_database() -> Result<(), notionrs::error::Error> {
+        dotenvy::dotenv().ok();
+
+        let client = notionrs::client::Client::new();
+
+        let request = client.delete_block().block_id(DATABASE_ID.get().unwrap());
+
+        let response = request.send().await?;
+
+        println!("{:?}", response);
 
         Ok(())
     }

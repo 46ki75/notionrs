@@ -28,9 +28,9 @@ pub use {
     last_edited_by::DatabaseLastEditedByProperty, last_edited_time::DatabaseLastEditedTimeProperty,
     multi_select::DatabaseMultiSelectProperty, number::DatabaseNumberProperty,
     people::DatabasePeopleProperty, phone_number::DatabasePhoneNumberProperty,
-    relation::DatabaseRelationProperty, rich_text::DatabaseRichTextProperty,
-    rollup::DatabaseRollupProperty, select::DatabaseSelectProperty, status::DatabaseStatusProperty,
-    title::DatabaseTitleProperty, url::DatabaseUrlProperty,
+    relation::DatabaseRelationProperty, rich_text::DatabaseRichTextProperty, rollup::*,
+    select::DatabaseSelectProperty, status::DatabaseStatusProperty, title::DatabaseTitleProperty,
+    url::DatabaseUrlProperty,
 };
 
 #[derive(Debug, Deserialize, Serialize)]
