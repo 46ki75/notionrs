@@ -18,7 +18,10 @@ pub struct UpdateDatabaseClient {
     /// Can be used as a description for the database.
     pub(crate) description: Vec<RichText>,
 
-    pub(crate) properties: std::collections::HashMap<String, crate::database::DatabaseProperty>,
+    /// When updating, passing a value of `null` (None) will remove the property.
+    /// Note that it differs from the `create_database()` method in that it is optional.
+    pub(crate) properties:
+        std::collections::HashMap<String, Option<crate::database::DatabaseProperty>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -31,7 +34,10 @@ pub struct UpdateDatabaseRequestBody {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) description: Vec<RichText>,
 
-    pub(crate) properties: std::collections::HashMap<String, crate::database::DatabaseProperty>,
+    /// When updating, passing a value of `null` (None) will remove the property.
+    /// Note that it differs from the `create_database()` method in that it is optional.
+    pub(crate) properties:
+        std::collections::HashMap<String, Option<crate::database::DatabaseProperty>>,
 }
 
 impl UpdateDatabaseClient {
@@ -93,9 +99,11 @@ impl UpdateDatabaseClient {
         self
     }
 
+    /// When updating, passing a value of `null` (None) will remove the property.
+    /// Note that it differs from the `create_database()` method in that it is optional.
     pub fn properties(
         mut self,
-        properties: std::collections::HashMap<String, crate::database::DatabaseProperty>,
+        properties: std::collections::HashMap<String, Option<crate::database::DatabaseProperty>>,
     ) -> Self {
         self.properties = properties;
         self

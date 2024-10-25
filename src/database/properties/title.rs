@@ -14,6 +14,16 @@ pub struct DatabaseTitleProperty {
     pub title: std::collections::HashMap<(), ()>,
 }
 
+impl DatabaseTitleProperty {
+    pub fn name<T>(mut self, name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.name = name.as_ref().to_string();
+        self
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test
