@@ -43,12 +43,12 @@ mod integration_tests {
 
     // # --------------------------------------------------------------------------------
     //
-    // working with recursive
+    // working with fetch_all
     //
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    async fn query_database_recursive() -> Result<(), notionrs::error::Error> {
+    async fn query_database_fetch_all() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
         let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
 
@@ -182,10 +182,16 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter =
-            notionrs::filter::Filter::or(vec![notionrs::filter::Filter::formula_number_is_empty(
-                "formula",
-            )]);
+        let filter = notionrs::filter::Filter::or(vec![
+            notionrs::filter::Filter::formula_number_does_not_equal("formula", 0),
+            notionrs::filter::Filter::formula_number_equals("formula", 0),
+            notionrs::filter::Filter::formula_number_greater_than("formula", 0),
+            notionrs::filter::Filter::formula_number_greater_than_or_equal("formula", 0),
+            notionrs::filter::Filter::formula_number_is_empty("formula"),
+            notionrs::filter::Filter::formula_number_is_not_empty("formula"),
+            notionrs::filter::Filter::formula_number_less_than("formula", 0),
+            notionrs::filter::Filter::formula_number_less_than_or_equal("formula", 0),
+        ]);
 
         let request = client
             .query_database()
@@ -382,8 +388,6 @@ mod integration_tests {
 
         Ok(())
     }
-
-    // TODO: TEST rollup
 
     #[tokio::test]
     async fn query_database_filter_rich_text_filter() -> Result<(), notionrs::error::Error> {

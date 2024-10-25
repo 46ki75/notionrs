@@ -770,12 +770,473 @@ impl Filter {
     //
     // # --------------------------------------------------------------------------------
 
+    // Formula Number Filters
+    pub fn formula_number_equals<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    equals: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_does_not_equal<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    does_not_equal: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_greater_than<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    greater_than: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_less_than<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    less_than: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_greater_than_or_equal<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    greater_than_or_equal_to: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_less_than_or_equal<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    less_than_or_equal_to: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
     pub fn formula_number_is_empty<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Formula(Box::new(FormulaFilter {
                 number: Some(NumberFilter {
                     is_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    is_not_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    // Formula String Filters
+    pub fn formula_string_equals<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    equals: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_does_not_equal<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    does_not_equal: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_contains<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    contains: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_does_not_contain<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    does_not_contain: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_starts_with<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    starts_with: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_ends_with<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    ends_with: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_is_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    is_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    is_not_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    // Formula Checkbox Filters
+    pub fn formula_checkbox_equals<T: AsRef<str>>(property_name: T, checked: bool) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                checkbox: Some(CheckboxFilter {
+                    equals: Some(checked),
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_checkbox_is_checked<T: AsRef<str>>(property_name: T) -> Self {
+        Self::formula_checkbox_equals(property_name, true)
+    }
+
+    pub fn formula_checkbox_is_not_checked<T: AsRef<str>>(property_name: T) -> Self {
+        Self::formula_checkbox_equals(property_name, false)
+    }
+
+    // Formula Date Filters
+    pub fn formula_date_after<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    after: Some(date.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_before<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    before: Some(date.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_equals<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    equals: Some(date.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_is_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    is_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    is_not_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_next_month<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    next_month: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_next_week<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    next_week: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_next_year<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    next_year: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_on_or_after<S: AsRef<str>, T: AsRef<str>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    on_or_after: Some(date.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_on_or_before<S: AsRef<str>, T: AsRef<str>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    on_or_before: Some(date.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_past_month<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    past_month: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_past_week<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    past_week: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_past_year<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    past_year: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_this_week<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    this_week: Some(std::collections::HashMap::new()),
                     ..Default::default()
                 }),
                 ..Default::default()
