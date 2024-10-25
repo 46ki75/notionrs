@@ -20,10 +20,17 @@ pub struct DatabaseRelationDetail {
     /// The corresponding linked page values must belong to the database in order to be valid.
     pub database_id: String,
 
-    /// The id of the corresponding property that is updated in the related database when this property is changed.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub single_property: Option<std::collections::HashMap<(), ()>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub dual_property: Option<DatabaseRelationDualProperty>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
+pub struct DatabaseRelationDualProperty {
     pub synced_property_id: String,
 
-    /// The name of the corresponding property that is updated in the related database when this property is changed.
     pub synced_property_name: String,
 }
 
@@ -41,26 +48,40 @@ mod unit_tests {
     fn deserialize_database_relation_property() {
         let json_data = r#"
         {
-            "id": "~pex",
-            "name": "Projects",
+            "id": "VGw%7B",
+            "name": "Relation",
             "type": "relation",
             "relation": {
-                "database_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
-                "synced_property_name": "Tasks",
-                "synced_property_id": "JU]K"
+                "database_id": "12aa03d7-9b26-8158-b34b-d0e7ceec0d15",
+                "type": "dual_property",
+                "dual_property": {
+                    "synced_property_name": "Related to Untitled Database (Relation)",
+                    "synced_property_id": "csu%5B"
+                }
             }
         }
         "#;
 
         let relation = serde_json::from_str::<DatabaseRelationProperty>(json_data).unwrap();
 
-        assert_eq!(relation.id, Some("~pex".to_string()));
-        assert_eq!(relation.name, "Projects");
+        assert_eq!(relation.id, Some("VGw%7B".to_string()));
+        assert_eq!(relation.name, "Relation");
         assert_eq!(
             relation.relation.database_id,
-            "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b"
+            "12aa03d7-9b26-8158-b34b-d0e7ceec0d15"
         );
-        assert_eq!(relation.relation.synced_property_name, "Tasks");
-        assert_eq!(relation.relation.synced_property_id, "JU]K");
+        assert_eq!(
+            relation
+                .relation
+                .dual_property
+                .clone()
+                .unwrap()
+                .synced_property_name,
+            "Related to Untitled Database (Relation)"
+        );
+        assert_eq!(
+            relation.relation.dual_property.unwrap().synced_property_id,
+            "csu%5B"
+        );
     }
 }
