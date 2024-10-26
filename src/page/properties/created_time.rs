@@ -25,6 +25,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageCreatedTimeProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
 
     /// The date and time that the page was created.

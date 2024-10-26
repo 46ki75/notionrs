@@ -44,6 +44,7 @@ use crate::ToPlainText;
 pub struct PageRichTextProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
 
     /// An array of [rich text objects](https://developers.notion.com/reference/rich-text)
