@@ -18,15 +18,25 @@ This project is currently under active development and is not yet ready for prod
 
 As part of the alpha release, the following features are available. Please note that API changes may occur before the official release.
 
-- Append block children
-- Retrieve a block
-- Retrieve block children
-- Update a block
-- Delete a block
-- Create a database
-- Query a database
-- Retrieve a database
-- Update a database
+- Blocks
+  - Append block children
+  - Retrieve a block
+  - Retrieve block children
+  - Update a block
+  - Delete a block
+- Databases
+  - Create a database
+  - Query a database
+  - Retrieve a database
+  - Update a database
+- Pages- Create a page
+  - Retrieve a page property item
+  - Retrieve a page
+  - Update page properties
+- Users
+  - List all users
+  - Retrieve a user
+  - Retrieve your token's bot user
 
 ## Basic Usage
 
