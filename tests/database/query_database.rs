@@ -559,4 +559,32 @@ mod integration_tests {
 
         Ok(())
     }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // working with Sort
+    //
+    // # --------------------------------------------------------------------------------
+
+    #[tokio::test]
+    #[serial_test::serial]
+    async fn query_database_sort() -> Result<(), notionrs::error::Error> {
+        dotenvy::dotenv().ok();
+        let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+
+        let client = notionrs::client::Client::new();
+
+        let sorts = vec![notionrs::database::Sort::asc("Created time")];
+
+        let request = client
+            .query_database()
+            .database_id(database_id)
+            .sorts(sorts);
+
+        let response = request.send().await?;
+
+        println!("{}", response.to_json());
+
+        Ok(())
+    }
 }
