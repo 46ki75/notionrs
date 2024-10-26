@@ -28,6 +28,16 @@ impl DatabaseLastEditedTimeProperty {
         self.name = name.as_ref().to_string();
         self
     }
+
+    /// Although it is not explicitly stated in the official documentation,
+    /// you can add a description to the property by specifying this.
+    pub fn description<T>(mut self, description: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.description = Some(description.as_ref().to_string());
+        self
+    }
 }
 
 // # --------------------------------------------------------------------------------

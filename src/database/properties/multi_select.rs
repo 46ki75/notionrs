@@ -15,7 +15,6 @@ pub struct DatabaseMultiSelectProperty {
     #[serde(skip_serializing)]
     pub description: Option<String>,
 
-    /// An empty object (`{}`)
     pub multi_select: DatabaseMultiSelectOptionProperty,
 }
 
@@ -27,6 +26,16 @@ pub struct DatabaseMultiSelectOptionProperty {
 impl DatabaseMultiSelectProperty {
     pub fn options(mut self, options: Vec<crate::others::select::Select>) -> Self {
         self.multi_select.options = options;
+        self
+    }
+
+    /// Although it is not explicitly stated in the official documentation,
+    /// you can add a description to the property by specifying this.
+    pub fn description<T>(mut self, description: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.description = Some(description.as_ref().to_string());
         self
     }
 }
