@@ -29,7 +29,8 @@ As part of the alpha release, the following features are available. Please note 
   - Query a database
   - Retrieve a database
   - Update a database
-- Pages- Create a page
+- Pages
+  - Create a page
   - Retrieve a page property item
   - Retrieve a page
   - Update page properties
