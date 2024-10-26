@@ -5,6 +5,7 @@ pub struct DatabaseTitleProperty {
     #[serde(skip_serializing)]
     pub id: Option<String>,
 
+    /// Modify the value of this field when updating the column name of the property.
     #[serde(skip_serializing)]
     pub name: String,
 
@@ -15,6 +16,7 @@ pub struct DatabaseTitleProperty {
 }
 
 impl DatabaseTitleProperty {
+    /// Modify the value of this field when updating the column name of the property.
     pub fn name<T>(mut self, name: T) -> Self
     where
         T: AsRef<str>,

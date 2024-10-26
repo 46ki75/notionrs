@@ -14,6 +14,17 @@ pub struct DatabaseFilesProperty {
     pub files: std::collections::HashMap<(), ()>,
 }
 
+impl DatabaseFilesProperty {
+    /// Modify the value of this field when updating the column name of the property.
+    pub fn name<T>(mut self, name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.name = name.as_ref().to_string();
+        self
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

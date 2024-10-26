@@ -11,8 +11,18 @@ pub struct DatabaseUrlProperty {
     #[serde(skip_serializing)]
     pub description: Option<String>,
 
-    
     pub url: std::collections::HashMap<(), ()>,
+}
+
+impl DatabaseUrlProperty {
+    /// Modify the value of this field when updating the column name of the property.
+    pub fn name<T>(mut self, name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.name = name.as_ref().to_string();
+        self
+    }
 }
 
 // # --------------------------------------------------------------------------------
