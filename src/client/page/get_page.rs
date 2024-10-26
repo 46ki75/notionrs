@@ -12,12 +12,6 @@ pub struct GetPageClient {
 }
 
 impl GetPageClient {
-    /// Send a request specifying generics.
-    ///
-    /// Create a struct with generics like `send::<MyResponse>()`.
-    /// When the response type is not specific,
-    /// use `send::<HashMap<String, PageProperty>>()`.
-    /// (Type inference for the property field cannot be used.)
     pub async fn send(self) -> Result<PageResponse, Error> {
         match self.page_id {
             Some(id) => {
