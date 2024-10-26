@@ -30,3 +30,19 @@ pub enum SearchFilterType {
     Page,
     Database,
 }
+
+impl SearchFilter {
+    pub fn page() -> Self {
+        SearchFilter {
+            value: SearchFilterType::Page,
+            property: String::from("object"),
+        }
+    }
+
+    pub fn database() -> Self {
+        SearchFilter {
+            value: SearchFilterType::Database,
+            property: String::from("database"),
+        }
+    }
+}

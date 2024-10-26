@@ -23,3 +23,19 @@ pub enum SearchSortDirection {
     Ascending,
     Descending,
 }
+
+impl SearchSort {
+    pub fn asc() -> Self {
+        SearchSort {
+            direction: SearchSortDirection::Ascending,
+            timestamp: String::from("timestamp"),
+        }
+    }
+
+    pub fn desc() -> Self {
+        SearchSort {
+            direction: SearchSortDirection::Descending,
+            timestamp: String::from("timestamp"),
+        }
+    }
+}
