@@ -20,7 +20,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Default)]
 pub struct PagePhoneNumberProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -29,6 +29,25 @@ pub struct PagePhoneNumberProperty {
 
     /// A string representing a phone number. No phone number format is enforced.
     pub phone_number: Option<String>,
+}
+
+impl PagePhoneNumberProperty {
+    pub fn phone_number<T>(mut self, phone_number: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.phone_number = Some(phone_number.as_ref().to_string());
+        self
+    }
+}
+
+impl<T> From<T> for PagePhoneNumberProperty
+where
+    T: AsRef<str>,
+{
+    fn from(value: T) -> Self {
+        Self::default().phone_number(value)
+    }
 }
 
 // # --------------------------------------------------------------------------------

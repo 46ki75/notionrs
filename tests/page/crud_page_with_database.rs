@@ -188,6 +188,13 @@ mod integration_tests {
             notionrs::page::PageProperty::Number(notionrs::page::PageNumberProperty::from(100000)),
         );
 
+        properties.insert(
+            "Phone".to_string(),
+            notionrs::page::PageProperty::PhoneNumber(
+                notionrs::page::PagePhoneNumberProperty::from("083-0000-0000"),
+            ),
+        );
+
         println!("{}", serde_json::to_string(&properties).unwrap());
 
         let request = client
