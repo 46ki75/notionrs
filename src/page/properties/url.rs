@@ -24,7 +24,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageUrlProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// A string that describes a web address.
     pub url: Option<String>,
@@ -59,7 +59,7 @@ mod unit_tests {
 
         let url = url_map.get("URL").unwrap();
 
-        assert_eq!(url.id, "h_AH");
+        assert_eq!(url.id, Some("h_AH".to_string()));
         assert_eq!(
             url.url,
             Some("https://developers.notion.com/reference/page-property-values#url".to_string())

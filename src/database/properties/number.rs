@@ -1,19 +1,50 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseNumberProperty {
-    pub id: String,
+    /// Property Identifier
+    #[serde(skip_serializing)]
+    pub id: Option<String>,
+
+    /// Modify the value of this field when updating the column name of the property.
+    #[serde(skip_serializing)]
     pub name: String,
+
+    /// Although it is not explicitly stated in the official documentation,
+    /// you can add a description to the property by specifying this.
+    #[serde(skip_serializing)]
     pub description: Option<String>,
+
     pub number: DatabaseNumberFormatProperty,
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone, Copy)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct DatabaseNumberFormatProperty {
     pub format: NumberFormat,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
+impl DatabaseNumberProperty {
+    /// Modify the value of this field when updating the column name of the property.
+    pub fn name<T>(mut self, name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.name = name.as_ref().to_string();
+        self
+    }
+
+    /// Although it is not explicitly stated in the official documentation,
+    /// you can add a description to the property by specifying this.
+    pub fn description<T>(mut self, description: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.description = Some(description.as_ref().to_string());
+        self
+    }
+}
+
+#[derive(Deserialize, Serialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum NumberFormat {
     ArgentinePeso,
@@ -37,6 +68,7 @@ pub enum NumberFormat {
     NewTaiwanDollar,
     NewZealandDollar,
     NorwegianKrone,
+    #[default]
     Number,
     NumberWithCommas,
     Percent,
@@ -84,7 +116,7 @@ mod unit_tests {
 
         let number = serde_json::from_str::<DatabaseNumberProperty>(json_data).unwrap();
 
-        assert_eq!(number.id, "%7B%5D_P");
+        assert_eq!(number.id, Some("%7B%5D_P".to_string()));
         assert_eq!(number.name, "Price");
         assert_eq!(number.number.format, NumberFormat::Dollar);
     }

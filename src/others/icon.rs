@@ -15,7 +15,7 @@ impl Icon {
     }
 
     pub fn new_emoji(emoji: char) -> Self {
-        Icon::Emoji(Emoji::new(emoji))
+        Icon::Emoji(Emoji::from(emoji))
     }
 }
 

@@ -1,14 +1,37 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct Select {
     pub id: String,
     pub name: String,
     pub color: SelectColor,
 }
 
+impl Select {
+    pub fn id<T>(mut self, id: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.id = id.as_ref().to_string();
+        self
+    }
+
+    pub fn name<T>(mut self, name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.name = name.as_ref().to_string();
+        self
+    }
+
+    pub fn color(mut self, color: SelectColor) -> Self {
+        self.color = color;
+        self
+    }
+}
+
 /// <https://developers.notion.com/reference/property-object#status>
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct SelectGroup {
     pub id: String,
     pub name: String,

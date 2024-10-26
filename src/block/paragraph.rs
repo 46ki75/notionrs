@@ -76,24 +76,41 @@ mod unit_tests {
 
         let paragraph: ParagraphBlock = serde_json::from_str::<ParagraphBlock>(json_data).unwrap();
 
-        assert_eq!(
-            paragraph.color,
-            crate::others::color::Color::Default
-        );
+        assert_eq!(paragraph.color, crate::others::color::Color::Default);
 
         let rich_text = paragraph.rich_text.first().unwrap();
 
-        assert_eq!(rich_text.plain_text, "p");
-        assert_eq!(rich_text.href, None);
+        // assert_eq!(rich_text.plain_text, "p");
+        // assert_eq!(rich_text.href, None);
 
-        assert!(!rich_text.annotations.bold);
-        assert!(!rich_text.annotations.italic);
-        assert!(!rich_text.annotations.strikethrough);
-        assert!(!rich_text.annotations.underline);
-        assert!(!rich_text.annotations.code);
-        assert_eq!(
-            rich_text.annotations.color,
-            crate::others::color::Color::Default
-        );
+        // assert!(!rich_text.annotations.bold);
+        // assert!(!rich_text.annotations.italic);
+        // assert!(!rich_text.annotations.strikethrough);
+        // assert!(!rich_text.annotations.underline);
+        // assert!(!rich_text.annotations.code);
+        // assert_eq!(
+        //     rich_text.annotations.color,
+        //     crate::others::color::Color::Default
+        // );
+
+        match rich_text {
+            crate::RichText::Text {
+                annotations,
+                plain_text,
+                href,
+                ..
+            } => {
+                assert_eq!(plain_text, "p");
+                assert_eq!(*href, None);
+
+                assert!(!annotations.bold);
+                assert!(!annotations.code);
+                assert!(!annotations.strikethrough);
+                assert!(!annotations.underline);
+                assert!(!annotations.italic);
+                assert_eq!(annotations.color, crate::others::color::Color::Default)
+            }
+            _ => panic!(),
+        }
     }
 }

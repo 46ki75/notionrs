@@ -21,6 +21,18 @@ pub mod status;
 pub mod title;
 pub mod url;
 
+pub use {
+    checkbox::DatabaseCheckboxProperty, created_by::DatabaseCreatedByProperty,
+    created_time::DatabaseCreatedTimeProperty, date::DatabaseDateProperty,
+    email::DatabaseEmailProperty, files::DatabaseFilesProperty, formula::DatabaseFormulaProperty,
+    last_edited_by::DatabaseLastEditedByProperty, last_edited_time::DatabaseLastEditedTimeProperty,
+    multi_select::DatabaseMultiSelectProperty, number::DatabaseNumberProperty,
+    people::DatabasePeopleProperty, phone_number::DatabasePhoneNumberProperty,
+    relation::DatabaseRelationProperty, rich_text::DatabaseRichTextProperty, rollup::*,
+    select::DatabaseSelectProperty, status::DatabaseStatusProperty, title::DatabaseTitleProperty,
+    url::DatabaseUrlProperty,
+};
+
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum DatabaseProperty {
@@ -74,7 +86,7 @@ mod unit_tests {
 
         match number {
             DatabaseProperty::Number(num) => {
-                assert_eq!(num.id, "~B%7BT");
+                assert_eq!(num.id, Some("~B%7BT".to_string()));
                 assert_eq!(num.name, "Number");
                 assert_eq!(
                     num.number.format,

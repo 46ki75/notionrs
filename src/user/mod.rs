@@ -6,11 +6,21 @@ pub mod bot;
 /// User objects that represent people have the type property set to "person".
 pub mod person;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
 #[serde(untagged)]
 pub enum User {
     Bot(bot::Bot),
     Person(person::Person),
+}
+
+impl crate::ToPlainText for User {
+    /// Convert Bot to a plain string
+    fn to_plain_text(&self) -> String {
+        match self {
+            Self::Bot(bot) => bot.to_plain_text(),
+            Self::Person(person) => person.to_plain_text(),
+        }
+    }
 }
 
 // # --------------------------------------------------------------------------------

@@ -28,7 +28,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageStatusProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// Select object
     pub status: crate::others::select::Select,
@@ -68,8 +68,11 @@ mod unit_tests {
 
         let status = status_map.get("Status").unwrap();
 
-        assert_eq!(status.id, "xx%7Cd");
-        assert_eq!(status.status.id, "4a1accbf-6716-4cf2-9034-5877581fc5f6");
+        assert_eq!(status.id, Some("xx%7Cd".to_string()));
+        assert_eq!(
+            status.status.id,
+            ("4a1accbf-6716-4cf2-9034-5877581fc5f6".to_string())
+        );
         assert_eq!(status.status.name, "Not started");
         assert_eq!(
             status.status.color,

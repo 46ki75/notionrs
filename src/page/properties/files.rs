@@ -35,7 +35,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageFilesProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// An array of objects containing information
     /// about the [files](https://developers.notion.com/reference/file-object).
@@ -87,7 +87,7 @@ mod unit_tests {
 
         let file = file_map.get("File").unwrap();
 
-        assert_eq!(file.id, "%3AlnV");
+        assert_eq!(file.id, Some("%3AlnV".to_string()));
 
         for file in &file.files {
             match &file {

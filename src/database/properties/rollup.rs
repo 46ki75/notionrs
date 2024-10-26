@@ -1,14 +1,24 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseRollupProperty {
-    pub id: String,
+    /// Property Identifier
+    #[serde(skip_serializing)]
+    pub id: Option<String>,
+
+    /// Modify the value of this field when updating the column name of the property.
+    #[serde(skip_serializing)]
     pub name: String,
+
+    /// Although it is not explicitly stated in the official documentation,
+    /// you can add a description to the property by specifying this.
+    #[serde(skip_serializing)]
     pub description: Option<String>,
+
     pub rollup: DatabaseRollupDetail,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseRollupDetail {
     pub function: RollupFunction,
 
@@ -25,7 +35,7 @@ pub struct DatabaseRollupDetail {
     pub rollup_property_name: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum RollupFunction {
     Average,
@@ -51,7 +61,30 @@ pub enum RollupFunction {
     Unique,
     ShowOriginal,
     ShowUnique,
+
+    #[default]
     Sum,
+}
+
+impl DatabaseRollupProperty {
+    /// Modify the value of this field when updating the column name of the property.
+    pub fn name<T>(mut self, name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.name = name.as_ref().to_string();
+        self
+    }
+
+    /// Although it is not explicitly stated in the official documentation,
+    /// you can add a description to the property by specifying this.
+    pub fn description<T>(mut self, description: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.description = Some(description.as_ref().to_string());
+        self
+    }
 }
 
 // # --------------------------------------------------------------------------------
@@ -83,7 +116,7 @@ mod unit_tests {
 
         let rollup = serde_json::from_str::<DatabaseRollupProperty>(json_data).unwrap();
 
-        assert_eq!(rollup.id, "%5E%7Cy%3C");
+        assert_eq!(rollup.id, Some("%5E%7Cy%3C".to_string()));
         assert_eq!(rollup.name, "Estimated total project time");
         assert_eq!(rollup.rollup.rollup_property_name, "Days to complete");
         assert_eq!(rollup.rollup.relation_property_name, "Tasks");

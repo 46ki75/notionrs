@@ -6,13 +6,13 @@ use serde::{Deserialize, Serialize};
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Default)]
 pub struct Filter {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub and: Option<Vec<Filter>>,
+    pub and: Option<Vec<Box<Filter>>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub or: Option<Vec<Filter>>,
+    pub or: Option<Vec<Box<Filter>>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub property: Option<String>,
@@ -32,18 +32,19 @@ pub struct Filter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum Condition {
     Checkbox(CheckboxFilter),
     Date(Box<DateFilter>),
     Files(FilesFilter),
-    // TODO: implement formula
+    Formula(Box<FormulaFilter>),
     MultiSelect(MultiSelectFilter),
     Number(NumberFilter),
     People(PeopleFilter),
     PhoneNumber(PhoneNumberFilter),
-    // TODO: implement rollup
+    Rollup(Box<RollupFilter>),
+    Relation(RelationFilter),
     RichText(RichTextFilter),
     Select(SelectFilter),
     Status(StatusFilter),
@@ -58,7 +59,7 @@ pub enum Condition {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct CheckboxFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub equals: Option<bool>,
@@ -70,7 +71,7 @@ pub struct CheckboxFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DateFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub after: Option<String>,
@@ -121,7 +122,7 @@ pub struct DateFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct FilesFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_empty: Option<bool>,
@@ -136,22 +137,20 @@ pub struct FilesFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement formula
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq)]
+pub struct FormulaFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub checkbox: Option<CheckboxFilter>,
 
-// #[derive(Debug, Default, Deserialize, Serialize)]
-// pub struct FormulaFilter {
-//     #[serde(skip_serializing_if = "Option::is_none")]
-//     pub checkbox: Option<CheckboxFilter>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub date: Option<DateFilter>,
 
-//     #[serde(skip_serializing_if = "Option::is_none")]
-//     pub date: Option<DateFilter>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub number: Option<NumberFilter>,
 
-//     #[serde(skip_serializing_if = "Option::is_none")]
-//     pub number: Option<NumberFilter>,
-
-//     #[serde(skip_serializing_if = "Option::is_none")]
-//     pub string: Option<>,
-// }
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub string: Option<RichTextFilter>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -160,7 +159,7 @@ pub struct FilesFilter {
 // # --------------------------------------------------------------------------------
 
 /// <https://developers.notion.com/reference/post-database-query-filter#multi-select>
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct MultiSelectFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub contains: Option<String>,
@@ -181,7 +180,7 @@ pub struct MultiSelectFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq)]
 pub struct NumberFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub does_not_equal: Option<f64>,
@@ -214,7 +213,7 @@ pub struct NumberFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 
 pub struct PeopleFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -236,8 +235,7 @@ pub struct PeopleFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
-
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct PhoneNumberFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub contains: Option<String>,
@@ -270,7 +268,21 @@ pub struct PhoneNumberFilter {
 //
 // # --------------------------------------------------------------------------------
 
-// TODO: implement relation
+/// <https://developers.notion.com/reference/post-database-query-filter#relation>
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
+pub struct RelationFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub contains: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub does_not_contain: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_empty: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_not_empty: Option<bool>,
+}
 
 // # --------------------------------------------------------------------------------
 //
@@ -279,7 +291,7 @@ pub struct PhoneNumberFilter {
 // # --------------------------------------------------------------------------------
 
 /// <https://developers.notion.com/reference/post-database-query-filter#rich-text>
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct RichTextFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub contains: Option<String>,
@@ -308,12 +320,31 @@ pub struct RichTextFilter {
 
 // # --------------------------------------------------------------------------------
 //
+// rollup
+//
+// # --------------------------------------------------------------------------------
+
+/// <https://developers.notion.com/reference/post-database-query-filter#rollup>
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq)]
+pub struct RollupFilter {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub any: Option<Box<Filter>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub every: Option<Box<Filter>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub none: Option<Box<Filter>>,
+}
+
+// # --------------------------------------------------------------------------------
+//
 // select
 //
 // # --------------------------------------------------------------------------------
 
 /// <https://developers.notion.com/reference/post-database-query-filter#select>
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct SelectFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub does_not_equal: Option<String>,
@@ -335,7 +366,7 @@ pub struct SelectFilter {
 // # --------------------------------------------------------------------------------
 
 /// <https://developers.notion.com/reference/post-database-query-filter#status>
-#[derive(Debug, Default, Deserialize, Serialize, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct StatusFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub does_not_equal: Option<String>,
@@ -356,7 +387,7 @@ pub struct StatusFilter {
 //
 // # --------------------------------------------------------------------------------
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct TimestampFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub after: Option<String>,
@@ -408,7 +439,7 @@ pub struct TimestampFilter {
 // # --------------------------------------------------------------------------------
 
 /// <https://developers.notion.com/reference/post-database-query-filter#id>
-#[derive(Debug, Default, Deserialize, Serialize, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct UniqueIdFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub does_not_equal: Option<u64>,
@@ -437,21 +468,15 @@ pub struct UniqueIdFilter {
 impl Filter {
     pub fn and(filters: Vec<Filter>) -> Self {
         Filter {
-            and: Some(filters),
-            or: None,
-            property: None,
-            condition: None,
-            timestamp: None,
+            and: Some(filters.into_iter().map(Box::new).collect()),
+            ..Default::default()
         }
     }
 
     pub fn or(filters: Vec<Filter>) -> Self {
         Filter {
-            and: None,
-            or: Some(filters),
-            property: None,
-            condition: None,
-            timestamp: None,
+            or: Some(filters.into_iter().map(Box::new).collect()),
+            ..Default::default()
         }
     }
 
@@ -466,11 +491,9 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn checkbox_is_checked<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Checkbox(CheckboxFilter { equals: Some(true) })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -479,13 +502,11 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn checkbox_is_not_checked<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Checkbox(CheckboxFilter {
                 equals: Some(false),
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -502,14 +523,12 @@ impl Filter {
     ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn date_after<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 after: Some(date.as_ref().to_string()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -520,14 +539,12 @@ impl Filter {
     ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn date_before<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 before: Some(date.as_ref().to_string()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -538,14 +555,12 @@ impl Filter {
     ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn date_equals<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 equals: Some(date.as_ref().to_string()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -554,14 +569,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_is_empty<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 is_empty: Some(true),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -570,14 +583,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -587,14 +598,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_next_month<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 next_month: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -604,14 +613,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_next_week<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 next_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -621,14 +628,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_next_year<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 next_year: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -640,14 +645,12 @@ impl Filter {
     ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn date_on_or_after<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 on_or_after: Some(date.as_ref().to_string()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -658,14 +661,12 @@ impl Filter {
     ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn date_on_or_before<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 on_or_before: Some(date.as_ref().to_string()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -675,14 +676,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_past_month<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 past_month: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -692,14 +691,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_past_week<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 past_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -709,14 +706,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_past_year<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 past_year: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -726,14 +721,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn date_this_week<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
                 this_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -748,14 +741,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn files_is_empty<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Files(FilesFilter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -764,14 +755,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn files_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Files(FilesFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -781,7 +770,480 @@ impl Filter {
     //
     // # --------------------------------------------------------------------------------
 
-    // TODO: implement formula
+    // Formula Number Filters
+    pub fn formula_number_equals<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    equals: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_does_not_equal<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    does_not_equal: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_greater_than<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    greater_than: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_less_than<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    less_than: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_greater_than_or_equal<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    greater_than_or_equal_to: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_less_than_or_equal<T, N>(property_name: T, number: N) -> Self
+    where
+        T: AsRef<str>,
+        N: Into<f64>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    less_than_or_equal_to: Some(number.into()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_is_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    is_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_number_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                number: Some(NumberFilter {
+                    is_not_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    // Formula String Filters
+    pub fn formula_string_equals<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    equals: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_does_not_equal<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    does_not_equal: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_contains<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    contains: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_does_not_contain<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    does_not_contain: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_starts_with<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    starts_with: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_ends_with<T: AsRef<str>>(property_name: T, text: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    ends_with: Some(text.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_is_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    is_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_string_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                string: Some(RichTextFilter {
+                    is_not_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    // Formula Checkbox Filters
+    pub fn formula_checkbox_equals<T: AsRef<str>>(property_name: T, checked: bool) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                checkbox: Some(CheckboxFilter {
+                    equals: Some(checked),
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_checkbox_is_checked<T: AsRef<str>>(property_name: T) -> Self {
+        Self::formula_checkbox_equals(property_name, true)
+    }
+
+    pub fn formula_checkbox_is_not_checked<T: AsRef<str>>(property_name: T) -> Self {
+        Self::formula_checkbox_equals(property_name, false)
+    }
+
+    // Formula Date Filters
+    pub fn formula_date_after<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    after: Some(date.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_before<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    before: Some(date.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_equals<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    equals: Some(date.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_is_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    is_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_is_not_empty<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    is_not_empty: Some(true),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_next_month<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    next_month: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_next_week<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    next_week: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_next_year<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    next_year: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_on_or_after<S: AsRef<str>, T: AsRef<str>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    on_or_after: Some(date.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_on_or_before<S: AsRef<str>, T: AsRef<str>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    on_or_before: Some(date.as_ref().to_string()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_past_month<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    past_month: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_past_week<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    past_week: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_past_year<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    past_year: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    pub fn formula_date_this_week<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Formula(Box::new(FormulaFilter {
+                date: Some(DateFilter {
+                    this_week: Some(std::collections::HashMap::new()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
 
     // # --------------------------------------------------------------------------------
     //
@@ -799,14 +1261,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::MultiSelect(MultiSelectFilter {
                 contains: Some(option_name.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -820,14 +1280,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::MultiSelect(MultiSelectFilter {
                 does_not_contain: Some(option_name.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -839,14 +1297,12 @@ impl Filter {
         S: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::MultiSelect(MultiSelectFilter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -858,14 +1314,12 @@ impl Filter {
         S: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::MultiSelect(MultiSelectFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -885,14 +1339,12 @@ impl Filter {
         N: Into<f64>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Number(NumberFilter {
                 does_not_equal: Some(number.into()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -906,14 +1358,12 @@ impl Filter {
         N: Into<f64>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Number(NumberFilter {
                 equals: Some(number.into()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -927,14 +1377,12 @@ impl Filter {
         N: Into<f64>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Number(NumberFilter {
                 greater_than: Some(number.into()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -948,14 +1396,12 @@ impl Filter {
         N: Into<f64>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Number(NumberFilter {
                 greater_than_or_equal_to: Some(number.into()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -967,14 +1413,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Number(NumberFilter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -986,14 +1430,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Number(NumberFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1007,14 +1449,12 @@ impl Filter {
         N: Into<f64>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Number(NumberFilter {
                 less_than: Some(number.into()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1028,14 +1468,12 @@ impl Filter {
         N: Into<f64>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Number(NumberFilter {
                 less_than_or_equal_to: Some(number.into()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1055,14 +1493,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::People(PeopleFilter {
                 contains: Some(id.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1076,14 +1512,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::People(PeopleFilter {
                 does_not_contain: Some(id.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1095,14 +1529,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::People(PeopleFilter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1114,14 +1546,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::People(PeopleFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1137,14 +1567,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
                 contains: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1154,14 +1582,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
                 does_not_contain: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1171,14 +1597,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
                 does_not_equal: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1188,14 +1612,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
                 ends_with: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1205,14 +1627,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
                 equals: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1221,14 +1641,12 @@ impl Filter {
         S: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1237,14 +1655,12 @@ impl Filter {
         S: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1254,18 +1670,91 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::PhoneNumber(PhoneNumberFilter {
                 starts_with: Some(phone_number.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
+        }
+    }
+    // # --------------------------------------------------------------------------------
+    //
+    // relation <https://developers.notion.com/reference/post-database-query-filter#relation>
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Returns database entries with a text property value that includes the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `uuid`: The string to compare the text property value against.
+    pub fn relation_contains<S, T>(property_name: S, uuid: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Relation(RelationFilter {
+                contains: Some(uuid.as_ref().to_string()),
+                ..Default::default()
+            })),
+            ..Default::default()
         }
     }
 
-    // TODO: implement relation
+    /// Returns database entries with a text property value that does not include the provided string.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `uuid`: The string to compare the text property value against.
+    pub fn relation_does_not_contain<S, T>(property_name: S, uuid: T) -> Self
+    where
+        S: AsRef<str>,
+        T: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Relation(RelationFilter {
+                does_not_contain: Some(uuid.as_ref().to_string()),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries with a text property value that is empty.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn relation_is_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Relation(RelationFilter {
+                is_empty: Some(true),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries with a text property value that contains data.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn relation_is_not_empty<S>(property_name: S) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Relation(RelationFilter {
+                is_not_empty: Some(true),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }
+    }
 
     // # --------------------------------------------------------------------------------
     //
@@ -1283,14 +1772,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::RichText(RichTextFilter {
                 contains: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1304,14 +1791,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::RichText(RichTextFilter {
                 does_not_contain: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1325,14 +1810,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::RichText(RichTextFilter {
                 does_not_equal: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1346,14 +1829,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::RichText(RichTextFilter {
                 ends_with: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1367,14 +1848,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::RichText(RichTextFilter {
                 equals: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1386,14 +1865,12 @@ impl Filter {
         S: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::RichText(RichTextFilter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1405,14 +1882,12 @@ impl Filter {
         S: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::RichText(RichTextFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1426,14 +1901,63 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::RichText(RichTextFilter {
                 starts_with: Some(text.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // rollup <https://developers.notion.com/reference/post-database-query-filter#rollup>
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Returns database entries where the rollup property value matches the provided criteria.
+    pub fn rollup_any<S>(property_name: S, filter: Filter) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Rollup(Box::new(RollupFilter {
+                any: Some(Box::new(filter)),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries where every rollup property value matches the provided criteria.
+    pub fn rollup_every<S>(property_name: S, filter: Filter) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Rollup(Box::new(RollupFilter {
+                every: Some(Box::new(filter)),
+                ..Default::default()
+            }))),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries where no rollup property value matches the provided criteria.
+    pub fn rollup_none<S>(property_name: S, filter: Filter) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Rollup(Box::new(RollupFilter {
+                none: Some(Box::new(filter)),
+                ..Default::default()
+            }))),
+            ..Default::default()
         }
     }
 
@@ -1453,14 +1977,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Select(SelectFilter {
                 does_not_equal: Some(option_name.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1474,14 +1996,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Select(SelectFilter {
                 equals: Some(option_name.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1493,14 +2013,12 @@ impl Filter {
         S: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Select(SelectFilter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1512,14 +2030,12 @@ impl Filter {
         S: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Select(SelectFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1539,14 +2055,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Status(StatusFilter {
                 does_not_equal: Some(option_name.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1560,14 +2074,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Status(StatusFilter {
                 equals: Some(option_name.as_ref().to_string()),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1579,14 +2091,12 @@ impl Filter {
         S: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Status(StatusFilter {
                 is_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1598,14 +2108,12 @@ impl Filter {
         S: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Status(StatusFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1622,14 +2130,12 @@ impl Filter {
     ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn timestamp_after<T: AsRef<str>>(timestamp: T) -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 after: Some(timestamp.as_ref().to_string()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1640,14 +2146,12 @@ impl Filter {
     ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn timestamp_before<T: AsRef<str>>(timestamp: T) -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 before: Some(timestamp.as_ref().to_string()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1658,14 +2162,12 @@ impl Filter {
     ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn timestamp_equals<T: AsRef<str>>(timestamp: T) -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 equals: Some(timestamp.as_ref().to_string()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1674,14 +2176,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn timestamp_is_empty() -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 is_empty: Some(true),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1690,14 +2190,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn timestamp_is_not_empty() -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 is_not_empty: Some(true),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1707,14 +2205,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn timestamp_next_month() -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 next_month: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1724,14 +2220,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn timestamp_next_week() -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 next_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1741,14 +2235,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn timestamp_next_year() -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 next_year: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1760,14 +2252,12 @@ impl Filter {
     ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn timestamp_on_or_after<T: AsRef<str>>(timestamp: T) -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 on_or_after: Some(timestamp.as_ref().to_string()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1778,14 +2268,12 @@ impl Filter {
     ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
     pub fn timestamp_on_or_before<T: AsRef<str>>(timestamp: T) -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 on_or_before: Some(timestamp.as_ref().to_string()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1795,14 +2283,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn timestamp_past_month() -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 past_month: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1812,14 +2298,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn timestamp_past_week() -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 past_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1829,14 +2313,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn timestamp_past_year() -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 past_year: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1846,14 +2328,12 @@ impl Filter {
     /// - `property_name`: Property Name (Column Name) in Notion Database
     pub fn timestamp_this_week() -> Self {
         Filter {
-            and: None,
-            or: None,
-            property: None,
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
                 this_week: Some(std::collections::HashMap::new()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
+            ..Default::default()
         }
     }
 
@@ -1872,14 +2352,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::UniqueId(UniqueIdFilter {
                 does_not_equal: Some(unique_id),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1892,14 +2370,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::UniqueId(UniqueIdFilter {
                 equals: Some(unique_id),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1912,14 +2388,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::UniqueId(UniqueIdFilter {
                 greater_than: Some(unique_id),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1932,14 +2406,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::UniqueId(UniqueIdFilter {
                 greater_than_or_equal_to: Some(unique_id),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1952,14 +2424,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::UniqueId(UniqueIdFilter {
                 less_than: Some(unique_id),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 
@@ -1972,14 +2442,12 @@ impl Filter {
         T: AsRef<str>,
     {
         Filter {
-            and: None,
-            or: None,
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::UniqueId(UniqueIdFilter {
                 less_than_or_equal_to: Some(unique_id),
                 ..Default::default()
             })),
-            timestamp: None,
+            ..Default::default()
         }
     }
 }

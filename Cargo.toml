@@ -25,3 +25,4 @@ thiserror = "1.0.65"
 [dev-dependencies]
 tokio = { version = "1.41.0", features = ["full"] }
 dotenvy = "0.15.0"
+serial_test = "3.1.1"

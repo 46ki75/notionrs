@@ -32,7 +32,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageFormulaProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// Formula property value objects represent the result of evaluating
     /// a formula described in the database's properties.
@@ -57,7 +57,7 @@ pub enum Formula {
 #[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 pub struct FormulaBoolean {
     /// Calculated value of the database property
-    pub boolean: bool,
+    pub boolean: Option<bool>,
 }
 
 /// ```json
@@ -66,10 +66,10 @@ pub struct FormulaBoolean {
 ///   "date": "2024-08-15T05:24:00.000Z"
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 pub struct FormulaDate {
     /// Calculated value of the database property
-    pub date: String,
+    pub date: Option<chrono::DateTime<chrono::Utc>>,
 }
 
 /// ```json
@@ -81,7 +81,7 @@ pub struct FormulaDate {
 #[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 pub struct FormulaNumber {
     /// Calculated value of the database property
-    pub number: f64,
+    pub number: Option<f64>,
 }
 
 /// ```json
@@ -90,10 +90,10 @@ pub struct FormulaNumber {
 ///   "string": "My Title"
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct FormulaString {
     /// Calculated value of the database property
-    pub string: String,
+    pub string: Option<String>,
 }
 
 // # --------------------------------------------------------------------------------
@@ -129,10 +129,10 @@ mod unit_tests {
 
         let formula = formula_map.get("Formula").unwrap();
 
-        assert_eq!(formula.id, "W~%5BW");
+        assert_eq!(formula.id, Some("W~%5BW".to_string()));
 
         match &formula.formula {
-            Formula::String(s) => assert_eq!(s.string, "My Title"),
+            Formula::String(s) => assert_eq!(s.string, Some("My Title".to_string())),
             Formula::Boolean(_) => panic!(),
             Formula::Date(_) => panic!(),
             Formula::Number(_) => panic!(),

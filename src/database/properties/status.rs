@@ -1,17 +1,58 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseStatusProperty {
-    pub id: String,
+    /// Property Identifier
+    #[serde(skip_serializing)]
+    pub id: Option<String>,
+
+    /// Modify the value of this field when updating the column name of the property.
+    #[serde(skip_serializing)]
     pub name: String,
+
+    /// Although it is not explicitly stated in the official documentation,
+    /// you can add a description to the property by specifying this.
+    #[serde(skip_serializing)]
     pub description: Option<String>,
+
     pub status: DatabaseSelectOptionProperty,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseSelectOptionProperty {
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     options: Vec<crate::others::select::Select>,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     groups: Vec<crate::others::select::SelectGroup>,
+}
+
+impl DatabaseStatusProperty {
+    pub fn options(mut self, options: Vec<crate::others::select::Select>) -> Self {
+        self.status.options = options;
+        self
+    }
+
+    /// Although it is not explicitly stated in the official documentation,
+    /// you can add a description to the property by specifying this.
+    pub fn description<T>(mut self, description: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.description = Some(description.as_ref().to_string());
+        self
+    }
+}
+
+impl DatabaseStatusProperty {
+    /// Modify the value of this field when updating the column name of the property.
+    pub fn name<T>(mut self, name: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.name = name.as_ref().to_string();
+        self
+    }
 }
 
 // # --------------------------------------------------------------------------------
@@ -81,24 +122,33 @@ mod unit_tests {
 
         let status = serde_json::from_str::<DatabaseStatusProperty>(json_data).unwrap();
 
-        assert_eq!(status.id, "biOx");
+        assert_eq!(status.id, Some("biOx".to_string()));
         assert_eq!(status.name, "Status");
 
         let options = &status.status.options;
         assert_eq!(options.len(), 3);
 
-        assert_eq!(options[0].id, "034ece9a-384d-4d1f-97f7-7f685b29ae9b");
+        assert_eq!(
+            options[0].id,
+            ("034ece9a-384d-4d1f-97f7-7f685b29ae9b".to_string())
+        );
         assert_eq!(options[0].name, "Not started");
         assert_eq!(
             options[0].color,
             crate::others::select::SelectColor::Default
         );
 
-        assert_eq!(options[1].id, "330aeafb-598c-4e1c-bc13-1148aa5963d3");
+        assert_eq!(
+            options[1].id,
+            ("330aeafb-598c-4e1c-bc13-1148aa5963d3".to_string())
+        );
         assert_eq!(options[1].name, "In progress");
         assert_eq!(options[1].color, crate::others::select::SelectColor::Blue);
 
-        assert_eq!(options[2].id, "497e64fb-01e2-41ef-ae2d-8a87a3bb51da");
+        assert_eq!(
+            options[2].id,
+            ("497e64fb-01e2-41ef-ae2d-8a87a3bb51da".to_string())
+        );
         assert_eq!(options[2].name, "Done");
         assert_eq!(options[2].color, crate::others::select::SelectColor::Green);
 

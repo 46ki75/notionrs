@@ -40,18 +40,18 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
 pub struct PageDateProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// If the value is blank, it will be `null`.
     pub date: Option<PageDatePropertyParameter>,
 }
 
 /// If the value is blank, it will be an empty object.
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
 pub struct PageDatePropertyParameter {
     /// A date, with an optional time.
     start: String,
@@ -62,6 +62,24 @@ pub struct PageDatePropertyParameter {
 
     /// Always `null`. The time zone is already included in the formats of start and end times.
     time_zone: Option<String>,
+}
+
+impl crate::ToPlainText for PageDateProperty {
+    /// Convert PageDateProperty to a plain string
+    fn to_plain_text(&self) -> String {
+        if let Some(date) = &self.date {
+            date.clone().start
+        } else {
+            String::new()
+        }
+    }
+}
+
+impl crate::ToPlainText for PageDatePropertyParameter {
+    /// Convert PageDatePropertyParameter to a plain string
+    fn to_plain_text(&self) -> String {
+        self.start.clone()
+    }
 }
 
 // # --------------------------------------------------------------------------------
@@ -96,7 +114,7 @@ mod unit_tests {
 
         let date = date_map.get("Date").unwrap();
 
-        assert_eq!(date.id, "w%5E%7DO");
+        assert_eq!(date.id, Some("w%5E%7DO".to_string()));
 
         match &date.date {
             Some(property) => {

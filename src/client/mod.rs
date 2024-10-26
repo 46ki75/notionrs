@@ -129,6 +129,13 @@ impl Client {
         }
     }
 
+    pub fn create_page(&self) -> crate::client::page::create_page::CreatePageClient {
+        crate::client::page::create_page::CreatePageClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
     // Database
@@ -145,7 +152,34 @@ impl Client {
                 start_cursor: None,
                 page_size: None,
             },
-            recursive: false,
+            fetch_all: false,
+        }
+    }
+
+    pub fn create_database(
+        &self,
+    ) -> crate::client::database::create_database::CreateDatabaseClient {
+        crate::client::database::create_database::CreateDatabaseClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn update_database(
+        &self,
+    ) -> crate::client::database::update_database::UpdateDatabaseClient {
+        crate::client::database::update_database::UpdateDatabaseClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn retrieve_database(
+        &self,
+    ) -> crate::client::database::retrieve_database::RetrieveDatabaseClient {
+        crate::client::database::retrieve_database::RetrieveDatabaseClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
         }
     }
 

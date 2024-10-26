@@ -36,7 +36,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageEmailProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// A string describing an email address.
     pub email: Option<String>,
@@ -71,7 +71,7 @@ mod unit_tests {
 
         let email = email_map.get("Email").unwrap();
 
-        assert_eq!(email.id, "rXuf");
+        assert_eq!(email.id, Some("rXuf".to_string()));
         assert_eq!(email.email, Some("hi@example.com".to_string()));
     }
 }

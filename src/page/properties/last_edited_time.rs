@@ -24,10 +24,10 @@ use serde::{Deserialize, Serialize};
 pub struct PageLastEditedTimeProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// The date and time that the page was last edited.
-    pub last_edited_time: String,
+    pub last_edited_time: chrono::DateTime<chrono::Utc>,
 }
 
 // # --------------------------------------------------------------------------------
@@ -38,6 +38,8 @@ pub struct PageLastEditedTimeProperty {
 
 #[cfg(test)]
 mod unit_tests {
+
+    use chrono::TimeZone;
 
     use super::*;
 
@@ -58,9 +60,11 @@ mod unit_tests {
         >(json_data)
         .unwrap();
 
-        let last_edited_by = last_edited_time_map.get("Last edited time").unwrap();
+        let last_edited_time = last_edited_time_map.get("Last edited time").unwrap();
 
-        assert_eq!(last_edited_by.id, "sv%3Fi");
-        assert_eq!(last_edited_by.last_edited_time, "2024-04-03T10:55:00.000Z");
+        assert_eq!(last_edited_time.id, Some("sv%3Fi".to_string()));
+        let expected_last_edited_time =
+            chrono::Utc.with_ymd_and_hms(2024, 4, 3, 10, 55, 0).unwrap();
+        assert_eq!(last_edited_time.last_edited_time, expected_last_edited_time);
     }
 }

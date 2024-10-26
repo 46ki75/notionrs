@@ -28,7 +28,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageSelectProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// Select object (optional)
     pub select: Option<crate::others::select::Select>,
@@ -68,10 +68,10 @@ mod unit_tests {
 
         let select = select_map.get("Select").unwrap();
 
-        assert_eq!(select.id, "chOy");
+        assert_eq!(select.id, Some("chOy".to_string()));
         assert_eq!(
             select.select.as_ref().unwrap().id,
-            "eede87ce-52db-4b16-9931-2bc40687d697"
+            ("eede87ce-52db-4b16-9931-2bc40687d697".to_string())
         );
         assert_eq!(select.select.as_ref().unwrap().name, "TODO");
         assert_eq!(

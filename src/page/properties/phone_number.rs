@@ -24,7 +24,7 @@ use serde::{Deserialize, Serialize};
 pub struct PagePhoneNumberProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
-    pub id: String,
+    pub id: Option<String>,
 
     /// A string representing a phone number. No phone number format is enforced.
     pub phone_number: Option<String>,
@@ -59,7 +59,7 @@ mod unit_tests {
 
         let phone_number = phone_number_map.get("Phone Number").unwrap();
 
-        assert_eq!(phone_number.id, "Se%3Dp");
+        assert_eq!(phone_number.id, Some("Se%3Dp".to_string()));
         assert_eq!(phone_number.phone_number, Some("415-202-4776".to_string()));
     }
 }
