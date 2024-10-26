@@ -181,6 +181,13 @@ mod integration_tests {
             )),
         );
 
+        properties.insert(
+            "email".to_string(),
+            notionrs::page::PageProperty::Email(notionrs::page::PageEmailProperty::from(
+                "info@example.com",
+            )),
+        );
+
         println!("{}", serde_json::to_string(&properties).unwrap());
 
         let request = client
