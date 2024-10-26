@@ -40,6 +40,8 @@ pub struct PageFilesProperty {
 
     /// An array of objects containing information
     /// about the [files](https://developers.notion.com/reference/file-object).
+    ///
+    /// When creating, both the external path of the file and `name` are required.
     pub files: Vec<crate::others::file::File>,
 }
 
