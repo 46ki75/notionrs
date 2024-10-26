@@ -1,6 +1,7 @@
 pub mod block;
 pub mod database;
 pub mod page;
+pub mod search;
 pub mod user;
 
 use std::env;
@@ -230,6 +231,33 @@ impl Client {
             block_id: None,
             archived: None,
             block: None,
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // search
+    //
+    // # --------------------------------------------------------------------------------
+
+    pub fn search(&self) -> crate::client::search::SearchClient {
+        crate::client::search::SearchClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn search_database(&self) -> crate::client::search::SearchDatabaseClient {
+        crate::client::search::SearchDatabaseClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn search_page(&self) -> crate::client::search::SearchPageClient {
+        crate::client::search::SearchPageClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
         }
     }
 }
