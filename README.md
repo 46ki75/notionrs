@@ -11,7 +11,7 @@
 This project is currently under active development and is not yet ready for production use. Features and API stability may change without notice. Contributions and feedback are welcome!
 
 - [♻ Release Notes](https://github.com/46ki75/notionrs/releases)
-- [💡 User Guide | Documentation](https://github.com/46ki75/notionrs/releases) (Under Construction)
+- [💡 User Guide | Documentation](https://46ki75.github.io/notionrs/) (Under Construction)
 - [🛠️ API Reference (docs.rs)](https://docs.rs/notionrs/latest/notionrs/)
 
 ## Features currently released
