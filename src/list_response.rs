@@ -10,3 +10,10 @@ pub struct ListResponse<T> {
     pub has_more: Option<bool>,
     pub r#type: Option<String>,
 }
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(untagged)]
+pub enum SearchResultItem {
+    Page(crate::page::PageResponse),
+    Database(crate::database::DatabaseResponse),
+}

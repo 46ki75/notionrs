@@ -15,7 +15,7 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let request = client.search().query("sdfasdfas");
+        let request = client.search().query("My Title");
 
         let response = request.send().await?;
 
