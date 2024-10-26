@@ -31,7 +31,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Default)]
 pub struct PageMultiSelectProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -40,6 +40,13 @@ pub struct PageMultiSelectProperty {
 
     /// Array of Select object
     pub multi_select: Vec<crate::others::select::Select>,
+}
+
+impl PageMultiSelectProperty {
+    pub fn multi_select(mut self, multi_select: Vec<crate::others::select::Select>) -> Self {
+        self.multi_select = multi_select;
+        self
+    }
 }
 
 // # --------------------------------------------------------------------------------
@@ -86,22 +93,22 @@ mod unit_tests {
 
         assert_eq!(
             multi_select.multi_select.first().unwrap().id,
-            ("959ba3e3-5a64-4ee6-864b-9e94ddc024d5".to_string())
+            Some("959ba3e3-5a64-4ee6-864b-9e94ddc024d5".to_string())
         );
         assert_eq!(multi_select.multi_select.first().unwrap().name, "HTML");
         assert_eq!(
             multi_select.multi_select.first().unwrap().color,
-            crate::others::select::SelectColor::Orange
+            Some(crate::others::select::SelectColor::Orange)
         );
 
         assert_eq!(
             multi_select.multi_select.get(1).unwrap().id,
-            ("f22b05c9-0225-4dee-b25b-db7e63a47e0b".to_string())
+            Some("f22b05c9-0225-4dee-b25b-db7e63a47e0b".to_string())
         );
         assert_eq!(multi_select.multi_select.get(1).unwrap().name, "CSS");
         assert_eq!(
             multi_select.multi_select.get(1).unwrap().color,
-            crate::others::select::SelectColor::Blue
+            Some(crate::others::select::SelectColor::Blue)
         );
     }
 }

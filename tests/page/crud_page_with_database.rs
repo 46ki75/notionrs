@@ -45,27 +45,6 @@ mod integration_tests {
             ),
         );
 
-        properties.insert(
-            "formula".to_string(),
-            notionrs::database::DatabaseProperty::Formula(
-                notionrs::database::DatabaseFormulaProperty::from(r#"{{notion:block_property:BtVS:00000000-0000-0000-0000-000000000000:8994905a-074a-415f-9bcf-d1f8b4fa38e4}}/2"#),
-            ),
-        );
-
-        properties.insert(
-            "Last Edited User".to_string(),
-            notionrs::database::DatabaseProperty::LastEditedBy(
-                notionrs::database::DatabaseLastEditedByProperty::default(),
-            ),
-        );
-
-        properties.insert(
-            "Last Edited Time".to_string(),
-            notionrs::database::DatabaseProperty::LastEditedTime(
-                notionrs::database::DatabaseLastEditedTimeProperty::default(),
-            ),
-        );
-
         let options = vec![
             notionrs::Select::default()
                 .color(notionrs::SelectColor::Blue)
@@ -193,6 +172,15 @@ mod integration_tests {
             notionrs::page::PageProperty::Files(notionrs::page::PageFilesProperty::from(
                 "https://example.com/file.txt",
             )),
+        );
+
+        let option = notionrs::others::select::Select::from("IT");
+
+        properties.insert(
+            "Tags".to_string(),
+            notionrs::page::PageProperty::MultiSelect(
+                notionrs::page::PageMultiSelectProperty::default().multi_select(vec![option]),
+            ),
         );
 
         println!("{}", serde_json::to_string(&properties).unwrap());

@@ -72,12 +72,12 @@ mod unit_tests {
         assert_eq!(status.id, Some("xx%7Cd".to_string()));
         assert_eq!(
             status.status.id,
-            ("4a1accbf-6716-4cf2-9034-5877581fc5f6".to_string())
+            Some("4a1accbf-6716-4cf2-9034-5877581fc5f6".to_string())
         );
         assert_eq!(status.status.name, "Not started");
         assert_eq!(
             status.status.color,
-            crate::others::select::SelectColor::Default
+            Some(crate::others::select::SelectColor::Default)
         );
     }
 }

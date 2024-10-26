@@ -130,27 +130,33 @@ mod unit_tests {
 
         assert_eq!(
             options[0].id,
-            ("034ece9a-384d-4d1f-97f7-7f685b29ae9b".to_string())
+            Some("034ece9a-384d-4d1f-97f7-7f685b29ae9b".to_string())
         );
         assert_eq!(options[0].name, "Not started");
         assert_eq!(
             options[0].color,
-            crate::others::select::SelectColor::Default
+            Some(crate::others::select::SelectColor::Default)
         );
 
         assert_eq!(
             options[1].id,
-            ("330aeafb-598c-4e1c-bc13-1148aa5963d3".to_string())
+            Some("330aeafb-598c-4e1c-bc13-1148aa5963d3".to_string())
         );
         assert_eq!(options[1].name, "In progress");
-        assert_eq!(options[1].color, crate::others::select::SelectColor::Blue);
+        assert_eq!(
+            options[1].color,
+            Some(crate::others::select::SelectColor::Blue)
+        );
 
         assert_eq!(
             options[2].id,
-            ("497e64fb-01e2-41ef-ae2d-8a87a3bb51da".to_string())
+            Some("497e64fb-01e2-41ef-ae2d-8a87a3bb51da".to_string())
         );
         assert_eq!(options[2].name, "Done");
-        assert_eq!(options[2].color, crate::others::select::SelectColor::Green);
+        assert_eq!(
+            options[2].color,
+            Some(crate::others::select::SelectColor::Green)
+        );
 
         let groups = &status.status.groups;
         assert_eq!(groups.len(), 3);
