@@ -26,7 +26,7 @@ pub struct QueryDatabaseRequestBody {
     pub(crate) filter: Option<Filter>,
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) sort: Vec<crate::database::Sort>,
+    pub(crate) sorts: Vec<crate::database::Sort>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) start_cursor: Option<String>,
@@ -144,8 +144,8 @@ impl QueryDatabaseClient {
         self
     }
 
-    pub fn sort(mut self, sort: Vec<crate::database::Sort>) -> Self {
-        self.body.sort = sort;
+    pub fn sorts(mut self, sorts: Vec<crate::database::Sort>) -> Self {
+        self.body.sorts = sorts;
         self
     }
 }
