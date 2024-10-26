@@ -21,6 +21,9 @@ pub struct SearchClient {
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SearchRequestBody {
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) query: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) filter: Option<Filter>,
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
@@ -101,6 +104,11 @@ impl SearchClient {
 
             Ok(pages)
         }
+    }
+
+    pub fn query<T: AsRef<str>>(mut self, query: T) -> Self {
+        self.body.query = Some(query.as_ref().to_string());
+        self
     }
 
     /// The amount of data retrieved in one query.

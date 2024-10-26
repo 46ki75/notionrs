@@ -55,7 +55,7 @@ pub struct PageDateProperty {
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
 pub struct PageDatePropertyParameter {
     /// A date, with an optional time.
-    pub start: chrono::DateTime<chrono::FixedOffset>,
+    pub start: Option<chrono::DateTime<chrono::FixedOffset>>,
 
     /// A string representing the end of a date range.
     /// If the value is null, then the date value is not a range.
@@ -69,10 +69,10 @@ pub struct PageDatePropertyParameter {
 impl PageDateProperty {
     pub fn start(&mut self, start: chrono::DateTime<chrono::FixedOffset>) -> &mut Self {
         match &mut self.date {
-            Some(date) => date.start = start,
+            Some(date) => date.start = Some(start),
             None => {
                 self.date = Some(PageDatePropertyParameter {
-                    start,
+                    start: Some(start),
                     ..Default::default()
                 });
             }
@@ -99,7 +99,7 @@ impl From<chrono::DateTime<chrono::FixedOffset>> for PageDateProperty {
         Self {
             id: None,
             date: Some(PageDatePropertyParameter {
-                start: value,
+                start: Some(value),
                 ..Default::default()
             }),
         }
@@ -110,7 +110,7 @@ impl crate::ToPlainText for PageDateProperty {
     /// Convert PageDateProperty to a plain string
     fn to_plain_text(&self) -> String {
         if let Some(date) = &self.date {
-            date.clone().start.to_rfc3339()
+            date.to_plain_text()
         } else {
             String::new()
         }
@@ -120,7 +120,10 @@ impl crate::ToPlainText for PageDateProperty {
 impl crate::ToPlainText for PageDatePropertyParameter {
     /// Convert PageDatePropertyParameter to a plain string
     fn to_plain_text(&self) -> String {
-        self.start.clone().to_rfc3339()
+        match self.start {
+            Some(start) => start.to_rfc3339(),
+            None => String::new(),
+        }
     }
 }
 
@@ -162,7 +165,7 @@ mod unit_tests {
             Some(property) => {
                 let expected_start =
                     chrono::DateTime::parse_from_rfc3339("2024-04-04T00:00:00.000+02:00").unwrap();
-                assert_eq!(property.start, expected_start);
+                assert_eq!(property.start, Some(expected_start));
                 assert_eq!(property.end, None);
                 assert_eq!(property.time_zone, None);
             }

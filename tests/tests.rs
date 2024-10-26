@@ -4,5 +4,7 @@ mod block;
 mod database;
 #[path = "page/mod.rs"]
 mod page;
+#[path = "search.rs"]
+mod search;
 #[path = "user/mod.rs"]
 mod user;
