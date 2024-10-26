@@ -1,5 +1,7 @@
+pub mod search_database;
 pub mod search_page;
 
+pub use search_database::*;
 pub use search_page::*;
 
 use serde::{Deserialize, Serialize};

@@ -6,15 +6,15 @@ use crate::{
 };
 
 #[derive(Debug, Default)]
-pub struct SearchPageClient {
+pub struct SearchDatabaseClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
-    pub(crate) body: SearchPageRequestBody,
+    pub(crate) body: SearchDatabaseRequestBody,
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
-pub struct SearchPageRequestBody {
+pub struct SearchDatabaseRequestBody {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) query: Option<String>,
 
@@ -31,13 +31,13 @@ pub struct SearchPageRequestBody {
     pub(crate) page_size: Option<u32>,
 }
 
-impl SearchPageClient {
+impl SearchDatabaseClient {
     pub async fn send(
         mut self,
-    ) -> Result<crate::list_response::ListResponse<crate::page::PageResponse>, Error> {
+    ) -> Result<crate::list_response::ListResponse<crate::database::DatabaseResponse>, Error> {
         let url = String::from("https://api.notion.com/v1/search");
 
-        self.body.filter = Some(crate::search::SearchFilter::page());
+        self.body.filter = Some(crate::search::SearchFilter::database());
 
         let request_body = self.body.to_json().to_string();
 
@@ -60,7 +60,7 @@ impl SearchPageClient {
         let body = response.text().await?;
 
         let pages = serde_json::from_str::<
-            crate::list_response::ListResponse<crate::page::PageResponse>,
+            crate::list_response::ListResponse<crate::database::DatabaseResponse>,
         >(&body)?;
 
         Ok(pages)

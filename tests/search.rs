@@ -15,11 +15,7 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let request = client
-            .search()
-            .query("My Title")
-            .filter_page()
-            .sort_timestamp_asc();
+        let request = client.search().query("My Title").sort_timestamp_asc();
 
         let response = request.send().await?;
 
@@ -41,7 +37,32 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let request = client.search().query("page").sort_timestamp_asc();
+        let request = client.search_page().query("title").sort_timestamp_asc();
+
+        let response = request.send().await?;
+
+        println!("{}", response.to_json());
+
+        Ok(())
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // search_database
+    //
+    // # --------------------------------------------------------------------------------
+
+    #[tokio::test]
+    #[serial_test::serial]
+    async fn search_database() -> Result<(), notionrs::error::Error> {
+        dotenvy::dotenv().ok();
+
+        let client = notionrs::client::Client::new();
+
+        let request = client
+            .search_database()
+            .query("database")
+            .sort_timestamp_asc();
 
         let response = request.send().await?;
 

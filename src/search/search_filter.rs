@@ -42,7 +42,7 @@ impl SearchFilter {
     pub fn database() -> Self {
         SearchFilter {
             value: SearchFilterType::Database,
-            property: String::from("database"),
+            property: String::from("object"),
         }
     }
 }
