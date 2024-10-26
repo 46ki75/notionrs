@@ -174,6 +174,13 @@ mod integration_tests {
             )),
         );
 
+        properties.insert(
+            "Date".to_string(),
+            notionrs::page::PageProperty::Date(notionrs::page::PageDateProperty::from(
+                chrono::DateTime::parse_from_rfc3339("2024-10-26T09:03:00.000Z").unwrap(),
+            )),
+        );
+
         println!("{}", serde_json::to_string(&properties).unwrap());
 
         let request = client

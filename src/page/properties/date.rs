@@ -55,11 +55,11 @@ pub struct PageDateProperty {
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
 pub struct PageDatePropertyParameter {
     /// A date, with an optional time.
-    pub start: chrono::DateTime<chrono::Utc>,
+    pub start: chrono::DateTime<chrono::FixedOffset>,
 
     /// A string representing the end of a date range.
     /// If the value is null, then the date value is not a range.
-    pub end: Option<chrono::DateTime<chrono::Utc>>,
+    pub end: Option<chrono::DateTime<chrono::FixedOffset>>,
 
     /// Always `null`. The time zone is already included in the formats of start and end times.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -67,7 +67,7 @@ pub struct PageDatePropertyParameter {
 }
 
 impl PageDateProperty {
-    pub fn start(&mut self, start: chrono::DateTime<chrono::Utc>) -> &mut Self {
+    pub fn start(&mut self, start: chrono::DateTime<chrono::FixedOffset>) -> &mut Self {
         match &mut self.date {
             Some(date) => date.start = start,
             None => {
@@ -80,7 +80,7 @@ impl PageDateProperty {
         self
     }
 
-    pub fn end(&mut self, end: chrono::DateTime<chrono::Utc>) -> &mut Self {
+    pub fn end(&mut self, end: chrono::DateTime<chrono::FixedOffset>) -> &mut Self {
         match &mut self.date {
             Some(date) => date.end = Some(end),
             None => {
@@ -91,6 +91,18 @@ impl PageDateProperty {
             }
         }
         self
+    }
+}
+
+impl From<chrono::DateTime<chrono::FixedOffset>> for PageDateProperty {
+    fn from(value: chrono::DateTime<chrono::FixedOffset>) -> Self {
+        Self {
+            id: None,
+            date: Some(PageDatePropertyParameter {
+                start: value,
+                ..Default::default()
+            }),
+        }
     }
 }
 
