@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     error::{api_error::ApiError, Error},
-    filter::Filter,
     list_response::ListResponse,
     prelude::ToJson,
 };
@@ -21,10 +20,10 @@ pub struct SearchRequestBody {
     pub(crate) query: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) filter: Option<Filter>,
+    pub(crate) filter: Option<crate::search::SearchFilter>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) sorts: Vec<crate::database::Sort>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) sort: Option<crate::search::SearchSort>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) start_cursor: Option<String>,
@@ -84,13 +83,33 @@ impl SearchClient {
         self
     }
 
-    pub fn filter(mut self, filter: Filter) -> Self {
+    pub fn sort_timestamp_asc(self) -> Self {
+        self.sort(crate::search::SearchSort::asc())
+    }
+
+    pub fn sort_timestamp_desc(self) -> Self {
+        self.sort(crate::search::SearchSort::desc())
+    }
+
+    /// Restricts search results to only database types.
+    /// It is recommended to use the search_database method, which returns results that are not in an enum format.
+    pub fn filter_database(self) -> Self {
+        self.filter(crate::search::SearchFilter::database())
+    }
+
+    /// Restricts search results to only page types.
+    /// It is recommended to use the search_page method, which returns results that are not in an enum format.
+    pub fn filter_page(self) -> Self {
+        self.filter(crate::search::SearchFilter::page())
+    }
+
+    fn filter(mut self, filter: crate::search::SearchFilter) -> Self {
         self.body.filter = Some(filter);
         self
     }
 
-    pub fn sorts(mut self, sorts: Vec<crate::database::Sort>) -> Self {
-        self.body.sorts = sorts;
+    fn sort(mut self, sort: crate::search::SearchSort) -> Self {
+        self.body.sort = Some(sort);
         self
     }
 }
