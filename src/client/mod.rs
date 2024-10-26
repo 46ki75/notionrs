@@ -246,4 +246,11 @@ impl Client {
             ..Default::default()
         }
     }
+
+    pub fn search_page(&self) -> crate::client::search::SearchPageClient {
+        crate::client::search::SearchPageClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
 }

@@ -27,4 +27,26 @@ mod integration_tests {
 
         Ok(())
     }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // search_page
+    //
+    // # --------------------------------------------------------------------------------
+
+    #[tokio::test]
+    #[serial_test::serial]
+    async fn search_page() -> Result<(), notionrs::error::Error> {
+        dotenvy::dotenv().ok();
+
+        let client = notionrs::client::Client::new();
+
+        let request = client.search().query("page").sort_timestamp_asc();
+
+        let response = request.send().await?;
+
+        println!("{}", response.to_json());
+
+        Ok(())
+    }
 }
