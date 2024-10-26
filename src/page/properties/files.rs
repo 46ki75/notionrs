@@ -31,7 +31,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Default)]
 pub struct PageFilesProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -41,6 +41,29 @@ pub struct PageFilesProperty {
     /// An array of objects containing information
     /// about the [files](https://developers.notion.com/reference/file-object).
     pub files: Vec<crate::others::file::File>,
+}
+
+impl PageFilesProperty {
+    pub fn files(mut self, files: Vec<crate::others::file::File>) -> Self {
+        self.files = files;
+        self
+    }
+}
+
+impl<T> From<T> for PageFilesProperty
+where
+    T: AsRef<str>,
+{
+    fn from(value: T) -> Self {
+        let file = crate::File::new().url(value.as_ref()).name(value.as_ref());
+        Self::default().files(vec![file])
+    }
+}
+
+impl From<crate::File> for PageFilesProperty {
+    fn from(value: crate::File) -> Self {
+        Self::default().files(vec![value])
+    }
 }
 
 // # --------------------------------------------------------------------------------

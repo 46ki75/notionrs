@@ -188,6 +188,13 @@ mod integration_tests {
             )),
         );
 
+        properties.insert(
+            "Files & Media".to_string(),
+            notionrs::page::PageProperty::Files(notionrs::page::PageFilesProperty::from(
+                "https://example.com/file.txt",
+            )),
+        );
+
         println!("{}", serde_json::to_string(&properties).unwrap());
 
         let request = client
