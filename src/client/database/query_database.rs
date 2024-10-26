@@ -8,7 +8,7 @@ use crate::{
     prelude::ToJson,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct QueryDatabaseClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -20,13 +20,14 @@ pub struct QueryDatabaseClient {
     pub(crate) fetch_all: bool,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct QueryDatabaseRequestBody {
-    // TODO: implement filter
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) filter: Option<Filter>,
 
-    // TODO: implement sort
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) sort: Vec<crate::database::Sort>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) start_cursor: Option<String>,
 
@@ -140,6 +141,11 @@ impl QueryDatabaseClient {
 
     pub fn filter(mut self, filter: Filter) -> Self {
         self.body.filter = Some(filter);
+        self
+    }
+
+    pub fn sort(mut self, sort: Vec<crate::database::Sort>) -> Self {
+        self.body.sort = sort;
         self
     }
 }

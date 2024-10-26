@@ -146,13 +146,7 @@ impl Client {
     pub fn query_database(&self) -> crate::client::database::query_database::QueryDatabaseClient {
         crate::client::database::query_database::QueryDatabaseClient {
             reqwest_client: self.reqwest_client.clone(),
-            database_id: None,
-            body: crate::client::database::query_database::QueryDatabaseRequestBody {
-                filter: None,
-                start_cursor: None,
-                page_size: None,
-            },
-            fetch_all: false,
+            ..Default::default()
         }
     }
 
