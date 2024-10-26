@@ -24,7 +24,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Default)]
 pub struct PageSelectProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -33,6 +33,23 @@ pub struct PageSelectProperty {
 
     /// Select object (optional)
     pub select: Option<crate::others::select::Select>,
+}
+
+impl PageSelectProperty {
+    pub fn select(mut self, select: crate::others::select::Select) -> Self {
+        self.select = Some(select);
+        self
+    }
+}
+
+impl<T> From<T> for PageSelectProperty
+where
+    T: AsRef<str>,
+{
+    fn from(value: T) -> Self {
+        let select = crate::others::select::Select::from(value);
+        Self::default().select(select)
+    }
 }
 
 // # --------------------------------------------------------------------------------

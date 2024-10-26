@@ -195,6 +195,11 @@ mod integration_tests {
             ),
         );
 
+        properties.insert(
+            "Select".to_string(),
+            notionrs::page::PageProperty::Select(notionrs::page::PageSelectProperty::from("IT")),
+        );
+
         println!("{}", serde_json::to_string(&properties).unwrap());
 
         let request = client
