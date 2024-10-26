@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::ToPlainText;
+
 /// <https://developers.notion.com/reference/page-property-values#rich-text>
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
@@ -42,10 +44,39 @@ use serde::{Deserialize, Serialize};
 pub struct PageRichTextProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
 
     /// An array of [rich text objects](https://developers.notion.com/reference/rich-text)
     pub rich_text: Vec<crate::others::rich_text::RichText>,
+}
+
+impl<T> From<T> for PageRichTextProperty
+where
+    T: AsRef<str>,
+{
+    fn from(value: T) -> Self {
+        Self {
+            id: None,
+            rich_text: vec![crate::RichText::from(value)],
+        }
+    }
+}
+
+impl From<crate::RichText> for PageRichTextProperty {
+    fn from(rich_text: crate::RichText) -> Self {
+        Self {
+            id: None,
+            rich_text: vec![rich_text],
+        }
+    }
+}
+
+impl std::fmt::Display for PageRichTextProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let plain_text = self.rich_text.to_plain_text();
+        write!(f, "{}", plain_text)
+    }
 }
 
 // # --------------------------------------------------------------------------------

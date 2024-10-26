@@ -25,7 +25,36 @@ mod integration_tests {
             )),
         );
 
-        let request = client.create_page().properties(properties).page_id(page_id);
+        let request = client
+            .create_page()
+            .properties(properties)
+            .page_id(page_id)
+            .icon(notionrs::Icon::Emoji(notionrs::Emoji::from('🚧')))
+            .cover(notionrs::File::External(notionrs::ExternalFile::from(
+                "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
+            )));
+
+        let response = request.send().await?;
+
+        // # --------------------------------------------------------------------------------
+        //
+        // update_page
+        //
+        // # --------------------------------------------------------------------------------
+
+        let mut properties = std::collections::HashMap::new();
+
+        properties.insert(
+            "title".to_string(),
+            notionrs::page::PageProperty::Title(notionrs::page::PageTitleProperty::from(
+                "My Page Title (Changed)",
+            )),
+        );
+
+        let request = client
+            .create_page()
+            .properties(properties)
+            .page_id(response.id);
 
         let response = request.send().await?;
 

@@ -24,10 +24,20 @@ use serde::{Deserialize, Serialize};
 pub struct PageCheckboxProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
 
     /// Whether the checkbox is checked (`true`) or unchecked (`false`).
     pub checkbox: bool,
+}
+
+impl From<bool> for PageCheckboxProperty {
+    fn from(value: bool) -> Self {
+        Self {
+            id: None,
+            checkbox: value,
+        }
+    }
 }
 
 // # --------------------------------------------------------------------------------

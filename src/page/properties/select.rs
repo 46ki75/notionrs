@@ -24,14 +24,32 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Default)]
 pub struct PageSelectProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
 
     /// Select object (optional)
     pub select: Option<crate::others::select::Select>,
+}
+
+impl PageSelectProperty {
+    pub fn select(mut self, select: crate::others::select::Select) -> Self {
+        self.select = Some(select);
+        self
+    }
+}
+
+impl<T> From<T> for PageSelectProperty
+where
+    T: AsRef<str>,
+{
+    fn from(value: T) -> Self {
+        let select = crate::others::select::Select::from(value);
+        Self::default().select(select)
+    }
 }
 
 // # --------------------------------------------------------------------------------
@@ -71,12 +89,12 @@ mod unit_tests {
         assert_eq!(select.id, Some("chOy".to_string()));
         assert_eq!(
             select.select.as_ref().unwrap().id,
-            ("eede87ce-52db-4b16-9931-2bc40687d697".to_string())
+            Some("eede87ce-52db-4b16-9931-2bc40687d697".to_string())
         );
         assert_eq!(select.select.as_ref().unwrap().name, "TODO");
         assert_eq!(
             select.select.as_ref().unwrap().color,
-            crate::others::select::SelectColor::Default
+            Some(crate::others::select::SelectColor::Default)
         );
     }
 }

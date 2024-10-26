@@ -2,9 +2,13 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct Select {
-    pub id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
+
     pub name: String,
-    pub color: SelectColor,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub color: Option<SelectColor>,
 }
 
 impl Select {
@@ -12,7 +16,7 @@ impl Select {
     where
         T: AsRef<str>,
     {
-        self.id = id.as_ref().to_string();
+        self.id = Some(id.as_ref().to_string());
         self
     }
 
@@ -25,8 +29,17 @@ impl Select {
     }
 
     pub fn color(mut self, color: SelectColor) -> Self {
-        self.color = color;
+        self.color = Some(color);
         self
+    }
+}
+
+impl<T> From<T> for Select
+where
+    T: AsRef<str>,
+{
+    fn from(value: T) -> Self {
+        Self::default().name(value)
     }
 }
 

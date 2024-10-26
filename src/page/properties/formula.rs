@@ -32,6 +32,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageFormulaProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
 
     /// Formula property value objects represent the result of evaluating
@@ -69,7 +70,7 @@ pub struct FormulaBoolean {
 #[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 pub struct FormulaDate {
     /// Calculated value of the database property
-    pub date: Option<chrono::DateTime<chrono::Utc>>,
+    pub date: Option<chrono::DateTime<chrono::FixedOffset>>,
 }
 
 /// ```json

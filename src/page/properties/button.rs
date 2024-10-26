@@ -22,6 +22,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageButtonProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
 
     /// Always `"button"`
