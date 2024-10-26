@@ -28,14 +28,14 @@ impl SearchSort {
     pub fn asc() -> Self {
         SearchSort {
             direction: SearchSortDirection::Ascending,
-            timestamp: String::from("timestamp"),
+            timestamp: String::from("last_edited_time"),
         }
     }
 
     pub fn desc() -> Self {
         SearchSort {
             direction: SearchSortDirection::Descending,
-            timestamp: String::from("timestamp"),
+            timestamp: String::from("last_edited_time"),
         }
     }
 }

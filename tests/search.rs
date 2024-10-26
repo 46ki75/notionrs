@@ -15,7 +15,11 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let request = client.search().query("My Title");
+        let request = client
+            .search()
+            .query("My Title")
+            .filter_page()
+            .sort_timestamp_asc();
 
         let response = request.send().await?;
 
