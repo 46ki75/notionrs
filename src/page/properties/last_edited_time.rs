@@ -28,7 +28,7 @@ pub struct PageLastEditedTimeProperty {
     pub id: Option<String>,
 
     /// The date and time that the page was last edited.
-    pub last_edited_time: chrono::DateTime<chrono::Utc>,
+    pub last_edited_time: chrono::DateTime<chrono::FixedOffset>,
 }
 
 // # --------------------------------------------------------------------------------

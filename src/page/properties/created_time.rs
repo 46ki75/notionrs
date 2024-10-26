@@ -30,7 +30,7 @@ pub struct PageCreatedTimeProperty {
 
     /// The date and time that the page was created.
     ///The created_time value can’t be updated.
-    pub created_time: chrono::DateTime<chrono::Utc>,
+    pub created_time: chrono::DateTime<chrono::FixedOffset>,
 }
 
 // # --------------------------------------------------------------------------------

@@ -70,7 +70,7 @@ pub struct FormulaBoolean {
 #[derive(Debug, Deserialize, Serialize, Clone, Copy)]
 pub struct FormulaDate {
     /// Calculated value of the database property
-    pub date: Option<chrono::DateTime<chrono::Utc>>,
+    pub date: Option<chrono::DateTime<chrono::FixedOffset>>,
 }
 
 /// ```json

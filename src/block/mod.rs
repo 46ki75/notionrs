@@ -84,12 +84,12 @@ pub struct BlockResponse {
     /// This value is provided in ISO 8601 format.
     /// To convert it back to the original string,
     /// use the `.to_rfc3339()` method from `chrono`.
-    pub created_time: chrono::DateTime<chrono::Utc>,
+    pub created_time: chrono::DateTime<chrono::FixedOffset>,
 
     /// This value is provided in ISO 8601 format.
     /// To convert it back to the original string,
     /// use the `.to_rfc3339()` method from `chrono`.
-    pub last_edited_time: chrono::DateTime<chrono::Utc>,
+    pub last_edited_time: chrono::DateTime<chrono::FixedOffset>,
 
     pub created_by: crate::user::User,
 
