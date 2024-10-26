@@ -20,7 +20,7 @@ use serde::{Deserialize, Serialize};
 ///     }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Default)]
 pub struct PageNumberProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -29,6 +29,22 @@ pub struct PageNumberProperty {
 
     /// A number representing some value.
     pub number: Option<f64>,
+}
+
+impl PageNumberProperty {
+    pub fn number(mut self, number: f64) -> Self {
+        self.number = Some(number);
+        self
+    }
+}
+
+impl<T> From<T> for PageNumberProperty
+where
+    T: Into<f64>,
+{
+    fn from(value: T) -> Self {
+        Self::default().number(value.into())
+    }
 }
 
 // # --------------------------------------------------------------------------------
