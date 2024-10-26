@@ -25,20 +25,6 @@ mod integration_tests {
         );
 
         properties.insert(
-            "Created User".to_string(),
-            notionrs::database::DatabaseProperty::CreatedBy(
-                notionrs::database::DatabaseCreatedByProperty::default(),
-            ),
-        );
-
-        properties.insert(
-            "Created Time".to_string(),
-            notionrs::database::DatabaseProperty::CreatedTime(
-                notionrs::database::DatabaseCreatedTimeProperty::default(),
-            ),
-        );
-
-        properties.insert(
             "Date".to_string(),
             notionrs::database::DatabaseProperty::Date(
                 notionrs::database::DatabaseDateProperty::default(),
@@ -171,6 +157,13 @@ mod integration_tests {
             "Title".to_string(),
             notionrs::page::PageProperty::Title(notionrs::page::PageTitleProperty::from(
                 "My Page Title",
+            )),
+        );
+
+        properties.insert(
+            "My Checkbox".to_string(),
+            notionrs::page::PageProperty::Checkbox(notionrs::page::PageCheckboxProperty::from(
+                true,
             )),
         );
 

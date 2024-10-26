@@ -62,6 +62,7 @@ pub struct PageDatePropertyParameter {
     end: Option<String>,
 
     /// Always `null`. The time zone is already included in the formats of start and end times.
+    #[serde(skip_serializing_if = "Option::is_none")]
     time_zone: Option<String>,
 }
 
