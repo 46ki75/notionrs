@@ -28,6 +28,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageStatusProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
 
     /// Select object
@@ -71,12 +72,12 @@ mod unit_tests {
         assert_eq!(status.id, Some("xx%7Cd".to_string()));
         assert_eq!(
             status.status.id,
-            ("4a1accbf-6716-4cf2-9034-5877581fc5f6".to_string())
+            Some("4a1accbf-6716-4cf2-9034-5877581fc5f6".to_string())
         );
         assert_eq!(status.status.name, "Not started");
         assert_eq!(
             status.status.color,
-            crate::others::select::SelectColor::Default
+            Some(crate::others::select::SelectColor::Default)
         );
     }
 }

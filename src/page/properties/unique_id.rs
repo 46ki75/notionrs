@@ -27,6 +27,7 @@ use serde::{Deserialize, Serialize};
 pub struct PageUniqueIdProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
+    #[serde(skip_serializing)]
     pub id: Option<String>,
 
     /// A unique ID assigned through auto increment

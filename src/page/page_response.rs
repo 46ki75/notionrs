@@ -9,8 +9,8 @@ use crate::{
 #[derive(Deserialize, Serialize, Debug)]
 pub struct PageResponse {
     pub id: String,
-    pub created_time: chrono::DateTime<chrono::Utc>,
-    pub last_edited_time: chrono::DateTime<chrono::Utc>,
+    pub created_time: chrono::DateTime<chrono::FixedOffset>,
+    pub last_edited_time: chrono::DateTime<chrono::FixedOffset>,
     pub created_by: User,
     pub last_edited_by: User,
     pub cover: Option<File>,
