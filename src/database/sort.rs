@@ -42,3 +42,42 @@ impl Sort {
         }
     }
 }
+
+// # --------------------------------------------------------------------------------
+//
+// unit test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod unit_tests {
+
+    use super::*;
+    use serde_json;
+
+    #[test]
+    fn serialize_database_sort() {
+        let sort = Sort::asc("My Property");
+
+        // Expected JSON output
+        let expected_json = r#"{
+            "property": "My Property",
+            "direction": "ascending"
+        }"#;
+
+        // Serialize the Sort struct to JSON
+        let serialized = serde_json::to_string(&sort).expect("Failed to serialize Sort");
+
+        // Parse the expected JSON to ensure formatting matches
+        let expected: serde_json::Value =
+            serde_json::from_str(expected_json).expect("Failed to parse expected JSON");
+        let serialized_value: serde_json::Value =
+            serde_json::from_str(&serialized).expect("Failed to parse serialized JSON");
+
+        // Compare the serialized value with the expected value
+        assert_eq!(
+            serialized_value, expected,
+            "Serialized JSON does not match the expected JSON"
+        );
+    }
+}
