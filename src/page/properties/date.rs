@@ -55,11 +55,11 @@ pub struct PageDateProperty {
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
 pub struct PageDatePropertyParameter {
     /// A date, with an optional time.
-    start: String,
+    start: chrono::DateTime<chrono::Utc>,
 
     /// A string representing the end of a date range.
     /// If the value is null, then the date value is not a range.
-    end: Option<String>,
+    end: Option<chrono::DateTime<chrono::Utc>>,
 
     /// Always `null`. The time zone is already included in the formats of start and end times.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -70,7 +70,7 @@ impl crate::ToPlainText for PageDateProperty {
     /// Convert PageDateProperty to a plain string
     fn to_plain_text(&self) -> String {
         if let Some(date) = &self.date {
-            date.clone().start
+            date.clone().start.to_rfc3339()
         } else {
             String::new()
         }
@@ -80,7 +80,7 @@ impl crate::ToPlainText for PageDateProperty {
 impl crate::ToPlainText for PageDatePropertyParameter {
     /// Convert PageDatePropertyParameter to a plain string
     fn to_plain_text(&self) -> String {
-        self.start.clone()
+        self.start.clone().to_rfc3339()
     }
 }
 
@@ -120,7 +120,9 @@ mod unit_tests {
 
         match &date.date {
             Some(property) => {
-                assert_eq!(property.start, "2024-04-04T00:00:00.000+02:00");
+                let expected_start =
+                    chrono::DateTime::parse_from_rfc3339("2024-04-04T00:00:00.000+02:00").unwrap();
+                assert_eq!(property.start, expected_start);
                 assert_eq!(property.end, None);
                 assert_eq!(property.time_zone, None);
             }
