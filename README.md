@@ -38,6 +38,8 @@ As part of the alpha release, the following features are available. Please note 
   - List all users
   - Retrieve a user
   - Retrieve your token's bot user
+- Search
+  - Search by title
 
 ## Basic Usage
 
