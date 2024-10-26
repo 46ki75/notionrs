@@ -40,7 +40,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
 pub struct PageDateProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -52,18 +52,46 @@ pub struct PageDateProperty {
 }
 
 /// If the value is blank, it will be an empty object.
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
 pub struct PageDatePropertyParameter {
     /// A date, with an optional time.
-    start: chrono::DateTime<chrono::Utc>,
+    pub start: chrono::DateTime<chrono::Utc>,
 
     /// A string representing the end of a date range.
     /// If the value is null, then the date value is not a range.
-    end: Option<chrono::DateTime<chrono::Utc>>,
+    pub end: Option<chrono::DateTime<chrono::Utc>>,
 
     /// Always `null`. The time zone is already included in the formats of start and end times.
     #[serde(skip_serializing_if = "Option::is_none")]
     time_zone: Option<String>,
+}
+
+impl PageDateProperty {
+    pub fn start(&mut self, start: chrono::DateTime<chrono::Utc>) -> &mut Self {
+        match &mut self.date {
+            Some(date) => date.start = start,
+            None => {
+                self.date = Some(PageDatePropertyParameter {
+                    start,
+                    ..Default::default()
+                });
+            }
+        }
+        self
+    }
+
+    pub fn end(&mut self, end: chrono::DateTime<chrono::Utc>) -> &mut Self {
+        match &mut self.date {
+            Some(date) => date.end = Some(end),
+            None => {
+                self.date = Some(PageDatePropertyParameter {
+                    end: Some(end),
+                    ..Default::default()
+                });
+            }
+        }
+        self
+    }
 }
 
 impl crate::ToPlainText for PageDateProperty {
