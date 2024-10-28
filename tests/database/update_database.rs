@@ -4,7 +4,7 @@ mod integration_tests {
     async fn create_database() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
 
-        let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
+        let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::Client::new();
 

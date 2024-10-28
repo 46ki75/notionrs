@@ -12,7 +12,7 @@ updates:
     target-branch: "develop"
 
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/docs" # Location of package manifests
+    directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
     target-branch: "develop"

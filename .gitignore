@@ -1,3 +1,9 @@
 /target
 .env
+.env.*
 src/bin/*
+
+node_modules/
+
+.vitepress/
+!.vitepress/config.mts

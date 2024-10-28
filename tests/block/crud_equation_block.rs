@@ -3,8 +3,10 @@ mod integration_tests {
     #[tokio::test]
     async fn crud_equation_block() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
+        dotenvy::from_path(std::path::Path::new(".env.test"))
+            .expect("Failed to load .env.test file");
 
-        let block_id = std::env::var("NOTION_PAGE_ID").unwrap();
+        let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
         let client = notionrs::client::Client::new();
 

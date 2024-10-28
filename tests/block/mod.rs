@@ -15,4 +15,3 @@ mod crud_synced_block;
 mod crud_table_block;
 mod crud_to_do_block;
 mod crud_toggle_block;
-mod get_block_children;

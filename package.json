@@ -1,0 +1,28 @@
+{
+    "type": "module",
+    "workspaces": [
+        "docs/",
+        "scripts/"
+    ],
+    "scripts": {
+        "docs:dev": "vitepress dev docs",
+        "docs:build": "vitepress build docs",
+        "docs:preview": "vitepress preview docs",
+        "test:prepare": "tsx ./scripts/src/prepare.ts",
+        "test:cleanup": "tsx ./scripts/src/cleanup.ts",
+        "pretest": "npm run test:prepare",
+        "test": "RUST_TEST_THREADS=1 cargo test",
+        "posttest": "npm run test:cleanup"
+    },
+    "devDependencies": {
+        "@types/node": "^22.8.1",
+        "dotenv": "^16.4.5",
+        "prettier": "^3.3.3",
+        "tsx": "^4.19.2",
+        "typescript": "^5.6.3",
+        "vitepress": "^1.4.1"
+    },
+    "dependencies": {
+        "@notionhq/client": "^2.2.15"
+    }
+}
