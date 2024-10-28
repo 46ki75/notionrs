@@ -467,6 +467,6 @@ mod unit_tests {
         let result: ListResponse<SearchResultItem> = serde_json::from_str(json_data).unwrap();
         assert_eq!(result.object, "list");
         assert!(matches!(result.results[0], SearchResultItem::Page(_)));
-        assert!(matches!(result.results[0], SearchResultItem::Database(_)));
+        assert!(matches!(result.results[1], SearchResultItem::Database(_)));
     }
 }
