@@ -248,18 +248,6 @@ impl std::fmt::Display for RichText {
     }
 }
 
-impl crate::ToPlainText for Vec<RichText> {
-    fn to_plain_text(&self) -> String {
-        self.iter()
-            .map(|rt| match rt {
-                RichText::Text { plain_text, .. } => plain_text.clone(),
-                RichText::Mention { plain_text, .. } => plain_text.clone(),
-                RichText::Equation { plain_text, .. } => plain_text.clone(),
-            })
-            .collect::<String>()
-    }
-}
-
 impl<T> From<T> for RichText
 where
     T: AsRef<str>,
