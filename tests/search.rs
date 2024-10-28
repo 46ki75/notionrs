@@ -15,7 +15,7 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let request = client.search().query("My Title").sort_timestamp_asc();
+        let request = client.search().query("").sort_timestamp_asc();
 
         let response = request.send().await?;
 
@@ -37,7 +37,7 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let request = client.search_page().query("title").sort_timestamp_asc();
+        let request = client.search_page().query("").sort_timestamp_asc();
 
         let response = request.send().await?;
 
