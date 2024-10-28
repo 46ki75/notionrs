@@ -29,6 +29,8 @@ const sandbox = await client.pages.create({
   }
 })
 
+const { id: NOTION_IT_ROOT_ID } = sandbox
+
 // # --------------------------------------------------------------------------------
 //
 // block
@@ -140,10 +142,11 @@ const { id: NOTION_IT_CRUD_PAGE_ID } = await client.pages.create({
 
 // save
 
-const data = `NOTION_IT_CRUD_BLOCK_PAGE_ID=${NOTION_IT_CRUD_BLOCK_PAGE_ID}
-NOTION_IT_DELETE_DATABASE_ID=${NOTION_IT_DELETE_DATABASE_ID}
-NOTION_IT_DATABASE_ID=${NOTION_IT_DATABASE_ID}
-NOTION_IT_CRUD_PAGE_ID=${NOTION_IT_CRUD_PAGE_ID}
+const data = `NOTION_IT_CRUD_BLOCK_PAGE_ID="${NOTION_IT_CRUD_BLOCK_PAGE_ID}"
+NOTION_IT_DELETE_DATABASE_ID="${NOTION_IT_DELETE_DATABASE_ID}"
+NOTION_IT_DATABASE_ID="${NOTION_IT_DATABASE_ID}"
+NOTION_IT_CRUD_PAGE_ID="${NOTION_IT_CRUD_PAGE_ID}"
+NOTION_IT_ROOT_ID="${NOTION_IT_ROOT_ID}"
 `
 
 writeFileSync('./.env.test', data, 'utf-8')
