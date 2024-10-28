@@ -11,7 +11,7 @@
         "test:prepare": "tsx ./scripts/src/prepare.ts",
         "test:cleanup": "tsx ./scripts/src/cleanup.ts",
         "pretest": "npm run test:prepare",
-        "test": "sleep 3",
+        "test": "RUST_TEST_THREADS=1 cargo test",
         "posttest": "npm run test:cleanup"
     },
     "devDependencies": {
