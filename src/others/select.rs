@@ -43,6 +43,12 @@ where
     }
 }
 
+impl std::fmt::Display for Select {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.name)
+    }
+}
+
 /// <https://developers.notion.com/reference/property-object#status>
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct SelectGroup {

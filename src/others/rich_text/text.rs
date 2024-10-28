@@ -26,10 +26,9 @@ impl Text {
     }
 }
 
-impl crate::ToPlainText for Text {
-    /// Convert Text to a plain string
-    fn to_plain_text(&self) -> String {
-        self.content.clone()
+impl std::fmt::Display for Text {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.content)
     }
 }
 

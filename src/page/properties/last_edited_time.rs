@@ -31,6 +31,13 @@ pub struct PageLastEditedTimeProperty {
     pub last_edited_time: chrono::DateTime<chrono::FixedOffset>,
 }
 
+impl std::fmt::Display for PageLastEditedTimeProperty {
+    /// Display
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.last_edited_time.to_rfc3339())
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

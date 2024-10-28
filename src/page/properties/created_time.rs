@@ -29,8 +29,15 @@ pub struct PageCreatedTimeProperty {
     pub id: Option<String>,
 
     /// The date and time that the page was created.
-    ///The created_time value can’t be updated.
+    /// The created_time value can’t be updated.
     pub created_time: chrono::DateTime<chrono::FixedOffset>,
+}
+
+impl std::fmt::Display for PageCreatedTimeProperty {
+    /// display the created time in RFC3339 format
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.created_time.to_rfc3339())
+    }
 }
 
 // # --------------------------------------------------------------------------------

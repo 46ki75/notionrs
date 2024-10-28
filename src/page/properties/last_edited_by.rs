@@ -42,6 +42,12 @@ pub struct PageLastEditedByProperty {
     pub last_edited_by: crate::user::User,
 }
 
+impl std::fmt::Display for PageLastEditedByProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.last_edited_by)
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

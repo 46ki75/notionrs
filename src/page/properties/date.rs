@@ -136,23 +136,21 @@ impl From<chrono::DateTime<chrono::FixedOffset>> for PageDateProperty {
     }
 }
 
-impl crate::ToPlainText for PageDateProperty {
-    /// Convert PageDateProperty to a plain string
-    fn to_plain_text(&self) -> String {
+impl std::fmt::Display for PageDateProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(date) = &self.date {
-            date.to_plain_text()
+            write!(f, "{}", date)
         } else {
-            String::new()
+            write!(f, "")
         }
     }
 }
 
-impl crate::ToPlainText for PageDatePropertyParameter {
-    /// Convert PageDatePropertyParameter to a plain string
-    fn to_plain_text(&self) -> String {
+impl std::fmt::Display for PageDatePropertyParameter {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self.start {
-            Some(start) => start.to_rfc3339(),
-            None => String::new(),
+            Some(start) => write!(f, "{}", start.to_rfc3339()),
+            None => write!(f, ""),
         }
     }
 }

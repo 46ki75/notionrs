@@ -26,6 +26,19 @@ impl TableRowBlock {
     }
 }
 
+impl std::fmt::Display for TableRowBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.cells
+                .iter()
+                .map(|t| { t.iter().map(|t| t.to_string()).collect::<String>() })
+                .collect::<String>()
+        )
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

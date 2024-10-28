@@ -13,12 +13,12 @@ pub enum User {
     Person(person::Person),
 }
 
-impl crate::ToPlainText for User {
-    /// Convert Bot to a plain string
-    fn to_plain_text(&self) -> String {
+impl std::fmt::Display for User {
+    /// Display the name if it exists, otherwise display the id.
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Bot(bot) => bot.to_plain_text(),
-            Self::Person(person) => person.to_plain_text(),
+            Self::Bot(bot) => write!(f, "{}", bot),
+            Self::Person(person) => write!(f, "{}", person),
         }
     }
 }

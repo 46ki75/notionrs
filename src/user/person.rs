@@ -30,13 +30,13 @@ pub struct PersonDetail {
     pub email: Option<String>,
 }
 
-impl crate::ToPlainText for Person {
-    /// Convert Person to a plain string
-    fn to_plain_text(&self) -> String {
+impl std::fmt::Display for Person {
+    /// Display the name if it exists, otherwise display the id.
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(name) = &self.name {
-            name.clone()
+            write!(f, "{}", name)
         } else {
-            self.id.clone()
+            write!(f, "{}", self.id)
         }
     }
 }

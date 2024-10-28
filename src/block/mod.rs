@@ -205,6 +205,44 @@ pub enum Block {
     Unknown(serde_json::Value),
 }
 
+impl std::fmt::Display for Block {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            Block::Audio { audio } => write!(f, "{}", audio),
+            Block::Bookmark { bookmark } => write!(f, "{}", bookmark),
+            Block::Breadcrumb { breadcrumb } => write!(f, "{:?}", breadcrumb),
+            Block::BulletedListItem { bulleted_list_item } => write!(f, "{}", bulleted_list_item),
+            Block::Callout { callout } => write!(f, "{}", callout),
+            Block::ChildDatabase { child_database } => write!(f, "{}", child_database),
+            Block::ChildPage { child_page } => write!(f, "{}", child_page),
+            Block::Code { code } => write!(f, "{}", code),
+            Block::ColumnList { column_list } => write!(f, "{}", column_list),
+            Block::Column { column } => write!(f, "{}", column),
+            Block::Divider { divider } => write!(f, "{:?}", divider),
+            Block::Embed { embed } => write!(f, "{}", embed),
+            Block::Equation { equation } => write!(f, "{}", equation),
+            Block::File { file } => write!(f, "{}", file),
+            Block::Heading1 { heading_1 } => write!(f, "{}", heading_1),
+            Block::Heading2 { heading_2 } => write!(f, "{}", heading_2),
+            Block::Heading3 { heading_3 } => write!(f, "{}", heading_3),
+            Block::Image { image } => write!(f, "{}", image),
+            Block::LinkPreview { link_preview } => write!(f, "{}", link_preview),
+            Block::NumberedListItem { numbered_list_item } => write!(f, "{}", numbered_list_item),
+            Block::Paragraph { paragraph } => write!(f, "{}", paragraph),
+            Block::Pdf { pdf } => write!(f, "{}", pdf),
+            Block::Quote { quote } => write!(f, "{}", quote),
+            Block::SyncedBlock { synced_block } => write!(f, "{}", synced_block),
+            Block::Table { table } => write!(f, "{}", table),
+            Block::TableRow { table_row } => write!(f, "{}", table_row),
+            Block::Template { template } => write!(f, "{}", template),
+            Block::ToDo { to_do } => write!(f, "{}", to_do),
+            Block::Toggle { toggle } => write!(f, "{}", toggle),
+            Block::Video { video } => write!(f, "{}", video),
+            Block::Unknown(value) => write!(f, "{:?}", value),
+        }
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

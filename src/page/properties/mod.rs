@@ -62,6 +62,35 @@ pub enum PageProperty {
     Url(url::PageUrlProperty),
 }
 
+impl std::fmt::Display for PageProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            PageProperty::Button(button) => write!(f, "{}", button),
+            PageProperty::Checkbox(checkbox) => write!(f, "{}", checkbox),
+            PageProperty::CreatedBy(created_by) => write!(f, "{}", created_by),
+            PageProperty::CreatedTime(created_time) => write!(f, "{}", created_time),
+            PageProperty::Date(date) => write!(f, "{}", date),
+            PageProperty::Email(email) => write!(f, "{}", email),
+            PageProperty::Files(files) => write!(f, "{}", files),
+            PageProperty::Formula(formula) => write!(f, "{}", formula),
+            PageProperty::LastEditedBy(last_edited_by) => write!(f, "{}", last_edited_by),
+            PageProperty::LastEditedTime(last_edited_time) => write!(f, "{}", last_edited_time),
+            PageProperty::MultiSelect(multi_select) => write!(f, "{}", multi_select),
+            PageProperty::Number(number) => write!(f, "{}", number),
+            PageProperty::People(people) => write!(f, "{}", people),
+            PageProperty::PhoneNumber(phone_number) => write!(f, "{}", phone_number),
+            PageProperty::Relation(relation) => write!(f, "{}", relation),
+            PageProperty::RichText(rich_text) => write!(f, "{}", rich_text),
+            PageProperty::Rollup(rollup) => write!(f, "{}", rollup),
+            PageProperty::Select(select) => write!(f, "{}", select),
+            PageProperty::Status(status) => write!(f, "{}", status),
+            PageProperty::Title(title) => write!(f, "{}", title),
+            PageProperty::UniqueId(unique_id) => write!(f, "{}", unique_id),
+            PageProperty::Url(url) => write!(f, "{}", url),
+        }
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

@@ -49,6 +49,21 @@ impl PageMultiSelectProperty {
     }
 }
 
+impl std::fmt::Display for PageMultiSelectProperty {
+    /// Display
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.multi_select
+                .iter()
+                .map(|x| x.name.clone())
+                .collect::<Vec<String>>()
+                .join(", ")
+        )
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

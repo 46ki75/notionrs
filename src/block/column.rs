@@ -20,3 +20,9 @@ impl ColumnBlock {
         self
     }
 }
+
+impl std::fmt::Display for ColumnBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "")
+    }
+}

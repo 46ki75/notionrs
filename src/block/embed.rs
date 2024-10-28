@@ -33,6 +33,12 @@ where
     }
 }
 
+impl std::fmt::Display for EmbedBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.url)
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

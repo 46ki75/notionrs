@@ -238,25 +238,13 @@ impl Default for RichText {
     }
 }
 
-impl crate::ToPlainText for RichText {
-    fn to_plain_text(&self) -> String {
+impl std::fmt::Display for RichText {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            Self::Text { plain_text, .. } => plain_text.clone(),
-            Self::Mention { plain_text, .. } => plain_text.clone(),
-            Self::Equation { plain_text, .. } => plain_text.clone(),
+            Self::Text { plain_text, .. } => write!(f, "{}", plain_text),
+            Self::Mention { plain_text, .. } => write!(f, "{}", plain_text),
+            Self::Equation { plain_text, .. } => write!(f, "{}", plain_text),
         }
-    }
-}
-
-impl crate::ToPlainText for Vec<RichText> {
-    fn to_plain_text(&self) -> String {
-        self.iter()
-            .map(|rt| match rt {
-                RichText::Text { plain_text, .. } => plain_text.clone(),
-                RichText::Mention { plain_text, .. } => plain_text.clone(),
-                RichText::Equation { plain_text, .. } => plain_text.clone(),
-            })
-            .collect::<String>()
     }
 }
 

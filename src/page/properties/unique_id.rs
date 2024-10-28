@@ -46,6 +46,21 @@ pub struct PageUniqueIdPropertyParameter {
     pub number: u64,
 }
 
+impl std::fmt::Display for PageUniqueIdProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.unique_id)
+    }
+}
+
+impl std::fmt::Display for PageUniqueIdPropertyParameter {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match &self.prefix {
+            Some(prefix) => write!(f, "{}-{}", prefix, self.number),
+            None => write!(f, "{}", self.number),
+        }
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

@@ -35,6 +35,12 @@ pub struct PageStatusProperty {
     pub status: crate::others::select::Select,
 }
 
+impl std::fmt::Display for PageStatusProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.status)
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

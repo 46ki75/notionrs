@@ -29,6 +29,12 @@ pub struct PageButtonProperty {
     pub button: std::collections::HashMap<String, String>,
 }
 
+impl std::fmt::Display for PageButtonProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "")
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

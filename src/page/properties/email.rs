@@ -62,6 +62,13 @@ where
     }
 }
 
+impl std::fmt::Display for PageEmailProperty {
+    /// display the email address
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.email.as_deref().unwrap_or(""))
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test
