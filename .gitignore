@@ -1,5 +1,6 @@
 /target
 .env
+.env.*
 src/bin/*
 
 node_modules/
