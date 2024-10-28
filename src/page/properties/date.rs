@@ -1,4 +1,5 @@
-use serde::{Deserialize, Serialize};
+use chrono::{DateTime, FixedOffset, NaiveDate, TimeZone};
+use serde::{Deserialize, Deserializer, Serialize};
 
 /// <https://developers.notion.com/reference/page-property-values#date>
 ///
@@ -55,15 +56,44 @@ pub struct PageDateProperty {
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
 pub struct PageDatePropertyParameter {
     /// A date, with an optional time.
-    pub start: Option<chrono::DateTime<chrono::FixedOffset>>,
+    #[serde(deserialize_with = "deserialize_date_or_datetime")]
+    pub start: Option<DateTime<FixedOffset>>,
 
     /// A string representing the end of a date range.
     /// If the value is null, then the date value is not a range.
-    pub end: Option<chrono::DateTime<chrono::FixedOffset>>,
+    #[serde(deserialize_with = "deserialize_date_or_datetime")]
+    pub end: Option<DateTime<FixedOffset>>,
 
     /// Always `null`. The time zone is already included in the formats of start and end times.
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_deserializing)]
     time_zone: Option<String>,
+}
+
+fn deserialize_date_or_datetime<'de, D>(
+    deserializer: D,
+) -> Result<Option<DateTime<FixedOffset>>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let date_str = Option::<String>::deserialize(deserializer)?;
+
+    if let Some(date_str) = date_str {
+        if let Ok(date) = NaiveDate::parse_from_str(&date_str, "%Y-%m-%d") {
+            return Ok(Some(
+                FixedOffset::east_opt(0).unwrap().from_utc_datetime(
+                    &date
+                        .and_hms_opt(0, 0, 0)
+                        .ok_or_else(|| serde::de::Error::custom("Invalid time"))?,
+                ),
+            ));
+        }
+        if let Ok(datetime) = DateTime::parse_from_rfc3339(&date_str) {
+            return Ok(Some(datetime));
+        }
+        return Err(serde::de::Error::custom("Invalid date or datetime format"));
+    }
+
+    Ok(None)
 }
 
 impl PageDateProperty {

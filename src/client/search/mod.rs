@@ -62,6 +62,8 @@ impl SearchClient {
 
         let body = response.text().await?;
 
+        println!("{}", body);
+
         let pages =
             serde_json::from_str::<ListResponse<crate::list_response::SearchResultItem>>(&body)?;
 
