@@ -2,9 +2,6 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct DatabaseResponse {
-    /// always "database"
-    pub object: String,
-
     pub id: String,
 
     pub created_time: String,

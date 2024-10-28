@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+pub mod button;
 pub mod checkbox;
 pub mod created_by;
 pub mod created_time;
@@ -19,23 +20,26 @@ pub mod rollup;
 pub mod select;
 pub mod status;
 pub mod title;
+pub mod unique_id;
 pub mod url;
 
 pub use {
-    checkbox::DatabaseCheckboxProperty, created_by::DatabaseCreatedByProperty,
-    created_time::DatabaseCreatedTimeProperty, date::DatabaseDateProperty,
-    email::DatabaseEmailProperty, files::DatabaseFilesProperty, formula::DatabaseFormulaProperty,
-    last_edited_by::DatabaseLastEditedByProperty, last_edited_time::DatabaseLastEditedTimeProperty,
-    multi_select::DatabaseMultiSelectProperty, number::DatabaseNumberProperty,
-    people::DatabasePeopleProperty, phone_number::DatabasePhoneNumberProperty,
-    relation::DatabaseRelationProperty, rich_text::DatabaseRichTextProperty, rollup::*,
-    select::DatabaseSelectProperty, status::DatabaseStatusProperty, title::DatabaseTitleProperty,
-    url::DatabaseUrlProperty,
+    button::DatabaseButtonProperty, checkbox::DatabaseCheckboxProperty,
+    created_by::DatabaseCreatedByProperty, created_time::DatabaseCreatedTimeProperty,
+    date::DatabaseDateProperty, email::DatabaseEmailProperty, files::DatabaseFilesProperty,
+    formula::DatabaseFormulaProperty, last_edited_by::DatabaseLastEditedByProperty,
+    last_edited_time::DatabaseLastEditedTimeProperty, multi_select::DatabaseMultiSelectProperty,
+    number::DatabaseNumberProperty, people::DatabasePeopleProperty,
+    phone_number::DatabasePhoneNumberProperty, relation::DatabaseRelationProperty,
+    rich_text::DatabaseRichTextProperty, rollup::*, select::DatabaseSelectProperty,
+    status::DatabaseStatusProperty, title::DatabaseTitleProperty,
+    unique_id::DatabaseUniqueIdProperty, url::DatabaseUrlProperty,
 };
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum DatabaseProperty {
+    Button(button::DatabaseButtonProperty),
     Checkbox(checkbox::DatabaseCheckboxProperty),
     CreatedBy(created_by::DatabaseCreatedByProperty),
     CreatedTime(created_time::DatabaseCreatedTimeProperty),
@@ -55,6 +59,7 @@ pub enum DatabaseProperty {
     Select(select::DatabaseSelectProperty),
     Status(status::DatabaseStatusProperty),
     Title(title::DatabaseTitleProperty),
+    UniqueId(unique_id::DatabaseUniqueIdProperty),
     Url(url::DatabaseUrlProperty),
 }
 
