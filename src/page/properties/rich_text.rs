@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-use crate::ToPlainText;
-
 /// <https://developers.notion.com/reference/page-property-values#rich-text>
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
@@ -74,7 +72,11 @@ impl From<crate::RichText> for PageRichTextProperty {
 
 impl std::fmt::Display for PageRichTextProperty {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let plain_text = self.rich_text.to_plain_text();
+        let plain_text = self
+            .rich_text
+            .iter()
+            .map(|rt| rt.to_string())
+            .collect::<String>();
         write!(f, "{}", plain_text)
     }
 }
