@@ -24,7 +24,27 @@ const sandbox = await client.pages.create({
   properties: {
     title: {
       type: 'title',
-      title: [{ type: 'text', text: { content: 'Integration Test Sandbox' } }]
+      title: [
+        {
+          type: 'text',
+          text: {
+            content: `[NotionRs]`
+          },
+          annotations: { color: 'blue' }
+        },
+        {
+          type: 'text',
+          text: {
+            content: ` Integration Test Sandbox `
+          }
+        },
+        {
+          type: 'text',
+          text: {
+            content: `(${new Date().toISOString()})`
+          }
+        }
+      ]
     }
   }
 })
@@ -55,15 +75,13 @@ const { id: NOTION_IT_CRUD_BLOCK_PAGE_ID } = blockPage
 //
 // # --------------------------------------------------------------------------------
 
-const deleteDatabase = await client.databases.create({
+const relatedDatabase = await client.databases.create({
   parent: { page_id: sandbox.id },
   title: [{ type: 'text', text: { content: 'delete_database' } }],
   properties: {
     Title: { title: {} }
   }
 })
-
-const { id: NOTION_IT_DELETE_DATABASE_ID } = deleteDatabase
 
 const database = await client.databases.create({
   parent: { page_id: sandbox.id },
@@ -85,7 +103,7 @@ const database = await client.databases.create({
     URL: { url: {} },
     email: { email: {} },
     Relation: {
-      relation: { database_id: deleteDatabase.id, single_property: {} }
+      relation: { database_id: relatedDatabase.id, single_property: {} }
     },
     'Created time': { created_time: {} },
     CreatedBy: { created_by: {} },
@@ -144,7 +162,6 @@ const { id: NOTION_IT_CRUD_PAGE_ID } = await client.pages.create({
 // save
 
 const data = `NOTION_IT_CRUD_BLOCK_PAGE_ID="${NOTION_IT_CRUD_BLOCK_PAGE_ID}"
-NOTION_IT_DELETE_DATABASE_ID="${NOTION_IT_DELETE_DATABASE_ID}"
 NOTION_IT_DATABASE_ID="${NOTION_IT_DATABASE_ID}"
 NOTION_IT_CRUD_PAGE_ID="${NOTION_IT_CRUD_PAGE_ID}"
 NOTION_IT_SANDBOX_ID="${NOTION_IT_SANDBOX_ID}"

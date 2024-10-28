@@ -13,17 +13,13 @@ pub struct GetPagePropertyItemClient {
 impl GetPagePropertyItemClient {
     // TODO: docs for send
     pub async fn send(self) -> Result<crate::page::properties::PageProperty, Error> {
-        let page_id = self
-            .page_id
-            .ok_or(Error::RequestParameter(
-                "`page_id` has not been set.".to_string(),
-            ))?;
+        let page_id = self.page_id.ok_or(Error::RequestParameter(
+            "`page_id` has not been set.".to_string(),
+        ))?;
 
-        let property_id = self
-            .property_id
-            .ok_or(Error::RequestParameter(
-                "`property_id` has not been set.".to_string(),
-            ))?;
+        let property_id = self.property_id.ok_or(Error::RequestParameter(
+            "`property_id` has not been set.".to_string(),
+        ))?;
 
         let url = format!(
             "https://api.notion.com/v1/pages/{}/properties/{}",

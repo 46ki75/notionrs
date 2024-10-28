@@ -2,18 +2,13 @@ mod integration_tests {
 
     use notionrs::to_json::ToJson;
 
-    /// This integration test cannot be run unless explicit permission
-    /// for user reading is granted in the Notion API key issuance settings.
-    ///
-    /// To conduct integration testing, write the following in the `.env` file.
-    /// ```ini
-    /// NOTION_PAGE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-    /// ```
     #[tokio::test]
     async fn get_page() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
+        dotenvy::from_path(std::path::Path::new(".env.test"))
+            .expect("Failed to load .env.test file");
 
-        let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
+        let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::Client::new();
 
