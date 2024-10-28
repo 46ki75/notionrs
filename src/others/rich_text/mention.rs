@@ -13,17 +13,17 @@ pub enum Mention {
     User(UserMention),
 }
 
-impl crate::ToPlainText for Mention {
-    /// Convert Mention to a plain string
-    fn to_plain_text(&self) -> String {
+impl std::fmt::Display for Mention {
+    /// Display the mention.
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Mention::Database(db) => db.to_plain_text(),
-            Mention::Date(date) => date.to_plain_text(),
-            Mention::LinkPreview(lp) => lp.to_plain_text(),
-            Mention::LinkMention(lm) => lm.to_plain_text(),
-            Mention::TemplateMention(tm) => tm.to_plain_text(),
-            Mention::Page(p) => p.to_plain_text(),
-            Mention::User(user) => user.user.to_plain_text(),
+            Mention::Database(db) => write!(f, "{}", db),
+            Mention::Date(date) => write!(f, "{}", date),
+            Mention::LinkPreview(lp) => write!(f, "{}", lp),
+            Mention::LinkMention(lm) => write!(f, "{}", lm),
+            Mention::TemplateMention(tm) => write!(f, "{}", tm),
+            Mention::Page(p) => write!(f, "{}", p),
+            Mention::User(user) => write!(f, "{}", user),
         }
     }
 }
@@ -33,10 +33,10 @@ pub struct DatabaseMention {
     pub id: String,
 }
 
-impl crate::ToPlainText for DatabaseMention {
-    /// Convert DatabaseMention to a plain string
-    fn to_plain_text(&self) -> String {
-        self.id.clone()
+impl std::fmt::Display for DatabaseMention {
+    /// Display the database_id.
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.id)
     }
 }
 
@@ -45,10 +45,10 @@ pub struct LinkPreviewMention {
     pub url: String,
 }
 
-impl crate::ToPlainText for LinkPreviewMention {
-    /// Convert LinkPreviewMention to a plain string
-    fn to_plain_text(&self) -> String {
-        self.url.clone()
+impl std::fmt::Display for LinkPreviewMention {
+    /// Display the url.
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.url)
     }
 }
 
@@ -64,10 +64,9 @@ pub struct LinkMentionMention {
     pub title: String,
 }
 
-impl crate::ToPlainText for LinkMentionMention {
-    /// Convert LinkMentionMention to a plain string
-    fn to_plain_text(&self) -> String {
-        self.title.clone()
+impl std::fmt::Display for LinkMentionMention {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.title)
     }
 }
 
@@ -76,10 +75,9 @@ pub struct PageMention {
     pub id: String,
 }
 
-impl crate::ToPlainText for PageMention {
-    /// Convert PageMention to a plain string
-    fn to_plain_text(&self) -> String {
-        self.id.clone()
+impl std::fmt::Display for PageMention {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.id)
     }
 }
 
@@ -91,22 +89,16 @@ pub enum TemplateMention {
 }
 
 impl std::fmt::Display for TemplateMention {
+    /// Display the date or user if it exists.
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             TemplateMention::TemplateMentionDate(date) => {
-                write!(f, "template_mention_date: {}", date)
+                write!(f, "{}", date)
             }
             TemplateMention::TemplateMentionUser(user) => {
-                write!(f, "template_mention_user: {}", user)
+                write!(f, "{}", user)
             }
         }
-    }
-}
-
-impl crate::ToPlainText for TemplateMention {
-    /// Convert TemplateMention to a plain string
-    fn to_plain_text(&self) -> String {
-        self.to_string()
     }
 }
 
@@ -145,6 +137,12 @@ impl std::fmt::Display for TemplateMentionUser {
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct UserMention {
     pub user: crate::User,
+}
+
+impl std::fmt::Display for UserMention {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.user)
+    }
 }
 
 // # --------------------------------------------------------------------------------

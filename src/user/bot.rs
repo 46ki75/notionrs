@@ -47,13 +47,13 @@ pub struct BotOwner {
     pub workspace: bool,
 }
 
-impl crate::ToPlainText for Bot {
-    /// Convert Bot to a plain string
-    fn to_plain_text(&self) -> String {
+impl std::fmt::Display for Bot {
+    /// Display the name if it exists, otherwise display the id.
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(name) = &self.name {
-            name.clone()
+            write!(f, "{}", name)
         } else {
-            self.id.clone()
+            write!(f, "{}", self.id)
         }
     }
 }
