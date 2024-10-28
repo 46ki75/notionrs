@@ -29,7 +29,7 @@ const sandbox = await client.pages.create({
   }
 })
 
-const { id: NOTION_IT_ROOT_ID } = sandbox
+const { id: NOTION_IT_SANDBOX_ID } = sandbox
 
 // # --------------------------------------------------------------------------------
 //
@@ -146,7 +146,7 @@ const data = `NOTION_IT_CRUD_BLOCK_PAGE_ID="${NOTION_IT_CRUD_BLOCK_PAGE_ID}"
 NOTION_IT_DELETE_DATABASE_ID="${NOTION_IT_DELETE_DATABASE_ID}"
 NOTION_IT_DATABASE_ID="${NOTION_IT_DATABASE_ID}"
 NOTION_IT_CRUD_PAGE_ID="${NOTION_IT_CRUD_PAGE_ID}"
-NOTION_IT_ROOT_ID="${NOTION_IT_ROOT_ID}"
+NOTION_IT_SANDBOX_ID="${NOTION_IT_SANDBOX_ID}"
 `
 
 writeFileSync('./.env.test', data, 'utf-8')

@@ -13,9 +13,9 @@ if (SECRET === undefined)
 
 const client = new Client({ auth: SECRET })
 
-if (process.env.NOTION_IT_ROOT_ID != null)
+if (process.env.NOTION_IT_SANDBOX_ID != null)
   await client.pages.update({
-    page_id: process.env.NOTION_IT_ROOT_ID,
+    page_id: process.env.NOTION_IT_SANDBOX_ID,
     archived: true,
     in_trash: true
   })
