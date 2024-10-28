@@ -7,6 +7,10 @@
     {
       "name": "document (vitepress)",
       "path": "docs"
+    },
+    {
+      "name": "scripts",
+      "path": "scripts"
     }
   ]
 }
