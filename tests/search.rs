@@ -59,10 +59,7 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let request = client
-            .search_database()
-            .query("database")
-            .sort_timestamp_asc();
+        let request = client.search_database().query("").sort_timestamp_asc();
 
         let response = request.send().await?;
 
