@@ -73,7 +73,7 @@ const database = await client.databases.create({
     Checkbox: { checkbox: {} },
     Date: { date: {} },
     'Files & media': { files: {} },
-    Number: { number: {} },
+    Number: { number: { format: 'number' } },
     User: { people: {} },
     'Phone Number': { phone_number: {} },
     formula: { formula: { expression: 'prop("Number") / 2' } },
@@ -90,7 +90,8 @@ const database = await client.databases.create({
     'Created time': { created_time: {} },
     CreatedBy: { created_by: {} },
     LastUpdatedAt: { last_edited_time: {} },
-    LastUpdatedBy: { last_edited_by: {} }
+    LastUpdatedBy: { last_edited_by: {} },
+    ID: { unique_id: {} }
   }
 })
 

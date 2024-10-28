@@ -3,8 +3,10 @@ mod integration_tests {
     #[tokio::test]
     async fn create_database_relation() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
+        dotenvy::from_path(std::path::Path::new(".env.test"))
+            .expect("Failed to load .env.test file");
 
-        let page_id = std::env::var("NOTION_PAGE_ID").unwrap_or_else(|_| String::new());
+        let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::Client::new();
 
