@@ -381,7 +381,10 @@ mod integration_tests {
     #[serial_test::serial]
     async fn query_database_filter_relation_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
-        let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+        dotenvy::from_path(std::path::Path::new(".env.test"))
+            .expect("Failed to load .env.test file");
+
+        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::Client::new();
 
@@ -414,7 +417,10 @@ mod integration_tests {
     #[serial_test::serial]
     async fn query_database_filter_rollup_filter() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
-        let database_id = std::env::var("NOTION_DATABASE_ID").unwrap_or_else(|_| String::new());
+        dotenvy::from_path(std::path::Path::new(".env.test"))
+            .expect("Failed to load .env.test file");
+
+        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::Client::new();
 

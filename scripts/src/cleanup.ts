@@ -3,6 +3,7 @@ dotenv.config({ path: '.env' })
 dotenv.config({ path: '.env.test' })
 
 import { Client } from '@notionhq/client'
+import { unlinkSync } from 'fs'
 
 const SECRET = process.env.NOTION_TOKEN
 
@@ -13,9 +14,12 @@ if (SECRET === undefined)
 
 const client = new Client({ auth: SECRET })
 
-if (process.env.NOTION_IT_SANDBOX_ID != null)
+if (process.env.NOTION_IT_SANDBOX_ID != null) {
   await client.pages.update({
     page_id: process.env.NOTION_IT_SANDBOX_ID,
     archived: true,
     in_trash: true
   })
+
+  unlinkSync('.env.test')
+}
