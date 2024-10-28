@@ -20,6 +20,7 @@ pub mod rollup;
 pub mod select;
 pub mod status;
 pub mod title;
+pub mod unique_id;
 pub mod url;
 
 pub use {
@@ -31,7 +32,8 @@ pub use {
     number::DatabaseNumberProperty, people::DatabasePeopleProperty,
     phone_number::DatabasePhoneNumberProperty, relation::DatabaseRelationProperty,
     rich_text::DatabaseRichTextProperty, rollup::*, select::DatabaseSelectProperty,
-    status::DatabaseStatusProperty, title::DatabaseTitleProperty, url::DatabaseUrlProperty,
+    status::DatabaseStatusProperty, title::DatabaseTitleProperty,
+    unique_id::DatabaseUniqueIdProperty, url::DatabaseUrlProperty,
 };
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -57,6 +59,7 @@ pub enum DatabaseProperty {
     Select(select::DatabaseSelectProperty),
     Status(status::DatabaseStatusProperty),
     Title(title::DatabaseTitleProperty),
+    UniqueId(unique_id::DatabaseUniqueIdProperty),
     Url(url::DatabaseUrlProperty),
 }
 
