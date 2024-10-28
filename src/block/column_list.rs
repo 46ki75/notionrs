@@ -22,3 +22,9 @@ impl ColumnListBlock {
         self
     }
 }
+
+impl std::fmt::Display for ColumnListBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "")
+    }
+}

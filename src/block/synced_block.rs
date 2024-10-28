@@ -59,6 +59,15 @@ where
     }
 }
 
+impl std::fmt::Display for SyncedBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match &self.synced_from {
+            Some(synced_from) => write!(f, "{}", synced_from.block_id),
+            None => write!(f, ""),
+        }
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

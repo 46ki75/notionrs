@@ -34,6 +34,12 @@ where
     }
 }
 
+impl std::fmt::Display for EquationBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.expression)
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

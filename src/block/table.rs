@@ -61,6 +61,16 @@ impl From<u16> for TableBlock {
     }
 }
 
+impl std::fmt::Display for TableBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "TableBlock {{ table_width: {}, has_column_header: {}, has_row_header: {} }}",
+            self.table_width, self.has_column_header, self.has_row_header
+        )
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

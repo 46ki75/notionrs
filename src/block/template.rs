@@ -17,6 +17,19 @@ impl TemplateBlock {
     }
 }
 
+impl std::fmt::Display for TemplateBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.rich_text
+                .iter()
+                .map(|t| t.to_string())
+                .collect::<String>()
+        )
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

@@ -45,6 +45,19 @@ where
     }
 }
 
+impl std::fmt::Display for ToggleBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.rich_text
+                .iter()
+                .map(|t| t.to_string())
+                .collect::<String>(),
+        )
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

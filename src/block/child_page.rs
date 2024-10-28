@@ -12,6 +12,12 @@ pub struct ChildPageBlock {
     pub title: String,
 }
 
+impl std::fmt::Display for ChildPageBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.title)
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

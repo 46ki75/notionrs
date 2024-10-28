@@ -41,6 +41,12 @@ where
     }
 }
 
+impl std::fmt::Display for BookmarkBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.url)
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

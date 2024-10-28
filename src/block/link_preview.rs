@@ -11,6 +11,12 @@ pub struct LinkPreviewBlock {
     pub url: String,
 }
 
+impl std::fmt::Display for LinkPreviewBlock {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.url)
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test
