@@ -68,6 +68,21 @@ impl From<crate::File> for PageFilesProperty {
     }
 }
 
+impl std::fmt::Display for PageFilesProperty {
+    /// display the files' names in a comma-separated list
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.files
+                .iter()
+                .map(|file| file.to_string())
+                .collect::<Vec<String>>()
+                .join(", ")
+        )
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

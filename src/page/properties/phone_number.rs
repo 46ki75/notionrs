@@ -50,6 +50,12 @@ where
     }
 }
 
+impl std::fmt::Display for PagePhoneNumberProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.phone_number.as_ref().unwrap())
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

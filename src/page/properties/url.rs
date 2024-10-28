@@ -50,6 +50,12 @@ where
     }
 }
 
+impl std::fmt::Display for PageUrlProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.url.as_ref().unwrap())
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

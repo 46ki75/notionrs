@@ -40,6 +40,13 @@ impl From<bool> for PageCheckboxProperty {
     }
 }
 
+impl std::fmt::Display for PageCheckboxProperty {
+    /// display the checkbox value as "Yes" if checked, "No" if unchecked
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", if self.checkbox { "Yes" } else { "No" })
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

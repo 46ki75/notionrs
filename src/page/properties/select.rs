@@ -52,6 +52,12 @@ where
     }
 }
 
+impl std::fmt::Display for PageSelectProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.select.as_ref().unwrap())
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

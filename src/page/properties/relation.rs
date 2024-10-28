@@ -51,6 +51,21 @@ pub struct PageRelationPropertyParameter {
     pub id: String,
 }
 
+impl std::fmt::Display for PageRelationProperty {
+    /// Display
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.relation
+                .iter()
+                .map(|x| x.id.clone())
+                .collect::<Vec<String>>()
+                .join(", ")
+        )
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

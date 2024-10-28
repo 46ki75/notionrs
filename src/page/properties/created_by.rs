@@ -44,6 +44,12 @@ pub struct PageCreatedByProperty {
     pub created_by: crate::user::User,
 }
 
+impl std::fmt::Display for PageCreatedByProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.created_by)
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

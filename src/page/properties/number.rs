@@ -47,6 +47,12 @@ where
     }
 }
 
+impl std::fmt::Display for PageNumberProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.number.unwrap())
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

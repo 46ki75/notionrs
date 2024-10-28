@@ -40,6 +40,12 @@ pub struct PageFormulaProperty {
     pub formula: Formula,
 }
 
+impl std::fmt::Display for PageFormulaProperty {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.formula)
+    }
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Formula {
@@ -47,6 +53,17 @@ pub enum Formula {
     Date(FormulaDate),
     Number(FormulaNumber),
     String(FormulaString),
+}
+
+impl std::fmt::Display for Formula {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            Formula::Boolean(b) => write!(f, "{}", b.boolean.unwrap_or(false)),
+            Formula::Date(d) => write!(f, "{}", d.date.unwrap_or_default()),
+            Formula::Number(n) => write!(f, "{}", n.number.unwrap_or(0.0)),
+            Formula::String(s) => write!(f, "{}", s.string.as_deref().unwrap_or("")),
+        }
+    }
 }
 
 /// ```json

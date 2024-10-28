@@ -40,6 +40,21 @@ pub struct PagePeopleProperty {
     pub people: Vec<crate::user::User>,
 }
 
+impl std::fmt::Display for PagePeopleProperty {
+    /// Display user names or user IDs separated by commas
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.people
+                .iter()
+                .map(|x| x.to_string())
+                .collect::<Vec<String>>()
+                .join(", ")
+        )
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test
