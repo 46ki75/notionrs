@@ -11,12 +11,12 @@
         "posttest": "npm run test:cleanup"
     },
     "devDependencies": {
-        "@types/node": "^22.8.6",
+        "@types/node": "^22.8.7",
         "dotenv": "^16.4.5",
         "prettier": "^3.3.3",
         "tsx": "^4.19.2",
         "typescript": "^5.6.3",
-        "vitepress": "^1.4.3"
+        "vitepress": "^1.4.5"
     },
     "dependencies": {
         "@notionhq/client": "^2.2.15"
