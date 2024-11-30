@@ -30,36 +30,6 @@ pub enum Color {
     YellowBackground,
 }
 
-impl<T> From<T> for Color
-where
-    T: AsRef<str>,
-{
-    fn from(value: T) -> Self {
-        match value.as_ref() {
-            "default" => Color::Default,
-            "blue" => Color::Blue,
-            "brown" => Color::Brown,
-            "gray" => Color::Gray,
-            "green" => Color::Green,
-            "orange" => Color::Orange,
-            "pink" => Color::Pink,
-            "purple" => Color::Purple,
-            "red" => Color::Red,
-            "yellow" => Color::Yellow,
-            "blue_background" => Color::BlueBackground,
-            "brown_background" => Color::BrownBackground,
-            "gray_background" => Color::GrayBackground,
-            "green_background" => Color::GreenBackground,
-            "orange_background" => Color::OrangeBackground,
-            "pink_background" => Color::PinkBackground,
-            "purple_background" => Color::PurpleBackground,
-            "red_background" => Color::RedBackground,
-            "yellow_background" => Color::YellowBackground,
-            _ => Color::Default,
-        }
-    }
-}
-
 // # --------------------------------------------------------------------------------
 //
 // macro
@@ -183,12 +153,6 @@ mod unit_tests {
 
         let result: Result<Color, _> = serde_json::from_value(json_data);
         assert!(result.is_err());
-    }
-
-    #[test]
-    fn check_trait_from() {
-        let blue = Color::from("blue");
-        assert_eq!(blue, Color::Blue);
     }
 
     #[test]
