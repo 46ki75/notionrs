@@ -15,7 +15,7 @@ readme = "README.md"
 
 [dependencies]
 chrono = { version = "0.4.38", features = ["serde"] }
-reqwest = "0.12.9"
+reqwest = { version = "0.12.9", default-features = false }
 serde = { version = "1.0.215", features = ["derive"] }
 serde_json = "1.0.133"
 thiserror = "2.0.3"
@@ -26,7 +26,9 @@ dotenvy = "0.15.0"
 serial_test = "3.2.0"
 
 [features]
-default = ["rustls-tls"]
+default = ["rustls-tls", "gzip"]
 rustls-tls = ["reqwest/rustls-tls"]
 native-tls = ["reqwest/default-tls", "reqwest/native-tls"]
 native-tls-alpn = ["reqwest/native-tls-alpn"]
+gzip = ["reqwest/gzip"]
+brotli = ["reqwest/brotli"]
