@@ -1,9 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(
-    Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Default, strum_macros::Display,
-)]
-#[strum(serialize_all = "snake_case")]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum Color {
     #[default]
@@ -28,6 +25,33 @@ pub enum Color {
     PurpleBackground,
     RedBackground,
     YellowBackground,
+}
+
+impl std::fmt::Display for Color {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let color = match self {
+            Color::Blue => "blue",
+            Color::Brown => "brown",
+            Color::Gray => "gray",
+            Color::Green => "green",
+            Color::Orange => "orange",
+            Color::Pink => "pink",
+            Color::Purple => "purple",
+            Color::Red => "red",
+            Color::Yellow => "yellow",
+            Color::BlueBackground => "blue_background",
+            Color::BrownBackground => "brown_background",
+            Color::GrayBackground => "gray_background",
+            Color::GreenBackground => "green_background",
+            Color::OrangeBackground => "orange_background",
+            Color::PinkBackground => "pink_background",
+            Color::PurpleBackground => "purple_background",
+            Color::RedBackground => "red_background",
+            Color::YellowBackground => "yellow_background",
+            _ => "default",
+        };
+        write!(f, "{}", color)
+    }
 }
 
 // # --------------------------------------------------------------------------------
