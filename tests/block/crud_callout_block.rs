@@ -19,7 +19,7 @@ mod integration_tests {
         let rich_text = notionrs::RichText::from("callout!");
 
         let block = notionrs::block::Block::Callout {
-            callout: notionrs::block::CalloutBlock::new()
+            callout: notionrs::block::CalloutBlock::default()
                 .blue_background()
                 .rich_text(vec![rich_text.clone()]),
         };

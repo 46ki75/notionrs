@@ -19,7 +19,7 @@ mod integration_tests {
         let rich_text = notionrs::RichText::from("rich text");
 
         let block = notionrs::block::Block::Paragraph {
-            paragraph: notionrs::block::ParagraphBlock::new()
+            paragraph: notionrs::block::ParagraphBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .blue_background(),
         };

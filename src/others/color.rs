@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Default)]
+#[derive(
+    Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Default, strum_macros::Display,
+)]
+#[strum(serialize_all = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum Color {
     #[default]
@@ -150,5 +153,11 @@ mod unit_tests {
 
         let result: Result<Color, _> = serde_json::from_value(json_data);
         assert!(result.is_err());
+    }
+
+    #[test]
+    fn check_trait_display() {
+        let blue_background: Color = Color::BlueBackground;
+        assert_eq!(blue_background.to_string(), "blue_background".to_string());
     }
 }

@@ -11,7 +11,7 @@ async fn main() -> Result<(), Error> {
     let block_id = std::env::var("NOTION_PAGE_ID").unwrap();
 
     let block = Block::Audio {
-        audio: File::new()
+        audio: File::default()
             .url("https://example.com/sample.wav")
             .caption(vec![notionrs::RichText::from("my caption")]),
     };

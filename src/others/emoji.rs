@@ -8,12 +8,6 @@ pub struct Emoji {
 }
 
 impl Emoji {
-    pub fn new() -> Self {
-        Emoji::default()
-    }
-}
-
-impl Emoji {
     pub fn emoji(mut self, emoji: char) -> Self {
         self.emoji = emoji;
         self
@@ -31,6 +25,6 @@ impl Default for Emoji {
 
 impl From<char> for Emoji {
     fn from(value: char) -> Self {
-        Self::new().emoji(value)
+        Self::default().emoji(value)
     }
 }

@@ -11,12 +11,6 @@ pub struct TemplateBlock {
     pub rich_text: Vec<crate::others::rich_text::RichText>,
 }
 
-impl TemplateBlock {
-    pub fn new() -> Self {
-        Self::default()
-    }
-}
-
 impl std::fmt::Display for TemplateBlock {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(

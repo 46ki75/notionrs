@@ -19,7 +19,7 @@ mod integration_tests {
         let rich_text = notionrs::RichText::from("Toggle");
 
         let block = notionrs::block::Block::Toggle {
-            toggle: notionrs::block::ToggleBlock::new()
+            toggle: notionrs::block::ToggleBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .children(vec![]),
         };

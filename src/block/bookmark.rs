@@ -14,10 +14,6 @@ pub struct BookmarkBlock {
 }
 
 impl BookmarkBlock {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
     pub fn url<T>(mut self, url: T) -> Self
     where
         T: AsRef<str>,

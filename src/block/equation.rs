@@ -12,10 +12,6 @@ pub struct EquationBlock {
 }
 
 impl EquationBlock {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
     pub fn expression<T>(mut self, expression: T) -> Self
     where
         T: AsRef<str>,
@@ -30,7 +26,7 @@ where
     T: AsRef<str>,
 {
     fn from(expression: T) -> Self {
-        Self::new().expression(expression)
+        Self::default().expression(expression)
     }
 }
 

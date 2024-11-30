@@ -13,10 +13,11 @@ use serde::{Deserialize, Serialize};
 pub struct SyncedBlock {
     pub synced_from: Option<SyncedBlockParams>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub children: Option<Vec<super::Block>>,
 }
 
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct SyncedBlockParams {
     /// always "block_id"
     pub r#type: String,
@@ -26,13 +27,6 @@ pub struct SyncedBlockParams {
 }
 
 impl SyncedBlock {
-    pub fn new() -> Self {
-        Self {
-            synced_from: None,
-            children: Some(vec![]),
-        }
-    }
-
     pub fn block_id<T>(mut self, block_id: T) -> Self
     where
         T: AsRef<str>,
@@ -50,12 +44,21 @@ impl SyncedBlock {
     }
 }
 
+impl Default for SyncedBlockParams {
+    fn default() -> Self {
+        Self {
+            r#type: "block_id".to_string(),
+            block_id: String::default(),
+        }
+    }
+}
+
 impl<T> From<T> for SyncedBlock
 where
     T: AsRef<str>,
 {
     fn from(block_id: T) -> Self {
-        Self::new().block_id(block_id)
+        Self::default().block_id(block_id)
     }
 }
 

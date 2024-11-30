@@ -26,10 +26,6 @@ pub struct TableBlock {
 }
 
 impl TableBlock {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
     pub fn table_width(mut self, table_width: u16) -> Self {
         self.table_width = table_width;
         self
@@ -57,7 +53,7 @@ impl TableBlock {
 
 impl From<u16> for TableBlock {
     fn from(table_width: u16) -> Self {
-        Self::new().table_width(table_width)
+        Self::default().table_width(table_width)
     }
 }
 

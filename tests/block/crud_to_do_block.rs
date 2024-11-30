@@ -19,7 +19,7 @@ mod integration_tests {
         let rich_text = notionrs::RichText::from("list item");
 
         let block = notionrs::block::Block::ToDo {
-            to_do: notionrs::block::ToDoBlock::new()
+            to_do: notionrs::block::ToDoBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .checked(true),
         };

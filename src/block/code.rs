@@ -17,10 +17,6 @@ pub struct CodeBlock {
 }
 
 impl CodeBlock {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
     pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
         self.caption = caption;
         self
@@ -43,7 +39,7 @@ where
 {
     fn from(code: T) -> Self {
         let rich_text = crate::others::rich_text::RichText::from(code.as_ref().to_string());
-        Self::new().rich_text(vec![rich_text])
+        Self::default().rich_text(vec![rich_text])
     }
 }
 
