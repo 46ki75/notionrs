@@ -26,3 +26,9 @@ thiserror = "2.0.3"
 tokio = { version = "1.41.1", features = ["full"] }
 dotenvy = "0.15.0"
 serial_test = "3.2.0"
+
+[features]
+default = ["rustls-tls"]
+rustls-tls = ["reqwest/rustls-tls"]
+native-tls = ["reqwest/default-tls", "reqwest/native-tls"]
+native-tls-alpn = ["reqwest/native-tls-alpn"]
