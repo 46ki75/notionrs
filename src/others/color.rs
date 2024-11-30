@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Default)]
+#[derive(
+    Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Default, strum_macros::Display,
+)]
+#[strum(serialize_all = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum Color {
     #[default]
@@ -25,6 +28,36 @@ pub enum Color {
     PurpleBackground,
     RedBackground,
     YellowBackground,
+}
+
+impl<T> From<T> for Color
+where
+    T: AsRef<str>,
+{
+    fn from(value: T) -> Self {
+        match value.as_ref() {
+            "default" => Color::Default,
+            "blue" => Color::Blue,
+            "brown" => Color::Brown,
+            "gray" => Color::Gray,
+            "green" => Color::Green,
+            "orange" => Color::Orange,
+            "pink" => Color::Pink,
+            "purple" => Color::Purple,
+            "red" => Color::Red,
+            "yellow" => Color::Yellow,
+            "blue_background" => Color::BlueBackground,
+            "brown_background" => Color::BrownBackground,
+            "gray_background" => Color::GrayBackground,
+            "green_background" => Color::GreenBackground,
+            "orange_background" => Color::OrangeBackground,
+            "pink_background" => Color::PinkBackground,
+            "purple_background" => Color::PurpleBackground,
+            "red_background" => Color::RedBackground,
+            "yellow_background" => Color::YellowBackground,
+            _ => Color::Default,
+        }
+    }
 }
 
 // # --------------------------------------------------------------------------------
@@ -150,5 +183,17 @@ mod unit_tests {
 
         let result: Result<Color, _> = serde_json::from_value(json_data);
         assert!(result.is_err());
+    }
+
+    #[test]
+    fn check_trait_from() {
+        let blue = Color::from("blue");
+        assert_eq!(blue, Color::Blue);
+    }
+
+    #[test]
+    fn check_trait_display() {
+        let blue_background: Color = Color::BlueBackground;
+        assert_eq!(blue_background.to_string(), "blue_background".to_string());
     }
 }
