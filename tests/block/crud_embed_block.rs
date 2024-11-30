@@ -17,7 +17,7 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = notionrs::block::Block::Embed {
-            embed: notionrs::block::EmbedBlock::new().url("https://example.com"),
+            embed: notionrs::block::EmbedBlock::default().url("https://example.com"),
         };
 
         let request = client

@@ -19,13 +19,13 @@ mod integration_tests {
         // origin
 
         let block = notionrs::block::Block::Bookmark {
-            bookmark: notionrs::block::BookmarkBlock::new().url("https://example.com"),
+            bookmark: notionrs::block::BookmarkBlock::default().url("https://example.com"),
         };
 
         let children = vec![block];
 
         let block = notionrs::block::Block::SyncedBlock {
-            synced_block: notionrs::block::SyncedBlock::new().children(children),
+            synced_block: notionrs::block::SyncedBlock::default().children(children),
         };
 
         let request = client
@@ -40,7 +40,7 @@ mod integration_tests {
         // sync
 
         let block = notionrs::block::Block::SyncedBlock {
-            synced_block: notionrs::block::SyncedBlock::new()
+            synced_block: notionrs::block::SyncedBlock::default()
                 .block_id(response.results.first().unwrap().id.clone()),
         };
 

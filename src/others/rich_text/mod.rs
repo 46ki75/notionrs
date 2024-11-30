@@ -40,10 +40,6 @@ pub struct RichTextAnnotations {
 }
 
 impl RichText {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
     pub fn plain_text<T>(self, plain_text: T) -> Self
     where
         T: AsRef<str>,
@@ -326,7 +322,7 @@ mod unit_tests {
 
     #[test]
     fn serialize_rich_text() {
-        let rich_text = RichText::new()
+        let rich_text = RichText::default()
             .plain_text("My Text")
             .bold()
             .italic()

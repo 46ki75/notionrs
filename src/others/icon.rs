@@ -9,16 +9,6 @@ pub enum Icon {
     Emoji(Emoji),
 }
 
-impl Icon {
-    pub fn new_file() -> Self {
-        Icon::File(File::new())
-    }
-
-    pub fn new_emoji(emoji: char) -> Self {
-        Icon::Emoji(Emoji::from(emoji))
-    }
-}
-
 impl Default for Icon {
     fn default() -> Self {
         Icon::Emoji(Emoji::default())

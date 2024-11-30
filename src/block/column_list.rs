@@ -10,12 +10,6 @@ pub struct ColumnListBlock {
 }
 
 impl ColumnListBlock {
-    pub fn new() -> Self {
-        ColumnListBlock {
-            children: Some(vec![]),
-        }
-    }
-
     /// Only `column` can be specified.
     pub fn children(mut self, children: Vec<super::Block>) -> Self {
         self.children = Some(children);

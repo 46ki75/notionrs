@@ -44,17 +44,6 @@ pub enum File {
 }
 
 impl File {
-    /// Note that while `File` is an enum, this function will return the `External` variant of `File`.
-    /// This is because the Notion API does not support uploading new files.
-    pub fn new() -> Self {
-        File::External(ExternalFile {
-            r#type: "external".to_string(),
-            external: ExternalFileParameter::default(),
-            name: None,
-            caption: None,
-        })
-    }
-
     /// This utility returns the URL regardless of whether the File variant is External or Uploaded.
     /// (You can retrieve the URL without having to check the variant).
     pub fn get_url(&self) -> String {
@@ -98,18 +87,18 @@ impl File {
     }
 }
 
-impl Default for File {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl std::fmt::Display for File {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             File::External(file) => write!(f, "{}", file),
             File::Uploaded(file) => write!(f, "{}", file),
         }
+    }
+}
+
+impl Default for File {
+    fn default() -> Self {
+        File::External(ExternalFile::default())
     }
 }
 
@@ -158,26 +147,23 @@ pub struct ExternalFileParameter {
 }
 
 impl ExternalFile {
-    pub fn new() -> Self {
+    pub fn url<T>(mut self, url: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.external.url = url.as_ref().to_string();
+        self
+    }
+}
+
+impl Default for ExternalFile {
+    fn default() -> Self {
         Self {
             r#type: "external".to_string(),
             external: ExternalFileParameter::default(),
             name: None,
             caption: None,
         }
-    }
-
-    pub fn url<T>(&mut self, url: T)
-    where
-        T: AsRef<str>,
-    {
-        self.external.url = url.as_ref().to_string();
-    }
-}
-
-impl Default for ExternalFile {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -186,9 +172,7 @@ where
     T: AsRef<str>,
 {
     fn from(url: T) -> Self {
-        let mut instance = Self::new();
-        instance.url(url);
-        instance
+        Self::default().url(url)
     }
 }
 
@@ -249,7 +233,7 @@ impl std::fmt::Display for UploadedFile {
 }
 
 /// file
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
 pub struct UploadedFileParameter {
     /// Signed URL for the file (Amazon S3)
     pub url: String,
@@ -261,6 +245,17 @@ pub struct UploadedFileParameter {
 impl std::fmt::Display for UploadedFileParameter {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.url)
+    }
+}
+
+impl Default for UploadedFile {
+    fn default() -> Self {
+        Self {
+            r#type: "file".to_string(),
+            file: UploadedFileParameter::default(),
+            name: None,
+            caption: None,
+        }
     }
 }
 

@@ -17,7 +17,7 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = notionrs::block::Block::Bookmark {
-            bookmark: notionrs::block::BookmarkBlock::new().url("https://example.com"),
+            bookmark: notionrs::block::BookmarkBlock::default().url("https://example.com"),
         };
 
         let request = client

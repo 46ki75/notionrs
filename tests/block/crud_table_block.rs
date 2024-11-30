@@ -19,21 +19,21 @@ mod integration_tests {
         let rich_text = notionrs::RichText::from("rich text");
 
         let block = notionrs::block::Block::Table {
-            table: notionrs::block::TableBlock::new()
+            table: notionrs::block::TableBlock::default()
                 .table_width(2)
                 .has_column_header(true)
                 .has_row_header(true)
                 .children(vec![
                     notionrs::block::Block::TableRow {
-                        table_row: notionrs::block::TableRowBlock::new()
+                        table_row: notionrs::block::TableRowBlock::default()
                             .cells(vec![vec![rich_text.clone()], vec![rich_text.clone()]]),
                     },
                     notionrs::block::Block::TableRow {
-                        table_row: notionrs::block::TableRowBlock::new()
+                        table_row: notionrs::block::TableRowBlock::default()
                             .cells(vec![vec![rich_text.clone()], vec![rich_text.clone()]]),
                     },
                     notionrs::block::Block::TableRow {
-                        table_row: notionrs::block::TableRowBlock::new()
+                        table_row: notionrs::block::TableRowBlock::default()
                             .cells(vec![vec![rich_text.clone()], vec![rich_text.clone()]]),
                     },
                 ]),

@@ -19,15 +19,16 @@ mod integration_tests {
         let rich_text = notionrs::RichText::from("child");
 
         let grandchildren = notionrs::block::Block::Paragraph {
-            paragraph: notionrs::block::ParagraphBlock::new().rich_text(vec![rich_text.clone()]),
+            paragraph: notionrs::block::ParagraphBlock::default()
+                .rich_text(vec![rich_text.clone()]),
         };
 
         let child = notionrs::block::Block::Column {
-            column: notionrs::block::ColumnBlock::new().children(vec![grandchildren]),
+            column: notionrs::block::ColumnBlock::default().children(vec![grandchildren]),
         };
 
         let block = notionrs::block::Block::ColumnList {
-            column_list: notionrs::block::ColumnListBlock::new()
+            column_list: notionrs::block::ColumnListBlock::default()
                 .children(vec![child.clone(), child.clone()]),
         };
 

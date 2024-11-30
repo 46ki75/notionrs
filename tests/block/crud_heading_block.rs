@@ -19,7 +19,7 @@ mod integration_tests {
         let rich_text = notionrs::RichText::from("Heading2 !");
 
         let block = notionrs::block::Block::Heading2 {
-            heading_2: notionrs::block::HeadingBlock::new()
+            heading_2: notionrs::block::HeadingBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .children(vec![])
                 .is_toggleable(true),

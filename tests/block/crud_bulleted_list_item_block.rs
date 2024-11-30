@@ -19,7 +19,7 @@ mod integration_tests {
         let rich_text = notionrs::RichText::from("list item");
 
         let block = notionrs::block::Block::BulletedListItem {
-            bulleted_list_item: notionrs::block::BulletedListItemBlock::new()
+            bulleted_list_item: notionrs::block::BulletedListItemBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .blue_background(),
         };

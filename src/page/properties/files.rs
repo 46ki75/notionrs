@@ -57,7 +57,9 @@ where
     T: AsRef<str>,
 {
     fn from(value: T) -> Self {
-        let file = crate::File::new().url(value.as_ref()).name(value.as_ref());
+        let file = crate::File::default()
+            .url(value.as_ref())
+            .name(value.as_ref());
         Self::default().files(vec![file])
     }
 }
