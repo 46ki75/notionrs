@@ -21,7 +21,7 @@ mod integration_tests {
         let caption = notionrs::RichText::from("index.js");
 
         let block = notionrs::block::Block::Code {
-            code: notionrs::block::CodeBlock::new()
+            code: notionrs::block::CodeBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .caption(vec![caption.clone()])
                 .lnaguage(notionrs::others::language::Language::Javascript),

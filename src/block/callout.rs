@@ -19,32 +19,8 @@ pub struct CalloutBlock {
 }
 
 impl CalloutBlock {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
     pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
         self.rich_text = rich_text;
-        self
-    }
-
-    pub fn icon_emoji(mut self, emoji: char) -> Self {
-        self.icon = crate::others::icon::Icon::new_emoji(emoji);
-        self
-    }
-
-    pub fn icon_file<T>(mut self, url: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        let mut icon_file = crate::others::icon::Icon::new_file();
-        if let crate::others::icon::Icon::File(crate::others::file::File::External(
-            ref mut external,
-        )) = icon_file
-        {
-            external.url(url);
-        }
-        self.icon = icon_file;
         self
     }
 

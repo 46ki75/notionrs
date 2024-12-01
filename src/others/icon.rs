@@ -9,18 +9,17 @@ pub enum Icon {
     Emoji(Emoji),
 }
 
-impl Icon {
-    pub fn new_file() -> Self {
-        Icon::File(File::new())
-    }
-
-    pub fn new_emoji(emoji: char) -> Self {
-        Icon::Emoji(Emoji::from(emoji))
-    }
-}
-
 impl Default for Icon {
     fn default() -> Self {
         Icon::Emoji(Emoji::default())
+    }
+}
+
+impl std::fmt::Display for Icon {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Icon::File(file) => write!(f, "{}", file),
+            Icon::Emoji(emoji) => write!(f, "{}", emoji),
+        }
     }
 }

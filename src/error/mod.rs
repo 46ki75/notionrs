@@ -17,6 +17,9 @@ pub enum Error {
     #[error("deserialization error: {0}")]
     Serde(#[from] serde_json::Error),
 
+    #[error("color conversion error: {0}")]
+    Color(String),
+
     #[error("unknown error: {0}")]
     Unknown(String),
 
