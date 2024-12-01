@@ -14,3 +14,12 @@ impl Default for Icon {
         Icon::Emoji(Emoji::default())
     }
 }
+
+impl std::fmt::Display for Icon {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Icon::File(file) => write!(f, "{}", file),
+            Icon::Emoji(emoji) => write!(f, "{}", emoji),
+        }
+    }
+}
