@@ -54,6 +54,61 @@ impl std::fmt::Display for Color {
     }
 }
 
+impl TryFrom<&str> for Color {
+    type Error = crate::error::Error;
+
+    /// Convert from a string to a Color.
+    /// If the string is not a valid color, return an error.
+    ///
+    /// Available colors:
+    ///
+    /// - default
+    /// - blue
+    /// - brown
+    /// - gray
+    /// - green
+    /// - orange
+    /// - pink
+    /// - purple
+    /// - red
+    /// - yellow
+    /// - blue_background
+    /// - brown_background
+    /// - gray_background
+    /// - green_background
+    /// - orange_background
+    /// - pink_background
+    /// - purple_background
+    /// - red_background
+    /// - yellow_background
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        match value {
+            "default" => Ok(Color::Default),
+            "blue" => Ok(Color::Blue),
+            "brown" => Ok(Color::Brown),
+            "gray" => Ok(Color::Gray),
+            "green" => Ok(Color::Green),
+            "orange" => Ok(Color::Orange),
+            "pink" => Ok(Color::Pink),
+            "purple" => Ok(Color::Purple),
+            "red" => Ok(Color::Red),
+            "yellow" => Ok(Color::Yellow),
+            "blue_background" => Ok(Color::BlueBackground),
+            "brown_background" => Ok(Color::BrownBackground),
+            "gray_background" => Ok(Color::GrayBackground),
+            "green_background" => Ok(Color::GreenBackground),
+            "orange_background" => Ok(Color::OrangeBackground),
+            "pink_background" => Ok(Color::PinkBackground),
+            "purple_background" => Ok(Color::PurpleBackground),
+            "red_background" => Ok(Color::RedBackground),
+            "yellow_background" => Ok(Color::YellowBackground),
+            _ => Err(crate::error::Error::Color(format!(
+                "invalid color: {value} is not a valid color",
+            ))),
+        }
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // macro
@@ -183,5 +238,11 @@ mod unit_tests {
     fn check_trait_display() {
         let blue_background: Color = Color::BlueBackground;
         assert_eq!(blue_background.to_string(), "blue_background".to_string());
+    }
+
+    #[test]
+    fn check_trait_try_from() {
+        let color: Color = Color::try_from("blue").unwrap();
+        assert_eq!(color, Color::Blue);
     }
 }

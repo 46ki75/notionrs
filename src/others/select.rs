@@ -80,3 +80,56 @@ pub enum SelectColor {
     Red,
     Yellow,
 }
+
+impl std::fmt::Display for SelectColor {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let color = match self {
+            SelectColor::Blue => "blue",
+            SelectColor::Brown => "brown",
+            SelectColor::Gray => "gray",
+            SelectColor::Green => "green",
+            SelectColor::Orange => "orange",
+            SelectColor::Pink => "pink",
+            SelectColor::Purple => "purple",
+            SelectColor::Red => "red",
+            SelectColor::Yellow => "yellow",
+            _ => "default",
+        };
+        write!(f, "{}", color)
+    }
+}
+
+impl TryFrom<&str> for SelectColor {
+    type Error = crate::error::Error;
+
+    /// Convert from a string to a SelectColor.
+    /// If the string is not a valid color, return an error.
+    ///
+    /// Available colors:
+    ///
+    /// - default
+    /// - blue
+    /// - brown
+    /// - gray
+    /// - green
+    /// - orange
+    /// - pink
+    /// - purple
+    /// - red
+    /// - yellow
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        match value {
+            "default" => Ok(SelectColor::Default),
+            "blue" => Ok(SelectColor::Blue),
+            "brown" => Ok(SelectColor::Brown),
+            "gray" => Ok(SelectColor::Gray),
+            "green" => Ok(SelectColor::Green),
+            "orange" => Ok(SelectColor::Orange),
+            "pink" => Ok(SelectColor::Pink),
+            "purple" => Ok(SelectColor::Purple),
+            "red" => Ok(SelectColor::Red),
+            "yellow" => Ok(SelectColor::Yellow),
+            _ => Err(crate::error::Error::Color(value.to_string())),
+        }
+    }
+}
