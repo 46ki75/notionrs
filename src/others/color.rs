@@ -245,4 +245,37 @@ mod unit_tests {
         let color: Color = Color::try_from("blue").unwrap();
         assert_eq!(color, Color::Blue);
     }
+
+    #[test]
+    fn check_try_from_color() {
+        let cases = vec![
+            ("blue", Some(Color::Blue)),
+            ("brown", Some(Color::Brown)),
+            ("gray", Some(Color::Gray)),
+            ("green", Some(Color::Green)),
+            ("orange", Some(Color::Orange)),
+            ("pink", Some(Color::Pink)),
+            ("purple", Some(Color::Purple)),
+            ("red", Some(Color::Red)),
+            ("yellow", Some(Color::Yellow)),
+            ("blue_background", Some(Color::BlueBackground)),
+            ("brown_background", Some(Color::BrownBackground)),
+            ("gray_background", Some(Color::GrayBackground)),
+            ("green_background", Some(Color::GreenBackground)),
+            ("orange_background", Some(Color::OrangeBackground)),
+            ("pink_background", Some(Color::PinkBackground)),
+            ("purple_background", Some(Color::PurpleBackground)),
+            ("red_background", Some(Color::RedBackground)),
+            ("yellow_background", Some(Color::YellowBackground)),
+            ("default", Some(Color::Default)),
+            ("invalid_color", None),
+        ];
+
+        for (input, expected) in cases {
+            match Color::try_from(input) {
+                Ok(color) => assert_eq!(Some(color), expected, "Input: {}", input),
+                Err(_) => assert!(expected.is_none(), "Expected None for input: {}", input),
+            }
+        }
+    }
 }
