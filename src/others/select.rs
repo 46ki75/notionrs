@@ -133,3 +133,66 @@ impl TryFrom<&str> for SelectColor {
         }
     }
 }
+
+// # --------------------------------------------------------------------------------
+//
+// unit test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn deserialize_select() {
+        let json = r#"{
+            "id": "id",
+            "name": "name",
+            "color": "blue"
+        }"#;
+        let select: Select = serde_json::from_str(json).unwrap();
+        assert_eq!(select.id, Some("id".to_string()));
+        assert_eq!(select.name, "name");
+        assert_eq!(select.color, Some(SelectColor::Blue));
+    }
+
+    #[test]
+    fn serialize_select() {
+        let select = Select {
+            id: Some("id".to_string()),
+            name: "name".to_string(),
+            color: Some(SelectColor::Blue),
+        };
+
+        let json = serde_json::to_string(&select).expect("serialization failed");
+
+        let expected = r#"{"id":"id","name":"name","color":"blue"}"#;
+
+        assert_eq!(json, expected);
+    }
+
+    #[test]
+    fn check_try_from_color() {
+        let cases = vec![
+            ("blue", Some(SelectColor::Blue)),
+            ("brown", Some(SelectColor::Brown)),
+            ("gray", Some(SelectColor::Gray)),
+            ("green", Some(SelectColor::Green)),
+            ("orange", Some(SelectColor::Orange)),
+            ("pink", Some(SelectColor::Pink)),
+            ("purple", Some(SelectColor::Purple)),
+            ("red", Some(SelectColor::Red)),
+            ("yellow", Some(SelectColor::Yellow)),
+            ("default", Some(SelectColor::Default)),
+            ("invalid_color", None),
+        ];
+
+        for (input, expected) in cases {
+            match SelectColor::try_from(input) {
+                Ok(color) => assert_eq!(Some(color), expected, "Input: {}", input),
+                Err(_) => assert!(expected.is_none(), "Expected None for input: {}", input),
+            }
+        }
+    }
+}
