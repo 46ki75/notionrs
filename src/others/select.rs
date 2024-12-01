@@ -58,6 +58,12 @@ pub struct SelectGroup {
     pub option_ids: Vec<String>,
 }
 
+impl std::fmt::Display for SelectGroup {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.name)
+    }
+}
+
 /// Specifies the label colors. These colors can be used in the following property types.
 /// This color enumeration is different from the usual Color (which includes Background Color).
 ///
@@ -170,6 +176,21 @@ mod tests {
         let expected = r#"{"id":"id","name":"name","color":"blue"}"#;
 
         assert_eq!(json, expected);
+    }
+
+    #[test]
+    fn deserialize_select_group() {
+        let json = r#"{
+            "id": "id",
+            "name": "name",
+            "color": "blue",
+            "option_ids": ["option_id"]
+        }"#;
+        let select_group: SelectGroup = serde_json::from_str(json).unwrap();
+        assert_eq!(select_group.id, "id");
+        assert_eq!(select_group.name, "name");
+        assert_eq!(select_group.color, SelectColor::Blue);
+        assert_eq!(select_group.option_ids, vec!["option_id"]);
     }
 
     #[test]
