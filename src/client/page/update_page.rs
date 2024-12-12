@@ -46,8 +46,6 @@ impl UpdatePageClient {
 
         let url = format!("https://api.notion.com/v1/pages/{}", page_id);
 
-        println!("{}", request_body);
-
         let request = self
             .reqwest_client
             .patch(url)
