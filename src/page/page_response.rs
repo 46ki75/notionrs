@@ -41,4 +41,12 @@ mod tests {
         let _page = serde_json::from_str::<crate::page::PageResponse>(json_data)
             .expect("An error occurred while deserializing the page");
     }
+
+    #[test]
+    fn deserialize_page() {
+        let json_data = include_str!("./seeds/page.json");
+
+        let _page = serde_json::from_str::<crate::page::PageResponse>(json_data)
+            .expect("An error occurred while deserializing the page");
+    }
 }
