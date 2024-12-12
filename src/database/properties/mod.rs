@@ -22,6 +22,7 @@ pub mod status;
 pub mod title;
 pub mod unique_id;
 pub mod url;
+pub mod verification;
 
 pub use {
     button::DatabaseButtonProperty, checkbox::DatabaseCheckboxProperty,
@@ -61,6 +62,7 @@ pub enum DatabaseProperty {
     Title(title::DatabaseTitleProperty),
     UniqueId(unique_id::DatabaseUniqueIdProperty),
     Url(url::DatabaseUrlProperty),
+    Verification(verification::DatabaseVerificationProperty),
 }
 
 // # --------------------------------------------------------------------------------
