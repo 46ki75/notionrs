@@ -24,3 +24,29 @@ pub struct PageResponse {
     pub request_id: Option<String>,
     pub in_trash: bool,
 }
+
+// # --------------------------------------------------------------------------------
+//
+// unit_tests
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    fn deserialize_wiki_page() {
+        let json_data = include_str!("./seeds/page_wiki.json");
+
+        let _page = serde_json::from_str::<crate::page::PageResponse>(json_data)
+            .expect("An error occurred while deserializing the page");
+    }
+
+    #[test]
+    fn deserialize_page() {
+        let json_data = include_str!("./seeds/page.json");
+
+        let _page = serde_json::from_str::<crate::page::PageResponse>(json_data)
+            .expect("An error occurred while deserializing the page");
+    }
+}
