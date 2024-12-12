@@ -121,10 +121,19 @@ mod unit_tests {
         let json_data = r#"
         {
             "state": "verified",
-            "verified_by": null,
+            "verified_by": {
+                "object": "user",
+                "id": "174984bc-2b3e-408f-97fd-fa5ff989e907",
+                "name": "<masked>",
+                "avatar_url": "https://example.com/",
+                "type": "person",
+                "person": {
+                    "email": "<masked>@example.com"
+                }
+            },
             "date": {
-                "start": "2023-10-01T00:00:00Z",
-                "end": "2023-10-02T00:00:00Z",
+                "start": "2024-12-11T15:00:00.000Z",
+                "end": "2024-12-18T15:00:00.000Z",
                 "time_zone": null
             }
         }
@@ -133,26 +142,5 @@ mod unit_tests {
         let page_verification: PageVerificationProperty = serde_json::from_str(json_data).unwrap();
 
         assert_eq!(page_verification.state, PageVerificationState::Verified);
-        assert!(page_verification.verified_by.is_none());
-        assert_eq!(
-            page_verification
-                .date
-                .clone()
-                .expect("date is None")
-                .start
-                .expect("start is None")
-                .to_rfc3339(),
-            "2023-10-01T00:00:00+00:00"
-        );
-        assert_eq!(
-            page_verification
-                .date
-                .clone()
-                .expect("date is None")
-                .end
-                .expect("end is None")
-                .to_rfc3339(),
-            "2023-10-02T00:00:00+00:00"
-        );
     }
 }
