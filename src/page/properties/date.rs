@@ -66,7 +66,7 @@ pub struct PageDatePropertyParameter {
 
     /// Always `null`. The time zone is already included in the formats of start and end times.
     #[serde(skip_deserializing)]
-    time_zone: Option<String>,
+    pub time_zone: Option<String>,
 }
 
 fn deserialize_date_or_datetime<'de, D>(

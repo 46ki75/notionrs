@@ -22,6 +22,7 @@ pub mod status;
 pub mod title;
 pub mod unique_id;
 pub mod url;
+pub mod verification;
 
 pub use {
     button::PageButtonProperty, checkbox::PageCheckboxProperty, created_by::PageCreatedByProperty,
@@ -32,7 +33,7 @@ pub use {
     phone_number::PagePhoneNumberProperty, relation::PageRelationProperty,
     rich_text::PageRichTextProperty, rollup::PageRollupProperty, select::PageSelectProperty,
     status::PageStatusProperty, title::PageTitleProperty, unique_id::PageUniqueIdProperty,
-    url::PageUrlProperty,
+    url::PageUrlProperty, verification::PageVerificationProperty,
 };
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -60,6 +61,7 @@ pub enum PageProperty {
     Title(title::PageTitleProperty),
     UniqueId(unique_id::PageUniqueIdProperty),
     Url(url::PageUrlProperty),
+    Verification(verification::PageVerificationProperty),
 }
 
 impl std::fmt::Display for PageProperty {
@@ -87,51 +89,7 @@ impl std::fmt::Display for PageProperty {
             PageProperty::Title(title) => write!(f, "{}", title),
             PageProperty::UniqueId(unique_id) => write!(f, "{}", unique_id),
             PageProperty::Url(url) => write!(f, "{}", url),
+            PageProperty::Verification(verification) => write!(f, "{}", verification),
         }
     }
 }
-
-// # --------------------------------------------------------------------------------
-//
-// unit test
-//
-// # --------------------------------------------------------------------------------
-
-// #[cfg(test)]
-// mod unit_tests {
-//     use crate::prelude::ToJson;
-
-//     use super::*;
-//     use serde_json;
-
-//     #[test]
-//     fn deserialize_page_property() {
-//         let json_data = r#"
-//         {
-//             "Button": {
-//                 "id": "c%60qZ",
-//                 "type": "button",
-//                 "button": {}
-//             }
-//         }
-//         "#;
-
-//         let button_map =
-//             serde_json::from_str::<std::collections::HashMap<String, PageProperty>>(json_data)
-//                 .unwrap();
-
-//         let button = button_map.get("Button").unwrap();
-
-//         match button {
-//             PageProperty::Button(button_property) => {
-//                 assert_eq!(button_property.id, "c%60qZ".to_string());
-//                 assert!(button_property.button.is_empty());
-//             }
-//             _ => panic!("Expected a Button variant"),
-//         }
-
-//         let button_string = button.to_json();
-
-//         assert!(button_string.contains("\"type\":\"button\""));
-//     }
-// }
