@@ -36,7 +36,7 @@ mod tests {
 
     #[test]
     fn deserialize_wiki_page() {
-        let json_data = include_str!("./seeds/wiki_page.json");
+        let json_data = include_str!("./seeds/page_wiki.json");
 
         let _page = serde_json::from_str::<crate::page::PageResponse>(json_data)
             .expect("An error occurred while deserializing the page");
