@@ -16,6 +16,8 @@ pub enum Color {
     Red,
     Yellow,
 
+    DefaultBackground,
+
     BlueBackground,
     BrownBackground,
     GrayBackground,
