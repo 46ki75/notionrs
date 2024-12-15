@@ -81,8 +81,6 @@ impl CreatePageClient {
 
         let url = "https://api.notion.com/v1/pages".to_string();
 
-        println!("{}", request_body);
-
         let request = self
             .reqwest_client
             .post(url)
