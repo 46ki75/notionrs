@@ -154,7 +154,7 @@ mod integration_tests {
                 "Description of the Database",
             )])
             .properties(properties)
-            .icon(notionrs::Icon::Emoji(notionrs::Emoji::from('🚧')))
+            .icon(notionrs::Icon::Emoji(notionrs::Emoji::from("🚧")))
             .cover(notionrs::File::External(notionrs::ExternalFile::from(
                 "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
             )));
