@@ -39,6 +39,7 @@ pub enum PageVerificationState {
     Verified,
     #[default]
     Unverified,
+    Expired,
 }
 
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
@@ -109,6 +110,7 @@ impl std::fmt::Display for PageVerificationProperty {
             match self.verification.state {
                 PageVerificationState::Verified => "verified",
                 PageVerificationState::Unverified => "unverified",
+                PageVerificationState::Expired => "expired",
             }
         )
     }
