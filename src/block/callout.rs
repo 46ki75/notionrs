@@ -121,7 +121,7 @@ mod unit_tests {
         match callout.icon {
             crate::others::icon::Icon::Emoji(emoji) => {
                 assert_eq!(emoji.r#type, "emoji");
-                assert_eq!(emoji.emoji, '💡');
+                assert_eq!(emoji.emoji, "💡".to_string());
             }
             _ => panic!("Unexpected!"),
         };

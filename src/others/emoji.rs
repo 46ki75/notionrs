@@ -7,11 +7,11 @@ pub struct Emoji {
     pub r#type: String,
 
     /// The emoji character. For example, "😻".
-    pub emoji: char,
+    pub emoji: String,
 }
 
 impl Emoji {
-    pub fn emoji(mut self, emoji: char) -> Self {
+    pub fn emoji(mut self, emoji: String) -> Self {
         self.emoji = emoji;
         self
     }
@@ -23,15 +23,18 @@ impl Default for Emoji {
     fn default() -> Self {
         Emoji {
             r#type: "emoji".to_string(),
-            emoji: '💡',
+            emoji: '💡'.to_string(),
         }
     }
 }
 
-impl From<char> for Emoji {
+impl<T> From<T> for Emoji
+where
+    T: AsRef<str>,
+{
     /// Convert from a char to an Emoji.
-    fn from(value: char) -> Self {
-        Self::default().emoji(value)
+    fn from(value: T) -> Self {
+        Self::default().emoji(value.as_ref().to_string())
     }
 }
 
@@ -55,23 +58,23 @@ mod tests {
     fn test_emoji_default() {
         let emoji = Emoji::default();
         assert_eq!(emoji.r#type, "emoji");
-        assert_eq!(emoji.emoji, '💡');
+        assert_eq!(emoji.emoji, "💡".to_string());
         assert_eq!(emoji.to_string(), "💡");
     }
 
     #[test]
     fn test_emoji_from() {
-        let emoji = Emoji::from('🔥');
+        let emoji = Emoji::from("🔥");
         assert_eq!(emoji.r#type, "emoji");
-        assert_eq!(emoji.emoji, '🔥');
+        assert_eq!(emoji.emoji, "🔥".to_string());
         assert_eq!(emoji.to_string(), "🔥");
     }
 
     #[test]
     fn test_emoji_into() {
-        let emoji: Emoji = '🔥'.into();
+        let emoji = Emoji::from("🔥");
         assert_eq!(emoji.r#type, "emoji");
-        assert_eq!(emoji.emoji, '🔥');
+        assert_eq!(emoji.emoji, "🔥".to_string());
         assert_eq!(emoji.to_string(), "🔥");
     }
 
