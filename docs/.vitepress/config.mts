@@ -44,6 +44,7 @@ export default defineConfig({
         text: "Guide - Page",
         items: [
           { text: "Create Page", link: "/page/create-page" },
+          { text: "Get Page", link: "/page/get-page" },
         ],
       },
       {
