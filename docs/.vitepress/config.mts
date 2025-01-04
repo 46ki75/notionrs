@@ -45,6 +45,7 @@ export default defineConfig({
         items: [
           { text: "Create Page", link: "/page/create-page" },
           { text: "Get Page", link: "/page/get-page" },
+          { text: "Get Page Property Item", link: "/page/get-page-property-item" },
         ],
       },
       {
