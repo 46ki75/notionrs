@@ -53,6 +53,7 @@ export default defineConfig({
         text: "Guide - Database",
         items: [
           { text: "Query Database", link: "/database/query-database" },
+          { text: "Retrieve Database", link: "/database/retrieve-database" },
         ],
       },
       {
