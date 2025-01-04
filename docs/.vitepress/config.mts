@@ -52,6 +52,7 @@ export default defineConfig({
       {
         text: "Guide - User",
         items: [
+          { text: "List Users", link: "/user/list-users" },
           { text: "Get Self", link: "/user/get-self" },
         ],
       },
