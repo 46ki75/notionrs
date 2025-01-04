@@ -6,6 +6,12 @@ export default defineConfig({
   description:
     "🦀 Community-driven Notion API client for Rust , offering complete deserialization support and providing a secure way to access properties! 🔒",
   base: "/notionrs/",
+  markdown: {
+    theme: {
+      light: "vitesse-light",
+      dark: "vitesse-dark",
+    }
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
 
