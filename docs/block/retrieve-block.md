@@ -1,4 +1,4 @@
-# Retrieve a block
+# Retrieve block
 
 This method is used to retrieve information about a block.
 
