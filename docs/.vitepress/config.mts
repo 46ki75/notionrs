@@ -41,6 +41,12 @@ export default defineConfig({
         ],
       },
       {
+        text: "Guide - Page",
+        items: [
+          { text: "Create Page", link: "/page/create-page" },
+        ],
+      },
+      {
         text: "Contribute",
         items: [
           {
