@@ -55,6 +55,7 @@ export default defineConfig({
           { text: "Create Database", link: "/database/create-database" },
           { text: "Query Database", link: "/database/query-database" },
           { text: "Retrieve Database", link: "/database/retrieve-database" },
+          { text: "Update Database", link: "/database/update-database" },
         ],
       },
       {
