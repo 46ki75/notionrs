@@ -33,11 +33,11 @@ export default defineConfig({
       {
         text: "Guide - Block",
         items: [
-          { text: "Append block children", link: "/block/append-block-children" },
-          { text: "Retrieve block", link: "/block/retrieve-block" },
-          { text: "Retrieve block children", link: "/block/retrieve-block-children" },
-          { text: "Update block", link: "/block/update-block" },
-          { text: "Delete block", link: "/block/delete-block" },
+          { text: "Append Block Children", link: "/block/append-block-children" },
+          { text: "Get Block", link: "/block/get-block" },
+          { text: "Get Block Children", link: "/block/get-block-children" },
+          { text: "Update Block", link: "/block/update-block" },
+          { text: "Delete Block", link: "/block/delete-block" },
         ],
       },
       {

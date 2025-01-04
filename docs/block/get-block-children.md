@@ -1,4 +1,4 @@
-# Retrieve block children
+# Get Block Children
 
 This method is used to get array of child block. If you need to retrieve **more than 100 blocks**, you must use pagination.
 

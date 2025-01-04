@@ -1,4 +1,4 @@
-# Update block
+# Update Block
 
 This method is used to update a block in Notion.
 

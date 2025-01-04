@@ -1,4 +1,4 @@
-# Delete block
+# Delete Block
 
 This method is used to delete (archive) a block in Notion.
 

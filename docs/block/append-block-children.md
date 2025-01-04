@@ -1,4 +1,4 @@
-# Append block children
+# Append Block Children
 
 This method is used to create and append new children blocks to the parent block.
 
