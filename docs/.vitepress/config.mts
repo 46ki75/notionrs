@@ -50,6 +50,12 @@ export default defineConfig({
         ],
       },
       {
+        text: "Guide - Database",
+        items: [
+          { text: "Query Database", link: "/database/query-database" },
+        ],
+      },
+      {
         text: "Guide - User",
         items: [
           { text: "List Users", link: "/user/list-users" },
