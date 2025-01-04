@@ -36,6 +36,7 @@ export default defineConfig({
           { text: "Append block children", link: "/block/append-block-children" },
           { text: "Retrieve a block", link: "/block/retrieve-a-block" },
           { text: "Retrieve block children", link: "/block/retrieve-block-children" },
+          { text: "Update a block", link: "/block/update-block" },
           { text: "Delete a block", link: "/block/delete-a-block" },
         ],
       },
