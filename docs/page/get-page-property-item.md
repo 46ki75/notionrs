@@ -1,6 +1,6 @@
 # Get Page Property Item
 
-This method is used to retrieve a page in Notion.
+This method is used to retrieve a page property item in Notion.
 
 > [!INFO]
 > You can find the official documentation [here](https://developers.notion.com/reference/retrieve-a-page-property).
