@@ -50,6 +50,12 @@ export default defineConfig({
         ],
       },
       {
+        text: "Guide - User",
+        items: [
+          { text: "Get Self", link: "/user/get-self" },
+        ],
+      },
+      {
         text: "Contribute",
         items: [
           {
