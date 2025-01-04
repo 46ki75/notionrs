@@ -3,7 +3,9 @@
 .env.*
 src/bin/*
 
+# Node.js
 node_modules/
 
-.vitepress/
-!.vitepress/config.mts
+# Vitepress
+**/.vitepress/cache/
+**/.vitepress/dist/

@@ -20,7 +20,7 @@ pub struct DatabaseMultiSelectProperty {
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DatabaseMultiSelectOptionProperty {
-    options: Vec<crate::others::select::Select>,
+    pub options: Vec<crate::others::select::Select>,
 }
 
 impl DatabaseMultiSelectProperty {

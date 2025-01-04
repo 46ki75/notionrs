@@ -1,4 +1,4 @@
-# Retrieve a block
+# Get Block
 
 This method is used to retrieve information about a block.
 
@@ -23,14 +23,8 @@ async fn main() -> Result<(), Error> {
     println!("This block's id is {}", response.id);
 
     if let Block::Paragraph { paragraph } = response.block {
-        print!(
-            "{}",
-            paragraph
-                .rich_text
-                .into_iter()
-                .map(|t| t.to_string())
-                .collect::<String>()
-        );
+        let text = paragraph.to_string();
+        print!("{}", text);
         Ok(())
     } else {
         Err(notionrs::error::Error::Custom(
