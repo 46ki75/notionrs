@@ -21,7 +21,7 @@ serde_json = "1.0.134"
 thiserror = "2.0.9"
 
 [dev-dependencies]
-tokio = { version = "1.42.0", features = ["full"] }
+tokio = { version = "1.43.0", features = ["full"] }
 dotenvy = "0.15.0"
 serial_test = "3.2.0"
 
