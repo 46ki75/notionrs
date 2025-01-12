@@ -6,6 +6,12 @@ export default defineConfig({
   description:
     "🦀 Community-driven Notion API client for Rust , offering complete deserialization support and providing a secure way to access properties! 🔒",
   base: "/notionrs/",
+  markdown: {
+    theme: {
+      light: "vitesse-light",
+      dark: "vitesse-dark",
+    }
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
 
@@ -27,9 +33,37 @@ export default defineConfig({
       {
         text: "Guide - Block",
         items: [
-          { text: "Audio Block", link: "/block/audio" },
-          { text: "Retrieve a block", link: "/block/retrieve-a-block" },
-          { text: "Delete a block", link: "/block/delete-a-block" },
+          { text: "Append Block Children", link: "/block/append-block-children" },
+          { text: "Get Block", link: "/block/get-block" },
+          { text: "Get Block Children", link: "/block/get-block-children" },
+          { text: "Update Block", link: "/block/update-block" },
+          { text: "Delete Block", link: "/block/delete-block" },
+        ],
+      },
+      {
+        text: "Guide - Page",
+        items: [
+          { text: "Create Page", link: "/page/create-page" },
+          { text: "Get Page", link: "/page/get-page" },
+          { text: "Get Page Property Item", link: "/page/get-page-property-item" },
+          { text: "Update Page", link: "/page/update-page" },
+        ],
+      },
+      {
+        text: "Guide - Database",
+        items: [
+          { text: "Create Database", link: "/database/create-database" },
+          { text: "Query Database", link: "/database/query-database" },
+          { text: "Retrieve Database", link: "/database/retrieve-database" },
+          { text: "Update Database", link: "/database/update-database" },
+        ],
+      },
+      {
+        text: "Guide - User",
+        items: [
+          { text: "List Users", link: "/user/list-users" },
+          { text: "Get User", link: "/user/get-user" },
+          { text: "Get Self", link: "/user/get-self" },
         ],
       },
       {

@@ -1,7 +1,7 @@
 [package]
 name = "notionrs"
 description = "A Notion API client that provides type-safe request serialization and response deserialization"
-version = "1.0.0-alpha.27"
+version = "1.0.0-alpha.28"
 edition = "2021"
 authors = ["Chomolungma Shirayuki"]
 repository = "https://github.com/46ki75/notionrs"
@@ -17,11 +17,11 @@ readme = "README.md"
 chrono = { version = "0.4.39", features = ["serde"] }
 reqwest = { version = "0.12.12", default-features = false }
 serde = { version = "1.0.217", features = ["derive"] }
-serde_json = "1.0.134"
-thiserror = "2.0.9"
+serde_json = "1.0.135"
+thiserror = "2.0.11"
 
 [dev-dependencies]
-tokio = { version = "1.42.0", features = ["full"] }
+tokio = { version = "1.43.0", features = ["full"] }
 dotenvy = "0.15.0"
 serial_test = "3.2.0"
 
