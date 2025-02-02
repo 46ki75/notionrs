@@ -18,7 +18,7 @@ use serde::{Deserialize, Serialize};
 ///     }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PageButtonProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.

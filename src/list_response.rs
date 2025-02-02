@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Default, Deserialize, Serialize, Debug, Clone)]
 pub struct ListResponse<T> {
     /// always "list"
     pub object: String,
@@ -11,7 +11,7 @@ pub struct ListResponse<T> {
     pub r#type: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(tag = "object", rename_all = "snake_case")]
 pub enum SearchResultItem {
     Page(crate::page::PageResponse),

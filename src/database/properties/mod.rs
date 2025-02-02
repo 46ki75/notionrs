@@ -37,7 +37,7 @@ pub use {
     unique_id::DatabaseUniqueIdProperty, url::DatabaseUrlProperty,
 };
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum DatabaseProperty {
     Button(button::DatabaseButtonProperty),

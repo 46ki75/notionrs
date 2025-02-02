@@ -32,7 +32,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, Default)]
 pub struct PageEmailProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.

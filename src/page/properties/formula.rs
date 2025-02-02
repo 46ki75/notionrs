@@ -28,7 +28,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PageFormulaProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -46,7 +46,7 @@ impl std::fmt::Display for PageFormulaProperty {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Formula {
     Boolean(FormulaBoolean),
