@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// <https://developers.notion.com/reference/parent-object>
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(untagged)]
 pub enum Parent {
     DatabaseParent(DatabaseParent),
@@ -11,7 +11,7 @@ pub enum Parent {
 }
 
 /// <https://developers.notion.com/reference/parent-object#database-parent>
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct DatabaseParent {
     /// always "database_id"
     pub r#type: String,
@@ -37,7 +37,7 @@ impl From<String> for DatabaseParent {
 }
 
 /// <https://developers.notion.com/reference/parent-object#page-parent>
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct PageParent {
     /// always "page_id"
     pub r#type: String,
@@ -63,7 +63,7 @@ impl From<String> for PageParent {
 }
 
 /// <https://developers.notion.com/reference/parent-object#workspace-parent>
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct WorkspaceParent {
     /// always "workspace"
     pub r#type: String,
@@ -72,7 +72,7 @@ pub struct WorkspaceParent {
 }
 
 /// <https://developers.notion.com/reference/parent-object#block-parent>
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct BlockParent {
     /// always "block_id"
     pub r#type: String,

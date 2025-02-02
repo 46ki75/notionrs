@@ -36,7 +36,7 @@ pub use {
     url::PageUrlProperty, verification::PageVerificationProperty,
 };
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum PageProperty {
     Button(button::PageButtonProperty),

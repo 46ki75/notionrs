@@ -13,7 +13,7 @@ use thiserror::Error;
 ///     "request_id": "2cccb738-bf60-4e9b-bb6b-24a87fb17ef3"
 /// }
 /// ```
-#[derive(Error, Debug, Deserialize, Serialize)]
+#[derive(Error, Debug, Deserialize, Serialize, Clone)]
 #[error("Notion API error: status {status}, code: {code}, message: {message}")]
 pub struct ApiError {
     /// always "error"
