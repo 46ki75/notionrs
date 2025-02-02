@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 // TODO: Implement the Rollup object.
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PageRollupProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.

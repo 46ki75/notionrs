@@ -6,7 +6,7 @@ pub mod bot;
 /// User objects that represent people have the type property set to "person".
 pub mod person;
 
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 #[serde(untagged)]
 pub enum User {
     Bot(bot::Bot),

@@ -6,7 +6,7 @@ use crate::{
 };
 
 /// <https://developers.notion.com/reference/page>
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PageResponse {
     pub id: String,
     pub created_time: chrono::DateTime<chrono::FixedOffset>,

@@ -36,7 +36,7 @@ use serde::{Deserialize, Serialize};
 ///     }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 #[serde(untagged)]
 pub enum File {
     External(ExternalFile),
@@ -121,7 +121,7 @@ impl Default for File {
 ///     }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 pub struct ExternalFile {
     /// always "external"
     // An error occurs if this field is present when calling the block creation API.
@@ -140,7 +140,7 @@ pub struct ExternalFile {
     pub caption: Option<Vec<crate::others::rich_text::RichText>>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Default, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, Default, PartialEq, Eq)]
 pub struct ExternalFileParameter {
     /// URL of the file
     pub url: String,
@@ -211,7 +211,7 @@ impl std::fmt::Display for ExternalFileParameter {
 ///     }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 pub struct UploadedFile {
     /// always "file"
     pub r#type: String,
@@ -233,7 +233,7 @@ impl std::fmt::Display for UploadedFile {
 }
 
 /// file
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct UploadedFileParameter {
     /// Signed URL for the file (Amazon S3)
     pub url: String,

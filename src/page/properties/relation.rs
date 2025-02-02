@@ -27,7 +27,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PageRelationProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -45,7 +45,7 @@ pub struct PageRelationProperty {
     pub has_more: bool,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PageRelationPropertyParameter {
     /// related page id
     pub id: String,

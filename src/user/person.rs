@@ -23,7 +23,7 @@ pub struct Person {
     pub person: Option<PersonDetail>,
 }
 
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 pub struct PersonDetail {
     /// Email address of person. This is only present if an integration has
     /// user capabilities that allow access to email addresses.

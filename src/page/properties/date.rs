@@ -41,7 +41,7 @@ use serde::{Deserialize, Deserializer, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct PageDateProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -53,7 +53,7 @@ pub struct PageDateProperty {
 }
 
 /// If the value is blank, it will be an empty object.
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct PageDatePropertyParameter {
     /// A date, with an optional time.
     #[serde(deserialize_with = "deserialize_date_or_datetime")]

@@ -94,7 +94,7 @@ mod unit_tests {
                 {
                     "type": "text",
                     "text": {
-                        "content": "use serde::{Deserialize, Serialize};\n\n#[derive(Debug, Deserialize, Serialize)]\npub struct Emoji {\n    pub r#type: String,\n    pub emoji: String,\n}",
+                        "content": "use serde::{Deserialize, Serialize};\n\n#[derive(Debug, Deserialize, Serialize, Clone)]\npub struct Emoji {\n    pub r#type: String,\n    pub emoji: String,\n}",
                         "link": null
                     },
                     "annotations": {
@@ -105,7 +105,7 @@ mod unit_tests {
                         "code": false,
                         "color": "default"
                     },
-                    "plain_text": "use serde::{Deserialize, Serialize};\n\n#[derive(Debug, Deserialize, Serialize)]\npub struct Emoji {\n    pub r#type: String,\n    pub emoji: String,\n}",
+                    "plain_text": "use serde::{Deserialize, Serialize};\n\n#[derive(Debug, Deserialize, Serialize, Clone)]\npub struct Emoji {\n    pub r#type: String,\n    pub emoji: String,\n}",
                     "href": null
                 }
             ],

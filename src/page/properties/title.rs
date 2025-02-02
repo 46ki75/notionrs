@@ -38,7 +38,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Default, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, Default, PartialEq, Eq)]
 pub struct PageTitleProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
