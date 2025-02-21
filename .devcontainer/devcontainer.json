@@ -1,10 +1,14 @@
 {
   "name": "Rust Dev Container",
-  "build": { "dockerfile": "Dockerfile" },
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "customizations": {
     "vscode": {
       "settings": {
-        "rust-analyzer.linkedProjects": ["./Cargo.toml"],
+        "rust-analyzer.linkedProjects": [
+          "./Cargo.toml"
+        ],
         "rust-analyzer.showUnlinkedFileNotification": false
       },
       "extensions": [
@@ -18,10 +22,13 @@
       ]
     }
   },
-  "hostRequirements": {
-    "cpus": 2,
-    "memory": "8gb",
-    "storage": "16gb"
+  "features": {
+    "ghcr.io/devcontainers-extra/features/starship": {},
+    "ghcr.io/devcontainers/features/node": {},
+    "ghcr.io/devcontainers-extra/features/pnpm": {},
+    "ghcr.io/devcontainers/features/rust": {}
   },
-  "forwardPorts": [5173]
+  "forwardPorts": [
+    5173
+  ]
 }
