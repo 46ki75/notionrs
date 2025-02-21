@@ -19,14 +19,17 @@ reqwest = { version = "0.12.12", default-features = false }
 serde = { version = "1.0.217", features = ["derive"] }
 serde_json = "1.0.138"
 thiserror = "2.0.11"
+log = { version = "0.4.26", optional = true }
 
 [dev-dependencies]
+notionrs = { path = ".", features = ["log"] }
 tokio = { version = "1.43.0", features = ["full"] }
 dotenvy = "0.15.0"
 serial_test = "3.2.0"
 
 [features]
 default = ["rustls-tls", "gzip"]
+log = ["dep:log"]
 rustls-tls = ["reqwest/rustls-tls"]
 native-tls = ["reqwest/default-tls", "reqwest/native-tls"]
 native-tls-alpn = ["reqwest/native-tls-alpn"]
