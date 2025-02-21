@@ -36,7 +36,6 @@ pub trait ToJson {
     ///     Ok(())
     /// }
     /// ```
-
     fn to_json(&self) -> String;
 }
 
