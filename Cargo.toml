@@ -2,7 +2,7 @@
 name = "notionrs"
 description = "A Notion API client that provides type-safe request serialization and response deserialization"
 version = "1.0.0-alpha.30"
-edition = "2021"
+edition = "2024"
 authors = ["Chomolungma Shirayuki"]
 repository = "https://github.com/46ki75/notionrs"
 license = "MIT OR Apache-2.0"
