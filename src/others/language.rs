@@ -14,6 +14,8 @@ pub enum Language {
     Agda,
     #[serde(rename = "arduino")]
     Arduino,
+    #[serde(rename = "ascii_art")]
+    AsciiArt,
     #[serde(rename = "assembly")]
     Assembly,
     #[serde(rename = "bash")]
@@ -70,6 +72,8 @@ pub enum Language {
     Groovy,
     #[serde(rename = "haskell")]
     Haskell,
+    #[serde(rename = "hcl")]
+    Hcl,
     #[serde(rename = "html")]
     Html,
     #[serde(rename = "idris")]
@@ -155,6 +159,8 @@ pub enum Language {
     Scss,
     #[serde(rename = "shell")]
     Shell,
+    #[serde(rename = "smalltalk")]
+    Smalltalk,
     #[serde(rename = "solidity")]
     Solidity,
     #[serde(rename = "sql")]
@@ -183,96 +189,15 @@ pub enum Language {
     JavaCCPlusPlusCSharp,
 }
 
+impl std::str::FromStr for Language {
+    type Err = serde_plain::Error;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        serde_plain::from_str(s)
+    }
+}
+
 impl std::fmt::Display for Language {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let language = match self {
-            Language::Abap => "abap",
-            Language::Agda => "agda",
-            Language::Arduino => "arduino",
-            Language::Assembly => "assembly",
-            Language::Bash => "bash",
-            Language::Basic => "basic",
-            Language::Bnf => "bnf",
-            Language::C => "c",
-            Language::CSharp => "c#",
-            Language::CPlusPlus => "c++",
-            Language::Clojure => "clojure",
-            Language::Coffeescript => "coffeescript",
-            Language::Coq => "coq",
-            Language::Css => "css",
-            Language::Dart => "dart",
-            Language::Dhall => "dhall",
-            Language::Diff => "diff",
-            Language::Docker => "docker",
-            Language::Ebnf => "ebnf",
-            Language::Elixir => "elixir",
-            Language::Elm => "elm",
-            Language::Erlang => "erlang",
-            Language::FSharp => "f#",
-            Language::Flow => "flow",
-            Language::Fortran => "fortran",
-            Language::Gherkin => "gherkin",
-            Language::Glsl => "glsl",
-            Language::Go => "go",
-            Language::Graphql => "graphql",
-            Language::Groovy => "groovy",
-            Language::Haskell => "haskell",
-            Language::Html => "html",
-            Language::Idris => "idris",
-            Language::Java => "java",
-            Language::Javascript => "javascript",
-            Language::Json => "json",
-            Language::Julia => "julia",
-            Language::Kotlin => "kotlin",
-            Language::Latex => "latex",
-            Language::Less => "less",
-            Language::Lisp => "lisp",
-            Language::Livescript => "livescript",
-            Language::LlvmIr => "llvm ir",
-            Language::Lua => "lua",
-            Language::Makefile => "makefile",
-            Language::Markdown => "markdown",
-            Language::Markup => "markup",
-            Language::Matlab => "matlab",
-            Language::Mathematica => "mathematica",
-            Language::Mermaid => "mermaid",
-            Language::Nix => "nix",
-            Language::NotionFormula => "notion formula",
-            Language::ObjectiveC => "objective-c",
-            Language::Ocaml => "ocaml",
-            Language::Pascal => "pascal",
-            Language::Perl => "perl",
-            Language::Php => "php",
-            Language::PlainText => "plain text",
-            Language::Powershell => "powershell",
-            Language::Prolog => "prolog",
-            Language::Protobuf => "protobuf",
-            Language::Purescript => "purescript",
-            Language::Python => "python",
-            Language::R => "r",
-            Language::Racket => "racket",
-            Language::Reason => "reason",
-            Language::Ruby => "ruby",
-            Language::Rust => "rust",
-            Language::Sass => "sass",
-            Language::Scala => "scala",
-            Language::Scheme => "scheme",
-            Language::Scss => "scss",
-            Language::Shell => "shell",
-            Language::Solidity => "solidity",
-            Language::Sql => "sql",
-            Language::Swift => "swift",
-            Language::Toml => "toml",
-            Language::Typescript => "typescript",
-            Language::VbNet => "vb.net",
-            Language::Verilog => "verilog",
-            Language::Vhdl => "vhdl",
-            Language::VisualBasic => "visual basic",
-            Language::Webassembly => "webassembly",
-            Language::Xml => "xml",
-            Language::Yaml => "yaml",
-            Language::JavaCCPlusPlusCSharp => "java/c/c++/c#",
-        };
-        write!(f, "{}", language)
+        write!(f, "{}", serde_plain::to_string(self).unwrap())
     }
 }

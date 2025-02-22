@@ -1,0 +1,25 @@
+{
+    "object": "block",
+    "id": "1a12bef9-0b67-80c9-824c-f5bd0672e731",
+    "parent": {
+        "type": "page_id",
+        "page_id": "1a12bef9-0b67-80ed-92c1-d75e2d67c690"
+    },
+    "created_time": "2025-02-21T17:04:00.000Z",
+    "last_edited_time": "2025-02-21T17:05:00.000Z",
+    "created_by": {
+        "object": "user",
+        "id": "d7592761-a145-4788-ba2c-d67bbfaed77f"
+    },
+    "last_edited_by": {
+        "object": "user",
+        "id": "d7592761-a145-4788-ba2c-d67bbfaed77f"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "equation",
+    "equation": {
+        "expression": "x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}"
+    }
+}

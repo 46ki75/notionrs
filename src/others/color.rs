@@ -5,7 +5,6 @@ use serde::{Deserialize, Serialize};
 pub enum Color {
     #[default]
     Default,
-
     Blue,
     Brown,
     Gray,
@@ -17,7 +16,6 @@ pub enum Color {
     Yellow,
 
     DefaultBackground,
-
     BlueBackground,
     BrownBackground,
     GrayBackground,
@@ -29,85 +27,17 @@ pub enum Color {
     YellowBackground,
 }
 
-impl std::fmt::Display for Color {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let color = match self {
-            Color::Blue => "blue",
-            Color::Brown => "brown",
-            Color::Gray => "gray",
-            Color::Green => "green",
-            Color::Orange => "orange",
-            Color::Pink => "pink",
-            Color::Purple => "purple",
-            Color::Red => "red",
-            Color::Yellow => "yellow",
-            Color::BlueBackground => "blue_background",
-            Color::BrownBackground => "brown_background",
-            Color::GrayBackground => "gray_background",
-            Color::GreenBackground => "green_background",
-            Color::OrangeBackground => "orange_background",
-            Color::PinkBackground => "pink_background",
-            Color::PurpleBackground => "purple_background",
-            Color::RedBackground => "red_background",
-            Color::YellowBackground => "yellow_background",
-            _ => "default",
-        };
-        write!(f, "{}", color)
+impl std::str::FromStr for Color {
+    type Err = serde_plain::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        serde_plain::from_str(s)
     }
 }
 
-impl TryFrom<&str> for Color {
-    type Error = crate::error::Error;
-
-    /// Convert from a string to a Color.
-    /// If the string is not a valid color, return an error.
-    ///
-    /// Available colors:
-    ///
-    /// - default
-    /// - blue
-    /// - brown
-    /// - gray
-    /// - green
-    /// - orange
-    /// - pink
-    /// - purple
-    /// - red
-    /// - yellow
-    /// - blue_background
-    /// - brown_background
-    /// - gray_background
-    /// - green_background
-    /// - orange_background
-    /// - pink_background
-    /// - purple_background
-    /// - red_background
-    /// - yellow_background
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        match value {
-            "default" => Ok(Color::Default),
-            "blue" => Ok(Color::Blue),
-            "brown" => Ok(Color::Brown),
-            "gray" => Ok(Color::Gray),
-            "green" => Ok(Color::Green),
-            "orange" => Ok(Color::Orange),
-            "pink" => Ok(Color::Pink),
-            "purple" => Ok(Color::Purple),
-            "red" => Ok(Color::Red),
-            "yellow" => Ok(Color::Yellow),
-            "blue_background" => Ok(Color::BlueBackground),
-            "brown_background" => Ok(Color::BrownBackground),
-            "gray_background" => Ok(Color::GrayBackground),
-            "green_background" => Ok(Color::GreenBackground),
-            "orange_background" => Ok(Color::OrangeBackground),
-            "pink_background" => Ok(Color::PinkBackground),
-            "purple_background" => Ok(Color::PurpleBackground),
-            "red_background" => Ok(Color::RedBackground),
-            "yellow_background" => Ok(Color::YellowBackground),
-            _ => Err(crate::error::Error::Color(format!(
-                "invalid color: {value} is not a valid color",
-            ))),
-        }
+impl std::fmt::Display for Color {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", serde_plain::to_string(self).unwrap())
     }
 }
 
@@ -160,6 +90,10 @@ macro_rules! color_setters {
             $color_target = $crate::others::color::Color::Yellow;
             $self
         }
+        pub fn default_background_color(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::DefaultBackground;
+            $self
+        }
         pub fn blue_background(mut $self) -> Self {
             $color_target = $crate::others::color::Color::BlueBackground;
             $self
@@ -207,6 +141,8 @@ macro_rules! color_setters {
 
 #[cfg(test)]
 mod unit_tests {
+    use std::str::FromStr;
+
     use super::*;
     use serde_json::json;
 
@@ -244,12 +180,12 @@ mod unit_tests {
 
     #[test]
     fn check_trait_try_from() {
-        let color: Color = Color::try_from("blue").unwrap();
+        let color: Color = Color::from_str("blue").unwrap();
         assert_eq!(color, Color::Blue);
     }
 
     #[test]
-    fn check_try_from_color() {
+    fn check_from_str_color() {
         let cases = vec![
             ("blue", Some(Color::Blue)),
             ("brown", Some(Color::Brown)),
@@ -274,7 +210,7 @@ mod unit_tests {
         ];
 
         for (input, expected) in cases {
-            match Color::try_from(input) {
+            match Color::from_str(input) {
                 Ok(color) => assert_eq!(Some(color), expected, "Input: {}", input),
                 Err(_) => assert!(expected.is_none(), "Expected None for input: {}", input),
             }
