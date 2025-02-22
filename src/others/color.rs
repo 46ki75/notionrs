@@ -90,6 +90,10 @@ macro_rules! color_setters {
             $color_target = $crate::others::color::Color::Yellow;
             $self
         }
+        pub fn default_background_color(mut $self) -> Self {
+            $color_target = $crate::others::color::Color::DefaultBackground;
+            $self
+        }
         pub fn blue_background(mut $self) -> Self {
             $color_target = $crate::others::color::Color::BlueBackground;
             $self
