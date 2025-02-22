@@ -217,9 +217,7 @@ mod unit_tests {
         {
             "type": "link_mention",
             "link_mention": {
-                "title": "Rust Programming Language",
-                "description": "A language empowering everyone to build reliable and efficient software.",
-                "url": "https://www.rust-lang.org/"
+                "href": "https://www.rust-lang.org/"
             }
         }
         "#;
