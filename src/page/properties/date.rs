@@ -189,15 +189,12 @@ mod unit_tests {
 
         assert_eq!(date.id, Some("w%5E%7DO".to_string()));
 
-        match &date.date {
-            Some(property) => {
-                let expected_start =
-                    chrono::DateTime::parse_from_rfc3339("2024-04-04T00:00:00.000+02:00").unwrap();
-                assert_eq!(property.start, Some(expected_start));
-                assert_eq!(property.end, None);
-                assert_eq!(property.time_zone, None);
-            }
-            None => {}
+        if let Some(property) = &date.date {
+            let expected_start =
+                chrono::DateTime::parse_from_rfc3339("2024-04-04T00:00:00.000+02:00").unwrap();
+            assert_eq!(property.start, Some(expected_start));
+            assert_eq!(property.end, None);
+            assert_eq!(property.time_zone, None);
         }
     }
 }

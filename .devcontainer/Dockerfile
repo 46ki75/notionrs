@@ -1,8 +1,5 @@
-FROM amazonlinux:2023
+FROM mcr.microsoft.com/devcontainers/base:debian
 
-RUN dnf update -y \
-    && dnf install -y git tar gzip nodejs20 npm openssl-devel \
-    && dnf groupinstall -y "Development Tools" \
-    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+USER vscode
 
-COPY .bashrc /root/.bashrc
+RUN echo 'eval "$(starship init bash)"' >> ~/.bashrc
