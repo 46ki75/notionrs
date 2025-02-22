@@ -1,4 +1,5 @@
 pub mod color;
+pub mod custom_emoji;
 pub mod emoji;
 pub mod file;
 pub mod icon;
