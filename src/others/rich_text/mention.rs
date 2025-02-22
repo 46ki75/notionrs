@@ -4,8 +4,8 @@ use serde::{Deserialize, Serialize};
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum Mention {
-    Database {
-        database: DatabaseMention,
+    User {
+        user: crate::User,
     },
     Date {
         date: crate::page::date::PageDatePropertyParameter,
@@ -14,7 +14,7 @@ pub enum Mention {
         link_preview: LinkPreviewMention,
     },
     LinkMention {
-        link_mention: LinkMentionMention,
+        link_mention: LinkMention,
     },
     TemplateMention {
         template_mention: TemplateMention,
@@ -22,8 +22,8 @@ pub enum Mention {
     Page {
         page: PageMention,
     },
-    User {
-        user: crate::User,
+    Database {
+        database: DatabaseMention,
     },
     CustomEmoji {
         custom_emoji: crate::others::custom_emoji::CustomEmojiContent,
@@ -34,13 +34,13 @@ impl std::fmt::Display for Mention {
     /// Display the mention.
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Mention::Database { database } => write!(f, "{}", database),
+            Mention::User { user } => write!(f, "{}", user),
             Mention::Date { date } => write!(f, "{}", date),
             Mention::LinkPreview { link_preview } => write!(f, "{}", link_preview),
             Mention::LinkMention { link_mention } => write!(f, "{}", link_mention),
             Mention::TemplateMention { template_mention } => write!(f, "{}", template_mention),
             Mention::Page { page } => write!(f, "{}", page),
-            Mention::User { user } => write!(f, "{}", user),
+            Mention::Database { database } => write!(f, "{}", database),
             Mention::CustomEmoji { custom_emoji } => write!(f, "{}", custom_emoji),
         }
     }
@@ -71,20 +71,13 @@ impl std::fmt::Display for LinkPreviewMention {
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-pub struct LinkMentionMention {
-    pub description: Option<String>,
-    pub href: Option<String>,
-    pub icon_url: Option<String>,
-    pub iframe_url: Option<String>,
-    pub link_author: Option<String>,
-    pub padding: Option<u32>,
-    pub thumbnail_url: Option<String>,
-    pub title: String,
+pub struct LinkMention {
+    pub href: String,
 }
 
-impl std::fmt::Display for LinkMentionMention {
+impl std::fmt::Display for LinkMention {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.title)
+        write!(f, "{}", self.href)
     }
 }
 
