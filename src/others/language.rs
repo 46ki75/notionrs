@@ -14,6 +14,8 @@ pub enum Language {
     Agda,
     #[serde(rename = "arduino")]
     Arduino,
+    #[serde(rename = "ascii_art")]
+    AsciiArt,
     #[serde(rename = "assembly")]
     Assembly,
     #[serde(rename = "bash")]
@@ -70,6 +72,8 @@ pub enum Language {
     Groovy,
     #[serde(rename = "haskell")]
     Haskell,
+    #[serde(rename = "hcl")]
+    Hcl,
     #[serde(rename = "html")]
     Html,
     #[serde(rename = "idris")]
@@ -155,6 +159,8 @@ pub enum Language {
     Scss,
     #[serde(rename = "shell")]
     Shell,
+    #[serde(rename = "smalltalk")]
+    Smalltalk,
     #[serde(rename = "solidity")]
     Solidity,
     #[serde(rename = "sql")]
