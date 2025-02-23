@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::error::{api_error::ApiError, Error};
+use crate::error::{Error, api_error::ApiError};
 
 #[derive(Debug)]
 pub struct AppendBlockChildrenClient {
@@ -31,11 +31,9 @@ impl AppendBlockChildrenClient {
     pub async fn send(
         self,
     ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, Error> {
-        let block_id = self
-            .block_id
-            .ok_or(Error::RequestParameter(
-                "`block_id` has not been set.".to_string(),
-            ))?;
+        let block_id = self.block_id.ok_or(Error::RequestParameter(
+            "`block_id` has not been set.".to_string(),
+        ))?;
 
         let request_body_struct = AppendBlockChildrenRequestBody {
             children: self.children,
@@ -55,16 +53,16 @@ impl AppendBlockChildrenClient {
         let response = request.send().await?;
 
         if !response.status().is_success() {
-            let error_body = response.text().await?;
+            let error_body = response.bytes().await?;
 
-            let error_json = serde_json::from_str::<ApiError>(&error_body)?;
+            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
 
             return Err(Error::Api(Box::new(error_json)));
         }
 
-        let body = response.text().await?;
+        let body = response.bytes().await?;
 
-        let block = serde_json::from_str::<
+        let block = serde_json::from_slice::<
             crate::list_response::ListResponse<crate::block::BlockResponse>,
         >(&body)?;
 
