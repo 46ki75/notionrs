@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 use crate::{
-    error::{api_error::ApiError, Error},
+    error::{Error, api_error::ApiError},
     list_response::ListResponse,
     user::User,
 };
@@ -55,16 +55,16 @@ impl ListUsersClient {
                 let response = request.send().await?;
 
                 if !response.status().is_success() {
-                    let error_body = response.text().await?;
+                    let error_body = response.bytes().await?;
 
-                    let error_json = serde_json::from_str::<ApiError>(&error_body)?;
+                    let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
 
                     return Err(Error::Api(Box::new(error_json)));
                 }
 
-                let body = response.text().await?;
+                let body = response.bytes().await?;
 
-                let users_response = serde_json::from_str::<ListResponse<User>>(&body)?;
+                let users_response = serde_json::from_slice::<ListResponse<User>>(&body)?;
 
                 results.extend(users_response.results);
 
@@ -94,16 +94,16 @@ impl ListUsersClient {
             let response = request.send().await?;
 
             if !response.status().is_success() {
-                let error_body = response.text().await?;
+                let error_body = response.bytes().await?;
 
-                let error_json = serde_json::from_str::<ApiError>(&error_body)?;
+                let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
 
                 return Err(Error::Api(Box::new(error_json)));
             }
 
-            let body = response.text().await?;
+            let body = response.bytes().await?;
 
-            let users = serde_json::from_str::<ListResponse<User>>(&body)?;
+            let users = serde_json::from_slice::<ListResponse<User>>(&body)?;
 
             Ok(users)
         }

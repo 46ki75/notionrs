@@ -1,4 +1,4 @@
-use crate::error::{api_error::ApiError, Error};
+use crate::error::{Error, api_error::ApiError};
 
 #[derive(Debug, Default)]
 pub struct RetrieveDatabaseClient {
@@ -21,16 +21,16 @@ impl RetrieveDatabaseClient {
         let response = request.send().await?;
 
         if !response.status().is_success() {
-            let error_body = response.text().await?;
+            let error_body = response.bytes().await?;
 
-            let error_json = serde_json::from_str::<ApiError>(&error_body)?;
+            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
 
             return Err(Error::Api(Box::new(error_json)));
         }
 
-        let body = response.text().await?;
+        let body = response.bytes().await?;
 
-        let database = serde_json::from_str::<crate::database::DatabaseResponse>(&body)?;
+        let database = serde_json::from_slice::<crate::database::DatabaseResponse>(&body)?;
 
         Ok(database)
     }
