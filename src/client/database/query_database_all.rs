@@ -9,17 +9,17 @@ use crate::{
 };
 
 #[derive(Debug, Default)]
-pub struct QueryDatabaseClient {
+pub struct QueryDatabaseAllClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
     pub(crate) database_id: Option<String>,
 
-    pub(crate) body: QueryDatabaseRequestBody,
+    pub(crate) body: QueryDatabaseAllRequestBody,
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
-pub struct QueryDatabaseRequestBody {
+pub struct QueryDatabaseAllRequestBody {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) filter: Option<Filter>,
 
@@ -33,35 +33,47 @@ pub struct QueryDatabaseRequestBody {
     pub(crate) page_size: Option<u32>,
 }
 
-impl QueryDatabaseClient {
-    pub async fn send(self) -> Result<ListResponse<PageResponse>, Error> {
+impl QueryDatabaseAllClient {
+    pub async fn send(mut self) -> Result<Vec<PageResponse>, Error> {
         match self.database_id {
             Some(id) => {
-                let url = format!("https://api.notion.com/v1/databases/{}/query", id);
+                let mut results: Vec<PageResponse> = vec![];
 
-                let request_body = self.body.to_json().to_string();
+                loop {
+                    let url = format!("https://api.notion.com/v1/databases/{}/query", id);
 
-                let request = self
-                    .reqwest_client
-                    .post(url)
-                    .header("Content-Type", "application/json")
-                    .body(request_body);
+                    self.body.page_size = Some(100);
 
-                let response = request.send().await?;
+                    let request_body = self.body.to_json().to_string();
 
-                if !response.status().is_success() {
-                    let error_body = response.bytes().await?;
+                    let request = self
+                        .reqwest_client
+                        .post(url)
+                        .header("Content-Type", "application/json")
+                        .body(request_body);
 
-                    let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
+                    let response = request.send().await?;
 
-                    return Err(Error::Api(Box::new(error_json)));
+                    if !response.status().is_success() {
+                        let error_body = response.bytes().await?;
+
+                        let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
+
+                        return Err(Error::Api(Box::new(error_json)));
+                    }
+
+                    let body = response.bytes().await?;
+
+                    let pages = serde_json::from_slice::<ListResponse<PageResponse>>(&body)?;
+
+                    results.extend(pages.results);
+
+                    if pages.has_more.unwrap_or(false) {
+                        self.body.start_cursor = pages.next_cursor;
+                    } else {
+                        return Ok(results);
+                    }
                 }
-
-                let body = response.bytes().await?;
-
-                let pages = serde_json::from_slice::<ListResponse<PageResponse>>(&body)?;
-
-                Ok(pages)
             }
             None => Err(Error::RequestParameter("database_id is empty".to_string())),
         }
@@ -70,14 +82,6 @@ impl QueryDatabaseClient {
     /// Specify the ID of the database to query.
     pub fn database_id<T: AsRef<str>>(mut self, database_id: T) -> Self {
         self.database_id = Some(database_id.as_ref().to_string());
-        self
-    }
-
-    /// The amount of data retrieved in one query.
-    /// If not specified, the default is 100.
-    /// When `fetch_all` is set to true, it will also be 100.
-    pub fn page_size(mut self, page_size: u32) -> Self {
-        self.body.page_size = Some(page_size);
         self
     }
 
