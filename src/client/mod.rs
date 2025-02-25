@@ -158,6 +158,15 @@ impl Client {
         }
     }
 
+    pub fn query_database_all(
+        &self,
+    ) -> crate::client::database::query_database_all::QueryDatabaseAllClient {
+        crate::client::database::query_database_all::QueryDatabaseAllClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     pub fn create_database(
         &self,
     ) -> crate::client::database::create_database::CreateDatabaseClient {
