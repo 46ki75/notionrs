@@ -221,6 +221,17 @@ impl Client {
     }
 
     // TODO: docs
+    pub fn get_block_children_all(
+        &self,
+    ) -> crate::client::block::get_block_children_all::GetBlockChildrenAllClient {
+        crate::client::block::get_block_children_all::GetBlockChildrenAllClient {
+            reqwest_client: self.reqwest_client.clone(),
+            block_id: None,
+            start_cursor: None,
+        }
+    }
+
+    // TODO: docs
     pub fn delete_block(&self) -> crate::client::block::delete_block::DeleteBlockClient {
         crate::client::block::delete_block::DeleteBlockClient {
             reqwest_client: self.reqwest_client.clone(),

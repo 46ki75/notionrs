@@ -19,58 +19,40 @@ impl GetBlockChildrenClient {
     ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, Error> {
         let mut result_blocks: Vec<crate::block::BlockResponse> = vec![];
 
-        let mut page_size_remain = self.page_size;
-
         let block_id = &self.block_id.ok_or(Error::RequestParameter(
             "`block_id` has not been set.".to_string(),
         ))?;
 
-        let mut start_cursor = self.start_cursor;
+        let start_cursor = self.start_cursor;
 
-        loop {
-            let page_size = if page_size_remain > 100 {
-                100
-            } else {
-                page_size_remain
-            };
+        let url = format!("https://api.notion.com/v1/blocks/{}/children", block_id);
 
-            page_size_remain -= page_size;
+        let mut query_params: Vec<(String, String)> =
+            vec![("page_size".to_string(), self.page_size.to_string())];
 
-            let url = format!("https://api.notion.com/v1/blocks/{}/children", block_id);
-
-            let mut query_params: Vec<(String, String)> =
-                vec![("page_size".to_string(), page_size.to_string())];
-
-            if let Some(ref cursor) = start_cursor {
-                query_params.push(("start_cursor".to_string(), cursor.to_string()))
-            }
-
-            let request = self.reqwest_client.get(url).query(&query_params);
-
-            let response = request.send().await?;
-
-            if !response.status().is_success() {
-                let error_body = response.bytes().await?;
-
-                let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-                return Err(Error::Api(Box::new(error_json)));
-            }
-
-            let body = response.bytes().await?;
-
-            let block_list_response = serde_json::from_slice::<
-                crate::list_response::ListResponse<crate::block::BlockResponse>,
-            >(&body)?;
-
-            result_blocks.extend(block_list_response.results);
-
-            start_cursor = block_list_response.next_cursor;
-
-            if start_cursor.is_none() || page_size_remain == 0 {
-                break;
-            }
+        if let Some(ref cursor) = start_cursor {
+            query_params.push(("start_cursor".to_string(), cursor.to_string()))
         }
+
+        let request = self.reqwest_client.get(url).query(&query_params);
+
+        let response = request.send().await?;
+
+        if !response.status().is_success() {
+            let error_body = response.bytes().await?;
+
+            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
+
+            return Err(Error::Api(Box::new(error_json)));
+        }
+
+        let body = response.bytes().await?;
+
+        let block_list_response = serde_json::from_slice::<
+            crate::list_response::ListResponse<crate::block::BlockResponse>,
+        >(&body)?;
+
+        result_blocks.extend(block_list_response.results);
 
         Ok(crate::list_response::ListResponse {
             object: "list".into(),
