@@ -1,3 +1,8 @@
+#![deny(missing_docs)]
+
+//! Errors that can happen when using notionrs
+
+/// Errors that can happen when using notionrs
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     /// This error occurs when the request fails due to a network issue.
@@ -10,7 +15,12 @@ pub enum Error {
 
     /// This error occurs when the HTTP response has a non-200 status code.
     #[error("HTTP error {status}: {message}")]
-    Http { status: u16, message: String },
+    Http {
+        /// HTTP status code (e.g. 404)
+        status: u16,
+        /// Error message
+        message: String,
+    },
 
     /// This library follows the Builder pattern, allowing requests to be sent even with missing parameters.
     /// If request parameters are insufficient, this error will be returned.
@@ -24,6 +34,7 @@ pub enum Error {
     Serde(#[from] serde_json::Error),
 }
 
+/// Error response from the Notion API
 #[derive(Debug, serde::Deserialize, serde::Serialize, Clone)]
 pub struct ErrorResponse {
     /// always "error"

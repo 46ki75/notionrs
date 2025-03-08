@@ -1,7 +1,5 @@
 mod integration_tests {
 
-    use notionrs::to_json::ToJson;
-
     // # --------------------------------------------------------------------------------
     //
     // search
@@ -19,7 +17,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -41,7 +39,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -63,7 +61,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }

@@ -1,7 +1,5 @@
 mod integration_tests {
 
-    use notionrs::to_json::ToJson;
-
     // # --------------------------------------------------------------------------------
     //
     // query_database_all
@@ -18,12 +16,12 @@ mod integration_tests {
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::Client::new();
-        let res = client
+        let response = client
             .query_database_all()
             .database_id(database_id)
             .send()
             .await?;
-        println!("{}", res.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -44,12 +42,12 @@ mod integration_tests {
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::client::Client::new();
-        let res = client
+        let response = client
             .query_database_all()
             .database_id(database_id)
             .send()
             .await?;
-        println!("{}", res.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -80,7 +78,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -108,7 +106,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -148,7 +146,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -176,7 +174,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -210,7 +208,7 @@ mod integration_tests {
 
     //     let response = request.send().await?;
 
-    //     println!("{}", response.to_json());
+    //     println!("{}", serde_json::to_string(&response)?);
 
     //     Ok(())
     // }
@@ -240,7 +238,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -274,7 +272,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -310,7 +308,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -344,7 +342,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -380,7 +378,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -418,7 +416,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -452,7 +450,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -482,7 +480,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -512,7 +510,7 @@ mod integration_tests {
 
     //     let response = request.send().await?;
 
-    //     println!("{}", response.to_json());
+    //     println!("{}", serde_json::to_string(&response)?);
 
     //     Ok(())
     // }
@@ -552,7 +550,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -584,7 +582,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -615,7 +613,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }

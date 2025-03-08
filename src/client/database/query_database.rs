@@ -1,8 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    filter::Filter, list_response::ListResponse, page::page_response::PageResponse, prelude::ToJson,
-};
+use crate::{filter::Filter, list_response::ListResponse, page::page_response::PageResponse};
 
 #[derive(Debug, Default)]
 pub struct QueryDatabaseClient {
@@ -35,7 +33,7 @@ impl QueryDatabaseClient {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/databases/{}/query", id);
 
-                let request_body = self.body.to_json().to_string();
+                let request_body = serde_json::to_string(&self.body)?;
 
                 let request = self
                     .reqwest_client

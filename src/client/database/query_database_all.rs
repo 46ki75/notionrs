@@ -1,8 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    filter::Filter, list_response::ListResponse, page::page_response::PageResponse, prelude::ToJson,
-};
+use crate::{filter::Filter, list_response::ListResponse, page::page_response::PageResponse};
 
 #[derive(Debug, Default)]
 pub struct QueryDatabaseAllClient {
@@ -40,7 +38,7 @@ impl QueryDatabaseAllClient {
 
                     self.body.page_size = Some(100);
 
-                    let request_body = self.body.to_json().to_string();
+                    let request_body = serde_json::to_string(&self.body)?;
 
                     let request = self
                         .reqwest_client

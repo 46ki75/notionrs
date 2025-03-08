@@ -1,7 +1,5 @@
 mod integration_tests {
 
-    use notionrs::to_json::ToJson;
-
     // # --------------------------------------------------------------------------------
     //
     // query_database
@@ -23,7 +21,7 @@ mod integration_tests {
             .database_id(database_id)
             .send()
             .await?;
-        println!("{}", res.to_json());
+        println!("{}", serde_json::to_string(&res)?);
 
         Ok(())
     }
@@ -50,7 +48,7 @@ mod integration_tests {
             .page_size(1)
             .send()
             .await?;
-        println!("{}", res.to_json());
+        println!("{}", serde_json::to_string(&res)?);
 
         Ok(())
     }
@@ -81,7 +79,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -109,7 +107,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -149,7 +147,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -177,7 +175,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -211,7 +209,7 @@ mod integration_tests {
 
     //     let response = request.send().await?;
 
-    //     println!("{}", response.to_json());
+    //     println!("{}", serde_json::to_string(&response)?);
 
     //     Ok(())
     // }
@@ -241,7 +239,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -275,7 +273,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -311,7 +309,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -345,7 +343,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -381,7 +379,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -419,7 +417,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -453,7 +451,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -483,7 +481,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -513,7 +511,7 @@ mod integration_tests {
 
     //     let response = request.send().await?;
 
-    //     println!("{}", response.to_json());
+    //     println!("{}", serde_json::to_string(&response)?);
 
     //     Ok(())
     // }
@@ -553,7 +551,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -585,7 +583,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -616,7 +614,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }

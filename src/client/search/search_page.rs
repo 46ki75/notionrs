@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-use crate::prelude::ToJson;
-
 #[derive(Debug, Default)]
 pub struct SearchPageClient {
     /// The reqwest http client
@@ -37,7 +35,7 @@ impl SearchPageClient {
 
         self.body.filter = Some(crate::search::SearchFilter::page());
 
-        let request_body = self.body.to_json().to_string();
+        let request_body = serde_json::to_string(&self.body)?;
 
         let request = self
             .reqwest_client
