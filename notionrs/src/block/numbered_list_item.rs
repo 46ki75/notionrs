@@ -1,12 +1,10 @@
 use serde::{Deserialize, Serialize};
 
-use crate::color_setters;
-
 /// <https://developers.notion.com/reference/block#numbered-list-item>
 ///
 /// Numbered list item block objects contain the following
 /// information within the numbered_list_item property:
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct NumberedListItemBlock {
     /// The rich text displayed in the numbered_list_item block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -21,17 +19,7 @@ pub struct NumberedListItemBlock {
 }
 
 impl NumberedListItemBlock {
-    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
-        self.rich_text = rich_text;
-        self
-    }
-
-    pub fn children(mut self, children: Vec<super::Block>) -> Self {
-        self.children = Some(children);
-        self
-    }
-
-    color_setters!(self, self.color);
+    crate::color_setters!(self, self.color);
 }
 
 impl<T> From<T> for NumberedListItemBlock
