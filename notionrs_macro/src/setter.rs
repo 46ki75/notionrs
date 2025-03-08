@@ -16,40 +16,6 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
         let field_name = &f.ident;
         let field_ty = &f.ty;
 
-        // let setter_comment = format!(
-        //     "Set the value of the `{}` field.",
-        //     field_name.as_ref().unwrap()
-        // );
-
-        // let field_original_comment = f.attrs.iter().filter_map(|attr| {
-        //     if attr.path().is_ident("doc") {
-        //         if let Meta::NameValue(MetaNameValue {
-        //             path: _,
-        //             eq_token: _,
-        //             value: Expr::Lit(comment),
-        //         }) = &attr.meta
-        //         {
-        //             if let Lit::Str(comment) = &comment.lit {
-        //                 let comment = comment.value();
-        //                 return Some(quote! {
-        //                     #[doc = #comment]
-        //                 });
-        //             }
-        //         }
-
-        //         return None;
-        //     }
-        //     None
-        // });
-
-        // let comment = quote! {
-        //     #[doc = #setter_comment]
-        //     #[doc = ""]
-        //     #[doc = "---"]
-        //     #[doc = ""]
-        //     #(#field_original_comment)*
-        // };
-
         let comment = generate_comment(f);
 
         quote! {
