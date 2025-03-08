@@ -13,14 +13,7 @@ pub struct BookmarkBlock {
     pub url: String,
 }
 
-impl<T> From<T> for BookmarkBlock
-where
-    T: AsRef<str>,
-{
-    fn from(url: T) -> Self {
-        Self::default().url(url)
-    }
-}
+crate::impl_from_as_ref!(BookmarkBlock, url);
 
 impl std::fmt::Display for BookmarkBlock {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {

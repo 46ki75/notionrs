@@ -7,6 +7,7 @@ pub mod database;
 pub mod error;
 pub mod filter;
 pub mod list_response;
+pub mod r#macro;
 pub mod others;
 pub mod page;
 pub mod search;
