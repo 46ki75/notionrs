@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Bookmark block objects contain the following
 /// information within the bookmark property:
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct BookmarkBlock {
     /// The caption for the bookmark.
     pub caption: Vec<crate::others::rich_text::RichText>,
@@ -13,27 +13,27 @@ pub struct BookmarkBlock {
     pub url: String,
 }
 
-impl BookmarkBlock {
-    pub fn url<T>(mut self, url: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        self.url = url.as_ref().to_string();
-        self
-    }
+// impl BookmarkBlock {
+//     pub fn url<T>(mut self, url: T) -> Self
+//     where
+//         T: AsRef<str>,
+//     {
+//         self.url = url.as_ref().to_string();
+//         self
+//     }
 
-    pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
-        self.caption = caption;
-        self
-    }
-}
+//     pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
+//         self.caption = caption;
+//         self
+//     }
+// }
 
 impl<T> From<T> for BookmarkBlock
 where
     T: AsRef<str>,
 {
     fn from(url: T) -> Self {
-        Self::default().url(url)
+        Self::default().url(url.as_ref().to_string())
     }
 }
 
