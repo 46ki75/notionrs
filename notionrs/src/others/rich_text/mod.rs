@@ -99,7 +99,7 @@ impl RichText {
                 plain_text,
                 ..
             } => Self::Text {
-                text: text.link(href.clone().unwrap_or_default()),
+                text: text.url(href.clone().unwrap_or_default()),
                 annotations,
                 plain_text,
                 href,
