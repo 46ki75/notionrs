@@ -1,9 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    RichText,
-    error::{Error, api_error::ApiError},
-};
+use crate::RichText;
 
 #[derive(Debug, Default)]
 pub struct UpdateDatabaseClient {
@@ -55,11 +52,11 @@ pub struct UpdateDatabaseRequestBody {
 }
 
 impl UpdateDatabaseClient {
-    pub async fn send(self) -> Result<crate::database::DatabaseResponse, Error> {
+    pub async fn send(self) -> Result<crate::database::DatabaseResponse, crate::error::Error> {
         let database_id = self
             .database_id
             .ok_or(crate::error::Error::RequestParameter(
-                "The database_id parameter must be defined.".to_string(),
+                "`database_id` is not set.".to_string(),
             ))?;
 
         let request_body_struct = UpdateDatabaseRequestBody {
@@ -80,17 +77,19 @@ impl UpdateDatabaseClient {
             .header("Content-Type", "application/json")
             .body(request_body);
 
-        let response = request.send().await?;
+        let response = request
+            .send()
+            .await
+            .map_err(|e| crate::error::Error::Network(e.to_string()))?;
 
         if !response.status().is_success() {
-            let error_body = response.bytes().await?;
-
-            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-            return Err(Error::Api(Box::new(error_json)));
+            return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
-        let body = response.bytes().await?;
+        let body = response
+            .bytes()
+            .await
+            .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let database: crate::database::DatabaseResponse =
             serde_json::from_slice::<crate::database::DatabaseResponse>(&body)?;

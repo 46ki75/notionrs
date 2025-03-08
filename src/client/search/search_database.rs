@@ -1,10 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    error::{Error, api_error::ApiError},
-    prelude::ToJson,
-};
-
 #[derive(Debug, Default)]
 pub struct SearchDatabaseClient {
     /// The reqwest http client
@@ -34,12 +29,15 @@ pub struct SearchDatabaseRequestBody {
 impl SearchDatabaseClient {
     pub async fn send(
         mut self,
-    ) -> Result<crate::list_response::ListResponse<crate::database::DatabaseResponse>, Error> {
+    ) -> Result<
+        crate::list_response::ListResponse<crate::database::DatabaseResponse>,
+        crate::error::Error,
+    > {
         let url = String::from("https://api.notion.com/v1/search");
 
         self.body.filter = Some(crate::search::SearchFilter::database());
 
-        let request_body = self.body.to_json().to_string();
+        let request_body = serde_json::to_string(&self.body)?;
 
         let request = self
             .reqwest_client
@@ -47,17 +45,19 @@ impl SearchDatabaseClient {
             .header("Content-Type", "application/json")
             .body(request_body);
 
-        let response = request.send().await?;
+        let response = request
+            .send()
+            .await
+            .map_err(|e| crate::error::Error::Network(e.to_string()))?;
 
         if !response.status().is_success() {
-            let error_body = response.bytes().await?;
-
-            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-            return Err(Error::Api(Box::new(error_json)));
+            return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
-        let body = response.bytes().await?;
+        let body = response
+            .bytes()
+            .await
+            .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let pages = serde_json::from_slice::<
             crate::list_response::ListResponse<crate::database::DatabaseResponse>,

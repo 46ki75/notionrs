@@ -1,30 +1,84 @@
-pub mod api_error;
+#![deny(missing_docs)]
 
+//! Errors that can happen when using notionrs
+
+/// Errors that can happen when using notionrs
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("network error: {0}")]
-    Network(#[from] reqwest::Error),
+    /// This error occurs when the request fails due to a network issue.
+    #[error("Network error: {0}")]
+    Network(String),
 
-    #[error("notion api error: {0}")]
-    Api(Box<api_error::ApiError>),
+    /// This error occurs when parsing the HTTP body fails.
+    #[error("HTTP body parse error: {0}")]
+    BodyParse(String),
 
-    /// Since we are using the Builder pattern, it is possible to send
-    /// a request even if some parameters are missing. In such cases
-    /// where the request parameters are insufficient, we will throw this error.
-    #[error("notion request parameter error: {0}")]
+    /// This error occurs when the HTTP response has a non-200 status code.
+    #[error("HTTP error {status}: {message}")]
+    Http {
+        /// HTTP status code (e.g. 404)
+        status: u16,
+        /// Error message
+        message: String,
+    },
+
+    /// This library follows the Builder pattern, allowing requests to be sent even with missing parameters.
+    /// If request parameters are insufficient, this error will be returned.
+    ///
+    /// If invalid parameters are passed, the Notion API will return a 400 Bad Request error -> `Error::Http`.
+    #[error("Notion request parameter error: {0}")]
     RequestParameter(String),
 
-    #[error("deserialization error: {0}")]
+    /// This error occurs when serialization or deserialization fails.
+    #[error("Serialization/Deserialization error: {0}")]
     Serde(#[from] serde_json::Error),
+}
 
-    #[error("color conversion error: {0}")]
-    Color(String),
+/// Error response from the Notion API
+#[derive(Debug, serde::Deserialize, serde::Serialize, Clone)]
+pub struct ErrorResponse {
+    /// always "error"
+    pub object: String,
 
-    #[error("unknown error: {0}")]
-    Unknown(String),
+    /// HTTP Status Code ( `4xx` or `5xx` )
+    pub status: u16,
 
-    /// If you want to handle multiple errors collectively in the `Error` enum of the `notionrs` crate,
-    /// use this variant to create your own custom error.
-    #[error("custom error: {0}")]
-    Custom(String),
+    /// Error code
+    pub code: String,
+
+    /// Error details
+    pub message: String,
+
+    /// Request identifier
+    pub request_id: Option<String>,
+
+    /// URL for the developer survey
+    pub developer_survey: Option<String>,
+}
+
+impl Error {
+    pub(crate) async fn try_from_response_async(response: reqwest::Response) -> Self {
+        let status = response.status().as_u16();
+
+        let error_body = match response.text().await{
+            Err(_) =>{
+                return crate::error::Error::Http {
+                    status,
+                    message: "An error occurred, but failed to retrieve the error details from the response body.".to_string(),
+                }},
+            Ok(body) => body
+        };
+
+        let error_json = serde_json::from_str::<crate::error::ErrorResponse>(&error_body).ok();
+
+        let error_message = match error_json {
+            Some(e) => e.message,
+            None => format!("{:?}", error_body),
+        };
+
+        crate::error::Error::Http {
+            status,
+            message: error_message,
+        }
+    }
 }

@@ -1,5 +1,3 @@
-use crate::error::{Error, api_error::ApiError};
-
 #[derive(Debug)]
 pub struct GetBlockChildrenAllClient {
     /// The reqwest http client
@@ -12,11 +10,11 @@ pub struct GetBlockChildrenAllClient {
 
 impl GetBlockChildrenAllClient {
     // TODO: docs for send
-    pub async fn send(self) -> Result<Vec<crate::block::BlockResponse>, Error> {
+    pub async fn send(self) -> Result<Vec<crate::block::BlockResponse>, crate::error::Error> {
         let mut result_blocks: Vec<crate::block::BlockResponse> = vec![];
 
-        let block_id = &self.block_id.ok_or(Error::RequestParameter(
-            "`block_id` has not been set.".to_string(),
+        let block_id = &self.block_id.ok_or(crate::error::Error::RequestParameter(
+            "`block_id` is not set.".to_string(),
         ))?;
 
         let mut start_cursor = self.start_cursor;
@@ -32,17 +30,19 @@ impl GetBlockChildrenAllClient {
 
             let request = self.reqwest_client.get(url).query(&query_params);
 
-            let response = request.send().await?;
+            let response = request
+                .send()
+                .await
+                .map_err(|e| crate::error::Error::Network(e.to_string()))?;
 
             if !response.status().is_success() {
-                let error_body = response.bytes().await?;
-
-                let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-                return Err(Error::Api(Box::new(error_json)));
+                return Err(crate::error::Error::try_from_response_async(response).await);
             }
 
-            let body = response.bytes().await?;
+            let body = response
+                .bytes()
+                .await
+                .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
             let block_list_response = serde_json::from_slice::<
                 crate::list_response::ListResponse<crate::block::BlockResponse>,

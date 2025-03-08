@@ -9,9 +9,7 @@ pub mod filter;
 pub mod list_response;
 pub mod others;
 pub mod page;
-pub mod prelude;
 pub mod search;
-pub mod to_json;
 pub mod user;
 
 pub use crate::client::Client;
@@ -22,4 +20,4 @@ pub use crate::others::icon::Icon;
 pub use crate::others::language::Language;
 pub use crate::others::rich_text::RichText;
 pub use crate::others::select::{Select, SelectColor, SelectGroup};
-pub use crate::user::{bot::*, person::*, User};
+pub use crate::user::{User, bot::*, person::*};

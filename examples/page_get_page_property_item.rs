@@ -1,7 +1,7 @@
-use notionrs::{error::Error, page::PageProperty, Client};
+use notionrs::{Client, page::PageProperty};
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::new().secret("API_KEY");
 
     let request = client
@@ -15,7 +15,7 @@ async fn main() -> Result<(), Error> {
         let title = title_property.to_string();
         println!("Title: {}", title);
     } else {
-        return Err(Error::Custom("Property is not a title".to_string()));
+        return Err("Property is not a title".into());
     }
 
     Ok(())
