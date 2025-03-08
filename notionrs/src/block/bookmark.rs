@@ -14,12 +14,7 @@ pub struct BookmarkBlock {
 }
 
 crate::impl_from_as_ref!(BookmarkBlock, url);
-
-impl std::fmt::Display for BookmarkBlock {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.url)
-    }
-}
+crate::impl_display_from_string_field!(BookmarkBlock, url);
 
 // # --------------------------------------------------------------------------------
 //
