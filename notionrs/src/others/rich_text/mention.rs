@@ -5,9 +5,13 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "snake_case")]
 pub enum Mention {
     User {
+        /// <https://developers.notion.com/reference/rich-text#user-mention-type-object>
         user: crate::User,
     },
     Date {
+        /// <https://developers.notion.com/reference/rich-text#date-mention-type-object>
+        ///
+        /// Date mentions contain a date property value object within the corresponding date field.
         date: crate::page::date::PageDatePropertyParameter,
     },
     LinkPreview {
@@ -46,53 +50,74 @@ impl std::fmt::Display for Mention {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+/// <https://developers.notion.com/reference/rich-text#database-mention-type-object>
+///
+/// Database mentions contain a database reference within the corresponding `database` field.
+/// A database reference is an object with an `id` key and a string value (UUIDv4) corresponding to a database ID.
+///
+/// If an integration doesn’t have [access](https://developers.notion.com/reference/capabilities) to the mentioned database,
+/// then the mention is returned with just the ID.
+/// The `plain_text` value that would be a title appears as `"Untitled"`
+/// and the annotation object’s values are defaults.
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default, notionrs_macro::Setter)]
 pub struct DatabaseMention {
+    /// database id.
     pub id: String,
 }
+crate::impl_display_from_string_field!(DatabaseMention, id);
+crate::impl_from_as_ref!(DatabaseMention, id);
 
-impl std::fmt::Display for DatabaseMention {
-    /// Display the database_id.
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.id)
-    }
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+/// <https://developers.notion.com/reference/rich-text#link-preview-mention-type-object>
+///
+/// If a user opts to share a Link Preview as a mention,
+/// then the API handles the Link Preview mention
+/// as a rich text object with a `type` value of `link_preview`.
+/// Link preview rich text mentions contain a corresponding
+/// `link_preview` object that includes the `url`
+/// that is used to create the Link Preview mention.
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default, notionrs_macro::Setter)]
 pub struct LinkPreviewMention {
+    /// The URL of the link.
     pub url: String,
 }
+crate::impl_display_from_string_field!(LinkPreviewMention, url);
+crate::impl_from_as_ref!(LinkPreviewMention, url);
 
-impl std::fmt::Display for LinkPreviewMention {
-    /// Display the url.
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.url)
-    }
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+/// There is no documentation for this type in the official API reference.
+///
+/// The `href` field is a string that represents the URL of the link.
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default, notionrs_macro::Setter)]
 pub struct LinkMention {
     pub href: String,
 }
+crate::impl_display_from_string_field!(LinkMention, href);
+crate::impl_from_as_ref!(LinkMention, href);
 
-impl std::fmt::Display for LinkMention {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.href)
-    }
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+/// <https://developers.notion.com/reference/rich-text#page-mention-type-object>
+///
+/// Page mentions contain a `page` reference within the corresponding `page` field.
+/// A page reference is an object with an `id` property and a string value (UUIDv4)
+/// corresponding to a page ID.
+///
+/// If an integration doesn’t have access to the mentioned page,
+/// then the mention is returned with just the ID. The `plain_text` value
+/// that would be a title appears as `"Untitled"` and the annotation object’s values are defaults.
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default, notionrs_macro::Setter)]
 pub struct PageMention {
+    /// page id.
     pub id: String,
 }
+crate::impl_display_from_string_field!(PageMention, id);
+crate::impl_from_as_ref!(PageMention, id);
 
-impl std::fmt::Display for PageMention {
-    /// Display the page_id.
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.id)
-    }
-}
-
+/// <https://developers.notion.com/reference/rich-text#template-mention-type-object>
+///
+/// The content inside a [template button](https://www.notion.com/ja/help/buttons?cookie_sync_completed=true)
+/// in the Notion UI can include placeholder date
+/// and user mentions that populate when a template is duplicated.
+/// Template mention type objects contain these populated values.
+/// Template mention rich text objects contain a template_mention object
+/// with a nested type key that is either `"template_mention_date"` or `"template_mention_user"`.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum TemplateMention {
