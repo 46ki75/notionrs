@@ -18,11 +18,26 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
 
         let comment = generate_comment(f);
 
-        quote! {
-            #comment
-            pub fn #field_name(mut self, #field_name: #field_ty) -> Self {
-                self.#field_name = #field_name;
-                self
+        let string_ty: syn::Type = syn::parse_str("String").unwrap();
+
+        if field_ty == &string_ty {
+            quote! {
+                #comment
+                pub fn #field_name<T>(mut self, #field_name: T) -> Self
+                where
+                    T: AsRef<str>,
+                {
+                    self.#field_name = #field_name.as_ref().to_string();
+                    self
+                }
+            }
+        } else {
+            quote! {
+                #comment
+                pub fn #field_name(mut self, #field_name: #field_ty) -> Self {
+                    self.#field_name = #field_name;
+                    self
+                }
             }
         }
     });

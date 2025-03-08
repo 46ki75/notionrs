@@ -18,7 +18,7 @@ where
     T: AsRef<str>,
 {
     fn from(url: T) -> Self {
-        Self::default().url(url.as_ref().to_string())
+        Self::default().url(url)
     }
 }
 
