@@ -1,7 +1,7 @@
-use notionrs::{error::Error, Client};
+use notionrs::Client;
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::new().secret("NOTION_TOKEN");
 
     let request = client.retrieve_database().database_id("DATABASE_ID");
@@ -12,7 +12,7 @@ async fn main() -> Result<(), Error> {
 
     let tags_property = properties
         .get("Tags")
-        .ok_or(Error::Custom("Tags property not found".to_string()))?;
+        .ok_or("Tags property not found".to_string())?;
 
     if let notionrs::database::DatabaseProperty::MultiSelect(tags) = tags_property {
         for tag in tags.multi_select.options.clone() {

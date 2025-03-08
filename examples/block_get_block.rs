@@ -1,7 +1,7 @@
-use notionrs::{block::Block, error::Error, Client};
+use notionrs::{Client, block::Block};
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::new().secret("API_KEY");
 
     let request = client.get_block().block_id("BLOCK_ID");
@@ -15,8 +15,6 @@ async fn main() -> Result<(), Error> {
         print!("{}", text);
         Ok(())
     } else {
-        Err(notionrs::error::Error::Custom(
-            "Unexpected block type.".to_string(),
-        ))
+        Err("Unexpected block type.".into())
     }
 }

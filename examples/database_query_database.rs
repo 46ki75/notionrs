@@ -1,7 +1,7 @@
-use notionrs::{database::Sort, error::Error, filter::Filter, page::PageProperty, Client};
+use notionrs::{Client, database::Sort, filter::Filter, page::PageProperty};
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::new().secret("NOTION_TOKEN");
 
     let filter = Filter::timestamp_past_month();
@@ -20,7 +20,7 @@ async fn main() -> Result<(), Error> {
         let title_property = page
             .properties
             .get("Name")
-            .ok_or(Error::Custom("Property not found".to_string()))?;
+            .ok_or("Property not found".to_string())?;
 
         if let PageProperty::Title(title) = title_property {
             println!("Title: {}", title);

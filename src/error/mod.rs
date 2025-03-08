@@ -1,35 +1,27 @@
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
+    /// This error occurs when the request fails due to a network issue.
     #[error("Network error: {0}")]
     Network(String),
 
+    /// This error occurs when parsing the HTTP body fails.
     #[error("HTTP body parse error: {0}")]
     BodyParse(String),
 
-    /// This error occurs when the HTTP status code is not 200.
-    #[error("HTTP error: {status}: {message}")]
+    /// This error occurs when the HTTP response has a non-200 status code.
+    #[error("HTTP error {status}: {message}")]
     Http { status: u16, message: String },
 
-    /// Since this library follows the Builder pattern, requests can be sent even if some parameters are missing.
-    /// In such cases where the request parameters are insufficient, we will throw this error.
+    /// This library follows the Builder pattern, allowing requests to be sent even with missing parameters.
+    /// If request parameters are insufficient, this error will be returned.
     ///
-    /// If invalid parameters are passed, the Notion API will return a 400 Bad Request error -> `HttpBadRequest`.
-    #[error("notion request parameter error: {0}")]
+    /// If invalid parameters are passed, the Notion API will return a 400 Bad Request error -> `Error::Http`.
+    #[error("Notion request parameter error: {0}")]
     RequestParameter(String),
 
-    #[error("deserialization error: {0}")]
+    /// This error occurs when serialization or deserialization fails.
+    #[error("Serialization/Deserialization error: {0}")]
     Serde(#[from] serde_json::Error),
-
-    #[error("color conversion error: {0}")]
-    Color(String),
-
-    #[error("unknown error: {0}")]
-    Unknown(String),
-
-    /// If you want to handle multiple errors collectively in the `Error` enum of the `notionrs` crate,
-    /// use this variant to create your own custom error.
-    #[error("custom error: {0}")]
-    Custom(String),
 }
 
 #[derive(Debug, serde::Deserialize, serde::Serialize, Clone)]
