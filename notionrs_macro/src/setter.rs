@@ -16,11 +16,13 @@ pub fn generate_setters(input: DeriveInput) -> TokenStream {
     let field_setters = fields.iter().map(|f| {
         let field_name = &f.ident;
         let field_ty = &f.ty;
-        let doc_comment = format!(
+
+        let setter_comment = format!(
             "Set the value of the `{}` field.",
             field_name.as_ref().unwrap()
         );
-        let field_comment = f.attrs.iter().filter_map(|attr| {
+
+        let field_original_comment = f.attrs.iter().filter_map(|attr| {
             if attr.path().is_ident("doc") {
                 if let Meta::NameValue(MetaNameValue {
                     path: _,
@@ -41,12 +43,16 @@ pub fn generate_setters(input: DeriveInput) -> TokenStream {
             None
         });
 
-        quote! {
-            #[doc = #doc_comment]
+        let comment = quote! {
+            #[doc = #setter_comment]
             #[doc = ""]
             #[doc = "---"]
             #[doc = ""]
-            #(#field_comment)*
+            #(#field_original_comment)*
+        };
+
+        quote! {
+            #comment
             pub fn #field_name(mut self, #field_name: #field_ty) -> Self {
                 self.#field_name = #field_name;
                 self
