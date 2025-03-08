@@ -1,8 +1,16 @@
 {
   "folders": [
     {
-      "name": "crate (notionrs)",
+      "name": "Project Root",
       "path": "."
+    },
+    {
+      "name": "notionrs",
+      "path": "./notionrs"
+    },
+    {
+      "name": "macro",
+      "path": "./notionrs_macro"
     },
     {
       "name": "document (vitepress)",
