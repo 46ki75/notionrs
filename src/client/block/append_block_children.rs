@@ -31,7 +31,7 @@ impl AppendBlockChildrenClient {
     ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, crate::error::Error>
     {
         let block_id = self.block_id.ok_or(crate::error::Error::RequestParameter(
-            "`block_id` has not been set.".to_string(),
+            "`block_id` is not set.".to_string(),
         ))?;
 
         let request_body_struct = AppendBlockChildrenRequestBody {

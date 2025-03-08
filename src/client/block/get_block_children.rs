@@ -19,7 +19,7 @@ impl GetBlockChildrenClient {
         let mut result_blocks: Vec<crate::block::BlockResponse> = vec![];
 
         let block_id = &self.block_id.ok_or(crate::error::Error::RequestParameter(
-            "`block_id` has not been set.".to_string(),
+            "`block_id` is not set.".to_string(),
         ))?;
 
         let start_cursor = self.start_cursor;

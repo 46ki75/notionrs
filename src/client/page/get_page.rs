@@ -35,7 +35,7 @@ impl GetPageClient {
                 Ok(page)
             }
             None => Err(crate::error::Error::RequestParameter(
-                "user_id is empty".to_string(),
+                "`user_id` is not set.".to_string(),
             )),
         }
     }

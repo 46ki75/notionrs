@@ -74,7 +74,7 @@ impl QueryDatabaseAllClient {
                 }
             }
             None => Err(crate::error::Error::RequestParameter(
-                "database_id is empty".to_string(),
+                "`database_id` is not set.".to_string(),
             )),
         }
     }

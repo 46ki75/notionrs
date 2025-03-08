@@ -62,7 +62,7 @@ impl CreatePageClient {
 
         let parent = parent.ok_or_else(|| {
             crate::error::Error::RequestParameter(
-                "You need to specify either the page_id or the database_id.".to_string(),
+                "Either `page_id` or `database_id` must be set.".to_string(),
             )
         })?;
 

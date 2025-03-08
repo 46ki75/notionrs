@@ -11,7 +11,7 @@ impl RetrieveDatabaseClient {
         let database_id = self
             .database_id
             .ok_or(crate::error::Error::RequestParameter(
-                "`database_id` has not been set.".to_string(),
+                "`database_id` is not set.".to_string(),
             ))?;
 
         let url = format!("https://api.notion.com/v1/databases/{}", database_id);

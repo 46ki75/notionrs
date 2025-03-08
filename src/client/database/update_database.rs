@@ -56,7 +56,7 @@ impl UpdateDatabaseClient {
         let database_id = self
             .database_id
             .ok_or(crate::error::Error::RequestParameter(
-                "The database_id parameter must be defined.".to_string(),
+                "`database_id` is not set.".to_string(),
             ))?;
 
         let request_body_struct = UpdateDatabaseRequestBody {

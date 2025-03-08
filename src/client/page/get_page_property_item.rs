@@ -12,13 +12,13 @@ impl GetPagePropertyItemClient {
     // TODO: docs for send
     pub async fn send(self) -> Result<crate::page::properties::PageProperty, crate::error::Error> {
         let page_id = self.page_id.ok_or(crate::error::Error::RequestParameter(
-            "`page_id` has not been set.".to_string(),
+            "`page_id` is not set.".to_string(),
         ))?;
 
         let property_id = self
             .property_id
             .ok_or(crate::error::Error::RequestParameter(
-                "`property_id` has not been set.".to_string(),
+                "`property_id` is not set.".to_string(),
             ))?;
 
         let url = format!(

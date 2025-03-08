@@ -10,7 +10,7 @@ impl GetBlockClient {
     // TODO: docs for send
     pub async fn send(self) -> Result<crate::block::BlockResponse, crate::error::Error> {
         let block_id = self.block_id.ok_or(crate::error::Error::RequestParameter(
-            "`block_id` has not been set.".to_string(),
+            "`block_id` is not set.".to_string(),
         ))?;
 
         let url = format!("https://api.notion.com/v1/blocks/{}", block_id);
