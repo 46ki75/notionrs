@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::page::page_response::PageResponse;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct CreatePageClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -101,38 +101,5 @@ impl CreatePageClient {
         let page: PageResponse = serde_json::from_slice::<PageResponse>(&body)?;
 
         Ok(page)
-    }
-
-    pub fn page_id<T: AsRef<str>>(mut self, page_id: T) -> Self {
-        self.page_id = Some(page_id.as_ref().to_string());
-        self
-    }
-
-    pub fn database_id<T: AsRef<str>>(mut self, database_id: T) -> Self {
-        self.database_id = Some(database_id.as_ref().to_string());
-        self
-    }
-
-    pub fn properties(
-        mut self,
-        properties: std::collections::HashMap<String, crate::page::properties::PageProperty>,
-    ) -> Self {
-        self.properties = properties;
-        self
-    }
-
-    pub fn children(mut self, children: Vec<crate::block::Block>) -> Self {
-        self.children = Some(children);
-        self
-    }
-
-    pub fn icon(mut self, icon: crate::others::icon::Icon) -> Self {
-        self.icon = Some(icon);
-        self
-    }
-
-    pub fn cover(mut self, cover: crate::File) -> Self {
-        self.cover = Some(cover);
-        self
     }
 }

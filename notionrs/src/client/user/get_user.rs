@@ -1,10 +1,11 @@
 use crate::user::User;
 
-#[derive(Debug)]
+#[derive(Debug, notionrs_macro::Setter)]
 pub struct GetUserClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
+    /// The ID of the user to retrieve.
     pub(crate) user_id: Option<String>,
 }
 
@@ -39,11 +40,5 @@ impl GetUserClient {
                 "`user_id` is not set.".to_string(),
             )),
         }
-    }
-
-    /// Sets the user ID.
-    pub fn user_id<T: AsRef<str>>(mut self, user_id: T) -> Self {
-        self.user_id = Some(user_id.as_ref().to_string());
-        self
     }
 }

@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, notionrs_macro::Setter)]
 pub struct GetPagePropertyItemClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -45,17 +45,5 @@ impl GetPagePropertyItemClient {
         let user = serde_json::from_slice::<crate::page::properties::PageProperty>(&body)?;
 
         Ok(user)
-    }
-
-    // TODO: docs for page_id
-    pub fn page_id<T: AsRef<str>>(mut self, page_id: T) -> Self {
-        self.page_id = Some(page_id.as_ref().to_string());
-        self
-    }
-
-    // TODO: docs for property_id
-    pub fn property_id<T: AsRef<str>>(mut self, property_id: T) -> Self {
-        self.property_id = Some(property_id.as_ref().to_string());
-        self
     }
 }

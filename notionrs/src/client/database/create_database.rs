@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::RichText;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct CreateDatabaseClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -88,40 +88,5 @@ impl CreateDatabaseClient {
             serde_json::from_slice::<crate::database::DatabaseResponse>(&body)?;
 
         Ok(database)
-    }
-
-    pub fn page_id<T: AsRef<str>>(mut self, page_id: T) -> Self {
-        self.page_id = Some(page_id.as_ref().to_string());
-        self
-    }
-
-    pub fn title(mut self, title: Vec<RichText>) -> Self {
-        self.title = title;
-        self
-    }
-
-    /// Field that can be added, though not documented in Notion's API documentation.
-    /// Can be used as a description for the database.
-    pub fn description(mut self, title: Vec<RichText>) -> Self {
-        self.description = title;
-        self
-    }
-
-    pub fn properties(
-        mut self,
-        properties: std::collections::HashMap<String, crate::database::DatabaseProperty>,
-    ) -> Self {
-        self.properties = properties;
-        self
-    }
-
-    pub fn icon(mut self, icon: crate::others::icon::Icon) -> Self {
-        self.icon = Some(icon);
-        self
-    }
-
-    pub fn cover(mut self, cover: crate::File) -> Self {
-        self.cover = Some(cover);
-        self
     }
 }

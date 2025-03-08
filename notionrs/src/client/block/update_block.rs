@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug)]
+#[derive(Debug, notionrs_macro::Setter)]
 pub struct UpdateBlockClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -66,22 +66,5 @@ impl UpdateBlockClient {
         let block = serde_json::from_slice::<crate::block::BlockResponse>(&body)?;
 
         Ok(block)
-    }
-
-    /// Identifier for a block. Also accepts a page ID.
-    pub fn block_id<T: AsRef<str>>(mut self, block_id: T) -> Self {
-        self.block_id = Some(block_id.as_ref().to_string());
-        self
-    }
-
-    pub fn block(mut self, block: crate::block::Block) -> Self {
-        self.block = Some(block);
-        self
-    }
-
-    // TODO: docs for after
-    pub fn archived(mut self, archived: bool) -> Self {
-        self.archived = Some(archived);
-        self
     }
 }

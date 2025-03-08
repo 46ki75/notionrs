@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, notionrs_macro::Setter)]
 pub struct GetBlockClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -34,11 +34,5 @@ impl GetBlockClient {
         let block = serde_json::from_slice::<crate::block::BlockResponse>(&body)?;
 
         Ok(block)
-    }
-
-    // TODO: docs for block_id
-    pub fn block_id<T: AsRef<str>>(mut self, page_id: T) -> Self {
-        self.block_id = Some(page_id.as_ref().to_string());
-        self
     }
 }

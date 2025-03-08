@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, notionrs_macro::Setter)]
 pub struct GetBlockChildrenClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -62,29 +62,5 @@ impl GetBlockChildrenClient {
             has_more: Some(start_cursor.is_some()),
             r#type: Some("list".into()),
         })
-    }
-
-    // TODO: docs for block_id
-    pub fn block_id<T>(mut self, page_id: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        self.block_id = Some(page_id.as_ref().to_string());
-        self
-    }
-
-    // TODO: docs for start_cursor
-    pub fn start_cursor<T>(mut self, start_cursor: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        self.start_cursor = Some(start_cursor.as_ref().to_string());
-        self
-    }
-
-    // TODO: docs for page_size
-    pub fn page_size(mut self, page_size: u64) -> Self {
-        self.page_size = page_size;
-        self
     }
 }

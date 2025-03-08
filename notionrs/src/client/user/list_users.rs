@@ -4,7 +4,7 @@ use crate::{list_response::ListResponse, user::User};
 
 /// A request builder for performing `list_users` operations.
 
-#[derive(Debug)]
+#[derive(Debug, notionrs_macro::Setter)]
 pub struct ListUsersClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -107,24 +107,5 @@ impl ListUsersClient {
 
             Ok(users)
         }
-    }
-
-    /// Performs cursor-based pagination when data cannot be fetched in one go.
-    pub fn start_cursor<T: AsRef<str>>(mut self, start_cursor: T) -> Self {
-        self.start_cursor = Some(start_cursor.as_ref().to_string());
-        self
-    }
-
-    /// Can be used to limit the number of items fetched. Valid range for the number is 1~100.
-    pub fn page_size(mut self, page_size: u8) -> Self {
-        self.page_size = Some(page_size);
-        self
-    }
-
-    /// Use this for recursive data fetching. By default, pagination only fetches up to 100 records,
-    /// but this allows fetching all records.
-    pub fn recursive(mut self) -> Self {
-        self.recursive = true;
-        self
     }
 }

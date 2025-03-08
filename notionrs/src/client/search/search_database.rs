@@ -1,11 +1,22 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct SearchDatabaseClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
-    pub(crate) body: SearchDatabaseRequestBody,
+    pub(crate) query: Option<String>,
+
+    pub(crate) sort: Option<crate::search::SearchSort>,
+
+    /// Specify the cursor position at the beginning. In the query result,
+    /// there is a field called `next_cursor` through
+    /// which information is passed at the end.
+    pub(crate) start_cursor: Option<String>,
+
+    /// The amount of data retrieved in one query.
+    /// If not specified, the default is 100.
+    pub(crate) page_size: Option<u32>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
@@ -28,16 +39,20 @@ pub struct SearchDatabaseRequestBody {
 
 impl SearchDatabaseClient {
     pub async fn send(
-        mut self,
+        self,
     ) -> Result<
         crate::list_response::ListResponse<crate::database::DatabaseResponse>,
         crate::error::Error,
     > {
         let url = String::from("https://api.notion.com/v1/search");
 
-        self.body.filter = Some(crate::search::SearchFilter::database());
-
-        let request_body = serde_json::to_string(&self.body)?;
+        let request_body = serde_json::to_string(&SearchDatabaseRequestBody {
+            query: self.query,
+            filter: Some(crate::search::SearchFilter::database()),
+            sort: self.sort,
+            start_cursor: self.start_cursor,
+            page_size: self.page_size,
+        })?;
 
         let request = self
             .reqwest_client
@@ -64,39 +79,5 @@ impl SearchDatabaseClient {
         >(&body)?;
 
         Ok(pages)
-    }
-
-    pub fn query<T: AsRef<str>>(mut self, query: T) -> Self {
-        self.body.query = Some(query.as_ref().to_string());
-        self
-    }
-
-    /// The amount of data retrieved in one query.
-    /// If not specified, the default is 100.
-    /// When `fetch_all` is set to true, it will also be 100.
-    pub fn page_size(mut self, page_size: u32) -> Self {
-        self.body.page_size = Some(page_size);
-        self
-    }
-
-    /// Specify the cursor position at the beginning. In the query result,
-    /// there is a field called `next_cursor` through
-    /// which information is passed at the end.
-    pub fn start_cursor<T: AsRef<str>>(mut self, start_cursor: T) -> Self {
-        self.body.start_cursor = Some(start_cursor.as_ref().to_string());
-        self
-    }
-
-    pub fn sort_timestamp_asc(self) -> Self {
-        self.sort(crate::search::SearchSort::asc())
-    }
-
-    pub fn sort_timestamp_desc(self) -> Self {
-        self.sort(crate::search::SearchSort::desc())
-    }
-
-    fn sort(mut self, sort: crate::search::SearchSort) -> Self {
-        self.body.sort = Some(sort);
-        self
     }
 }

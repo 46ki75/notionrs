@@ -1,10 +1,11 @@
 use crate::page::page_response::PageResponse;
 
-#[derive(Debug)]
+#[derive(Debug, notionrs_macro::Setter)]
 pub struct GetPageClient {
-    /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
+    /// Specify the ID of the page.
+    /// The ID is also included in the Notion page URL.
     pub(crate) page_id: Option<String>,
 }
 
@@ -38,12 +39,5 @@ impl GetPageClient {
                 "`user_id` is not set.".to_string(),
             )),
         }
-    }
-
-    /// Specify the ID of the page.
-    /// The ID is also included in the Notion page URL.
-    pub fn page_id<T: AsRef<str>>(mut self, page_id: T) -> Self {
-        self.page_id = Some(page_id.as_ref().to_string());
-        self
     }
 }

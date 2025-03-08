@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug)]
+#[derive(Debug, notionrs_macro::Setter)]
 pub struct AppendBlockChildrenClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -68,23 +68,5 @@ impl AppendBlockChildrenClient {
         >(&body)?;
 
         Ok(block)
-    }
-
-    /// Identifier for a block. Also accepts a page ID.
-    pub fn block_id<T: AsRef<str>>(mut self, block_id: T) -> Self {
-        self.block_id = Some(block_id.as_ref().to_string());
-        self
-    }
-
-    // TODO: docs for after
-    pub fn after<T: AsRef<str>>(mut self, after: T) -> Self {
-        self.after = Some(after.as_ref().to_string());
-        self
-    }
-
-    /// The ID of the existing block that the new block should be appended after.
-    pub fn children(mut self, children: Vec<crate::block::Block>) -> Self {
-        self.children = children;
-        self
     }
 }

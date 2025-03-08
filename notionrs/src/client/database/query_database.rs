@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{filter::Filter, list_response::ListResponse, page::page_response::PageResponse};
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct QueryDatabaseClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -63,37 +63,5 @@ impl QueryDatabaseClient {
                 "`database_id` is not set".to_string(),
             )),
         }
-    }
-
-    /// Specify the ID of the database to query.
-    pub fn database_id<T: AsRef<str>>(mut self, database_id: T) -> Self {
-        self.database_id = Some(database_id.as_ref().to_string());
-        self
-    }
-
-    /// The amount of data retrieved in one query.
-    /// If not specified, the default is 100.
-    /// When `fetch_all` is set to true, it will also be 100.
-    pub fn page_size(mut self, page_size: u32) -> Self {
-        self.body.page_size = Some(page_size);
-        self
-    }
-
-    /// Specify the cursor position at the beginning. In the query result,
-    /// there is a field called `next_cursor` through
-    /// which information is passed at the end.
-    pub fn start_cursor<T: AsRef<str>>(mut self, start_cursor: T) -> Self {
-        self.body.start_cursor = Some(start_cursor.as_ref().to_string());
-        self
-    }
-
-    pub fn filter(mut self, filter: Filter) -> Self {
-        self.body.filter = Some(filter);
-        self
-    }
-
-    pub fn sorts(mut self, sorts: Vec<crate::database::Sort>) -> Self {
-        self.body.sorts = sorts;
-        self
     }
 }

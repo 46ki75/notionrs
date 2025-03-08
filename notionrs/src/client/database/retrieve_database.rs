@@ -1,4 +1,4 @@
-#[derive(Debug, Default)]
+#[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct RetrieveDatabaseClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -35,10 +35,5 @@ impl RetrieveDatabaseClient {
         let database = serde_json::from_slice::<crate::database::DatabaseResponse>(&body)?;
 
         Ok(database)
-    }
-
-    pub fn database_id<T: AsRef<str>>(mut self, database_id: T) -> Self {
-        self.database_id = Some(database_id.as_ref().to_string());
-        self
     }
 }
