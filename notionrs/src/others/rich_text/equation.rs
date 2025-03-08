@@ -1,25 +1,13 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
+/// <https://developers.notion.com/reference/rich-text#equation>
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default, notionrs_macro::Setter)]
 pub struct Equation {
+    /// The LaTeX string representing the inline equation.
+    ///
+    /// e.g., `E = mc^2`
     pub expression: String,
 }
 
-impl Equation {
-    pub fn expression<T>(mut self, expression: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        self.expression = expression.as_ref().to_string();
-        self
-    }
-}
-
-impl<T> From<T> for Equation
-where
-    T: AsRef<str>,
-{
-    fn from(value: T) -> Self {
-        Self::default().expression(value)
-    }
-}
+crate::impl_display_from_string_field!(Equation, expression);
+crate::impl_from_as_ref!(Equation, expression);
