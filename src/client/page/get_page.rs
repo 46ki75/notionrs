@@ -1,7 +1,4 @@
-use crate::{
-    error::{Error, api_error::ApiError},
-    page::page_response::PageResponse,
-};
+use crate::page::page_response::PageResponse;
 
 #[derive(Debug)]
 pub struct GetPageClient {
@@ -12,7 +9,7 @@ pub struct GetPageClient {
 }
 
 impl GetPageClient {
-    pub async fn send(self) -> Result<PageResponse, Error> {
+    pub async fn send(self) -> Result<PageResponse, crate::error::Error> {
         match self.page_id {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/pages/{}", id);
@@ -22,11 +19,7 @@ impl GetPageClient {
                 let response = request.send().await?;
 
                 if !response.status().is_success() {
-                    let error_body = response.bytes().await?;
-
-                    let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-                    return Err(Error::Api(Box::new(error_json)));
+                    return Err(crate::error::Error::try_from_response_async(response).await);
                 }
 
                 let body = response.bytes().await?;
@@ -35,7 +28,9 @@ impl GetPageClient {
 
                 Ok(page)
             }
-            None => Err(Error::RequestParameter("user_id is empty".to_string())),
+            None => Err(crate::error::Error::RequestParameter(
+                "user_id is empty".to_string(),
+            )),
         }
     }
 

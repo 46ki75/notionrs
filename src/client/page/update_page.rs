@@ -1,9 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    error::{Error, api_error::ApiError},
-    page::page_response::PageResponse,
-};
+use crate::page::page_response::PageResponse;
 
 #[derive(Debug, Default)]
 pub struct UpdatePageClient {
@@ -31,7 +28,7 @@ pub struct UpdatePageRequestBody {
 }
 
 impl UpdatePageClient {
-    pub async fn send(self) -> Result<PageResponse, Error> {
+    pub async fn send(self) -> Result<PageResponse, crate::error::Error> {
         let page_id = self.page_id.ok_or(crate::error::Error::RequestParameter(
             "You need to specify either the page_id.".to_string(),
         ))?;
@@ -55,11 +52,7 @@ impl UpdatePageClient {
         let response = request.send().await?;
 
         if !response.status().is_success() {
-            let error_body = response.bytes().await?;
-
-            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-            return Err(Error::Api(Box::new(error_json)));
+            return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
         let body = response.bytes().await?;

@@ -14,12 +14,7 @@ impl GetSelfClient {
         let response = request.send().await?;
 
         if !response.status().is_success() {
-            let error_body = response.bytes().await?;
-
-            let error_json =
-                serde_json::from_slice::<crate::error::api_error::ApiError>(&error_body)?;
-
-            return Err(crate::error::Error::Api(Box::new(error_json)));
+            return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
         let body = response.bytes().await?;

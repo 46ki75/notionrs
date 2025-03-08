@@ -1,5 +1,3 @@
-use crate::error::{Error, api_error::ApiError};
-
 #[derive(Debug)]
 pub struct GetBlockChildrenClient {
     /// The reqwest http client
@@ -16,10 +14,11 @@ impl GetBlockChildrenClient {
     // TODO: docs for send
     pub async fn send(
         self,
-    ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, Error> {
+    ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, crate::error::Error>
+    {
         let mut result_blocks: Vec<crate::block::BlockResponse> = vec![];
 
-        let block_id = &self.block_id.ok_or(Error::RequestParameter(
+        let block_id = &self.block_id.ok_or(crate::error::Error::RequestParameter(
             "`block_id` has not been set.".to_string(),
         ))?;
 
@@ -39,11 +38,7 @@ impl GetBlockChildrenClient {
         let response = request.send().await?;
 
         if !response.status().is_success() {
-            let error_body = response.bytes().await?;
-
-            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-            return Err(Error::Api(Box::new(error_json)));
+            return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
         let body = response.bytes().await?;

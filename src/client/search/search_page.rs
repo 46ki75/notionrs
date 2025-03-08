@@ -1,9 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    error::{Error, api_error::ApiError},
-    prelude::ToJson,
-};
+use crate::prelude::ToJson;
 
 #[derive(Debug, Default)]
 pub struct SearchPageClient {
@@ -34,7 +31,8 @@ pub struct SearchPageRequestBody {
 impl SearchPageClient {
     pub async fn send(
         mut self,
-    ) -> Result<crate::list_response::ListResponse<crate::page::PageResponse>, Error> {
+    ) -> Result<crate::list_response::ListResponse<crate::page::PageResponse>, crate::error::Error>
+    {
         let url = String::from("https://api.notion.com/v1/search");
 
         self.body.filter = Some(crate::search::SearchFilter::page());
@@ -50,11 +48,7 @@ impl SearchPageClient {
         let response = request.send().await?;
 
         if !response.status().is_success() {
-            let error_body = response.bytes().await?;
-
-            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-            return Err(Error::Api(Box::new(error_json)));
+            return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
         let body = response.bytes().await?;

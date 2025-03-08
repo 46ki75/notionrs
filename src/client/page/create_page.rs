@@ -1,9 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    error::{Error, api_error::ApiError},
-    page::page_response::PageResponse,
-};
+use crate::page::page_response::PageResponse;
 
 #[derive(Debug, Default)]
 pub struct CreatePageClient {
@@ -48,7 +45,7 @@ impl CreatePageClient {
     /// When the response type is not specific,
     /// use `send::<HashMap<String, PageProperty>>()`.
     /// (Type inference for the property field cannot be used.)
-    pub async fn send(self) -> Result<PageResponse, Error> {
+    pub async fn send(self) -> Result<PageResponse, crate::error::Error> {
         let mut parent: Option<crate::others::parent::Parent> = None;
 
         if let Some(page_id) = self.page_id {
@@ -90,11 +87,7 @@ impl CreatePageClient {
         let response = request.send().await?;
 
         if !response.status().is_success() {
-            let error_body = response.bytes().await?;
-
-            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-            return Err(Error::Api(Box::new(error_json)));
+            return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
         let body = response.bytes().await?;

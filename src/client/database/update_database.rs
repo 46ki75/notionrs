@@ -1,9 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    RichText,
-    error::{Error, api_error::ApiError},
-};
+use crate::RichText;
 
 #[derive(Debug, Default)]
 pub struct UpdateDatabaseClient {
@@ -55,7 +52,7 @@ pub struct UpdateDatabaseRequestBody {
 }
 
 impl UpdateDatabaseClient {
-    pub async fn send(self) -> Result<crate::database::DatabaseResponse, Error> {
+    pub async fn send(self) -> Result<crate::database::DatabaseResponse, crate::error::Error> {
         let database_id = self
             .database_id
             .ok_or(crate::error::Error::RequestParameter(
@@ -83,11 +80,7 @@ impl UpdateDatabaseClient {
         let response = request.send().await?;
 
         if !response.status().is_success() {
-            let error_body = response.bytes().await?;
-
-            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-            return Err(Error::Api(Box::new(error_json)));
+            return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
         let body = response.bytes().await?;

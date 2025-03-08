@@ -1,11 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    error::{Error, api_error::ApiError},
-    filter::Filter,
-    list_response::ListResponse,
-    page::page_response::PageResponse,
-    prelude::ToJson,
+    filter::Filter, list_response::ListResponse, page::page_response::PageResponse, prelude::ToJson,
 };
 
 #[derive(Debug, Default)]
@@ -34,7 +30,7 @@ pub struct QueryDatabaseRequestBody {
 }
 
 impl QueryDatabaseClient {
-    pub async fn send(self) -> Result<ListResponse<PageResponse>, Error> {
+    pub async fn send(self) -> Result<ListResponse<PageResponse>, crate::error::Error> {
         match self.database_id {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/databases/{}/query", id);
@@ -50,11 +46,7 @@ impl QueryDatabaseClient {
                 let response = request.send().await?;
 
                 if !response.status().is_success() {
-                    let error_body = response.bytes().await?;
-
-                    let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-                    return Err(Error::Api(Box::new(error_json)));
+                    return Err(crate::error::Error::try_from_response_async(response).await);
                 }
 
                 let body = response.bytes().await?;
@@ -63,7 +55,9 @@ impl QueryDatabaseClient {
 
                 Ok(pages)
             }
-            None => Err(Error::RequestParameter("database_id is empty".to_string())),
+            None => Err(crate::error::Error::RequestParameter(
+                "database_id is empty".to_string(),
+            )),
         }
     }
 

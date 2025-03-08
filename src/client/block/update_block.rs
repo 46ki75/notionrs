@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-use crate::error::{Error, api_error::ApiError};
-
 #[derive(Debug)]
 pub struct UpdateBlockClient {
     /// The reqwest http client
@@ -27,12 +25,12 @@ pub struct UpdateBlockRequestBody {
 
 impl UpdateBlockClient {
     // TODO: docs for send
-    pub async fn send(self) -> Result<crate::block::BlockResponse, Error> {
-        let block_id = self.block_id.ok_or(Error::RequestParameter(
+    pub async fn send(self) -> Result<crate::block::BlockResponse, crate::error::Error> {
+        let block_id = self.block_id.ok_or(crate::error::Error::RequestParameter(
             "`block_id` has not been set.".to_string(),
         ))?;
 
-        let block = self.block.ok_or(Error::RequestParameter(
+        let block = self.block.ok_or(crate::error::Error::RequestParameter(
             "`block` has not been set.".to_string(),
         ))?;
 
@@ -54,11 +52,7 @@ impl UpdateBlockClient {
         let response = request.send().await?;
 
         if !response.status().is_success() {
-            let error_body = response.bytes().await?;
-
-            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-            return Err(Error::Api(Box::new(error_json)));
+            return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
         let body = response.bytes().await?;
