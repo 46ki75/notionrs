@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Paragraph block objects contain the following
 /// information within the quote property:
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct QuoteBlock {
     /// The rich text displayed in the quote block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -19,18 +19,6 @@ pub struct QuoteBlock {
 }
 
 impl QuoteBlock {
-    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
-        self.rich_text = rich_text;
-        self
-    }
-
-    /// It can only be specified when making a block creation request.
-    /// If you need to retrieve the child blocks, you will have to send a request to this block again.
-    pub fn children(mut self, children: Vec<super::Block>) -> Self {
-        self.children = Some(children);
-        self
-    }
-
     crate::color_setters!(self, self.color);
 }
 

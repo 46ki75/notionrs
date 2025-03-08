@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Paragraph block objects contain the following
 /// information within the paragraph property:
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct ParagraphBlock {
     /// The rich text displayed in the paragraph block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -14,11 +14,6 @@ pub struct ParagraphBlock {
 }
 
 impl ParagraphBlock {
-    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
-        self.rich_text = rich_text;
-        self
-    }
-
     crate::color_setters!(self, self.color);
 }
 

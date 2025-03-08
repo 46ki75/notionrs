@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/block#toggle-blocks>
 ///
 /// Toggle block objects contain the following information within the toggle property:
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct ToggleBlock {
     /// The rich text displayed in the Toggle block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -18,16 +18,6 @@ pub struct ToggleBlock {
 }
 
 impl ToggleBlock {
-    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
-        self.rich_text = rich_text;
-        self
-    }
-
-    pub fn children(mut self, children: Vec<super::Block>) -> Self {
-        self.children = Some(children);
-        self
-    }
-
     crate::color_setters!(self, self.color);
 }
 

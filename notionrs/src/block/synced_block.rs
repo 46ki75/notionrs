@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 /// First, set `synced_from` to null and add the blocks you want to sync to the children,
 /// then send the request. After that, you can create two or more synced blocks
 /// by sending a request with the ID of the initially created block set in `synced_from.block_id`.
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct SyncedBlock {
     pub synced_from: Option<SyncedBlockParams>,
 
@@ -27,6 +27,7 @@ pub struct SyncedBlockParams {
 }
 
 impl SyncedBlock {
+    /// An identifier for the original synced_block.
     pub fn block_id<T>(mut self, block_id: T) -> Self
     where
         T: AsRef<str>,
@@ -35,11 +36,6 @@ impl SyncedBlock {
             r#type: "block_id".to_string(),
             block_id: block_id.as_ref().to_string(),
         });
-        self
-    }
-
-    pub fn children(mut self, children: Vec<super::Block>) -> Self {
-        self.children = Some(children);
         self
     }
 }

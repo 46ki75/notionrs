@@ -5,7 +5,7 @@ use crate::color_setters;
 /// <https://developers.notion.com/reference/block#to-do>
 ///
 /// To do block objects contain the following information within the to_do property:
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct ToDoBlock {
     /// The rich text displayed in the To do block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -18,16 +18,6 @@ pub struct ToDoBlock {
 }
 
 impl ToDoBlock {
-    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
-        self.rich_text = rich_text;
-        self
-    }
-
-    pub fn checked(mut self, checked: bool) -> Self {
-        self.checked = checked;
-        self
-    }
-
     color_setters!(self, self.color);
 }
 
