@@ -6,7 +6,7 @@ use crate::color_setters;
 ///
 ///  Bulleted list item block objects contain the following
 /// information within the bulleted_list_item property:
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct BulletedListItemBlock {
     /// The rich text in the bulleted_list_item block.
     pub rich_text: Vec<crate::others::rich_text::RichText>,
@@ -21,16 +21,6 @@ pub struct BulletedListItemBlock {
 }
 
 impl BulletedListItemBlock {
-    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
-        self.rich_text = rich_text;
-        self
-    }
-
-    pub fn children(mut self, children: Vec<super::Block>) -> Self {
-        self.children = Some(children);
-        self
-    }
-
     color_setters!(self, self.color);
 }
 

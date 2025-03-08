@@ -18,7 +18,9 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
 
         let comment = generate_comment(f);
 
-        if field_ty == &syn::parse_str("String").unwrap() {
+        if field_ty == &syn::parse_str("String").unwrap()
+        // String
+        {
             quote! {
                 #comment
                 pub fn #field_name<T>(mut self, #field_name: T) -> Self
@@ -29,7 +31,9 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
                     self
                 }
             }
-        } else {
+        } else
+        // others
+        {
             quote! {
                 #comment
                 pub fn #field_name(mut self, #field_name: #field_ty) -> Self {
