@@ -1,7 +1,7 @@
-use notionrs::{error::Error, Client};
+use notionrs::Client;
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::new().secret("API_KEY");
 
     let request = client.create_page().page_id("PAGE_ID");
@@ -14,7 +14,7 @@ async fn main() -> Result<(), Error> {
 
     let title = properties
         .get("Name")
-        .ok_or(Error::Custom("`Name` property not found".to_string()))?;
+        .ok_or("`Name` property not found".to_string())?;
 
     println!("Title: {}", title);
 

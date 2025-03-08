@@ -1,12 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    error::{Error, api_error::ApiError},
-    filter::Filter,
-    list_response::ListResponse,
-    page::page_response::PageResponse,
-    prelude::ToJson,
-};
+use crate::{filter::Filter, list_response::ListResponse, page::page_response::PageResponse};
 
 #[derive(Debug, Default)]
 pub struct QueryDatabaseAllClient {
@@ -34,7 +28,7 @@ pub struct QueryDatabaseAllRequestBody {
 }
 
 impl QueryDatabaseAllClient {
-    pub async fn send(mut self) -> Result<Vec<PageResponse>, Error> {
+    pub async fn send(mut self) -> Result<Vec<PageResponse>, crate::error::Error> {
         match self.database_id {
             Some(id) => {
                 let mut results: Vec<PageResponse> = vec![];
@@ -44,7 +38,7 @@ impl QueryDatabaseAllClient {
 
                     self.body.page_size = Some(100);
 
-                    let request_body = self.body.to_json().to_string();
+                    let request_body = serde_json::to_string(&self.body)?;
 
                     let request = self
                         .reqwest_client
@@ -52,17 +46,19 @@ impl QueryDatabaseAllClient {
                         .header("Content-Type", "application/json")
                         .body(request_body);
 
-                    let response = request.send().await?;
+                    let response = request
+                        .send()
+                        .await
+                        .map_err(|e| crate::error::Error::Network(e.to_string()))?;
 
                     if !response.status().is_success() {
-                        let error_body = response.bytes().await?;
-
-                        let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-                        return Err(Error::Api(Box::new(error_json)));
+                        return Err(crate::error::Error::try_from_response_async(response).await);
                     }
 
-                    let body = response.bytes().await?;
+                    let body = response
+                        .bytes()
+                        .await
+                        .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
                     let pages = serde_json::from_slice::<ListResponse<PageResponse>>(&body)?;
 
@@ -75,7 +71,9 @@ impl QueryDatabaseAllClient {
                     }
                 }
             }
-            None => Err(Error::RequestParameter("database_id is empty".to_string())),
+            None => Err(crate::error::Error::RequestParameter(
+                "`database_id` is not set.".to_string(),
+            )),
         }
     }
 

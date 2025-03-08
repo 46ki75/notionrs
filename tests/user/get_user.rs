@@ -1,7 +1,5 @@
 mod integration_tests {
 
-    use notionrs::to_json::ToJson;
-
     #[tokio::test]
     async fn get_user() -> Result<(), notionrs::error::Error> {
         dotenvy::dotenv().ok();
@@ -18,7 +16,7 @@ mod integration_tests {
 
         let response = request.send().await?;
 
-        println!("{}", response.to_json());
+        println!("{}", serde_json::to_string(&response)?);
 
         match response {
             notionrs::user::User::Bot(bot) => {

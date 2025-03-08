@@ -1,10 +1,6 @@
 use serde::Serialize;
 
-use crate::{
-    error::{Error, api_error::ApiError},
-    list_response::ListResponse,
-    user::User,
-};
+use crate::{list_response::ListResponse, user::User};
 
 /// A request builder for performing `list_users` operations.
 
@@ -39,7 +35,7 @@ struct LinsUserQueryParams {
 
 impl ListUsersClient {
     /// Send a request to the API endpoint of Notion.
-    pub async fn send(&mut self) -> Result<ListResponse<User>, Error> {
+    pub async fn send(&mut self) -> Result<ListResponse<User>, crate::error::Error> {
         let url = "https://api.notion.com/v1/users";
         let mut results = Vec::new();
 
@@ -52,17 +48,19 @@ impl ListUsersClient {
 
                 let request = self.reqwest_client.get(url).query(&params);
 
-                let response = request.send().await?;
+                let response = request
+                    .send()
+                    .await
+                    .map_err(|e| crate::error::Error::Network(e.to_string()))?;
 
                 if !response.status().is_success() {
-                    let error_body = response.bytes().await?;
-
-                    let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-                    return Err(Error::Api(Box::new(error_json)));
+                    return Err(crate::error::Error::try_from_response_async(response).await);
                 }
 
-                let body = response.bytes().await?;
+                let body = response
+                    .bytes()
+                    .await
+                    .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
                 let users_response = serde_json::from_slice::<ListResponse<User>>(&body)?;
 
@@ -91,17 +89,19 @@ impl ListUsersClient {
 
             let request = self.reqwest_client.get(url).query(&params);
 
-            let response = request.send().await?;
+            let response = request
+                .send()
+                .await
+                .map_err(|e| crate::error::Error::Network(e.to_string()))?;
 
             if !response.status().is_success() {
-                let error_body = response.bytes().await?;
-
-                let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-                return Err(Error::Api(Box::new(error_json)));
+                return Err(crate::error::Error::try_from_response_async(response).await);
             }
 
-            let body = response.bytes().await?;
+            let body = response
+                .bytes()
+                .await
+                .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
             let users = serde_json::from_slice::<ListResponse<User>>(&body)?;
 

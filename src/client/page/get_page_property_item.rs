@@ -1,5 +1,3 @@
-use crate::error::{Error, api_error::ApiError};
-
 #[derive(Debug)]
 pub struct GetPagePropertyItemClient {
     /// The reqwest http client
@@ -12,14 +10,16 @@ pub struct GetPagePropertyItemClient {
 
 impl GetPagePropertyItemClient {
     // TODO: docs for send
-    pub async fn send(self) -> Result<crate::page::properties::PageProperty, Error> {
-        let page_id = self.page_id.ok_or(Error::RequestParameter(
-            "`page_id` has not been set.".to_string(),
+    pub async fn send(self) -> Result<crate::page::properties::PageProperty, crate::error::Error> {
+        let page_id = self.page_id.ok_or(crate::error::Error::RequestParameter(
+            "`page_id` is not set.".to_string(),
         ))?;
 
-        let property_id = self.property_id.ok_or(Error::RequestParameter(
-            "`property_id` has not been set.".to_string(),
-        ))?;
+        let property_id = self
+            .property_id
+            .ok_or(crate::error::Error::RequestParameter(
+                "`property_id` is not set.".to_string(),
+            ))?;
 
         let url = format!(
             "https://api.notion.com/v1/pages/{}/properties/{}",
@@ -28,17 +28,19 @@ impl GetPagePropertyItemClient {
 
         let request = self.reqwest_client.get(url);
 
-        let response = request.send().await?;
+        let response = request
+            .send()
+            .await
+            .map_err(|e| crate::error::Error::Network(e.to_string()))?;
 
         if !response.status().is_success() {
-            let error_body = response.bytes().await?;
-
-            let error_json = serde_json::from_slice::<ApiError>(&error_body)?;
-
-            return Err(Error::Api(Box::new(error_json)));
+            return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
-        let body = response.bytes().await?;
+        let body = response
+            .bytes()
+            .await
+            .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let user = serde_json::from_slice::<crate::page::properties::PageProperty>(&body)?;
 
