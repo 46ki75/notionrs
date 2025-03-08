@@ -1,8 +1,7 @@
-use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Data, DeriveInput, Expr, Fields, Lit, Meta, MetaNameValue};
 
-pub fn generate_setters(input: DeriveInput) -> TokenStream {
+pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
     let struct_name = input.ident;
 
     let fields = match input.data {
@@ -17,39 +16,41 @@ pub fn generate_setters(input: DeriveInput) -> TokenStream {
         let field_name = &f.ident;
         let field_ty = &f.ty;
 
-        let setter_comment = format!(
-            "Set the value of the `{}` field.",
-            field_name.as_ref().unwrap()
-        );
+        // let setter_comment = format!(
+        //     "Set the value of the `{}` field.",
+        //     field_name.as_ref().unwrap()
+        // );
 
-        let field_original_comment = f.attrs.iter().filter_map(|attr| {
-            if attr.path().is_ident("doc") {
-                if let Meta::NameValue(MetaNameValue {
-                    path: _,
-                    eq_token: _,
-                    value: Expr::Lit(comment),
-                }) = &attr.meta
-                {
-                    if let Lit::Str(comment) = &comment.lit {
-                        let comment = comment.value();
-                        return Some(quote! {
-                            #[doc = #comment]
-                        });
-                    }
-                }
+        // let field_original_comment = f.attrs.iter().filter_map(|attr| {
+        //     if attr.path().is_ident("doc") {
+        //         if let Meta::NameValue(MetaNameValue {
+        //             path: _,
+        //             eq_token: _,
+        //             value: Expr::Lit(comment),
+        //         }) = &attr.meta
+        //         {
+        //             if let Lit::Str(comment) = &comment.lit {
+        //                 let comment = comment.value();
+        //                 return Some(quote! {
+        //                     #[doc = #comment]
+        //                 });
+        //             }
+        //         }
 
-                return None;
-            }
-            None
-        });
+        //         return None;
+        //     }
+        //     None
+        // });
 
-        let comment = quote! {
-            #[doc = #setter_comment]
-            #[doc = ""]
-            #[doc = "---"]
-            #[doc = ""]
-            #(#field_original_comment)*
-        };
+        // let comment = quote! {
+        //     #[doc = #setter_comment]
+        //     #[doc = ""]
+        //     #[doc = "---"]
+        //     #[doc = ""]
+        //     #(#field_original_comment)*
+        // };
+
+        let comment = generate_comment(f);
 
         quote! {
             #comment
@@ -66,5 +67,44 @@ pub fn generate_setters(input: DeriveInput) -> TokenStream {
         }
     };
 
-    TokenStream::from(expanded)
+    proc_macro::TokenStream::from(expanded)
+}
+
+fn generate_comment(f: &syn::Field) -> proc_macro2::TokenStream {
+    let field_name = &f.ident;
+    let setter_comment = format!(
+        "Set the value of the `{}` field.",
+        field_name.as_ref().unwrap()
+    );
+
+    let field_original_comment = f.attrs.iter().filter_map(|attr| {
+        if attr.path().is_ident("doc") {
+            if let Meta::NameValue(MetaNameValue {
+                path: _,
+                eq_token: _,
+                value: Expr::Lit(comment),
+            }) = &attr.meta
+            {
+                if let Lit::Str(comment) = &comment.lit {
+                    let comment = comment.value();
+                    return Some(quote! {
+                        #[doc = #comment]
+                    });
+                }
+            }
+
+            return None;
+        }
+        None
+    });
+
+    let comment = quote! {
+        #[doc = #setter_comment]
+        #[doc = ""]
+        #[doc = "---"]
+        #[doc = ""]
+        #(#field_original_comment)*
+    };
+
+    comment
 }
