@@ -38,7 +38,7 @@ pub fn struct_info_derive(input: TokenStream) -> TokenStream {
                     }
                 }
 
-                todo!()
+                return None;
             }
             None
         });
