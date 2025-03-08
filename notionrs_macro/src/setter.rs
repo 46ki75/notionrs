@@ -31,6 +31,46 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
                     self
                 }
             }
+        } else if is_option_type(field_ty) && field_ty == &syn::parse_str("String").unwrap()
+        // Option<String>
+        {
+            quote! {
+                #comment
+                pub fn #field_name(mut self, #field_name: T) -> Self
+                where
+                    T: AsRef<str>,{
+                    self.#field_name = Some(#field_name.as_ref().to_string());
+                    self
+                }
+            }
+        } else if is_option_type(field_ty)
+        // Option<T>
+        {
+            let inner_ty = if let syn::Type::Path(type_path) = field_ty {
+                if let Some(first_segment) = type_path.path.segments.first() {
+                    if let syn::PathArguments::AngleBracketed(args) = &first_segment.arguments {
+                        if let syn::GenericArgument::Type(ty) = args.args.first().unwrap() {
+                            ty
+                        } else {
+                            panic!("Option type must have a generic argument");
+                        }
+                    } else {
+                        panic!("Option type must have a generic argument");
+                    }
+                } else {
+                    panic!("Option type must have a generic argument");
+                }
+            } else {
+                panic!("Option type must have a generic argument");
+            };
+
+            quote! {
+                #comment
+                pub fn #field_name(mut self, #field_name: #inner_ty) -> Self {
+                    self.#field_name = Some(#field_name);
+                    self
+                }
+            }
         } else
         // others
         {
@@ -90,4 +130,13 @@ fn generate_comment(f: &syn::Field) -> proc_macro2::TokenStream {
     };
 
     comment
+}
+
+fn is_option_type(ty: &syn::Type) -> bool {
+    if let syn::Type::Path(type_path) = ty {
+        if let Some(first_segment) = type_path.path.segments.first() {
+            return first_segment.ident == "Option";
+        }
+    }
+    false
 }
