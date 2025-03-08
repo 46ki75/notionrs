@@ -17,13 +17,19 @@ impl DeleteBlockClient {
 
         let request = self.reqwest_client.delete(url);
 
-        let response = request.send().await?;
+        let response = request
+            .send()
+            .await
+            .map_err(|e| crate::error::Error::Network(e.to_string()))?;
 
         if !response.status().is_success() {
             return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
-        let body = response.bytes().await?;
+        let body = response
+            .bytes()
+            .await
+            .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let block = serde_json::from_slice::<crate::block::BlockResponse>(&body)?;
 

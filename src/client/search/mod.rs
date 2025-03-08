@@ -48,18 +48,22 @@ impl SearchClient {
             .header("Content-Type", "application/json")
             .body(request_body);
 
-        let response = request.send().await?;
+        let response = request
+            .send()
+            .await
+            .map_err(|e| crate::error::Error::Network(e.to_string()))?;
 
         if !response.status().is_success() {
             return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
-        let body = response.text().await?;
-
-        println!("{}", body);
+        let body = response
+            .bytes()
+            .await
+            .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let pages =
-            serde_json::from_str::<ListResponse<crate::list_response::SearchResultItem>>(&body)?;
+            serde_json::from_slice::<ListResponse<crate::list_response::SearchResultItem>>(&body)?;
 
         Ok(pages)
     }

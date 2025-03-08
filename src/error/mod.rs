@@ -1,7 +1,10 @@
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("network error: {0}")]
-    Network(#[from] reqwest::Error),
+    #[error("Network error: {0}")]
+    Network(String),
+
+    #[error("HTTP body parse error: {0}")]
+    BodyParse(String),
 
     /// This error occurs when the HTTP status code is not 200.
     #[error("HTTP error: {status}: {message}")]
