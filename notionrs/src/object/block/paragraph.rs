@@ -7,10 +7,10 @@ use serde::{Deserialize, Serialize};
 #[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct ParagraphBlock {
     /// The rich text displayed in the paragraph block.
-    pub rich_text: Vec<crate::others::rich_text::RichText>,
+    pub rich_text: Vec<crate::object::rich_text::RichText>,
 
     /// The color of the block.
-    pub color: crate::others::color::Color,
+    pub color: crate::object::color::Color,
 }
 
 impl ParagraphBlock {
@@ -22,7 +22,7 @@ where
     T: AsRef<str>,
 {
     fn from(plain_text: T) -> Self {
-        let rich_text = crate::others::rich_text::RichText::from(plain_text.as_ref().to_string());
+        let rich_text = crate::object::rich_text::RichText::from(plain_text.as_ref().to_string());
         Self::default().rich_text(vec![rich_text])
     }
 }
@@ -80,7 +80,7 @@ mod unit_tests {
 
         let paragraph: ParagraphBlock = serde_json::from_str::<ParagraphBlock>(json_data).unwrap();
 
-        assert_eq!(paragraph.color, crate::others::color::Color::Default);
+        assert_eq!(paragraph.color, crate::object::color::Color::Default);
 
         let rich_text = paragraph.rich_text.first().unwrap();
 
@@ -94,7 +94,7 @@ mod unit_tests {
         // assert!(!rich_text.annotations.code);
         // assert_eq!(
         //     rich_text.annotations.color,
-        //     crate::others::color::Color::Default
+        //     crate::object::color::Color::Default
         // );
 
         match rich_text {
@@ -112,7 +112,7 @@ mod unit_tests {
                 assert!(!annotations.strikethrough);
                 assert!(!annotations.underline);
                 assert!(!annotations.italic);
-                assert_eq!(annotations.color, crate::others::color::Color::Default)
+                assert_eq!(annotations.color, crate::object::color::Color::Default)
             }
             _ => panic!(),
         }

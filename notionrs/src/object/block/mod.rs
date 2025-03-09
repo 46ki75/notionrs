@@ -79,7 +79,7 @@ pub struct BlockResponse {
 
     pub id: String,
 
-    pub parent: crate::others::parent::Parent,
+    pub parent: crate::object::parent::Parent,
 
     /// This value is provided in ISO 8601 format.
     /// To convert it back to the original string,
@@ -91,9 +91,9 @@ pub struct BlockResponse {
     /// use the `.to_rfc3339()` method from `chrono`.
     pub last_edited_time: chrono::DateTime<chrono::FixedOffset>,
 
-    pub created_by: crate::user::User,
+    pub created_by: crate::object::user::User,
 
-    pub last_edited_by: crate::user::User,
+    pub last_edited_by: crate::object::user::User,
 
     pub has_children: bool,
 
@@ -110,7 +110,7 @@ pub struct BlockResponse {
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Block {
     Audio {
-        audio: crate::others::file::File,
+        audio: crate::object::file::File,
     },
     Bookmark {
         bookmark: bookmark::BookmarkBlock,
@@ -149,7 +149,7 @@ pub enum Block {
         equation: equation::EquationBlock,
     },
     File {
-        file: crate::others::file::File,
+        file: crate::object::file::File,
     },
     #[serde(rename = "heading_1")]
     Heading1 {
@@ -164,7 +164,7 @@ pub enum Block {
         heading_3: heading::HeadingBlock,
     },
     Image {
-        image: crate::others::file::File,
+        image: crate::object::file::File,
     },
     LinkPreview {
         link_preview: link_preview::LinkPreviewBlock,
@@ -176,7 +176,7 @@ pub enum Block {
         paragraph: paragraph::ParagraphBlock,
     },
     Pdf {
-        pdf: crate::others::file::File,
+        pdf: crate::object::file::File,
     },
     Quote {
         quote: quote::QuoteBlock,
@@ -200,7 +200,7 @@ pub enum Block {
         toggle: toggle::ToggleBlock,
     },
     Video {
-        video: crate::others::file::File,
+        video: crate::object::file::File,
     },
     Unknown(serde_json::Value),
 }
@@ -310,7 +310,7 @@ mod unit_tests {
         assert_eq!(block.id, "b943dc57-3260-4486-a1c8-f83cf8c12fc3");
 
         match block.parent {
-            crate::others::parent::Parent::PageParent(parent) => {
+            crate::object::parent::Parent::PageParent(parent) => {
                 assert_eq!(parent.r#type, "page_id");
                 assert_eq!(parent.page_id, "8a67eed6-3a1b-4e8c-90cc-ea87539ef9bc");
             }
@@ -325,11 +325,11 @@ mod unit_tests {
         assert_eq!(block.last_edited_time, expected_last_edited_time);
 
         match block.created_by {
-            crate::user::User::Bot(bot) => {
+            crate::object::user::User::Bot(bot) => {
                 assert_eq!(bot.object, "user");
                 assert_eq!(bot.id, "21d48f75-3f61-4c36-8b24-7447ca72fb3a");
             }
-            crate::user::User::Person(person) => {
+            crate::object::user::User::Person(person) => {
                 assert_eq!(person.object, "user");
                 assert_eq!(person.id, "21d48f75-3f61-4c36-8b24-7447ca72fb3a");
             }
@@ -399,13 +399,13 @@ mod unit_tests {
 
         match block.block {
             Block::File { file } => match file {
-                crate::others::file::File::Uploaded(uploaded_file) => {
+                crate::object::file::File::Uploaded(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.name,
                         Some("2024-07-18 202106.png".to_string())
                     )
                 }
-                crate::others::file::File::External(_) => panic!("Unexpected!"),
+                crate::object::file::File::External(_) => panic!("Unexpected!"),
             },
             _ => panic!("Unexpected!"),
         }
@@ -452,13 +452,13 @@ mod unit_tests {
 
         match block.block {
             Block::Image { image } => match image {
-                crate::others::file::File::Uploaded(uploaded_file) => {
+                crate::object::file::File::Uploaded(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.file.url,
                         "https://prod-files-secure.s3.us-west-2.amazonaws.com/"
                     )
                 }
-                crate::others::file::File::External(_) => panic!("Unexpected!"),
+                crate::object::file::File::External(_) => panic!("Unexpected!"),
             },
             _ => panic!("Unexpected!"),
         }

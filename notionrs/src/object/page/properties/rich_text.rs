@@ -46,7 +46,7 @@ pub struct PageRichTextProperty {
     pub id: Option<String>,
 
     /// An array of [rich text objects](https://developers.notion.com/reference/rich-text)
-    pub rich_text: Vec<crate::others::rich_text::RichText>,
+    pub rich_text: Vec<crate::object::rich_text::RichText>,
 }
 
 impl<T> From<T> for PageRichTextProperty
@@ -150,7 +150,7 @@ mod unit_tests {
         // assert!(!rich_text.rich_text.first().unwrap().annotations.code);
         // assert_eq!(
         //     rich_text.rich_text.first().unwrap().annotations.color,
-        //     crate::others::color::Color::Default
+        //     crate::object::color::Color::Default
         // );
 
         // assert_eq!(

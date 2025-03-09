@@ -8,13 +8,13 @@ pub struct DatabaseResponse {
 
     pub last_edited_time: String,
 
-    pub created_by: crate::user::User,
+    pub created_by: crate::object::user::User,
 
-    pub last_edited_by: crate::user::User,
+    pub last_edited_by: crate::object::user::User,
 
-    pub cover: Option<crate::others::file::File>,
+    pub cover: Option<crate::object::file::File>,
 
-    pub icon: Option<crate::others::icon::Icon>,
+    pub icon: Option<crate::object::icon::Icon>,
 
     pub url: String,
 
@@ -26,9 +26,9 @@ pub struct DatabaseResponse {
 
     pub is_inline: bool,
 
-    pub title: Vec<crate::others::rich_text::RichText>,
+    pub title: Vec<crate::object::rich_text::RichText>,
 
-    pub description: Vec<crate::others::rich_text::RichText>,
+    pub description: Vec<crate::object::rich_text::RichText>,
 
     pub properties: std::collections::HashMap<String, super::properties::DatabaseProperty>,
 }

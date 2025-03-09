@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::{list_response::ListResponse, user::User};
+use crate::{list_response::ListResponse, object::user::User};
 
 /// A request builder for performing `list_users` operations.
 

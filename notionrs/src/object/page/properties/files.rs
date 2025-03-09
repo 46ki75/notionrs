@@ -42,7 +42,7 @@ pub struct PageFilesProperty {
     /// about the [files](https://developers.notion.com/reference/file-object).
     ///
     /// When creating, both the external path of the file and `name` are required.
-    pub files: Vec<crate::others::file::File>,
+    pub files: Vec<crate::object::file::File>,
 }
 
 impl<T> From<T> for PageFilesProperty
@@ -127,7 +127,7 @@ mod unit_tests {
 
         for file in &file.files {
             match &file {
-                crate::others::file::File::Uploaded(f) => {
+                crate::object::file::File::Uploaded(f) => {
                     assert_eq!(f.name, Some("0208a.jpg".to_string()));
                     assert_eq!(
                         f.file.url,
@@ -135,7 +135,7 @@ mod unit_tests {
                     );
                     assert_eq!(f.file.expiry_time, "2024-08-15T05:56:14.346Z");
                 }
-                crate::others::file::File::External(f) => {
+                crate::object::file::File::External(f) => {
                     assert_eq!(f.name, Some("Favicon.ico".to_string()));
                     assert_eq!(f.external.url, "https://www.notion.so/images/favicon.ico");
                 }

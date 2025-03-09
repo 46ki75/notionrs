@@ -59,7 +59,7 @@ mod integration_tests {
         let block = match response.block {
             notionrs::object::block::Block::Quote { quote } => {
                 assert_eq!(quote.rich_text, vec![rich_text]);
-                assert_eq!(quote.color, notionrs::others::color::Color::BlueBackground);
+                assert_eq!(quote.color, notionrs::object::color::Color::BlueBackground);
                 notionrs::object::block::Block::Quote {
                     quote: quote.green_background(),
                 }

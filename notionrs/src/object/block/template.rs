@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct TemplateBlock {
     /// The rich text displayed in the title of the template
-    pub rich_text: Vec<crate::others::rich_text::RichText>,
+    pub rich_text: Vec<crate::object::rich_text::RichText>,
 }
 
 impl std::fmt::Display for TemplateBlock {
@@ -80,7 +80,7 @@ mod unit_tests {
                 assert!(!annotations.strikethrough);
                 assert!(!annotations.underline);
                 assert!(!annotations.italic);
-                assert_eq!(annotations.color, crate::others::color::Color::Default)
+                assert_eq!(annotations.color, crate::object::color::Color::Default)
             }
             _ => panic!(),
         }

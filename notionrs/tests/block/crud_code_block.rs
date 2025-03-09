@@ -24,7 +24,7 @@ mod integration_tests {
             code: notionrs::object::block::CodeBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .caption(vec![caption.clone()])
-                .lnaguage(notionrs::others::language::Language::Javascript),
+                .lnaguage(notionrs::object::language::Language::Javascript),
         };
 
         let request = client
@@ -58,12 +58,12 @@ mod integration_tests {
                 assert_eq!(code.caption, vec![caption]);
                 assert_eq!(
                     code.language,
-                    notionrs::others::language::Language::Javascript
+                    notionrs::object::language::Language::Javascript
                 );
                 notionrs::object::block::Block::Code {
                     code: code
-                        .lnaguage(notionrs::others::language::Language::Typescript)
-                        .caption(vec![notionrs::others::rich_text::RichText::from(
+                        .lnaguage(notionrs::object::language::Language::Typescript)
+                        .caption(vec![notionrs::object::rich_text::RichText::from(
                             "index.ts",
                         )]),
                 }

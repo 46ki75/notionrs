@@ -32,7 +32,7 @@ pub struct PageStatusProperty {
     pub id: Option<String>,
 
     /// Select object
-    pub status: crate::others::select::Select,
+    pub status: crate::object::select::Select,
 }
 
 impl std::fmt::Display for PageStatusProperty {
@@ -83,7 +83,7 @@ mod unit_tests {
         assert_eq!(status.status.name, "Not started");
         assert_eq!(
             status.status.color,
-            Some(crate::others::select::SelectColor::Default)
+            Some(crate::object::select::SelectColor::Default)
         );
     }
 }

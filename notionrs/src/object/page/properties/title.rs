@@ -46,7 +46,7 @@ pub struct PageTitleProperty {
     pub id: Option<String>,
 
     /// An array of [rich text](https://developers.notion.com/reference/rich-text) objects.
-    pub title: Vec<crate::others::rich_text::RichText>,
+    pub title: Vec<crate::object::rich_text::RichText>,
 }
 
 impl<T> From<T> for PageTitleProperty
@@ -142,7 +142,7 @@ mod unit_tests {
         // assert!(!title.title.first().unwrap().annotations.code);
         // assert_eq!(
         //     title.title.first().unwrap().annotations.color,
-        //     crate::others::color::Color::Default
+        //     crate::object::color::Color::Default
         // );
 
         // assert_eq!(title.title.first().unwrap().plain_text, "My Title");

@@ -7,27 +7,27 @@ use serde::{Deserialize, Serialize};
 #[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct CodeBlock {
     /// The rich text in the caption of the code block.
-    pub caption: Vec<crate::others::rich_text::RichText>,
+    pub caption: Vec<crate::object::rich_text::RichText>,
 
     /// The rich text in the code block.
-    pub rich_text: Vec<crate::others::rich_text::RichText>,
+    pub rich_text: Vec<crate::object::rich_text::RichText>,
 
     /// The language of the code contained in the code block.
-    pub language: crate::others::language::Language,
+    pub language: crate::object::language::Language,
 }
 
 impl CodeBlock {
-    pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
+    pub fn caption(mut self, caption: Vec<crate::object::rich_text::RichText>) -> Self {
         self.caption = caption;
         self
     }
 
-    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+    pub fn rich_text(mut self, rich_text: Vec<crate::object::rich_text::RichText>) -> Self {
         self.rich_text = rich_text;
         self
     }
 
-    pub fn lnaguage(mut self, language: crate::others::language::Language) -> Self {
+    pub fn lnaguage(mut self, language: crate::object::language::Language) -> Self {
         self.language = language;
         self
     }
@@ -38,7 +38,7 @@ where
     T: AsRef<str>,
 {
     fn from(code: T) -> Self {
-        let rich_text = crate::others::rich_text::RichText::from(code.as_ref().to_string());
+        let rich_text = crate::object::rich_text::RichText::from(code.as_ref().to_string());
         Self::default().rich_text(vec![rich_text])
     }
 }
@@ -75,7 +75,7 @@ mod unit_tests {
                 {
                     "type": "text",
                     "text": {
-                        "content": "src/others/emoji.rs",
+                        "content": "src/object/emoji.rs",
                         "link": null
                     },
                     "annotations": {
@@ -86,7 +86,7 @@ mod unit_tests {
                         "code": false,
                         "color": "default"
                     },
-                    "plain_text": "src/others/emoji.rs",
+                    "plain_text": "src/object/emoji.rs",
                     "href": null
                 }
             ],
@@ -115,7 +115,7 @@ mod unit_tests {
 
         let code = serde_json::from_str::<CodeBlock>(json_data).unwrap();
 
-        assert_eq!(code.language, crate::others::language::Language::Rust);
+        assert_eq!(code.language, crate::object::language::Language::Rust);
 
         let caption = code.caption.first().unwrap();
 
@@ -126,7 +126,7 @@ mod unit_tests {
                 href,
                 ..
             } => {
-                assert_eq!(plain_text, "src/others/emoji.rs");
+                assert_eq!(plain_text, "src/object/emoji.rs");
                 assert_eq!(*href, None);
 
                 assert!(!annotations.bold);
@@ -134,7 +134,7 @@ mod unit_tests {
                 assert!(!annotations.strikethrough);
                 assert!(!annotations.underline);
                 assert!(!annotations.italic);
-                assert_eq!(annotations.color, crate::others::color::Color::Default)
+                assert_eq!(annotations.color, crate::object::color::Color::Default)
             }
             _ => panic!(),
         }
@@ -156,7 +156,7 @@ mod unit_tests {
                 assert!(!annotations.strikethrough);
                 assert!(!annotations.underline);
                 assert!(!annotations.italic);
-                assert_eq!(annotations.color, crate::others::color::Color::Default)
+                assert_eq!(annotations.color, crate::object::color::Color::Default)
             }
             _ => panic!(),
         }

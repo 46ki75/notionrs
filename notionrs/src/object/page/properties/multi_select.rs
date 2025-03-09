@@ -39,7 +39,7 @@ pub struct PageMultiSelectProperty {
     pub id: Option<String>,
 
     /// Array of Select object
-    pub multi_select: Vec<crate::others::select::Select>,
+    pub multi_select: Vec<crate::object::select::Select>,
 }
 
 impl std::fmt::Display for PageMultiSelectProperty {
@@ -106,7 +106,7 @@ mod unit_tests {
         assert_eq!(multi_select.multi_select.first().unwrap().name, "HTML");
         assert_eq!(
             multi_select.multi_select.first().unwrap().color,
-            Some(crate::others::select::SelectColor::Orange)
+            Some(crate::object::select::SelectColor::Orange)
         );
 
         assert_eq!(
@@ -116,7 +116,7 @@ mod unit_tests {
         assert_eq!(multi_select.multi_select.get(1).unwrap().name, "CSS");
         assert_eq!(
             multi_select.multi_select.get(1).unwrap().color,
-            Some(crate::others::select::SelectColor::Blue)
+            Some(crate::object::select::SelectColor::Blue)
         );
     }
 }

@@ -76,7 +76,7 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
                 }
             }
         } else
-        // others
+        // object
         {
             quote! {
                 #comment

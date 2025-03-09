@@ -28,7 +28,7 @@ pub struct PageVerificationPropertyParameter {
     /// The verification state of the page. `"verified"` or `"unverified"`.
     pub state: PageVerificationState,
 
-    pub verified_by: Option<crate::user::User>,
+    pub verified_by: Option<crate::object::user::User>,
 
     pub date: Option<PageVerificationDate>,
 }
@@ -91,7 +91,7 @@ impl PageVerificationProperty {
         self
     }
 
-    pub fn verified_by(&mut self, verified_by: crate::user::User) -> &mut Self {
+    pub fn verified_by(&mut self, verified_by: crate::object::user::User) -> &mut Self {
         self.verification.verified_by = Some(verified_by);
         self
     }

@@ -180,7 +180,7 @@ mod integration_tests {
             ),
         );
 
-        let option = notionrs::others::select::Select::from("IT");
+        let option = notionrs::object::select::Select::from("IT");
 
         properties.insert(
             "Tags".to_string(),

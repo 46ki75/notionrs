@@ -1,4 +1,4 @@
-use crate::user::User;
+use crate::object::user::User;
 
 #[derive(Debug, notionrs_macro::Setter)]
 pub struct GetUserClient {

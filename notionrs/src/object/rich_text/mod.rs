@@ -314,7 +314,7 @@ mod unit_tests {
                 assert!(!annotations.strikethrough);
                 assert!(!annotations.underline);
                 assert!(!annotations.code);
-                assert_eq!(annotations.color, crate::others::color::Color::Default);
+                assert_eq!(annotations.color, crate::object::color::Color::Default);
             }
             _ => panic!("Unexpected variant!"),
         }
@@ -328,7 +328,7 @@ mod unit_tests {
             .italic()
             .strikethrough()
             .code()
-            .color(crate::others::color::Color::Red)
+            .color(crate::object::color::Color::Red)
             .href("https://example.com");
 
         let expected_json = r#"

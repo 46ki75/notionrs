@@ -9,10 +9,10 @@ use crate::color_setters;
 #[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct HeadingBlock {
     /// The rich text of the heading.
-    pub rich_text: Vec<crate::others::rich_text::RichText>,
+    pub rich_text: Vec<crate::object::rich_text::RichText>,
 
     /// The color of the block.
-    pub color: crate::others::color::Color,
+    pub color: crate::object::color::Color,
 
     /// When children are included in the request, it will automatically be set to true.
     /// Whether or not the heading block is a toggle heading or not.
@@ -27,7 +27,7 @@ pub struct HeadingBlock {
 }
 
 impl HeadingBlock {
-    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+    pub fn rich_text(mut self, rich_text: Vec<crate::object::rich_text::RichText>) -> Self {
         self.rich_text = rich_text;
         self
     }
@@ -50,7 +50,7 @@ where
     T: AsRef<str>,
 {
     fn from(plain_text: T) -> Self {
-        let rich_text = crate::others::rich_text::RichText::from(plain_text.as_ref().to_string());
+        let rich_text = crate::object::rich_text::RichText::from(plain_text.as_ref().to_string());
         Self::default().rich_text(vec![rich_text])
     }
 }
@@ -109,7 +109,7 @@ mod unit_tests {
 
         let heading: HeadingBlock = serde_json::from_str::<HeadingBlock>(json_data).unwrap();
 
-        assert_eq!(heading.color, crate::others::color::Color::Default);
+        assert_eq!(heading.color, crate::object::color::Color::Default);
 
         assert!(!heading.is_toggleable);
 
@@ -130,7 +130,7 @@ mod unit_tests {
                 assert!(!annotations.strikethrough);
                 assert!(!annotations.underline);
                 assert!(!annotations.italic);
-                assert_eq!(annotations.color, crate::others::color::Color::Default)
+                assert_eq!(annotations.color, crate::object::color::Color::Default)
             }
             _ => panic!(),
         }

@@ -9,10 +9,10 @@ use crate::color_setters;
 #[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct BulletedListItemBlock {
     /// The rich text in the bulleted_list_item block.
-    pub rich_text: Vec<crate::others::rich_text::RichText>,
+    pub rich_text: Vec<crate::object::rich_text::RichText>,
 
     /// The color of the block.
-    pub color: crate::others::color::Color,
+    pub color: crate::object::color::Color,
 
     /// It can only be specified when making a block creation request.
     /// If you need to retrieve the child blocks, you will have to send a request to this block again.
@@ -24,8 +24,8 @@ impl BulletedListItemBlock {
     color_setters!(self, self.color);
 }
 
-impl From<Vec<crate::others::rich_text::RichText>> for BulletedListItemBlock {
-    fn from(rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+impl From<Vec<crate::object::rich_text::RichText>> for BulletedListItemBlock {
+    fn from(rich_text: Vec<crate::object::rich_text::RichText>) -> Self {
         Self::default().rich_text(rich_text)
     }
 }
@@ -86,7 +86,7 @@ mod unit_tests {
 
         assert_eq!(
             bulleted_list_item.color,
-            crate::others::color::Color::Default
+            crate::object::color::Color::Default
         );
 
         let rich_text = bulleted_list_item.rich_text.first().unwrap();
@@ -106,7 +106,7 @@ mod unit_tests {
                 assert!(!annotations.strikethrough);
                 assert!(!annotations.underline);
                 assert!(!annotations.italic);
-                assert_eq!(annotations.color, crate::others::color::Color::Default)
+                assert_eq!(annotations.color, crate::object::color::Color::Default)
             }
             _ => panic!(),
         }

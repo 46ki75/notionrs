@@ -9,17 +9,17 @@ use crate::color_setters;
 #[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct CalloutBlock {
     /// The rich text in the callout block.
-    pub rich_text: Vec<crate::others::rich_text::RichText>,
+    pub rich_text: Vec<crate::object::rich_text::RichText>,
 
     /// An emoji or file object that represents the callout's icon. If the callout does not have an icon.
-    pub icon: crate::others::icon::Icon,
+    pub icon: crate::object::icon::Icon,
 
     /// The color of the block.
-    pub color: crate::others::color::Color,
+    pub color: crate::object::color::Color,
 }
 
 impl CalloutBlock {
-    pub fn rich_text(mut self, rich_text: Vec<crate::others::rich_text::RichText>) -> Self {
+    pub fn rich_text(mut self, rich_text: Vec<crate::object::rich_text::RichText>) -> Self {
         self.rich_text = rich_text;
         self
     }
@@ -32,7 +32,7 @@ where
     T: AsRef<str>,
 {
     fn from(plain_text: T) -> Self {
-        let rich_text = crate::others::rich_text::RichText::from(plain_text.as_ref().to_string());
+        let rich_text = crate::object::rich_text::RichText::from(plain_text.as_ref().to_string());
         Self::default().rich_text(vec![rich_text])
     }
 }
@@ -94,7 +94,7 @@ mod unit_tests {
 
         let callout: CalloutBlock = serde_json::from_str::<CalloutBlock>(json_data).unwrap();
 
-        assert_eq!(callout.color, crate::others::color::Color::BlueBackground);
+        assert_eq!(callout.color, crate::object::color::Color::BlueBackground);
 
         let rich_text = callout.rich_text.first().unwrap();
 
@@ -113,13 +113,13 @@ mod unit_tests {
                 assert!(!annotations.strikethrough);
                 assert!(!annotations.underline);
                 assert!(!annotations.italic);
-                assert_eq!(annotations.color, crate::others::color::Color::Default)
+                assert_eq!(annotations.color, crate::object::color::Color::Default)
             }
             _ => panic!(),
         }
 
         match callout.icon {
-            crate::others::icon::Icon::Emoji(emoji) => {
+            crate::object::icon::Icon::Emoji(emoji) => {
                 assert_eq!(emoji.r#type, "emoji");
                 assert_eq!(emoji.emoji, "💡".to_string());
             }

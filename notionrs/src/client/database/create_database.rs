@@ -19,7 +19,7 @@ pub struct CreateDatabaseClient {
         std::collections::HashMap<String, crate::object::database::DatabaseProperty>,
 
     /// This can be configured even though it's not in the official Notion API documentation
-    pub(crate) icon: Option<crate::others::icon::Icon>,
+    pub(crate) icon: Option<crate::object::icon::Icon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     pub(crate) cover: Option<crate::File>,
@@ -27,7 +27,7 @@ pub struct CreateDatabaseClient {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateDatabaseRequestBody {
-    pub(crate) parent: crate::others::parent::PageParent,
+    pub(crate) parent: crate::object::parent::PageParent,
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) title: Vec<RichText>,
@@ -42,7 +42,7 @@ pub struct CreateDatabaseRequestBody {
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<crate::others::icon::Icon>,
+    pub(crate) icon: Option<crate::object::icon::Icon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -56,7 +56,7 @@ impl CreateDatabaseClient {
         let page_id = self.page_id.unwrap();
 
         let request_body_struct = CreateDatabaseRequestBody {
-            parent: crate::others::parent::PageParent::from(page_id),
+            parent: crate::object::parent::PageParent::from(page_id),
             properties: self.properties,
             title: self.title,
             description: self.description,

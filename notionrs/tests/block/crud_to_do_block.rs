@@ -52,7 +52,7 @@ mod integration_tests {
         let block = match response.block {
             notionrs::object::block::Block::ToDo { to_do } => {
                 assert_eq!(to_do.rich_text, vec![rich_text]);
-                assert_eq!(to_do.color, notionrs::others::color::Color::Default);
+                assert_eq!(to_do.color, notionrs::object::color::Color::Default);
                 notionrs::object::block::Block::ToDo {
                     to_do: to_do.green_background(),
                 }

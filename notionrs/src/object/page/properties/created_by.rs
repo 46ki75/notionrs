@@ -41,7 +41,7 @@ pub struct PageCreatedByProperty {
     /// A [user object](https://developers.notion.com/reference/user)
     /// containing information about the user who created the page.
     /// `created_by` can’t be updated.
-    pub created_by: crate::user::User,
+    pub created_by: crate::object::user::User,
 }
 
 impl std::fmt::Display for PageCreatedByProperty {

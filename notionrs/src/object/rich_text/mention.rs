@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 pub enum Mention {
     User {
         /// <https://developers.notion.com/reference/rich-text#user-mention-type-object>
-        user: crate::User,
+        user: crate::object::user::User,
     },
     Date {
         /// <https://developers.notion.com/reference/rich-text#date-mention-type-object>
@@ -30,7 +30,7 @@ pub enum Mention {
         database: DatabaseMention,
     },
     CustomEmoji {
-        custom_emoji: crate::others::custom_emoji::CustomEmojiContent,
+        custom_emoji: crate::object::custom_emoji::CustomEmojiContent,
     },
 }
 

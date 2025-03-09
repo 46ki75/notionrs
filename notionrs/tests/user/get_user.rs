@@ -19,10 +19,10 @@ mod integration_tests {
         println!("{}", serde_json::to_string(&response)?);
 
         match response {
-            notionrs::user::User::Bot(bot) => {
+            notionrs::object::user::User::Bot(bot) => {
                 assert_eq!(bot.r#type, Some("bot".to_string()))
             }
-            notionrs::user::User::Person(person) => {
+            notionrs::object::user::User::Person(person) => {
                 assert_eq!(person.r#type, Some("person".to_string()))
             }
         }

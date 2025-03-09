@@ -18,14 +18,14 @@ pub struct CreatePageClient {
 
     pub(crate) children: Option<Vec<crate::object::block::Block>>,
 
-    pub(crate) icon: Option<crate::others::icon::Icon>,
+    pub(crate) icon: Option<crate::object::icon::Icon>,
 
     pub(crate) cover: Option<crate::File>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreatePageRequestBody {
-    pub(crate) parent: crate::others::parent::Parent,
+    pub(crate) parent: crate::object::parent::Parent,
 
     pub(crate) properties:
         std::collections::HashMap<String, crate::object::page::properties::PageProperty>,
@@ -34,7 +34,7 @@ pub struct CreatePageRequestBody {
     pub(crate) children: Option<Vec<crate::object::block::Block>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<crate::others::icon::Icon>,
+    pub(crate) icon: Option<crate::object::icon::Icon>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) cover: Option<crate::File>,
@@ -48,17 +48,17 @@ impl CreatePageClient {
     /// use `send::<HashMap<String, PageProperty>>()`.
     /// (Type inference for the property field cannot be used.)
     pub async fn send(self) -> Result<PageResponse, crate::error::Error> {
-        let mut parent: Option<crate::others::parent::Parent> = None;
+        let mut parent: Option<crate::object::parent::Parent> = None;
 
         if let Some(page_id) = self.page_id {
-            parent = Some(crate::others::parent::Parent::PageParent(
-                crate::others::parent::PageParent::from(page_id),
+            parent = Some(crate::object::parent::Parent::PageParent(
+                crate::object::parent::PageParent::from(page_id),
             ));
         }
 
         if let Some(database_id) = self.database_id {
-            parent = Some(crate::others::parent::Parent::DatabaseParent(
-                crate::others::parent::DatabaseParent::from(database_id),
+            parent = Some(crate::object::parent::Parent::DatabaseParent(
+                crate::object::parent::DatabaseParent::from(database_id),
             ));
         }
 

@@ -54,7 +54,7 @@ mod integration_tests {
                 assert_eq!(bulleted_list_item.rich_text, vec![rich_text]);
                 assert_eq!(
                     bulleted_list_item.color,
-                    notionrs::others::color::Color::BlueBackground
+                    notionrs::object::color::Color::BlueBackground
                 );
                 notionrs::object::block::Block::BulletedListItem {
                     bulleted_list_item: bulleted_list_item.green_background(),

@@ -21,7 +21,7 @@ pub struct UpdateDatabaseClient {
         std::collections::HashMap<String, Option<crate::object::database::DatabaseProperty>>,
 
     /// This can be configured even though it's not in the official Notion API documentation
-    pub(crate) icon: Option<crate::others::icon::Icon>,
+    pub(crate) icon: Option<crate::object::icon::Icon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     pub(crate) cover: Option<crate::File>,
@@ -44,7 +44,7 @@ pub struct UpdateDatabaseRequestBody {
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<crate::others::icon::Icon>,
+    pub(crate) icon: Option<crate::object::icon::Icon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]

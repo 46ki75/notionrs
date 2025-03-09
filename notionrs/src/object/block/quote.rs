@@ -7,10 +7,10 @@ use serde::{Deserialize, Serialize};
 #[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct QuoteBlock {
     /// The rich text displayed in the quote block.
-    pub rich_text: Vec<crate::others::rich_text::RichText>,
+    pub rich_text: Vec<crate::object::rich_text::RichText>,
 
     /// The color of the block.
-    pub color: crate::others::color::Color,
+    pub color: crate::object::color::Color,
 
     /// It can only be specified when making a block creation request.
     /// If you need to retrieve the child blocks, you will have to send a request to this block again.
@@ -27,7 +27,7 @@ where
     T: AsRef<str>,
 {
     fn from(plain_text: T) -> Self {
-        let rich_text = crate::others::rich_text::RichText::from(plain_text.as_ref().to_string());
+        let rich_text = crate::object::rich_text::RichText::from(plain_text.as_ref().to_string());
         Self::default().rich_text(vec![rich_text])
     }
 }
@@ -85,7 +85,7 @@ mod unit_tests {
 
         let quote: QuoteBlock = serde_json::from_str::<QuoteBlock>(json_data).unwrap();
 
-        assert_eq!(quote.color, crate::others::color::Color::Default);
+        assert_eq!(quote.color, crate::object::color::Color::Default);
 
         let rich_text = quote.rich_text.first().unwrap();
 
@@ -99,7 +99,7 @@ mod unit_tests {
         // assert!(!rich_text.annotations.code);
         // assert_eq!(
         //     rich_text.annotations.color,
-        //     crate::others::color::Color::Default
+        //     crate::object::color::Color::Default
         // );
 
         match rich_text {
@@ -117,7 +117,7 @@ mod unit_tests {
                 assert!(!annotations.strikethrough);
                 assert!(!annotations.underline);
                 assert!(!annotations.italic);
-                assert_eq!(annotations.color, crate::others::color::Color::Default)
+                assert_eq!(annotations.color, crate::object::color::Color::Default)
             }
             _ => panic!(),
         }

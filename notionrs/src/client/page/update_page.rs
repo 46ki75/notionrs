@@ -12,7 +12,7 @@ pub struct UpdatePageClient {
     pub(crate) properties:
         std::collections::HashMap<String, crate::object::page::properties::PageProperty>,
 
-    pub(crate) icon: Option<crate::others::icon::Icon>,
+    pub(crate) icon: Option<crate::object::icon::Icon>,
 
     pub(crate) cover: Option<crate::File>,
 }
@@ -23,7 +23,7 @@ pub struct UpdatePageRequestBody {
         std::collections::HashMap<String, crate::object::page::properties::PageProperty>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<crate::others::icon::Icon>,
+    pub(crate) icon: Option<crate::object::icon::Icon>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) cover: Option<crate::File>,

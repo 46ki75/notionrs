@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 pub struct TableRowBlock {
     /// An array of cell contents in horizontal display order.
     /// Each cell is an array of rich text objects.
-    pub cells: Vec<Vec<crate::others::rich_text::RichText>>,
+    pub cells: Vec<Vec<crate::object::rich_text::RichText>>,
 }
 
 impl std::fmt::Display for TableRowBlock {

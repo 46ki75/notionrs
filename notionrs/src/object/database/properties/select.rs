@@ -20,11 +20,11 @@ pub struct DatabaseSelectProperty {
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
 pub struct DatabaseSelectOptionProperty {
-    options: Vec<crate::others::select::Select>,
+    options: Vec<crate::object::select::Select>,
 }
 
 impl DatabaseSelectProperty {
-    pub fn options(mut self, options: Vec<crate::others::select::Select>) -> Self {
+    pub fn options(mut self, options: Vec<crate::object::select::Select>) -> Self {
         self.select.options = options;
         self
     }
@@ -84,7 +84,7 @@ mod unit_tests {
         assert_eq!(options[0].name, "🥦Vegetable");
         assert_eq!(
             options[0].color,
-            Some(crate::others::select::SelectColor::Purple)
+            Some(crate::object::select::SelectColor::Purple)
         );
 
         assert_eq!(
@@ -94,7 +94,7 @@ mod unit_tests {
         assert_eq!(options[1].name, "🍎Fruit");
         assert_eq!(
             options[1].color,
-            Some(crate::others::select::SelectColor::Red)
+            Some(crate::object::select::SelectColor::Red)
         );
 
         assert_eq!(
@@ -104,7 +104,7 @@ mod unit_tests {
         assert_eq!(options[2].name, "💪Protein");
         assert_eq!(
             options[2].color,
-            Some(crate::others::select::SelectColor::Yellow)
+            Some(crate::object::select::SelectColor::Yellow)
         );
     }
 }

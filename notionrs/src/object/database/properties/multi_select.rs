@@ -20,11 +20,11 @@ pub struct DatabaseMultiSelectProperty {
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
 pub struct DatabaseMultiSelectOptionProperty {
-    pub options: Vec<crate::others::select::Select>,
+    pub options: Vec<crate::object::select::Select>,
 }
 
 impl DatabaseMultiSelectProperty {
-    pub fn options(mut self, options: Vec<crate::others::select::Select>) -> Self {
+    pub fn options(mut self, options: Vec<crate::object::select::Select>) -> Self {
         self.multi_select.options = options;
         self
     }
@@ -89,7 +89,7 @@ mod unit_tests {
         assert_eq!(options[0].name, "Duc Loi Market");
         assert_eq!(
             options[0].color,
-            Some(crate::others::select::SelectColor::Blue)
+            Some(crate::object::select::SelectColor::Blue)
         );
 
         assert_eq!(
@@ -99,7 +99,7 @@ mod unit_tests {
         assert_eq!(options[1].name, "Rainbow Grocery");
         assert_eq!(
             options[1].color,
-            Some(crate::others::select::SelectColor::Gray)
+            Some(crate::object::select::SelectColor::Gray)
         );
 
         assert_eq!(
@@ -109,7 +109,7 @@ mod unit_tests {
         assert_eq!(options[2].name, "Nijiya Market");
         assert_eq!(
             options[2].color,
-            Some(crate::others::select::SelectColor::Purple)
+            Some(crate::object::select::SelectColor::Purple)
         );
 
         assert_eq!(
@@ -119,7 +119,7 @@ mod unit_tests {
         assert_eq!(options[3].name, "Gus's Community Market");
         assert_eq!(
             options[3].color,
-            Some(crate::others::select::SelectColor::Yellow)
+            Some(crate::object::select::SelectColor::Yellow)
         );
     }
 }

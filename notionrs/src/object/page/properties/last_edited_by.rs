@@ -39,7 +39,7 @@ pub struct PageLastEditedByProperty {
 
     /// A [user object](https://developers.notion.com/reference/user)
     /// containing information about the user who last updated the page.
-    pub last_edited_by: crate::user::User,
+    pub last_edited_by: crate::object::user::User,
 }
 
 impl std::fmt::Display for PageLastEditedByProperty {
@@ -89,8 +89,8 @@ mod unit_tests {
         assert_eq!(last_edited_by.id, Some("fR4s".to_string()));
 
         match &last_edited_by.last_edited_by {
-            crate::user::User::Bot(_) => panic!(),
-            crate::user::User::Person(person) => {
+            crate::object::user::User::Bot(_) => panic!(),
+            crate::object::user::User::Person(person) => {
                 assert_eq!(person.object, "user");
                 assert_eq!(person.id, "cb497a8c-1c30-4c22-87af-f8b0c1ee7389");
                 assert_eq!(person.name, Some("Sam".to_string()));

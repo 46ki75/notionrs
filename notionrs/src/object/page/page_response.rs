@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    others::{file::File, icon::Icon, parent::Parent},
-    user::User,
+    object::user::User,
+    object::{file::File, icon::Icon, parent::Parent},
 };
 
 /// <https://developers.notion.com/reference/page>

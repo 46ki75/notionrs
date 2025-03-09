@@ -32,7 +32,7 @@ pub struct PageSelectProperty {
     pub id: Option<String>,
 
     /// Select object (optional)
-    pub select: Option<crate::others::select::Select>,
+    pub select: Option<crate::object::select::Select>,
 }
 
 impl<T> From<T> for PageSelectProperty
@@ -40,7 +40,7 @@ where
     T: AsRef<str>,
 {
     fn from(value: T) -> Self {
-        let select = crate::others::select::Select::from(value);
+        let select = crate::object::select::Select::from(value);
         Self::default().select(select)
     }
 }
@@ -100,7 +100,7 @@ mod unit_tests {
         assert_eq!(select.select.as_ref().unwrap().name, "TODO");
         assert_eq!(
             select.select.as_ref().unwrap().color,
-            Some(crate::others::select::SelectColor::Default)
+            Some(crate::object::select::SelectColor::Default)
         );
     }
 }

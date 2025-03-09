@@ -37,7 +37,7 @@ pub struct PagePeopleProperty {
     pub id: Option<String>,
 
     /// An array of user objects.
-    pub people: Vec<crate::user::User>,
+    pub people: Vec<crate::object::user::User>,
 }
 
 impl std::fmt::Display for PagePeopleProperty {
@@ -100,7 +100,7 @@ mod unit_tests {
         assert_eq!(people.id, Some("pAoV".to_string()));
 
         match &people.people.first().unwrap() {
-            crate::user::User::Person(p) => {
+            crate::object::user::User::Person(p) => {
                 assert_eq!(p.id, "4050d499-9586-4352-85a2-d4cb55a68200");
                 assert_eq!(p.name, Some("46ki75".to_string()));
                 assert_eq!(p.avatar_url, None);
@@ -110,7 +110,7 @@ mod unit_tests {
                     Some("46ki75@example.com".to_string())
                 );
             }
-            crate::user::User::Bot(_) => {
+            crate::object::user::User::Bot(_) => {
                 panic!()
             }
         }

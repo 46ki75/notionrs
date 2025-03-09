@@ -54,7 +54,7 @@ mod integration_tests {
                 assert_eq!(paragraph.rich_text, vec![rich_text]);
                 assert_eq!(
                     paragraph.color,
-                    notionrs::others::color::Color::BlueBackground
+                    notionrs::object::color::Color::BlueBackground
                 );
                 notionrs::object::block::Block::Paragraph {
                     paragraph: paragraph.green_background(),

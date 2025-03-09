@@ -8,13 +8,13 @@ use crate::color_setters;
 #[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct ToDoBlock {
     /// The rich text displayed in the To do block.
-    pub rich_text: Vec<crate::others::rich_text::RichText>,
+    pub rich_text: Vec<crate::object::rich_text::RichText>,
 
     /// Whether the To do is checked.
     pub checked: bool,
 
     /// The color of the block.
-    pub color: crate::others::color::Color,
+    pub color: crate::object::color::Color,
 }
 
 impl ToDoBlock {
@@ -26,7 +26,7 @@ where
     T: AsRef<str>,
 {
     fn from(plain_text: T) -> Self {
-        let rich_text = crate::others::rich_text::RichText::from(plain_text.as_ref().to_string());
+        let rich_text = crate::object::rich_text::RichText::from(plain_text.as_ref().to_string());
         Self::default().rich_text(vec![rich_text])
     }
 }
@@ -102,7 +102,7 @@ mod unit_tests {
                 assert!(!annotations.strikethrough);
                 assert!(!annotations.underline);
                 assert!(!annotations.italic);
-                assert_eq!(annotations.color, crate::others::color::Color::Default)
+                assert_eq!(annotations.color, crate::object::color::Color::Default)
             }
             _ => panic!(),
         }

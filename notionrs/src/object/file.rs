@@ -67,7 +67,7 @@ impl File {
 
     /// This function can only be used if the File variant is External.
     /// If the File variant is Uploaded, it returns Self without changing the value.
-    pub fn caption(mut self, caption: Vec<crate::others::rich_text::RichText>) -> Self {
+    pub fn caption(mut self, caption: Vec<crate::object::rich_text::RichText>) -> Self {
         if let File::External(ref mut external) = self {
             external.caption = Some(caption)
         }
@@ -137,7 +137,7 @@ pub struct ExternalFile {
 
     /// File caption (setting is available only in the file type block)
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub caption: Option<Vec<crate::others::rich_text::RichText>>,
+    pub caption: Option<Vec<crate::object::rich_text::RichText>>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, Default, PartialEq, Eq)]
@@ -223,7 +223,7 @@ pub struct UploadedFile {
     pub name: Option<String>,
 
     /// File caption (setting is available only in the file type block)
-    pub caption: Option<Vec<crate::others::rich_text::RichText>>,
+    pub caption: Option<Vec<crate::object::rich_text::RichText>>,
 }
 
 impl std::fmt::Display for UploadedFile {

@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct BookmarkBlock {
     /// The caption for the bookmark.
-    pub caption: Vec<crate::others::rich_text::RichText>,
+    pub caption: Vec<crate::object::rich_text::RichText>,
 
     /// The link for the bookmark.
     pub url: String,
@@ -75,7 +75,7 @@ mod unit_tests {
                 assert!(!annotations.strikethrough);
                 assert!(!annotations.underline);
                 assert!(!annotations.italic);
-                assert_eq!(annotations.color, crate::others::color::Color::Default)
+                assert_eq!(annotations.color, crate::object::color::Color::Default)
             }
             _ => panic!(),
         }
