@@ -23,7 +23,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default, notionrs_macro::Setter)]
 pub struct PageUniqueIdProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -36,7 +36,7 @@ pub struct PageUniqueIdProperty {
 
 /// Unique IDs can be read using the API with a GET page request,
 /// but they cannot be updated with the API, since they are auto-incrementing.
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default, notionrs_macro::Setter)]
 pub struct PageUniqueIdPropertyParameter {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.

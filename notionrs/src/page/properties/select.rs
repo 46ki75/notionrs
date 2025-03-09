@@ -24,7 +24,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default, notionrs_macro::Setter)]
 pub struct PageSelectProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -33,13 +33,6 @@ pub struct PageSelectProperty {
 
     /// Select object (optional)
     pub select: Option<crate::others::select::Select>,
-}
-
-impl PageSelectProperty {
-    pub fn select(mut self, select: crate::others::select::Select) -> Self {
-        self.select = Some(select);
-        self
-    }
 }
 
 impl<T> From<T> for PageSelectProperty

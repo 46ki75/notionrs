@@ -21,7 +21,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default, notionrs_macro::Setter)]
 pub struct PageCreatedTimeProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.

@@ -32,7 +32,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default, notionrs_macro::Setter)]
 pub struct PageEmailProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -41,16 +41,6 @@ pub struct PageEmailProperty {
 
     /// A string describing an email address.
     pub email: Option<String>,
-}
-
-impl PageEmailProperty {
-    pub fn email<T>(mut self, email: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        self.email = Some(email.as_ref().to_string());
-        self
-    }
 }
 
 impl<T> From<T> for PageEmailProperty

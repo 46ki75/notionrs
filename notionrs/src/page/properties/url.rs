@@ -20,7 +20,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default, notionrs_macro::Setter)]
 pub struct PageUrlProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -29,16 +29,6 @@ pub struct PageUrlProperty {
 
     /// A string that describes a web address.
     pub url: Option<String>,
-}
-
-impl PageUrlProperty {
-    pub fn url<T>(mut self, url: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        self.url = Some(url.as_ref().to_string());
-        self
-    }
 }
 
 impl<T> From<T> for PageUrlProperty

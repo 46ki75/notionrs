@@ -31,7 +31,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default, notionrs_macro::Setter)]
 pub struct PageFilesProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -43,13 +43,6 @@ pub struct PageFilesProperty {
     ///
     /// When creating, both the external path of the file and `name` are required.
     pub files: Vec<crate::others::file::File>,
-}
-
-impl PageFilesProperty {
-    pub fn files(mut self, files: Vec<crate::others::file::File>) -> Self {
-        self.files = files;
-        self
-    }
 }
 
 impl<T> From<T> for PageFilesProperty

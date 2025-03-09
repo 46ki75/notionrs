@@ -15,7 +15,7 @@ use serde::{Deserialize, Deserializer, Serialize};
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
-#[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default, notionrs_macro::Setter)]
 pub struct PageVerificationProperty {
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -23,7 +23,7 @@ pub struct PageVerificationProperty {
     pub verification: PageVerificationPropertyParameter,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default, notionrs_macro::Setter)]
 pub struct PageVerificationPropertyParameter {
     /// The verification state of the page. `"verified"` or `"unverified"`.
     pub state: PageVerificationState,
@@ -42,7 +42,7 @@ pub enum PageVerificationState {
     Expired,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default, notionrs_macro::Setter)]
 pub struct PageVerificationDate {
     /// A date, with an optional time.
     #[serde(deserialize_with = "deserialize_date_or_datetime")]

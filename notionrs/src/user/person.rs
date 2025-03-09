@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 /// <https://developers.notion.com/reference/user#people>
 /// User objects that represent people have the type property set to "person".
-#[derive(Deserialize, Serialize, Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default, notionrs_macro::Setter)]
 pub struct Person {
     /// always "user"
     pub object: String,
@@ -23,7 +23,7 @@ pub struct Person {
     pub person: Option<PersonDetail>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default, notionrs_macro::Setter)]
 pub struct PersonDetail {
     /// Email address of person. This is only present if an integration has
     /// user capabilities that allow access to email addresses.

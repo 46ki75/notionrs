@@ -38,7 +38,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone, Default, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default, notionrs_macro::Setter)]
 pub struct PageTitleProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.

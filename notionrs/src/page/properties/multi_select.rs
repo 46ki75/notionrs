@@ -31,7 +31,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default, notionrs_macro::Setter)]
 pub struct PageMultiSelectProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -40,13 +40,6 @@ pub struct PageMultiSelectProperty {
 
     /// Array of Select object
     pub multi_select: Vec<crate::others::select::Select>,
-}
-
-impl PageMultiSelectProperty {
-    pub fn multi_select(mut self, multi_select: Vec<crate::others::select::Select>) -> Self {
-        self.multi_select = multi_select;
-        self
-    }
 }
 
 impl std::fmt::Display for PageMultiSelectProperty {

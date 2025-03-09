@@ -13,6 +13,12 @@ pub enum User {
     Person(person::Person),
 }
 
+impl Default for User {
+    fn default() -> Self {
+        Self::Person(person::Person::default())
+    }
+}
+
 impl std::fmt::Display for User {
     /// Display the name if it exists, otherwise display the id.
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -63,7 +69,9 @@ mod unit_tests {
                 assert_eq!(bot.r#type, Some("bot".to_string()));
             }
             User::Person(_) => {
-                panic!("The expected enum during deserialization was Bot, but it was deserialized as Person.");
+                panic!(
+                    "The expected enum during deserialization was Bot, but it was deserialized as Person."
+                );
             }
         }
 
@@ -89,7 +97,9 @@ mod unit_tests {
 
         match user {
             User::Bot(_) => {
-                panic!("The expected enum during deserialization was Person, but it was deserialized as Bot.");
+                panic!(
+                    "The expected enum during deserialization was Person, but it was deserialized as Bot."
+                );
             }
             User::Person(user) => {
                 assert_eq!(user.object, "user".to_string());

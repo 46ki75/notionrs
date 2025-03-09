@@ -28,7 +28,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, notionrs_macro::Setter)]
 pub struct PageFormulaProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -46,7 +46,7 @@ impl std::fmt::Display for PageFormulaProperty {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Formula {
     Boolean(FormulaBoolean),
@@ -72,7 +72,7 @@ impl std::fmt::Display for Formula {
 ///   "boolean": false
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
 pub struct FormulaBoolean {
     /// Calculated value of the database property
     pub boolean: Option<bool>,
@@ -84,7 +84,7 @@ pub struct FormulaBoolean {
 ///   "date": "2024-08-15T05:24:00.000Z"
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
 pub struct FormulaDate {
     /// Calculated value of the database property
     pub date: Option<chrono::DateTime<chrono::FixedOffset>>,
@@ -96,7 +96,7 @@ pub struct FormulaDate {
 ///   "number": 56
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq)]
 pub struct FormulaNumber {
     /// Calculated value of the database property
     pub number: Option<f64>,
@@ -108,7 +108,7 @@ pub struct FormulaNumber {
 ///   "string": "My Title"
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 pub struct FormulaString {
     /// Calculated value of the database property
     pub string: Option<String>,
