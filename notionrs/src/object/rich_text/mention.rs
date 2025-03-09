@@ -30,7 +30,7 @@ pub enum Mention {
         database: DatabaseMention,
     },
     CustomEmoji {
-        custom_emoji: crate::object::custom_emoji::CustomEmojiContent,
+        custom_emoji: crate::object::emoji::CustomEmojiContent,
     },
 }
 

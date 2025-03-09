@@ -1,18 +1,16 @@
 use serde::{Deserialize, Serialize};
 
-use super::{custom_emoji::CustomEmoji, emoji::Emoji, file::File};
-
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(untagged)]
 pub enum Icon {
-    File(File),
-    Emoji(Emoji),
-    CustomEmoji(CustomEmoji),
+    File(crate::object::file::File),
+    Emoji(crate::object::emoji::Emoji),
+    CustomEmoji(crate::object::emoji::CustomEmoji),
 }
 
 impl Default for Icon {
     fn default() -> Self {
-        Icon::Emoji(Emoji::default())
+        Icon::Emoji(crate::object::emoji::Emoji::default())
     }
 }
 
