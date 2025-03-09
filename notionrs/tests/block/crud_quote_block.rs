@@ -18,14 +18,14 @@ mod integration_tests {
 
         let rich_text = notionrs::RichText::from("rich text");
 
-        let children = vec![notionrs::block::Block::Paragraph {
-            paragraph: notionrs::block::ParagraphBlock::default()
+        let children = vec![notionrs::object::block::Block::Paragraph {
+            paragraph: notionrs::object::block::ParagraphBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .blue_background(),
         }];
 
-        let block = notionrs::block::Block::Quote {
-            quote: notionrs::block::QuoteBlock::default()
+        let block = notionrs::object::block::Block::Quote {
+            quote: notionrs::object::block::QuoteBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .blue_background()
                 .children(children),
@@ -57,10 +57,10 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Quote { quote } => {
+            notionrs::object::block::Block::Quote { quote } => {
                 assert_eq!(quote.rich_text, vec![rich_text]);
                 assert_eq!(quote.color, notionrs::others::color::Color::BlueBackground);
-                notionrs::block::Block::Quote {
+                notionrs::object::block::Block::Quote {
                     quote: quote.green_background(),
                 }
             }

@@ -7,7 +7,9 @@ pub struct RetrieveDatabaseClient {
 }
 
 impl RetrieveDatabaseClient {
-    pub async fn send(self) -> Result<crate::database::DatabaseResponse, crate::error::Error> {
+    pub async fn send(
+        self,
+    ) -> Result<crate::object::database::DatabaseResponse, crate::error::Error> {
         let database_id = self
             .database_id
             .ok_or(crate::error::Error::RequestParameter(
@@ -32,7 +34,7 @@ impl RetrieveDatabaseClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let database = serde_json::from_slice::<crate::database::DatabaseResponse>(&body)?;
+        let database = serde_json::from_slice::<crate::object::database::DatabaseResponse>(&body)?;
 
         Ok(database)
     }

@@ -30,6 +30,5 @@ pub struct DatabaseResponse {
 
     pub description: Vec<crate::others::rich_text::RichText>,
 
-    pub properties:
-        std::collections::HashMap<String, crate::database::properties::DatabaseProperty>,
+    pub properties: std::collections::HashMap<String, super::properties::DatabaseProperty>,
 }

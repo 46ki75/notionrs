@@ -1,10 +1,10 @@
 use notionrs::{
     Client, Emoji, ExternalFile, File, Icon, RichText, Select, SelectColor,
-    database::{
+    error::Error,
+    object::database::{
         DatabaseMultiSelectProperty, DatabaseProperty, DatabaseRichTextProperty,
         DatabaseUrlProperty,
     },
-    error::Error,
 };
 
 #[tokio::main]

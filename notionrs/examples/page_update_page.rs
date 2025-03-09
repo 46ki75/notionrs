@@ -1,7 +1,7 @@
 use notionrs::{
-    error::Error,
-    page::{PageProperty, PageTitleProperty},
     Client,
+    error::Error,
+    object::page::{PageProperty, PageTitleProperty},
 };
 
 #[tokio::main]

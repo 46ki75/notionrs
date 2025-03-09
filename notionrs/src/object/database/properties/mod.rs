@@ -97,11 +97,13 @@ mod unit_tests {
                 assert_eq!(num.name, "Number");
                 assert_eq!(
                     num.number.format,
-                    crate::database::properties::number::NumberFormat::Number
+                    crate::object::database::properties::number::NumberFormat::Number
                 );
             }
             _ => {
-                panic!("A different variant was detected, although a DatabaseProperty::Number variant was expected.")
+                panic!(
+                    "A different variant was detected, although a DatabaseProperty::Number variant was expected."
+                )
             }
         }
     }

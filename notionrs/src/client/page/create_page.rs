@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::page::page_response::PageResponse;
+use crate::object::page::page_response::PageResponse;
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct CreatePageClient {
@@ -13,9 +13,10 @@ pub struct CreatePageClient {
     /// Cannot specify the same database ID as the parent database's page_id  
     pub(crate) database_id: Option<String>,
 
-    pub(crate) properties: std::collections::HashMap<String, crate::page::properties::PageProperty>,
+    pub(crate) properties:
+        std::collections::HashMap<String, crate::object::page::properties::PageProperty>,
 
-    pub(crate) children: Option<Vec<crate::block::Block>>,
+    pub(crate) children: Option<Vec<crate::object::block::Block>>,
 
     pub(crate) icon: Option<crate::others::icon::Icon>,
 
@@ -26,10 +27,11 @@ pub struct CreatePageClient {
 pub struct CreatePageRequestBody {
     pub(crate) parent: crate::others::parent::Parent,
 
-    pub(crate) properties: std::collections::HashMap<String, crate::page::properties::PageProperty>,
+    pub(crate) properties:
+        std::collections::HashMap<String, crate::object::page::properties::PageProperty>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) children: Option<Vec<crate::block::Block>>,
+    pub(crate) children: Option<Vec<crate::object::block::Block>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) icon: Option<crate::others::icon::Icon>,

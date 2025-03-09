@@ -18,8 +18,8 @@ mod integration_tests {
 
         let rich_text = notionrs::RichText::from("rich text");
 
-        let block = notionrs::block::Block::Paragraph {
-            paragraph: notionrs::block::ParagraphBlock::default()
+        let block = notionrs::object::block::Block::Paragraph {
+            paragraph: notionrs::object::block::ParagraphBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .blue_background(),
         };
@@ -50,13 +50,13 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Paragraph { paragraph } => {
+            notionrs::object::block::Block::Paragraph { paragraph } => {
                 assert_eq!(paragraph.rich_text, vec![rich_text]);
                 assert_eq!(
                     paragraph.color,
                     notionrs::others::color::Color::BlueBackground
                 );
-                notionrs::block::Block::Paragraph {
+                notionrs::object::block::Block::Paragraph {
                     paragraph: paragraph.green_background(),
                 }
             }

@@ -14,36 +14,36 @@ mod integration_tests {
 
         properties.insert(
             "Title".to_string(),
-            notionrs::database::DatabaseProperty::Title(
-                notionrs::database::DatabaseTitleProperty::default(),
+            notionrs::object::database::DatabaseProperty::Title(
+                notionrs::object::database::DatabaseTitleProperty::default(),
             ),
         );
 
         properties.insert(
             "My Checkbox".to_string(),
-            notionrs::database::DatabaseProperty::Checkbox(
-                notionrs::database::DatabaseCheckboxProperty::default(),
+            notionrs::object::database::DatabaseProperty::Checkbox(
+                notionrs::object::database::DatabaseCheckboxProperty::default(),
             ),
         );
 
         properties.insert(
             "Date".to_string(),
-            notionrs::database::DatabaseProperty::Date(
-                notionrs::database::DatabaseDateProperty::default(),
+            notionrs::object::database::DatabaseProperty::Date(
+                notionrs::object::database::DatabaseDateProperty::default(),
             ),
         );
 
         properties.insert(
             "email".to_string(),
-            notionrs::database::DatabaseProperty::Email(
-                notionrs::database::DatabaseEmailProperty::default(),
+            notionrs::object::database::DatabaseProperty::Email(
+                notionrs::object::database::DatabaseEmailProperty::default(),
             ),
         );
 
         properties.insert(
             "Files & Media".to_string(),
-            notionrs::database::DatabaseProperty::Files(
-                notionrs::database::DatabaseFilesProperty::default(),
+            notionrs::object::database::DatabaseProperty::Files(
+                notionrs::object::database::DatabaseFilesProperty::default(),
             ),
         );
 
@@ -64,50 +64,52 @@ mod integration_tests {
 
         properties.insert(
             "Tags".to_string(),
-            notionrs::database::DatabaseProperty::MultiSelect(
-                notionrs::database::DatabaseMultiSelectProperty::default().options(options.clone()),
+            notionrs::object::database::DatabaseProperty::MultiSelect(
+                notionrs::object::database::DatabaseMultiSelectProperty::default()
+                    .options(options.clone()),
             ),
         );
 
         properties.insert(
             "Number".to_string(),
-            notionrs::database::DatabaseProperty::Number(
-                notionrs::database::DatabaseNumberProperty::default(),
+            notionrs::object::database::DatabaseProperty::Number(
+                notionrs::object::database::DatabaseNumberProperty::default(),
             ),
         );
 
         properties.insert(
             "People".to_string(),
-            notionrs::database::DatabaseProperty::People(
-                notionrs::database::DatabasePeopleProperty::default(),
+            notionrs::object::database::DatabaseProperty::People(
+                notionrs::object::database::DatabasePeopleProperty::default(),
             ),
         );
 
         properties.insert(
             "Phone".to_string(),
-            notionrs::database::DatabaseProperty::PhoneNumber(
-                notionrs::database::DatabasePhoneNumberProperty::default(),
+            notionrs::object::database::DatabaseProperty::PhoneNumber(
+                notionrs::object::database::DatabasePhoneNumberProperty::default(),
             ),
         );
 
         properties.insert(
             "Rich Text".to_string(),
-            notionrs::database::DatabaseProperty::RichText(
-                notionrs::database::DatabaseRichTextProperty::default(),
+            notionrs::object::database::DatabaseProperty::RichText(
+                notionrs::object::database::DatabaseRichTextProperty::default(),
             ),
         );
 
         properties.insert(
             "Select".to_string(),
-            notionrs::database::DatabaseProperty::Select(
-                notionrs::database::DatabaseSelectProperty::default().options(options.clone()),
+            notionrs::object::database::DatabaseProperty::Select(
+                notionrs::object::database::DatabaseSelectProperty::default()
+                    .options(options.clone()),
             ),
         );
 
         properties.insert(
             "URL".to_string(),
-            notionrs::database::DatabaseProperty::Url(
-                notionrs::database::DatabaseUrlProperty::default(),
+            notionrs::object::database::DatabaseProperty::Url(
+                notionrs::object::database::DatabaseUrlProperty::default(),
             ),
         );
 
@@ -136,75 +138,84 @@ mod integration_tests {
 
         properties.insert(
             "Title".to_string(),
-            notionrs::page::PageProperty::Title(notionrs::page::PageTitleProperty::from(
-                "My Page Title",
-            )),
+            notionrs::object::page::PageProperty::Title(
+                notionrs::object::page::PageTitleProperty::from("My Page Title"),
+            ),
         );
 
         properties.insert(
             "My Checkbox".to_string(),
-            notionrs::page::PageProperty::Checkbox(notionrs::page::PageCheckboxProperty::from(
-                true,
-            )),
+            notionrs::object::page::PageProperty::Checkbox(
+                notionrs::object::page::PageCheckboxProperty::from(true),
+            ),
         );
 
         properties.insert(
             "Rich Text".to_string(),
-            notionrs::page::PageProperty::RichText(notionrs::page::PageRichTextProperty::from(
-                "description",
-            )),
+            notionrs::object::page::PageProperty::RichText(
+                notionrs::object::page::PageRichTextProperty::from("description"),
+            ),
         );
 
         properties.insert(
             "Date".to_string(),
-            notionrs::page::PageProperty::Date(notionrs::page::PageDateProperty::from(
-                chrono::DateTime::parse_from_rfc3339("2024-10-26T09:03:00.000Z").unwrap(),
-            )),
+            notionrs::object::page::PageProperty::Date(
+                notionrs::object::page::PageDateProperty::from(
+                    chrono::DateTime::parse_from_rfc3339("2024-10-26T09:03:00.000Z").unwrap(),
+                ),
+            ),
         );
 
         properties.insert(
             "email".to_string(),
-            notionrs::page::PageProperty::Email(notionrs::page::PageEmailProperty::from(
-                "info@example.com",
-            )),
+            notionrs::object::page::PageProperty::Email(
+                notionrs::object::page::PageEmailProperty::from("info@example.com"),
+            ),
         );
 
         properties.insert(
             "Files & Media".to_string(),
-            notionrs::page::PageProperty::Files(notionrs::page::PageFilesProperty::from(
-                "https://example.com/file.txt",
-            )),
+            notionrs::object::page::PageProperty::Files(
+                notionrs::object::page::PageFilesProperty::from("https://example.com/file.txt"),
+            ),
         );
 
         let option = notionrs::others::select::Select::from("IT");
 
         properties.insert(
             "Tags".to_string(),
-            notionrs::page::PageProperty::MultiSelect(
-                notionrs::page::PageMultiSelectProperty::default().multi_select(vec![option]),
+            notionrs::object::page::PageProperty::MultiSelect(
+                notionrs::object::page::PageMultiSelectProperty::default()
+                    .multi_select(vec![option]),
             ),
         );
 
         properties.insert(
             "Number".to_string(),
-            notionrs::page::PageProperty::Number(notionrs::page::PageNumberProperty::from(100000)),
+            notionrs::object::page::PageProperty::Number(
+                notionrs::object::page::PageNumberProperty::from(100000),
+            ),
         );
 
         properties.insert(
             "Phone".to_string(),
-            notionrs::page::PageProperty::PhoneNumber(
-                notionrs::page::PagePhoneNumberProperty::from("083-0000-0000"),
+            notionrs::object::page::PageProperty::PhoneNumber(
+                notionrs::object::page::PagePhoneNumberProperty::from("083-0000-0000"),
             ),
         );
 
         properties.insert(
             "Select".to_string(),
-            notionrs::page::PageProperty::Select(notionrs::page::PageSelectProperty::from("IT")),
+            notionrs::object::page::PageProperty::Select(
+                notionrs::object::page::PageSelectProperty::from("IT"),
+            ),
         );
 
         properties.insert(
             "URL".to_string(),
-            notionrs::page::PageProperty::Url(notionrs::page::PageUrlProperty::from("IT")),
+            notionrs::object::page::PageProperty::Url(
+                notionrs::object::page::PageUrlProperty::from("IT"),
+            ),
         );
 
         println!("{}", serde_json::to_string(&properties).unwrap());

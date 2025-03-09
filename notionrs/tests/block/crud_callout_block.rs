@@ -18,8 +18,8 @@ mod integration_tests {
 
         let rich_text = notionrs::RichText::from("callout!");
 
-        let block = notionrs::block::Block::Callout {
-            callout: notionrs::block::CalloutBlock::default()
+        let block = notionrs::object::block::Block::Callout {
+            callout: notionrs::object::block::CalloutBlock::default()
                 .blue_background()
                 .rich_text(vec![rich_text.clone()]),
         };
@@ -50,13 +50,13 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Callout { callout } => {
+            notionrs::object::block::Block::Callout { callout } => {
                 assert_eq!(callout.rich_text, vec![rich_text]);
                 assert_eq!(
                     callout.color,
                     notionrs::others::color::Color::BlueBackground
                 );
-                notionrs::block::Block::Callout {
+                notionrs::object::block::Block::Callout {
                     callout: callout.green_background(),
                 }
             }

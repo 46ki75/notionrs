@@ -11,13 +11,13 @@ pub struct UpdateBlockClient {
     /// The ID of the existing block that the new block should be appended after.
     pub(crate) archived: Option<bool>,
 
-    pub(crate) block: Option<crate::block::Block>,
+    pub(crate) block: Option<crate::object::block::Block>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdateBlockRequestBody {
     #[serde(flatten)]
-    pub(crate) block: crate::block::Block,
+    pub(crate) block: crate::object::block::Block,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) archived: Option<bool>,
@@ -25,7 +25,7 @@ pub struct UpdateBlockRequestBody {
 
 impl UpdateBlockClient {
     // TODO: docs for send
-    pub async fn send(self) -> Result<crate::block::BlockResponse, crate::error::Error> {
+    pub async fn send(self) -> Result<crate::object::block::BlockResponse, crate::error::Error> {
         let block_id = self.block_id.ok_or(crate::error::Error::RequestParameter(
             "`block_id` is not set.".to_string(),
         ))?;
@@ -63,7 +63,7 @@ impl UpdateBlockClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let block = serde_json::from_slice::<crate::block::BlockResponse>(&body)?;
+        let block = serde_json::from_slice::<crate::object::block::BlockResponse>(&body)?;
 
         Ok(block)
     }

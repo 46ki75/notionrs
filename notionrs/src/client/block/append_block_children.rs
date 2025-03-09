@@ -11,12 +11,12 @@ pub struct AppendBlockChildrenClient {
     /// The ID of the existing block that the new block should be appended after.
     pub(crate) after: Option<String>,
 
-    pub(crate) children: Vec<crate::block::Block>,
+    pub(crate) children: Vec<crate::object::block::Block>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AppendBlockChildrenRequestBody {
-    pub(crate) children: Vec<crate::block::Block>,
+    pub(crate) children: Vec<crate::object::block::Block>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) after: Option<String>,
@@ -28,8 +28,10 @@ impl AppendBlockChildrenClient {
     // TODO: docs for send
     pub async fn send(
         self,
-    ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, crate::error::Error>
-    {
+    ) -> Result<
+        crate::list_response::ListResponse<crate::object::block::BlockResponse>,
+        crate::error::Error,
+    > {
         let block_id = self.block_id.ok_or(crate::error::Error::RequestParameter(
             "`block_id` is not set.".to_string(),
         ))?;
@@ -64,7 +66,7 @@ impl AppendBlockChildrenClient {
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let block = serde_json::from_slice::<
-            crate::list_response::ListResponse<crate::block::BlockResponse>,
+            crate::list_response::ListResponse<crate::object::block::BlockResponse>,
         >(&body)?;
 
         Ok(block)

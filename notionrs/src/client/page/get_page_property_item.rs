@@ -10,7 +10,9 @@ pub struct GetPagePropertyItemClient {
 
 impl GetPagePropertyItemClient {
     // TODO: docs for send
-    pub async fn send(self) -> Result<crate::page::properties::PageProperty, crate::error::Error> {
+    pub async fn send(
+        self,
+    ) -> Result<crate::object::page::properties::PageProperty, crate::error::Error> {
         let page_id = self.page_id.ok_or(crate::error::Error::RequestParameter(
             "`page_id` is not set.".to_string(),
         ))?;
@@ -42,7 +44,7 @@ impl GetPagePropertyItemClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let user = serde_json::from_slice::<crate::page::properties::PageProperty>(&body)?;
+        let user = serde_json::from_slice::<crate::object::page::properties::PageProperty>(&body)?;
 
         Ok(user)
     }

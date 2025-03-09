@@ -18,7 +18,7 @@ pub struct UpdateDatabaseClient {
     /// When updating, passing a value of `null` (None) will remove the property.
     /// Note that it differs from the `create_database()` method in that it is optional.
     pub(crate) properties:
-        std::collections::HashMap<String, Option<crate::database::DatabaseProperty>>,
+        std::collections::HashMap<String, Option<crate::object::database::DatabaseProperty>>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     pub(crate) icon: Option<crate::others::icon::Icon>,
@@ -40,7 +40,7 @@ pub struct UpdateDatabaseRequestBody {
     /// When updating, passing a value of `null` (None) will remove the property.
     /// Note that it differs from the `create_database()` method in that it is optional.
     pub(crate) properties:
-        std::collections::HashMap<String, Option<crate::database::DatabaseProperty>>,
+        std::collections::HashMap<String, Option<crate::object::database::DatabaseProperty>>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -52,7 +52,7 @@ pub struct UpdateDatabaseRequestBody {
 }
 
 impl UpdateDatabaseClient {
-    pub async fn send(self) -> Result<crate::database::DatabaseResponse, crate::error::Error> {
+    pub async fn send(self) -> Result<crate::object::database::DatabaseResponse, crate::error::Error> {
         let database_id = self
             .database_id
             .ok_or(crate::error::Error::RequestParameter(
@@ -91,8 +91,8 @@ impl UpdateDatabaseClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let database: crate::database::DatabaseResponse =
-            serde_json::from_slice::<crate::database::DatabaseResponse>(&body)?;
+        let database: crate::object::database::DatabaseResponse =
+            serde_json::from_slice::<crate::object::database::DatabaseResponse>(&body)?;
 
         Ok(database)
     }

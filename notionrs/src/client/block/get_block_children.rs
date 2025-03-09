@@ -14,9 +14,9 @@ impl GetBlockChildrenClient {
     // TODO: docs for send
     pub async fn send(
         self,
-    ) -> Result<crate::list_response::ListResponse<crate::block::BlockResponse>, crate::error::Error>
+    ) -> Result<crate::list_response::ListResponse<crate::object::block::BlockResponse>, crate::error::Error>
     {
-        let mut result_blocks: Vec<crate::block::BlockResponse> = vec![];
+        let mut result_blocks: Vec<crate::object::block::BlockResponse> = vec![];
 
         let block_id = &self.block_id.ok_or(crate::error::Error::RequestParameter(
             "`block_id` is not set.".to_string(),
@@ -50,7 +50,7 @@ impl GetBlockChildrenClient {
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let block_list_response = serde_json::from_slice::<
-            crate::list_response::ListResponse<crate::block::BlockResponse>,
+            crate::list_response::ListResponse<crate::object::block::BlockResponse>,
         >(&body)?;
 
         result_blocks.extend(block_list_response.results);

@@ -14,8 +14,8 @@ mod integration_tests {
 
         properties.insert(
             "Title".to_string(),
-            notionrs::database::DatabaseProperty::Title(
-                notionrs::database::DatabaseTitleProperty::default(),
+            notionrs::object::database::DatabaseProperty::Title(
+                notionrs::object::database::DatabaseTitleProperty::default(),
             ),
         );
 
@@ -29,22 +29,22 @@ mod integration_tests {
 
         let database_id = response.id;
 
-        if let notionrs::database::DatabaseProperty::Title(title) =
+        if let notionrs::object::database::DatabaseProperty::Title(title) =
             response.properties.get("Title").unwrap()
         {
             let mut properties = std::collections::HashMap::new();
 
             properties.insert(
                 "Title".to_string(),
-                notionrs::database::DatabaseProperty::Title(
-                    notionrs::database::DatabaseTitleProperty::default(),
+                notionrs::object::database::DatabaseProperty::Title(
+                    notionrs::object::database::DatabaseTitleProperty::default(),
                 ),
             );
 
             properties.insert(
                 "One-WayRelation".to_string(),
-                notionrs::database::DatabaseProperty::Relation(
-                    notionrs::database::DatabaseRelationProperty::create_one_way_relation(
+                notionrs::object::database::DatabaseProperty::Relation(
+                    notionrs::object::database::DatabaseRelationProperty::create_one_way_relation(
                         database_id.clone(),
                     ),
                 ),
@@ -52,8 +52,8 @@ mod integration_tests {
 
             properties.insert(
                 "Two-Way-Relation".to_string(),
-                notionrs::database::DatabaseProperty::Relation(
-                    notionrs::database::DatabaseRelationProperty::create_tow_way_relation(
+                notionrs::object::database::DatabaseProperty::Relation(
+                    notionrs::object::database::DatabaseRelationProperty::create_tow_way_relation(
                         database_id.clone(),
                         title.clone().id.unwrap(),
                         title.clone().name,

@@ -1,4 +1,4 @@
-use notionrs::{Client, database::Sort, filter::Filter, page::PageProperty};
+use notionrs::{Client, filter::Filter, object::database::Sort, object::page::PageProperty};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

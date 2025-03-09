@@ -12,7 +12,7 @@ pub enum Mention {
         /// <https://developers.notion.com/reference/rich-text#date-mention-type-object>
         ///
         /// Date mentions contain a date property value object within the corresponding date field.
-        date: crate::page::date::PageDatePropertyParameter,
+        date: crate::object::page::date::PageDatePropertyParameter,
     },
     LinkPreview {
         link_preview: LinkPreviewMention,

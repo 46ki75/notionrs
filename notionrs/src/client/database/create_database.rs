@@ -15,7 +15,8 @@ pub struct CreateDatabaseClient {
     /// Can be used as a description for the database.
     pub(crate) description: Vec<RichText>,
 
-    pub(crate) properties: std::collections::HashMap<String, crate::database::DatabaseProperty>,
+    pub(crate) properties:
+        std::collections::HashMap<String, crate::object::database::DatabaseProperty>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     pub(crate) icon: Option<crate::others::icon::Icon>,
@@ -36,7 +37,8 @@ pub struct CreateDatabaseRequestBody {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) description: Vec<RichText>,
 
-    pub(crate) properties: std::collections::HashMap<String, crate::database::DatabaseProperty>,
+    pub(crate) properties:
+        std::collections::HashMap<String, crate::object::database::DatabaseProperty>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -48,7 +50,9 @@ pub struct CreateDatabaseRequestBody {
 }
 
 impl CreateDatabaseClient {
-    pub async fn send(self) -> Result<crate::database::DatabaseResponse, crate::error::Error> {
+    pub async fn send(
+        self,
+    ) -> Result<crate::object::database::DatabaseResponse, crate::error::Error> {
         let page_id = self.page_id.unwrap();
 
         let request_body_struct = CreateDatabaseRequestBody {
@@ -84,8 +88,8 @@ impl CreateDatabaseClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let database: crate::database::DatabaseResponse =
-            serde_json::from_slice::<crate::database::DatabaseResponse>(&body)?;
+        let database: crate::object::database::DatabaseResponse =
+            serde_json::from_slice::<crate::object::database::DatabaseResponse>(&body)?;
 
         Ok(database)
     }

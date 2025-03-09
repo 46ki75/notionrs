@@ -20,9 +20,9 @@ mod integration_tests {
 
         properties.insert(
             "title".to_string(),
-            notionrs::page::PageProperty::Title(notionrs::page::PageTitleProperty::from(
-                "My Page Title",
-            )),
+            notionrs::object::page::PageProperty::Title(
+                notionrs::object::page::PageTitleProperty::from("My Page Title"),
+            ),
         );
 
         let request = client
@@ -46,9 +46,9 @@ mod integration_tests {
 
         properties.insert(
             "title".to_string(),
-            notionrs::page::PageProperty::Title(notionrs::page::PageTitleProperty::from(
-                "My Page Title (Changed)",
-            )),
+            notionrs::object::page::PageProperty::Title(
+                notionrs::object::page::PageTitleProperty::from("My Page Title (Changed)"),
+            ),
         );
 
         let request = client

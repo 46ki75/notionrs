@@ -18,8 +18,8 @@ mod integration_tests {
 
         let rich_text = notionrs::RichText::from("Heading2 !");
 
-        let block = notionrs::block::Block::Heading2 {
-            heading_2: notionrs::block::HeadingBlock::default()
+        let block = notionrs::object::block::Block::Heading2 {
+            heading_2: notionrs::object::block::HeadingBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .children(vec![])
                 .is_toggleable(true),
@@ -51,10 +51,10 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Heading2 { heading_2 } => {
+            notionrs::object::block::Block::Heading2 { heading_2 } => {
                 assert_eq!(heading_2.rich_text, vec![rich_text]);
                 assert!(heading_2.is_toggleable);
-                notionrs::block::Block::Heading2 {
+                notionrs::object::block::Block::Heading2 {
                     heading_2: heading_2.red().is_toggleable(false),
                 }
             }

@@ -18,22 +18,22 @@ mod integration_tests {
 
         let rich_text = notionrs::RichText::from("rich text");
 
-        let block = notionrs::block::Block::Table {
-            table: notionrs::block::TableBlock::default()
+        let block = notionrs::object::block::Block::Table {
+            table: notionrs::object::block::TableBlock::default()
                 .table_width(2)
                 .has_column_header(true)
                 .has_row_header(true)
                 .children(vec![
-                    notionrs::block::Block::TableRow {
-                        table_row: notionrs::block::TableRowBlock::default()
+                    notionrs::object::block::Block::TableRow {
+                        table_row: notionrs::object::block::TableRowBlock::default()
                             .cells(vec![vec![rich_text.clone()], vec![rich_text.clone()]]),
                     },
-                    notionrs::block::Block::TableRow {
-                        table_row: notionrs::block::TableRowBlock::default()
+                    notionrs::object::block::Block::TableRow {
+                        table_row: notionrs::object::block::TableRowBlock::default()
                             .cells(vec![vec![rich_text.clone()], vec![rich_text.clone()]]),
                     },
-                    notionrs::block::Block::TableRow {
-                        table_row: notionrs::block::TableRowBlock::default()
+                    notionrs::object::block::Block::TableRow {
+                        table_row: notionrs::object::block::TableRowBlock::default()
                             .cells(vec![vec![rich_text.clone()], vec![rich_text.clone()]]),
                     },
                 ]),

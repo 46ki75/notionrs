@@ -16,8 +16,8 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = notionrs::block::Block::Equation {
-            equation: notionrs::block::EquationBlock {
+        let block = notionrs::object::block::Block::Equation {
+            equation: notionrs::object::block::EquationBlock {
                 expression: "e=mc^2".to_string(),
             },
         };
@@ -48,9 +48,9 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Equation { equation } => {
+            notionrs::object::block::Block::Equation { equation } => {
                 assert_eq!(equation.expression, "e=mc^2");
-                notionrs::block::Block::Equation {
+                notionrs::object::block::Block::Equation {
                     equation: equation
                         .expression(r#"\overline{A \lor B} = \overline{A} \land \overline{B}"#),
                 }

@@ -18,8 +18,8 @@ mod integration_tests {
 
         let rich_text = notionrs::RichText::from("Toggle");
 
-        let block = notionrs::block::Block::Toggle {
-            toggle: notionrs::block::ToggleBlock::default()
+        let block = notionrs::object::block::Block::Toggle {
+            toggle: notionrs::object::block::ToggleBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .children(vec![]),
         };
@@ -50,9 +50,9 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Toggle { toggle } => {
+            notionrs::object::block::Block::Toggle { toggle } => {
                 assert_eq!(toggle.rich_text, vec![rich_text]);
-                notionrs::block::Block::Toggle {
+                notionrs::object::block::Block::Toggle {
                     toggle: toggle.red(),
                 }
             }

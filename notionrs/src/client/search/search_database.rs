@@ -41,7 +41,7 @@ impl SearchDatabaseClient {
     pub async fn send(
         self,
     ) -> Result<
-        crate::list_response::ListResponse<crate::database::DatabaseResponse>,
+        crate::list_response::ListResponse<crate::object::database::DatabaseResponse>,
         crate::error::Error,
     > {
         let url = String::from("https://api.notion.com/v1/search");
@@ -75,7 +75,7 @@ impl SearchDatabaseClient {
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let pages = serde_json::from_slice::<
-            crate::list_response::ListResponse<crate::database::DatabaseResponse>,
+            crate::list_response::ListResponse<crate::object::database::DatabaseResponse>,
         >(&body)?;
 
         Ok(pages)

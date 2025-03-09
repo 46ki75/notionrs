@@ -1,7 +1,7 @@
 use notionrs::{
-    block::{Block, BlockResponse},
-    error::Error,
     Client,
+    error::Error,
+    object::block::{Block, BlockResponse},
 };
 
 #[tokio::main]

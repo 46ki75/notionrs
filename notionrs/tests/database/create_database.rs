@@ -14,71 +14,71 @@ mod integration_tests {
 
         properties.insert(
             "Title".to_string(),
-            notionrs::database::DatabaseProperty::Title(
-                notionrs::database::DatabaseTitleProperty::default(),
+            notionrs::object::database::DatabaseProperty::Title(
+                notionrs::object::database::DatabaseTitleProperty::default(),
             ),
         );
 
         properties.insert(
             "My Checkbox".to_string(),
-            notionrs::database::DatabaseProperty::Checkbox(
-                notionrs::database::DatabaseCheckboxProperty::default(),
+            notionrs::object::database::DatabaseProperty::Checkbox(
+                notionrs::object::database::DatabaseCheckboxProperty::default(),
             ),
         );
 
         properties.insert(
             "Created User".to_string(),
-            notionrs::database::DatabaseProperty::CreatedBy(
-                notionrs::database::DatabaseCreatedByProperty::default(),
+            notionrs::object::database::DatabaseProperty::CreatedBy(
+                notionrs::object::database::DatabaseCreatedByProperty::default(),
             ),
         );
 
         properties.insert(
             "Created Time".to_string(),
-            notionrs::database::DatabaseProperty::CreatedTime(
-                notionrs::database::DatabaseCreatedTimeProperty::default(),
+            notionrs::object::database::DatabaseProperty::CreatedTime(
+                notionrs::object::database::DatabaseCreatedTimeProperty::default(),
             ),
         );
 
         properties.insert(
             "Date".to_string(),
-            notionrs::database::DatabaseProperty::Date(
-                notionrs::database::DatabaseDateProperty::default(),
+            notionrs::object::database::DatabaseProperty::Date(
+                notionrs::object::database::DatabaseDateProperty::default(),
             ),
         );
 
         properties.insert(
             "email".to_string(),
-            notionrs::database::DatabaseProperty::Email(
-                notionrs::database::DatabaseEmailProperty::default(),
+            notionrs::object::database::DatabaseProperty::Email(
+                notionrs::object::database::DatabaseEmailProperty::default(),
             ),
         );
 
         properties.insert(
             "Files & Media".to_string(),
-            notionrs::database::DatabaseProperty::Files(
-                notionrs::database::DatabaseFilesProperty::default(),
+            notionrs::object::database::DatabaseProperty::Files(
+                notionrs::object::database::DatabaseFilesProperty::default(),
             ),
         );
 
         properties.insert(
             "formula".to_string(),
-            notionrs::database::DatabaseProperty::Formula(
-                notionrs::database::DatabaseFormulaProperty::from(r#"{{notion:block_property:BtVS:00000000-0000-0000-0000-000000000000:8994905a-074a-415f-9bcf-d1f8b4fa38e4}}/2"#),
+            notionrs::object::database::DatabaseProperty::Formula(
+                notionrs::object::database::DatabaseFormulaProperty::from(r#"{{notion:block_property:BtVS:00000000-0000-0000-0000-000000000000:8994905a-074a-415f-9bcf-d1f8b4fa38e4}}/2"#),
             ),
         );
 
         properties.insert(
             "Last Edited User".to_string(),
-            notionrs::database::DatabaseProperty::LastEditedBy(
-                notionrs::database::DatabaseLastEditedByProperty::default(),
+            notionrs::object::database::DatabaseProperty::LastEditedBy(
+                notionrs::object::database::DatabaseLastEditedByProperty::default(),
             ),
         );
 
         properties.insert(
             "Last Edited Time".to_string(),
-            notionrs::database::DatabaseProperty::LastEditedTime(
-                notionrs::database::DatabaseLastEditedTimeProperty::default(),
+            notionrs::object::database::DatabaseProperty::LastEditedTime(
+                notionrs::object::database::DatabaseLastEditedTimeProperty::default(),
             ),
         );
 
@@ -99,50 +99,50 @@ mod integration_tests {
 
         properties.insert(
             "Tags".to_string(),
-            notionrs::database::DatabaseProperty::MultiSelect(
-                notionrs::database::DatabaseMultiSelectProperty::default().options(options.clone()),
+            notionrs::object::database::DatabaseProperty::MultiSelect(
+                notionrs::object::database::DatabaseMultiSelectProperty::default().options(options.clone()),
             ),
         );
 
         properties.insert(
             "Number".to_string(),
-            notionrs::database::DatabaseProperty::Number(
-                notionrs::database::DatabaseNumberProperty::default(),
+            notionrs::object::database::DatabaseProperty::Number(
+                notionrs::object::database::DatabaseNumberProperty::default(),
             ),
         );
 
         properties.insert(
             "People".to_string(),
-            notionrs::database::DatabaseProperty::People(
-                notionrs::database::DatabasePeopleProperty::default(),
+            notionrs::object::database::DatabaseProperty::People(
+                notionrs::object::database::DatabasePeopleProperty::default(),
             ),
         );
 
         properties.insert(
             "Phone".to_string(),
-            notionrs::database::DatabaseProperty::PhoneNumber(
-                notionrs::database::DatabasePhoneNumberProperty::default(),
+            notionrs::object::database::DatabaseProperty::PhoneNumber(
+                notionrs::object::database::DatabasePhoneNumberProperty::default(),
             ),
         );
 
         properties.insert(
             "Rich Text".to_string(),
-            notionrs::database::DatabaseProperty::RichText(
-                notionrs::database::DatabaseRichTextProperty::default(),
+            notionrs::object::database::DatabaseProperty::RichText(
+                notionrs::object::database::DatabaseRichTextProperty::default(),
             ),
         );
 
         properties.insert(
             "Select".to_string(),
-            notionrs::database::DatabaseProperty::Select(
-                notionrs::database::DatabaseSelectProperty::default().options(options.clone()),
+            notionrs::object::database::DatabaseProperty::Select(
+                notionrs::object::database::DatabaseSelectProperty::default().options(options.clone()),
             ),
         );
 
         properties.insert(
             "URL".to_string(),
-            notionrs::database::DatabaseProperty::Url(
-                notionrs::database::DatabaseUrlProperty::default(),
+            notionrs::object::database::DatabaseProperty::Url(
+                notionrs::object::database::DatabaseUrlProperty::default(),
             ),
         );
 

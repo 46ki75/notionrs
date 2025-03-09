@@ -16,8 +16,8 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = notionrs::block::Block::Embed {
-            embed: notionrs::block::EmbedBlock::default().url("https://example.com"),
+        let block = notionrs::object::block::Block::Embed {
+            embed: notionrs::object::block::EmbedBlock::default().url("https://example.com"),
         };
 
         let request = client
@@ -46,9 +46,9 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Embed { embed } => {
+            notionrs::object::block::Block::Embed { embed } => {
                 assert_eq!(embed.url, "https://example.com");
-                notionrs::block::Block::Embed {
+                notionrs::object::block::Block::Embed {
                     embed: embed.url("https://example.com/index.html"),
                 }
             }

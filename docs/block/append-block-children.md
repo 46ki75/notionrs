@@ -16,8 +16,8 @@ async fn main() -> Result<(), Error> {
 
     let rich_text = notionrs::RichText::from("rich text");
 
-    let block = notionrs::block::Block::Paragraph {
-        paragraph: notionrs::block::ParagraphBlock::default()
+    let block = notionrs::object::block::Block::Paragraph {
+        paragraph: notionrs::object::block::ParagraphBlock::default()
             .rich_text(vec![rich_text.clone()])
             .blue_background(),
     };

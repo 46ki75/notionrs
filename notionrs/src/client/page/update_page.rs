@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::page::page_response::PageResponse;
+use crate::object::page::page_response::PageResponse;
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct UpdatePageClient {
@@ -9,7 +9,8 @@ pub struct UpdatePageClient {
 
     pub(crate) page_id: Option<String>,
 
-    pub(crate) properties: std::collections::HashMap<String, crate::page::properties::PageProperty>,
+    pub(crate) properties:
+        std::collections::HashMap<String, crate::object::page::properties::PageProperty>,
 
     pub(crate) icon: Option<crate::others::icon::Icon>,
 
@@ -18,7 +19,8 @@ pub struct UpdatePageClient {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdatePageRequestBody {
-    pub(crate) properties: std::collections::HashMap<String, crate::page::properties::PageProperty>,
+    pub(crate) properties:
+        std::collections::HashMap<String, crate::object::page::properties::PageProperty>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) icon: Option<crate::others::icon::Icon>,

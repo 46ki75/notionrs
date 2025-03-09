@@ -1,4 +1,4 @@
-use crate::page::page_response::PageResponse;
+use crate::object::page::page_response::PageResponse;
 
 #[derive(Debug, notionrs_macro::Setter)]
 pub struct GetPageClient {

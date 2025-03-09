@@ -18,8 +18,8 @@ mod integration_tests {
 
         let rich_text = notionrs::RichText::from("list item");
 
-        let block = notionrs::block::Block::NumberedListItem {
-            numbered_list_item: notionrs::block::NumberedListItemBlock::default()
+        let block = notionrs::object::block::Block::NumberedListItem {
+            numbered_list_item: notionrs::object::block::NumberedListItemBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .blue_background(),
         };
@@ -50,13 +50,13 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::NumberedListItem { numbered_list_item } => {
+            notionrs::object::block::Block::NumberedListItem { numbered_list_item } => {
                 assert_eq!(numbered_list_item.rich_text, vec![rich_text]);
                 assert_eq!(
                     numbered_list_item.color,
                     notionrs::others::color::Color::BlueBackground
                 );
-                notionrs::block::Block::NumberedListItem {
+                notionrs::object::block::Block::NumberedListItem {
                     numbered_list_item: numbered_list_item.green_background(),
                 }
             }

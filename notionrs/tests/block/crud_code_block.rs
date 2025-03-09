@@ -20,8 +20,8 @@ mod integration_tests {
 
         let caption = notionrs::RichText::from("index.js");
 
-        let block = notionrs::block::Block::Code {
-            code: notionrs::block::CodeBlock::default()
+        let block = notionrs::object::block::Block::Code {
+            code: notionrs::object::block::CodeBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .caption(vec![caption.clone()])
                 .lnaguage(notionrs::others::language::Language::Javascript),
@@ -53,14 +53,14 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Code { code } => {
+            notionrs::object::block::Block::Code { code } => {
                 assert_eq!(code.rich_text, vec![rich_text]);
                 assert_eq!(code.caption, vec![caption]);
                 assert_eq!(
                     code.language,
                     notionrs::others::language::Language::Javascript
                 );
-                notionrs::block::Block::Code {
+                notionrs::object::block::Block::Code {
                     code: code
                         .lnaguage(notionrs::others::language::Language::Typescript)
                         .caption(vec![notionrs::others::rich_text::RichText::from(

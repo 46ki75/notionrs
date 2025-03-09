@@ -18,8 +18,8 @@ mod integration_tests {
 
         let rich_text = notionrs::RichText::from("list item");
 
-        let block = notionrs::block::Block::ToDo {
-            to_do: notionrs::block::ToDoBlock::default()
+        let block = notionrs::object::block::Block::ToDo {
+            to_do: notionrs::object::block::ToDoBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .checked(true),
         };
@@ -50,10 +50,10 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::ToDo { to_do } => {
+            notionrs::object::block::Block::ToDo { to_do } => {
                 assert_eq!(to_do.rich_text, vec![rich_text]);
                 assert_eq!(to_do.color, notionrs::others::color::Color::Default);
-                notionrs::block::Block::ToDo {
+                notionrs::object::block::Block::ToDo {
                     to_do: to_do.green_background(),
                 }
             }

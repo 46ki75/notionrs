@@ -17,7 +17,8 @@ pub struct PageResponse {
     pub icon: Option<Icon>,
     pub parent: Parent,
     pub archived: bool,
-    pub properties: std::collections::HashMap<String, crate::page::properties::PageProperty>,
+    pub properties:
+        std::collections::HashMap<String, crate::object::page::properties::PageProperty>,
     pub url: String,
     pub public_url: Option<String>,
     pub developer_survey: Option<String>,
@@ -38,7 +39,7 @@ mod tests {
     fn deserialize_wiki_page() {
         let json_data = include_str!("./seeds/page_wiki.json");
 
-        let _page = serde_json::from_str::<crate::page::PageResponse>(json_data)
+        let _page = serde_json::from_str::<crate::object::page::PageResponse>(json_data)
             .expect("An error occurred while deserializing the page");
     }
 
@@ -46,7 +47,7 @@ mod tests {
     fn deserialize_page() {
         let json_data = include_str!("./seeds/page.json");
 
-        let _page = serde_json::from_str::<crate::page::PageResponse>(json_data)
+        let _page = serde_json::from_str::<crate::object::page::PageResponse>(json_data)
             .expect("An error occurred while deserializing the page");
     }
 
@@ -54,7 +55,7 @@ mod tests {
     fn deserialize_page_icon_emoji() {
         let json_data = include_str!("./seeds/page_icon_emoji.json");
 
-        let _page = serde_json::from_str::<crate::page::PageResponse>(json_data)
+        let _page = serde_json::from_str::<crate::object::page::PageResponse>(json_data)
             .expect("An error occurred while deserializing the page");
     }
 }

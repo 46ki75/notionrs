@@ -16,8 +16,8 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = notionrs::block::Block::Bookmark {
-            bookmark: notionrs::block::BookmarkBlock::default().url("https://example.com"),
+        let block = notionrs::object::block::Block::Bookmark {
+            bookmark: notionrs::object::block::BookmarkBlock::default().url("https://example.com"),
         };
 
         let request = client
@@ -46,9 +46,9 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Bookmark { bookmark } => {
+            notionrs::object::block::Block::Bookmark { bookmark } => {
                 assert_eq!(bookmark.url, "https://example.com");
-                notionrs::block::Block::Bookmark {
+                notionrs::object::block::Block::Bookmark {
                     bookmark: bookmark.url("https://example.com/index.html"),
                 }
             }

@@ -16,7 +16,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = notionrs::block::Block::Breadcrumb {
+        let block = notionrs::object::block::Block::Breadcrumb {
             breadcrumb: std::collections::HashMap::new(),
         };
 

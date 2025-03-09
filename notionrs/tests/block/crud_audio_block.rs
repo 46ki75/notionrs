@@ -16,7 +16,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = notionrs::block::Block::Audio {
+        let block = notionrs::object::block::Block::Audio {
             audio: notionrs::others::file::File::default()
                 .url("https://example.com/sample.wav")
                 .caption(vec![notionrs::RichText::from("my caption")]),
@@ -48,9 +48,9 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::block::Block::Audio { audio } => {
+            notionrs::object::block::Block::Audio { audio } => {
                 assert_eq!(audio.get_url(), "https://example.com/sample.wav");
-                notionrs::block::Block::Audio {
+                notionrs::object::block::Block::Audio {
                     audio: audio.url("https://example.com/foobar.wav"),
                 }
             }

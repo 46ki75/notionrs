@@ -14,8 +14,8 @@ pub struct ListResponse<T> {
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(tag = "object", rename_all = "snake_case")]
 pub enum SearchResultItem {
-    Page(crate::page::PageResponse),
-    Database(crate::database::DatabaseResponse),
+    Page(crate::object::page::PageResponse),
+    Database(crate::object::database::DatabaseResponse),
 }
 
 // # --------------------------------------------------------------------------------
