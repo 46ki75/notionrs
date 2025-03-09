@@ -18,8 +18,8 @@ async fn main() -> Result<(), notionrs::error::Error> {
 
     for user in response.results {
         let name = match user {
-            notionrs::User::Bot(bot) => bot.name,
-            notionrs::User::Person(person) => person.name,
+            notionrs::object::user::User::Bot(bot) => bot.name,
+            notionrs::object::user::User::Person(person) => person.name,
         };
 
         match name {
