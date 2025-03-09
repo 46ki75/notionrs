@@ -9,7 +9,13 @@ pub struct QueryDatabaseClient {
 
     pub(crate) database_id: Option<String>,
 
-    pub(crate) body: QueryDatabaseRequestBody,
+    pub(crate) filter: Option<Filter>,
+
+    pub(crate) sorts: Vec<crate::database::Sort>,
+
+    pub(crate) start_cursor: Option<String>,
+
+    pub(crate) page_size: Option<u32>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
@@ -33,7 +39,12 @@ impl QueryDatabaseClient {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/databases/{}/query", id);
 
-                let request_body = serde_json::to_string(&self.body)?;
+                let request_body = serde_json::to_string(&QueryDatabaseRequestBody {
+                    filter: self.filter.clone(),
+                    sorts: self.sorts.clone(),
+                    start_cursor: self.start_cursor.clone(),
+                    page_size: self.page_size,
+                })?;
 
                 let request = self
                     .reqwest_client

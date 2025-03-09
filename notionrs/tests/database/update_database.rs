@@ -180,7 +180,7 @@ mod integration_tests {
 
         let request = client
             .update_database()
-            .databse_id(response.id)
+            .database_id(response.id)
             .title(vec![notionrs::RichText::from("Database Title (changed)")])
             .description(vec![notionrs::RichText::from(
                 "Description of the Database (changed)",

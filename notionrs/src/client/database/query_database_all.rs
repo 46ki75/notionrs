@@ -9,7 +9,11 @@ pub struct QueryDatabaseAllClient {
 
     pub(crate) database_id: Option<String>,
 
-    pub(crate) body: QueryDatabaseAllRequestBody,
+    pub(crate) filter: Option<Filter>,
+
+    pub(crate) sorts: Vec<crate::database::Sort>,
+
+    pub(crate) start_cursor: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
@@ -28,17 +32,21 @@ pub struct QueryDatabaseAllRequestBody {
 }
 
 impl QueryDatabaseAllClient {
-    pub async fn send(mut self) -> Result<Vec<PageResponse>, crate::error::Error> {
+    pub async fn send(self) -> Result<Vec<PageResponse>, crate::error::Error> {
         match self.database_id {
             Some(id) => {
+                let mut start_cursor = self.start_cursor.clone();
                 let mut results: Vec<PageResponse> = vec![];
 
                 loop {
                     let url = format!("https://api.notion.com/v1/databases/{}/query", id);
 
-                    self.body.page_size = Some(100);
-
-                    let request_body = serde_json::to_string(&self.body)?;
+                    let request_body = serde_json::to_string(&QueryDatabaseAllRequestBody {
+                        filter: self.filter.clone(),
+                        sorts: self.sorts.clone(),
+                        start_cursor,
+                        page_size: Some(100),
+                    })?;
 
                     let request = self
                         .reqwest_client
@@ -65,7 +73,7 @@ impl QueryDatabaseAllClient {
                     results.extend(pages.results);
 
                     if pages.has_more.unwrap_or(false) {
-                        self.body.start_cursor = pages.next_cursor;
+                        start_cursor = pages.next_cursor;
                     } else {
                         return Ok(results);
                     }
