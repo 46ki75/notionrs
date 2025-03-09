@@ -40,8 +40,10 @@ pub struct SearchPageRequestBody {
 impl SearchPageClient {
     pub async fn send(
         self,
-    ) -> Result<crate::list_response::ListResponse<crate::object::page::PageResponse>, crate::error::Error>
-    {
+    ) -> Result<
+        crate::object::response::ListResponse<crate::object::page::PageResponse>,
+        crate::error::Error,
+    > {
         let url = String::from("https://api.notion.com/v1/search");
 
         let request_body = serde_json::to_string(&SearchPageRequestBody {
@@ -73,7 +75,7 @@ impl SearchPageClient {
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let pages = serde_json::from_slice::<
-            crate::list_response::ListResponse<crate::object::page::PageResponse>,
+            crate::object::response::ListResponse<crate::object::page::PageResponse>,
         >(&body)?;
 
         Ok(pages)

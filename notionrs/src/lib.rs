@@ -4,7 +4,6 @@
 pub mod client;
 pub mod error;
 pub mod filter;
-pub mod list_response;
 pub mod r#macro;
 pub mod object;
 pub mod search;

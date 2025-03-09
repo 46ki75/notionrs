@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    filter::Filter, list_response::ListResponse, object::page::page_response::PageResponse,
+    filter::Filter, object::response::ListResponse, object::page::page_response::PageResponse,
 };
 
 #[derive(Debug, Default, notionrs_macro::Setter)]

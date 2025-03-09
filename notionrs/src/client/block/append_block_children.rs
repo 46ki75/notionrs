@@ -29,7 +29,7 @@ impl AppendBlockChildrenClient {
     pub async fn send(
         self,
     ) -> Result<
-        crate::list_response::ListResponse<crate::object::block::BlockResponse>,
+        crate::object::response::ListResponse<crate::object::block::BlockResponse>,
         crate::error::Error,
     > {
         let block_id = self.block_id.ok_or(crate::error::Error::RequestParameter(
@@ -66,7 +66,7 @@ impl AppendBlockChildrenClient {
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let block = serde_json::from_slice::<
-            crate::list_response::ListResponse<crate::object::block::BlockResponse>,
+            crate::object::response::ListResponse<crate::object::block::BlockResponse>,
         >(&body)?;
 
         Ok(block)

@@ -6,7 +6,7 @@ pub use search_page::*;
 
 use serde::{Deserialize, Serialize};
 
-use crate::list_response::ListResponse;
+use crate::object::response::ListResponse;
 
 #[derive(Debug, Default)]
 pub struct SearchClient {
@@ -37,7 +37,7 @@ pub struct SearchRequestBody {
 impl SearchClient {
     pub async fn send(
         self,
-    ) -> Result<ListResponse<crate::list_response::SearchResultItem>, crate::error::Error> {
+    ) -> Result<ListResponse<crate::object::response::SearchResultItem>, crate::error::Error> {
         let url = String::from("https://api.notion.com/v1/search");
 
         let request_body = serde_json::to_string(&self.body)?;
@@ -63,7 +63,7 @@ impl SearchClient {
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let pages =
-            serde_json::from_slice::<ListResponse<crate::list_response::SearchResultItem>>(&body)?;
+            serde_json::from_slice::<ListResponse<crate::object::response::SearchResultItem>>(&body)?;
 
         Ok(pages)
     }
