@@ -1,8 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    filter::Filter, object::response::ListResponse, object::page::page_response::PageResponse,
-};
+use crate::{object::page::page_response::PageResponse, object::response::ListResponse};
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct QueryDatabaseClient {
@@ -11,7 +9,7 @@ pub struct QueryDatabaseClient {
 
     pub(crate) database_id: Option<String>,
 
-    pub(crate) filter: Option<Filter>,
+    pub(crate) filter: Option<crate::object::request::filter::Filter>,
 
     pub(crate) sorts: Vec<crate::object::database::Sort>,
 
@@ -23,7 +21,7 @@ pub struct QueryDatabaseClient {
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct QueryDatabaseRequestBody {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) filter: Option<Filter>,
+    pub(crate) filter: Option<crate::object::request::filter::Filter>,
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) sorts: Vec<crate::object::database::Sort>,

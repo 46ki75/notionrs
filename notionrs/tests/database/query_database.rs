@@ -70,7 +70,8 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::date_before("Created time", "2024-07-01");
+        let filter =
+            notionrs::object::request::filter::Filter::date_before("Created time", "2024-07-01");
 
         let request = client
             .query_database()
@@ -95,9 +96,9 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::checkbox_is_checked("Checkbox"),
-            notionrs::filter::Filter::checkbox_is_not_checked("Checkbox"),
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::checkbox_is_checked("Checkbox"),
+            notionrs::object::request::filter::Filter::checkbox_is_not_checked("Checkbox"),
         ]);
 
         let request = client
@@ -123,21 +124,27 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::date_after("Created time", "2024-07-01"),
-            notionrs::filter::Filter::date_before("Created time", "2024-07-01"),
-            notionrs::filter::Filter::date_equals("Created time", "2024-07-01"),
-            notionrs::filter::Filter::date_is_empty("Created time"),
-            notionrs::filter::Filter::date_is_not_empty("Created time"),
-            notionrs::filter::Filter::date_next_month("Created time"),
-            notionrs::filter::Filter::date_next_week("Created time"),
-            notionrs::filter::Filter::date_next_year("Created time"),
-            notionrs::filter::Filter::date_on_or_after("Created time", "2024-07-01"),
-            notionrs::filter::Filter::date_on_or_before("Created time", "2024-07-01"),
-            notionrs::filter::Filter::date_past_month("Created time"),
-            notionrs::filter::Filter::date_past_week("Created time"),
-            notionrs::filter::Filter::date_past_year("Created time"),
-            notionrs::filter::Filter::date_this_week("Created time"),
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::date_after("Created time", "2024-07-01"),
+            notionrs::object::request::filter::Filter::date_before("Created time", "2024-07-01"),
+            notionrs::object::request::filter::Filter::date_equals("Created time", "2024-07-01"),
+            notionrs::object::request::filter::Filter::date_is_empty("Created time"),
+            notionrs::object::request::filter::Filter::date_is_not_empty("Created time"),
+            notionrs::object::request::filter::Filter::date_next_month("Created time"),
+            notionrs::object::request::filter::Filter::date_next_week("Created time"),
+            notionrs::object::request::filter::Filter::date_next_year("Created time"),
+            notionrs::object::request::filter::Filter::date_on_or_after(
+                "Created time",
+                "2024-07-01",
+            ),
+            notionrs::object::request::filter::Filter::date_on_or_before(
+                "Created time",
+                "2024-07-01",
+            ),
+            notionrs::object::request::filter::Filter::date_past_month("Created time"),
+            notionrs::object::request::filter::Filter::date_past_week("Created time"),
+            notionrs::object::request::filter::Filter::date_past_year("Created time"),
+            notionrs::object::request::filter::Filter::date_this_week("Created time"),
         ]);
 
         let request = client
@@ -163,9 +170,9 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::files_is_empty("Files & media"),
-            notionrs::filter::Filter::files_is_not_empty("Files & media"),
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::files_is_empty("Files & media"),
+            notionrs::object::request::filter::Filter::files_is_not_empty("Files & media"),
         ]);
 
         let request = client
@@ -191,15 +198,15 @@ mod integration_tests {
 
     //     let client = notionrs::client::Client::new();
 
-    //     let filter = notionrs::filter::Filter::or(vec![
-    //         notionrs::filter::Filter::formula_number_does_not_equal("formula", 0),
-    //         notionrs::filter::Filter::formula_number_equals("formula", 0),
-    //         notionrs::filter::Filter::formula_number_greater_than("formula", 0),
-    //         notionrs::filter::Filter::formula_number_greater_than_or_equal("formula", 0),
-    //         notionrs::filter::Filter::formula_number_is_empty("formula"),
-    //         notionrs::filter::Filter::formula_number_is_not_empty("formula"),
-    //         notionrs::filter::Filter::formula_number_less_than("formula", 0),
-    //         notionrs::filter::Filter::formula_number_less_than_or_equal("formula", 0),
+    //     let filter = notionrs::object::request::filter::Filter::or(vec![
+    //         notionrs::object::request::filter::Filter::formula_number_does_not_equal("formula", 0),
+    //         notionrs::object::request::filter::Filter::formula_number_equals("formula", 0),
+    //         notionrs::object::request::filter::Filter::formula_number_greater_than("formula", 0),
+    //         notionrs::object::request::filter::Filter::formula_number_greater_than_or_equal("formula", 0),
+    //         notionrs::object::request::filter::Filter::formula_number_is_empty("formula"),
+    //         notionrs::object::request::filter::Filter::formula_number_is_not_empty("formula"),
+    //         notionrs::object::request::filter::Filter::formula_number_less_than("formula", 0),
+    //         notionrs::object::request::filter::Filter::formula_number_less_than_or_equal("formula", 0),
     //     ]);
 
     //     let request = client
@@ -225,11 +232,14 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::multi_select_contains("Multi-select", "0"),
-            notionrs::filter::Filter::multi_select_does_not_contain("Multi-select", "0"),
-            notionrs::filter::Filter::multi_select_is_empty("Multi-select"),
-            notionrs::filter::Filter::multi_select_is_not_empty("Multi-select"),
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::multi_select_contains("Multi-select", "0"),
+            notionrs::object::request::filter::Filter::multi_select_does_not_contain(
+                "Multi-select",
+                "0",
+            ),
+            notionrs::object::request::filter::Filter::multi_select_is_empty("Multi-select"),
+            notionrs::object::request::filter::Filter::multi_select_is_not_empty("Multi-select"),
         ]);
 
         let request = client
@@ -255,15 +265,17 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::number_does_not_equal("Number", 20),
-            notionrs::filter::Filter::number_equals("Number", 20),
-            notionrs::filter::Filter::number_greater_than("Number", 20),
-            notionrs::filter::Filter::number_greater_than_or_equal_to("Number", 20),
-            notionrs::filter::Filter::number_is_empty("Number"),
-            notionrs::filter::Filter::number_is_not_empty("Number"),
-            notionrs::filter::Filter::number_less_than("Number", 20),
-            notionrs::filter::Filter::number_less_than_or_equal_to("Number", 20),
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::number_does_not_equal("Number", 20),
+            notionrs::object::request::filter::Filter::number_equals("Number", 20),
+            notionrs::object::request::filter::Filter::number_greater_than("Number", 20),
+            notionrs::object::request::filter::Filter::number_greater_than_or_equal_to(
+                "Number", 20,
+            ),
+            notionrs::object::request::filter::Filter::number_is_empty("Number"),
+            notionrs::object::request::filter::Filter::number_is_not_empty("Number"),
+            notionrs::object::request::filter::Filter::number_less_than("Number", 20),
+            notionrs::object::request::filter::Filter::number_less_than_or_equal_to("Number", 20),
         ]);
 
         let request = client
@@ -289,17 +301,17 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::people_contains(
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::people_contains(
                 "User",
                 "c3abcbc1-126b-42b2-975f-43e204986ea3",
             ),
-            notionrs::filter::Filter::people_does_not_contain(
+            notionrs::object::request::filter::Filter::people_does_not_contain(
                 "User",
                 "c3abcbc1-126b-42b2-975f-43e204986ea3",
             ),
-            notionrs::filter::Filter::people_is_empty("User"),
-            notionrs::filter::Filter::people_is_not_empty("User"),
+            notionrs::object::request::filter::Filter::people_is_empty("User"),
+            notionrs::object::request::filter::Filter::people_is_not_empty("User"),
         ]);
 
         let request = client
@@ -325,15 +337,27 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::phone_number_contains("Phone Number", "0"),
-            notionrs::filter::Filter::phone_number_does_not_contain("Phone Number", "0"),
-            notionrs::filter::Filter::phone_number_does_not_equal("Phone Number", "0"),
-            notionrs::filter::Filter::phone_number_ends_with("Phone Number", "0"),
-            notionrs::filter::Filter::phone_number_does_not_contain("Phone Number", "0"),
-            notionrs::filter::Filter::phone_number_is_empty("Phone Number"),
-            notionrs::filter::Filter::phone_number_is_not_empty("Phone Number"),
-            notionrs::filter::Filter::phone_number_starts_with("Phone Number", "0"),
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::phone_number_contains("Phone Number", "0"),
+            notionrs::object::request::filter::Filter::phone_number_does_not_contain(
+                "Phone Number",
+                "0",
+            ),
+            notionrs::object::request::filter::Filter::phone_number_does_not_equal(
+                "Phone Number",
+                "0",
+            ),
+            notionrs::object::request::filter::Filter::phone_number_ends_with("Phone Number", "0"),
+            notionrs::object::request::filter::Filter::phone_number_does_not_contain(
+                "Phone Number",
+                "0",
+            ),
+            notionrs::object::request::filter::Filter::phone_number_is_empty("Phone Number"),
+            notionrs::object::request::filter::Filter::phone_number_is_not_empty("Phone Number"),
+            notionrs::object::request::filter::Filter::phone_number_starts_with(
+                "Phone Number",
+                "0",
+            ),
         ]);
 
         let request = client
@@ -359,17 +383,17 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::relation_contains(
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::relation_contains(
                 "Relation",
                 "9804c957-5566-4a9d-b37d-c554bef54e7a",
             ),
-            notionrs::filter::Filter::relation_does_not_contain(
+            notionrs::object::request::filter::Filter::relation_does_not_contain(
                 "Relation",
                 "9804c957-5566-4a9d-b37d-c554bef54e7a",
             ),
-            notionrs::filter::Filter::relation_is_empty("Relation"),
-            notionrs::filter::Filter::relation_is_not_empty("Relation"),
+            notionrs::object::request::filter::Filter::relation_is_empty("Relation"),
+            notionrs::object::request::filter::Filter::relation_is_not_empty("Relation"),
         ]);
 
         let request = client
@@ -395,18 +419,18 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::rollup_any(
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::rollup_any(
                 "Rollup",
-                notionrs::filter::Filter::rich_text_contains("Title", "a"),
+                notionrs::object::request::filter::Filter::rich_text_contains("Title", "a"),
             ),
-            notionrs::filter::Filter::rollup_every(
+            notionrs::object::request::filter::Filter::rollup_every(
                 "Rollup",
-                notionrs::filter::Filter::rich_text_contains("Title", "a"),
+                notionrs::object::request::filter::Filter::rich_text_contains("Title", "a"),
             ),
-            notionrs::filter::Filter::rollup_none(
+            notionrs::object::request::filter::Filter::rollup_none(
                 "Rollup",
-                notionrs::filter::Filter::rich_text_contains("Title", "a"),
+                notionrs::object::request::filter::Filter::rich_text_contains("Title", "a"),
             ),
         ]);
 
@@ -433,15 +457,15 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::rich_text_contains("Text", "0"),
-            notionrs::filter::Filter::rich_text_does_not_contain("Text", "0"),
-            notionrs::filter::Filter::rich_text_does_not_equal("Text", "0"),
-            notionrs::filter::Filter::rich_text_ends_with("Text", "0"),
-            notionrs::filter::Filter::rich_text_does_not_contain("Text", "0"),
-            notionrs::filter::Filter::rich_text_is_empty("Text"),
-            notionrs::filter::Filter::rich_text_is_not_empty("Text"),
-            notionrs::filter::Filter::rich_text_starts_with("Text", "0"),
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::rich_text_contains("Text", "0"),
+            notionrs::object::request::filter::Filter::rich_text_does_not_contain("Text", "0"),
+            notionrs::object::request::filter::Filter::rich_text_does_not_equal("Text", "0"),
+            notionrs::object::request::filter::Filter::rich_text_ends_with("Text", "0"),
+            notionrs::object::request::filter::Filter::rich_text_does_not_contain("Text", "0"),
+            notionrs::object::request::filter::Filter::rich_text_is_empty("Text"),
+            notionrs::object::request::filter::Filter::rich_text_is_not_empty("Text"),
+            notionrs::object::request::filter::Filter::rich_text_starts_with("Text", "0"),
         ]);
 
         let request = client
@@ -467,11 +491,11 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::select_does_not_equal("Select", "0"),
-            notionrs::filter::Filter::select_equals("Select", "0"),
-            notionrs::filter::Filter::select_is_empty("Select"),
-            notionrs::filter::Filter::select_is_not_empty("Select"),
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::select_does_not_equal("Select", "0"),
+            notionrs::object::request::filter::Filter::select_equals("Select", "0"),
+            notionrs::object::request::filter::Filter::select_is_empty("Select"),
+            notionrs::object::request::filter::Filter::select_is_not_empty("Select"),
         ]);
 
         let request = client
@@ -497,11 +521,11 @@ mod integration_tests {
 
     //     let client = notionrs::client::Client::new();
 
-    //     let filter = notionrs::filter::Filter::or(vec![
-    //         notionrs::filter::Filter::status_does_not_equal("Status", "0"),
-    //         notionrs::filter::Filter::status_equals("Status", "0"),
-    //         notionrs::filter::Filter::status_is_empty("Status"),
-    //         notionrs::filter::Filter::status_is_not_empty("Status"),
+    //     let filter = notionrs::object::request::filter::Filter::or(vec![
+    //         notionrs::object::request::filter::Filter::status_does_not_equal("Status", "0"),
+    //         notionrs::object::request::filter::Filter::status_equals("Status", "0"),
+    //         notionrs::object::request::filter::Filter::status_is_empty("Status"),
+    //         notionrs::object::request::filter::Filter::status_is_not_empty("Status"),
     //     ]);
 
     //     let request = client
@@ -527,21 +551,21 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::timestamp_after("2024-07-01"),
-            notionrs::filter::Filter::timestamp_before("2024-07-01"),
-            notionrs::filter::Filter::timestamp_equals("2024-07-01"),
-            notionrs::filter::Filter::timestamp_is_empty(),
-            notionrs::filter::Filter::timestamp_is_not_empty(),
-            notionrs::filter::Filter::timestamp_next_month(),
-            notionrs::filter::Filter::timestamp_next_week(),
-            notionrs::filter::Filter::timestamp_next_year(),
-            notionrs::filter::Filter::timestamp_on_or_after("2024-07-01"),
-            notionrs::filter::Filter::timestamp_on_or_before("2024-07-01"),
-            notionrs::filter::Filter::timestamp_past_month(),
-            notionrs::filter::Filter::timestamp_past_week(),
-            notionrs::filter::Filter::timestamp_past_year(),
-            notionrs::filter::Filter::timestamp_this_week(),
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::timestamp_after("2024-07-01"),
+            notionrs::object::request::filter::Filter::timestamp_before("2024-07-01"),
+            notionrs::object::request::filter::Filter::timestamp_equals("2024-07-01"),
+            notionrs::object::request::filter::Filter::timestamp_is_empty(),
+            notionrs::object::request::filter::Filter::timestamp_is_not_empty(),
+            notionrs::object::request::filter::Filter::timestamp_next_month(),
+            notionrs::object::request::filter::Filter::timestamp_next_week(),
+            notionrs::object::request::filter::Filter::timestamp_next_year(),
+            notionrs::object::request::filter::Filter::timestamp_on_or_after("2024-07-01"),
+            notionrs::object::request::filter::Filter::timestamp_on_or_before("2024-07-01"),
+            notionrs::object::request::filter::Filter::timestamp_past_month(),
+            notionrs::object::request::filter::Filter::timestamp_past_week(),
+            notionrs::object::request::filter::Filter::timestamp_past_year(),
+            notionrs::object::request::filter::Filter::timestamp_this_week(),
         ]);
 
         let request = client
@@ -567,13 +591,13 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let filter = notionrs::filter::Filter::or(vec![
-            notionrs::filter::Filter::unique_id_does_not_equal("ID", 20),
-            notionrs::filter::Filter::unique_id_equals("ID", 20),
-            notionrs::filter::Filter::unique_id_greater_than("ID", 20),
-            notionrs::filter::Filter::unique_id_greater_than_or_equal_to("ID", 20),
-            notionrs::filter::Filter::unique_id_less_than("ID", 20),
-            notionrs::filter::Filter::unique_id_less_than_or_equal_to("ID", 20),
+        let filter = notionrs::object::request::filter::Filter::or(vec![
+            notionrs::object::request::filter::Filter::unique_id_does_not_equal("ID", 20),
+            notionrs::object::request::filter::Filter::unique_id_equals("ID", 20),
+            notionrs::object::request::filter::Filter::unique_id_greater_than("ID", 20),
+            notionrs::object::request::filter::Filter::unique_id_greater_than_or_equal_to("ID", 20),
+            notionrs::object::request::filter::Filter::unique_id_less_than("ID", 20),
+            notionrs::object::request::filter::Filter::unique_id_less_than_or_equal_to("ID", 20),
         ]);
 
         let request = client

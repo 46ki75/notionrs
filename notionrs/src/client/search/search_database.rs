@@ -7,7 +7,7 @@ pub struct SearchDatabaseClient {
 
     pub(crate) query: Option<String>,
 
-    pub(crate) sort: Option<crate::search::SearchSort>,
+    pub(crate) sort: Option<crate::object::request::search::SearchSort>,
 
     /// Specify the cursor position at the beginning. In the query result,
     /// there is a field called `next_cursor` through
@@ -25,10 +25,10 @@ pub struct SearchDatabaseRequestBody {
     pub(crate) query: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) filter: Option<crate::search::SearchFilter>,
+    pub(crate) filter: Option<crate::object::request::search::SearchFilter>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) sort: Option<crate::search::SearchSort>,
+    pub(crate) sort: Option<crate::object::request::search::SearchSort>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) start_cursor: Option<String>,
@@ -48,7 +48,7 @@ impl SearchDatabaseClient {
 
         let request_body = serde_json::to_string(&SearchDatabaseRequestBody {
             query: self.query,
-            filter: Some(crate::search::SearchFilter::database()),
+            filter: Some(crate::object::request::search::SearchFilter::database()),
             sort: self.sort,
             start_cursor: self.start_cursor,
             page_size: self.page_size,
@@ -83,11 +83,11 @@ impl SearchDatabaseClient {
 
     /// Sort by the last edited time of the page in ascending order.
     pub fn sort_timestamp_asc(self) -> Self {
-        self.sort(crate::search::SearchSort::asc())
+        self.sort(crate::object::request::search::SearchSort::asc())
     }
 
     /// Sort by the last edited time of the page in descending order.
     pub fn sort_timestamp_desc(self) -> Self {
-        self.sort(crate::search::SearchSort::desc())
+        self.sort(crate::object::request::search::SearchSort::desc())
     }
 }

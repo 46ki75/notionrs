@@ -3,10 +3,8 @@
 
 pub mod client;
 pub mod error;
-pub mod filter;
 pub mod r#macro;
 pub mod object;
-pub mod search;
 
 pub use crate::client::Client;
 pub use crate::object::color::Color;
