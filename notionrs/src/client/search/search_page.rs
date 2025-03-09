@@ -78,4 +78,14 @@ impl SearchPageClient {
 
         Ok(pages)
     }
+
+    /// Sort by the last edited time of the page in ascending order.
+    pub fn sort_timestamp_asc(self) -> Self {
+        self.sort(crate::search::SearchSort::asc())
+    }
+
+    /// Sort by the last edited time of the page in descending order.
+    pub fn sort_timestamp_desc(self) -> Self {
+        self.sort(crate::search::SearchSort::desc())
+    }
 }

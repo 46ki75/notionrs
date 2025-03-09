@@ -1,3 +1,5 @@
+use core::panic;
+
 use quote::quote;
 use syn::{Data, DeriveInput, Expr, Fields, Lit, Meta, MetaNameValue};
 
@@ -31,18 +33,6 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
                     self
                 }
             }
-        } else if is_option_type(field_ty) && field_ty == &syn::parse_str("String").unwrap()
-        // Option<String>
-        {
-            quote! {
-                #comment
-                pub fn #field_name(mut self, #field_name: T) -> Self
-                where
-                    T: AsRef<str>,{
-                    self.#field_name = Some(#field_name.as_ref().to_string());
-                    self
-                }
-            }
         } else if is_option_type(field_ty)
         // Option<T>
         {
@@ -64,11 +54,25 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
                 panic!("Option type must have a generic argument");
             };
 
-            quote! {
-                #comment
-                pub fn #field_name(mut self, #field_name: #inner_ty) -> Self {
-                    self.#field_name = Some(#field_name);
-                    self
+            if inner_ty == &syn::parse_str("String").unwrap()
+            // Option<String>
+            {
+                quote! {
+                    #comment
+                    pub fn #field_name<T>(mut self, #field_name: T) -> Self
+                    where
+                        T: AsRef<str>,{
+                        self.#field_name = Some(#field_name.as_ref().to_string());
+                        self
+                    }
+                }
+            } else {
+                quote! {
+                    #comment
+                    pub fn #field_name(mut self, #field_name: #inner_ty) -> Self {
+                        self.#field_name = Some(#field_name);
+                        self
+                    }
                 }
             }
         } else
