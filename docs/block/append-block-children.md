@@ -14,10 +14,10 @@ use notionrs::{error::Error, Client};
 async fn main() -> Result<(), Error> {
     let client = Client::new().secret("API_KEY");
 
-    let rich_text = notionrs::RichText::from("rich text");
+    let rich_text = notionrs::object::rich_text::RichText::from("rich text");
 
-    let block = notionrs::block::Block::Paragraph {
-        paragraph: notionrs::block::ParagraphBlock::default()
+    let block = notionrs::object::block::Block::Paragraph {
+        paragraph: notionrs::object::block::ParagraphBlock::default()
             .rich_text(vec![rich_text.clone()])
             .blue_background(),
     };

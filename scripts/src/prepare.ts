@@ -167,4 +167,4 @@ NOTION_IT_CRUD_PAGE_ID="${NOTION_IT_CRUD_PAGE_ID}"
 NOTION_IT_SANDBOX_ID="${NOTION_IT_SANDBOX_ID}"
 `
 
-writeFileSync('./.env.test', data, 'utf-8')
+writeFileSync('notionrs/.env.test', data, 'utf-8')
