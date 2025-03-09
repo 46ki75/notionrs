@@ -1,10 +1,10 @@
 use notionrs::{
+    Client, Emoji, ExternalFile, File, Icon, RichText, Select, SelectColor,
     database::{
         DatabaseMultiSelectProperty, DatabaseProperty, DatabaseRichTextProperty,
         DatabaseUrlProperty,
     },
     error::Error,
-    Client, Emoji, ExternalFile, File, Icon, RichText, Select, SelectColor,
 };
 
 #[tokio::main]
@@ -49,7 +49,7 @@ async fn main() -> Result<(), Error> {
 
     let request = client
         .update_database()
-        .databse_id("DATABASE_ID")
+        .database_id("DATABASE_ID")
         .title(vec![RichText::from("Database Title (changed)")])
         .description(vec![RichText::from(
             "Description of the Database (changed)",

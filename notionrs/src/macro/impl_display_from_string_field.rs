@@ -1,7 +1,7 @@
 /// Implement `Display` trait for a struct that has a field of type `String`.
 ///
 ///
-/// ```rust
+/// ```ignore
 /// impl std::fmt::Display for BookmarkBlock {
 ///     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 ///         write!(f, "{}", self.url)
@@ -9,7 +9,7 @@
 /// }
 /// ```
 /// ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-/// ```rust
+/// ```ignore
 /// crate::impl_display_from_string_field!(BookmarkBlock, url);
 /// ```
 #[macro_export]

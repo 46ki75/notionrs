@@ -1,10 +1,10 @@
 /// This macro is used to generate a setter method for a struct field.
 ///
-/// ```rust
+/// ```ignore
 /// crate::impl_from_as_ref!(BookmarkBlock, url);
 /// ```
 /// ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-/// ```rust
+/// ```ignore
 /// impl<T> From<T> for BookmarkBlock
 /// where
 ///     T: AsRef<str>,

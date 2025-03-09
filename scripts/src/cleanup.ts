@@ -21,5 +21,5 @@ if (process.env.NOTION_IT_SANDBOX_ID != null) {
     in_trash: true
   })
 
-  unlinkSync('.env.test')
+  unlinkSync('notionrs/.env.test')
 }
