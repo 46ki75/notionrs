@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
 pub struct DatabaseUniqueIdProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
@@ -18,7 +18,7 @@ pub struct DatabaseUniqueIdProperty {
     pub unique_id: DatabaseUniqueIdPropertyItem,
 }
 
-#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
 pub struct DatabaseUniqueIdPropertyItem {
     pub prefix: Option<String>,
 }

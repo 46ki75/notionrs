@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, notionrs_macro::Setter)]
 pub struct DatabaseResponse {
     pub id: String,
 
