@@ -35,6 +35,7 @@ pub use {
     rich_text::DatabaseRichTextProperty, rollup::*, select::DatabaseSelectProperty,
     status::DatabaseStatusProperty, title::DatabaseTitleProperty,
     unique_id::DatabaseUniqueIdProperty, url::DatabaseUrlProperty,
+    verification::DatabaseVerificationProperty,
 };
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
