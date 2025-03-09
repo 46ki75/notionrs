@@ -17,8 +17,8 @@ async fn main() -> Result<(), notionrs::error::Error> {
     let response = request.send().await?;
 
     let name = match response {
-        notionrs::User::Bot(bot) => bot.name,
-        notionrs::User::Person(person) => person.name,
+        notionrs::object::user::User::Bot(bot) => bot.name,
+        notionrs::object::user::User::Person(person) => person.name,
     };
 
     match name {
