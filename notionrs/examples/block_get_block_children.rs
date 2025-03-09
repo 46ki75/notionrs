@@ -1,5 +1,5 @@
 use notionrs::{
-    Client,
+    client::Client,
     error::Error,
     object::block::{Block, BlockResponse},
 };

@@ -48,16 +48,16 @@ mod integration_tests {
         );
 
         let options = vec![
-            notionrs::Select::default()
-                .color(notionrs::SelectColor::Blue)
+            notionrs::object::select::Select::default()
+                .color(notionrs::object::select::SelectColor::Blue)
                 .name("IT")
                 .id("id"),
-            notionrs::Select::default()
-                .color(notionrs::SelectColor::Red)
+            notionrs::object::select::Select::default()
+                .color(notionrs::object::select::SelectColor::Red)
                 .name("SoC")
                 .id("id"),
-            notionrs::Select::default()
-                .color(notionrs::SelectColor::Green)
+            notionrs::object::select::Select::default()
+                .color(notionrs::object::select::SelectColor::Green)
                 .name("SoC")
                 .id("id"),
         ];
@@ -116,15 +116,21 @@ mod integration_tests {
         let request = client
             .create_database()
             .page_id(page_id)
-            .title(vec![notionrs::RichText::from("Database Title")])
-            .description(vec![notionrs::RichText::from(
+            .title(vec![notionrs::object::rich_text::RichText::from(
+                "Database Title",
+            )])
+            .description(vec![notionrs::object::rich_text::RichText::from(
                 "Description of the Database",
             )])
             .properties(properties)
-            .icon(notionrs::Icon::Emoji(notionrs::Emoji::from("🚧")))
-            .cover(notionrs::File::External(notionrs::ExternalFile::from(
-                "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
-            )));
+            .icon(notionrs::object::icon::Icon::Emoji(
+                notionrs::object::emoji::Emoji::from("🚧"),
+            ))
+            .cover(notionrs::object::file::File::External(
+                notionrs::object::file::ExternalFile::from(
+                    "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
+                ),
+            ));
 
         let response = request.send().await?;
 
@@ -224,10 +230,14 @@ mod integration_tests {
             .create_page()
             .properties(properties)
             .database_id(response.id)
-            .icon(notionrs::Icon::Emoji(notionrs::Emoji::from("🚧")))
-            .cover(notionrs::File::External(notionrs::ExternalFile::from(
-                "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
-            )));
+            .icon(notionrs::object::icon::Icon::Emoji(
+                notionrs::object::emoji::Emoji::from("🚧"),
+            ))
+            .cover(notionrs::object::file::File::External(
+                notionrs::object::file::ExternalFile::from(
+                    "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
+                ),
+            ));
 
         let response = request.send().await?;
 

@@ -346,7 +346,7 @@ mod unit_tests {
                 let rich_text = bookmark.caption.first().unwrap();
 
                 match rich_text {
-                    crate::RichText::Text {
+                    crate::object::rich_text::RichText::Text {
                         plain_text, href, ..
                     } => {
                         assert_eq!(plain_text, "example domain");

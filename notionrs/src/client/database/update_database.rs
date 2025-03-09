@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::RichText;
+use crate::object::rich_text::RichText;
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct UpdateDatabaseClient {
@@ -24,7 +24,7 @@ pub struct UpdateDatabaseClient {
     pub(crate) icon: Option<crate::object::icon::Icon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
-    pub(crate) cover: Option<crate::File>,
+    pub(crate) cover: Option<crate::object::file::File>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -48,11 +48,13 @@ pub struct UpdateDatabaseRequestBody {
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) cover: Option<crate::File>,
+    pub(crate) cover: Option<crate::object::file::File>,
 }
 
 impl UpdateDatabaseClient {
-    pub async fn send(self) -> Result<crate::object::database::DatabaseResponse, crate::error::Error> {
+    pub async fn send(
+        self,
+    ) -> Result<crate::object::database::DatabaseResponse, crate::error::Error> {
         let database_id = self
             .database_id
             .ok_or(crate::error::Error::RequestParameter(

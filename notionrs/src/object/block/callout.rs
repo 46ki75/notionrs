@@ -99,7 +99,7 @@ mod unit_tests {
         let rich_text = callout.rich_text.first().unwrap();
 
         match rich_text {
-            crate::RichText::Text {
+            crate::object::rich_text::RichText::Text {
                 annotations,
                 plain_text,
                 href,

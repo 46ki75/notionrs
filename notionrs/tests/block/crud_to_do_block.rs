@@ -16,7 +16,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::RichText::from("list item");
+        let rich_text = notionrs::object::rich_text::RichText::from("list item");
 
         let block = notionrs::object::block::Block::ToDo {
             to_do: notionrs::object::block::ToDoBlock::default()

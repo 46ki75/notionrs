@@ -16,7 +16,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::RichText::from("list item");
+        let rich_text = notionrs::object::rich_text::RichText::from("list item");
 
         let block = notionrs::object::block::Block::NumberedListItem {
             numbered_list_item: notionrs::object::block::NumberedListItemBlock::default()

@@ -1,4 +1,4 @@
-use notionrs::{Client, object::page::PageProperty};
+use notionrs::{client::Client, object::page::PageProperty};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

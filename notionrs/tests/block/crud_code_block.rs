@@ -16,9 +16,9 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::RichText::from("console.log(0)");
+        let rich_text = notionrs::object::rich_text::RichText::from("console.log(0)");
 
-        let caption = notionrs::RichText::from("index.js");
+        let caption = notionrs::object::rich_text::RichText::from("index.js");
 
         let block = notionrs::object::block::Block::Code {
             code: notionrs::object::block::CodeBlock::default()

@@ -1,9 +1,12 @@
 use std::collections::HashMap;
 
 use notionrs::{
-    Client, RichText,
+    client::Client,
     error::Error,
-    object::database::{DatabaseEmailProperty, DatabaseProperty},
+    object::{
+        database::{DatabaseEmailProperty, DatabaseProperty},
+        rich_text::RichText,
+    },
 };
 
 #[tokio::main]

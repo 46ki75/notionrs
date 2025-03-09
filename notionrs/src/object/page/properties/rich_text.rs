@@ -56,13 +56,13 @@ where
     fn from(value: T) -> Self {
         Self {
             id: None,
-            rich_text: vec![crate::RichText::from(value)],
+            rich_text: vec![crate::object::rich_text::RichText::from(value)],
         }
     }
 }
 
-impl From<crate::RichText> for PageRichTextProperty {
-    fn from(rich_text: crate::RichText) -> Self {
+impl From<crate::object::rich_text::RichText> for PageRichTextProperty {
+    fn from(rich_text: crate::object::rich_text::RichText) -> Self {
         Self {
             id: None,
             rich_text: vec![rich_text],

@@ -1,9 +1,16 @@
 use notionrs::{
-    Client, Emoji, ExternalFile, File, Icon, RichText, Select, SelectColor,
+    client::Client,
     error::Error,
-    object::database::{
-        DatabaseMultiSelectProperty, DatabaseProperty, DatabaseRichTextProperty,
-        DatabaseUrlProperty,
+    object::{
+        database::{
+            DatabaseMultiSelectProperty, DatabaseProperty, DatabaseRichTextProperty,
+            DatabaseUrlProperty,
+        },
+        emoji::Emoji,
+        file::{ExternalFile, File},
+        icon::Icon,
+        rich_text::RichText,
+        select::{Select, SelectColor},
     },
 };
 

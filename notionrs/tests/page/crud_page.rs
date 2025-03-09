@@ -29,10 +29,14 @@ mod integration_tests {
             .create_page()
             .properties(properties)
             .page_id(page_id)
-            .icon(notionrs::Icon::Emoji(notionrs::Emoji::from("🚧")))
-            .cover(notionrs::File::External(notionrs::ExternalFile::from(
-                "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
-            )));
+            .icon(notionrs::object::icon::Icon::Emoji(
+                notionrs::object::emoji::Emoji::from("🚧"),
+            ))
+            .cover(notionrs::object::file::File::External(
+                notionrs::object::file::ExternalFile::from(
+                    "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
+                ),
+            ));
 
         let response = request.send().await?;
 

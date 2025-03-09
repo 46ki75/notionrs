@@ -50,15 +50,15 @@ where
     T: AsRef<str>,
 {
     fn from(value: T) -> Self {
-        let file = crate::File::default()
+        let file = crate::object::file::File::default()
             .url(value.as_ref())
             .name(value.as_ref());
         Self::default().files(vec![file])
     }
 }
 
-impl From<crate::File> for PageFilesProperty {
-    fn from(value: crate::File) -> Self {
+impl From<crate::object::file::File> for PageFilesProperty {
+    fn from(value: crate::object::file::File) -> Self {
         Self::default().files(vec![value])
     }
 }

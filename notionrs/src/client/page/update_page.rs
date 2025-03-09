@@ -14,7 +14,7 @@ pub struct UpdatePageClient {
 
     pub(crate) icon: Option<crate::object::icon::Icon>,
 
-    pub(crate) cover: Option<crate::File>,
+    pub(crate) cover: Option<crate::object::file::File>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -26,7 +26,7 @@ pub struct UpdatePageRequestBody {
     pub(crate) icon: Option<crate::object::icon::Icon>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) cover: Option<crate::File>,
+    pub(crate) cover: Option<crate::object::file::File>,
 }
 
 impl UpdatePageClient {

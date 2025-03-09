@@ -16,7 +16,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::RichText::from("rich text");
+        let rich_text = notionrs::object::rich_text::RichText::from("rich text");
 
         let block = notionrs::object::block::Block::Paragraph {
             paragraph: notionrs::object::block::ParagraphBlock::default()

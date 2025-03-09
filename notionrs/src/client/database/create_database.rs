@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::RichText;
+use crate::object::rich_text::RichText;
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct CreateDatabaseClient {
@@ -22,7 +22,7 @@ pub struct CreateDatabaseClient {
     pub(crate) icon: Option<crate::object::icon::Icon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
-    pub(crate) cover: Option<crate::File>,
+    pub(crate) cover: Option<crate::object::file::File>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -46,7 +46,7 @@ pub struct CreateDatabaseRequestBody {
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) cover: Option<crate::File>,
+    pub(crate) cover: Option<crate::object::file::File>,
 }
 
 impl CreateDatabaseClient {

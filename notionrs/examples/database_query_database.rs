@@ -1,5 +1,6 @@
 use notionrs::{
-    Client, object::database::Sort, object::page::PageProperty, object::request::filter::Filter,
+    client::Client, object::database::Sort, object::page::PageProperty,
+    object::request::filter::Filter,
 };
 
 #[tokio::main]

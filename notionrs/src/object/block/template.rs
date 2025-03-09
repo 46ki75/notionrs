@@ -66,7 +66,7 @@ mod unit_tests {
         let rich_text = template.rich_text.first().unwrap();
 
         match rich_text {
-            crate::RichText::Text {
+            crate::object::rich_text::RichText::Text {
                 annotations,
                 plain_text,
                 href,

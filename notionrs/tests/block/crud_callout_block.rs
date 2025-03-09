@@ -16,7 +16,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::RichText::from("callout!");
+        let rich_text = notionrs::object::rich_text::RichText::from("callout!");
 
         let block = notionrs::object::block::Block::Callout {
             callout: notionrs::object::block::CalloutBlock::default()

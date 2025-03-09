@@ -19,7 +19,9 @@ mod integration_tests {
         let block = notionrs::object::block::Block::Audio {
             audio: notionrs::object::file::File::default()
                 .url("https://example.com/sample.wav")
-                .caption(vec![notionrs::RichText::from("my caption")]),
+                .caption(vec![notionrs::object::rich_text::RichText::from(
+                    "my caption",
+                )]),
         };
 
         let request = client

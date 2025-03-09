@@ -98,7 +98,7 @@ mod unit_tests {
         // );
 
         match rich_text {
-            crate::RichText::Text {
+            crate::object::rich_text::RichText::Text {
                 annotations,
                 plain_text,
                 href,

@@ -16,7 +16,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::RichText::from("Toggle");
+        let rich_text = notionrs::object::rich_text::RichText::from("Toggle");
 
         let block = notionrs::object::block::Block::Toggle {
             toggle: notionrs::object::block::ToggleBlock::default()

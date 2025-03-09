@@ -22,7 +22,9 @@ mod integration_tests {
         let request = client
             .create_database()
             .page_id(page_id.clone())
-            .title(vec![notionrs::RichText::from("Database Title")])
+            .title(vec![notionrs::object::rich_text::RichText::from(
+                "Database Title",
+            )])
             .properties(properties);
 
         let response = request.send().await?;
@@ -64,7 +66,9 @@ mod integration_tests {
             let request = client
                 .create_database()
                 .page_id(page_id)
-                .title(vec![notionrs::RichText::from("Database Title")])
+                .title(vec![notionrs::object::rich_text::RichText::from(
+                    "Database Title",
+                )])
                 .properties(properties);
 
             let response = request.send().await?;

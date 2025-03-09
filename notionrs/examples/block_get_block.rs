@@ -1,4 +1,4 @@
-use notionrs::{Client, object::block::Block};
+use notionrs::{client::Client, object::block::Block};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

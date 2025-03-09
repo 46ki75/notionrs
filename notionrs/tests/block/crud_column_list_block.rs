@@ -16,7 +16,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::RichText::from("child");
+        let rich_text = notionrs::object::rich_text::RichText::from("child");
 
         let grandchildren = notionrs::object::block::Block::Paragraph {
             paragraph: notionrs::object::block::ParagraphBlock::default()

@@ -1,7 +1,10 @@
 use notionrs::{
-    Client, Select, SelectColor,
+    client::Client,
     error::Error,
-    object::page::{PageMultiSelectProperty, PageProperty, PageTitleProperty},
+    object::{
+        page::{PageMultiSelectProperty, PageProperty, PageTitleProperty},
+        select::{Select, SelectColor},
+    },
 };
 
 #[tokio::main]

@@ -20,7 +20,7 @@ pub struct CreatePageClient {
 
     pub(crate) icon: Option<crate::object::icon::Icon>,
 
-    pub(crate) cover: Option<crate::File>,
+    pub(crate) cover: Option<crate::object::file::File>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -37,7 +37,7 @@ pub struct CreatePageRequestBody {
     pub(crate) icon: Option<crate::object::icon::Icon>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) cover: Option<crate::File>,
+    pub(crate) cover: Option<crate::object::file::File>,
 }
 
 impl CreatePageClient {
