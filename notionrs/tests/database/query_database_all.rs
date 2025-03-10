@@ -628,7 +628,7 @@ mod integration_tests {
 
         let client = notionrs::client::Client::new();
 
-        let sorts = vec![notionrs::object::database::Sort::asc("Created time")];
+        let sorts = vec![notionrs::object::request::sort::Sort::asc("Created time")];
 
         let request = client
             .query_database_all()

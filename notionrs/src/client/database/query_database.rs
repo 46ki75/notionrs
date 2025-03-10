@@ -11,7 +11,7 @@ pub struct QueryDatabaseClient {
 
     pub(crate) filter: Option<crate::object::request::filter::Filter>,
 
-    pub(crate) sorts: Vec<crate::object::database::Sort>,
+    pub(crate) sorts: Vec<crate::object::request::sort::Sort>,
 
     pub(crate) start_cursor: Option<String>,
 
@@ -24,7 +24,7 @@ pub struct QueryDatabaseRequestBody {
     pub(crate) filter: Option<crate::object::request::filter::Filter>,
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) sorts: Vec<crate::object::database::Sort>,
+    pub(crate) sorts: Vec<crate::object::request::sort::Sort>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) start_cursor: Option<String>,
