@@ -1,5 +1,3 @@
-use crate::object::page::page_response::PageResponse;
-
 #[derive(Debug, notionrs_macro::Setter)]
 pub struct GetPageClient {
     pub(crate) reqwest_client: reqwest::Client,
@@ -10,7 +8,7 @@ pub struct GetPageClient {
 }
 
 impl GetPageClient {
-    pub async fn send(self) -> Result<PageResponse, crate::error::Error> {
+    pub async fn send(self) -> Result<crate::object::page::PageResponse, crate::error::Error> {
         match self.page_id {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/pages/{}", id);
@@ -31,7 +29,7 @@ impl GetPageClient {
                     .await
                     .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-                let page: PageResponse = serde_json::from_slice::<PageResponse>(&body)?;
+                let page = serde_json::from_slice::<crate::object::page::PageResponse>(&body)?;
 
                 Ok(page)
             }

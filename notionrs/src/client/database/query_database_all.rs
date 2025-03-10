@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{object::page::page_response::PageResponse, object::response::ListResponse};
+use crate::object::response::ListResponse;
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct QueryDatabaseAllClient {
@@ -32,11 +32,11 @@ pub struct QueryDatabaseAllRequestBody {
 }
 
 impl QueryDatabaseAllClient {
-    pub async fn send(self) -> Result<Vec<PageResponse>, crate::error::Error> {
+    pub async fn send(self) -> Result<Vec<crate::object::page::PageResponse>, crate::error::Error> {
         match self.database_id {
             Some(id) => {
                 let mut start_cursor = self.start_cursor.clone();
-                let mut results: Vec<PageResponse> = vec![];
+                let mut results: Vec<crate::object::page::PageResponse> = vec![];
 
                 loop {
                     let url = format!("https://api.notion.com/v1/databases/{}/query", id);
@@ -68,7 +68,9 @@ impl QueryDatabaseAllClient {
                         .await
                         .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-                    let pages = serde_json::from_slice::<ListResponse<PageResponse>>(&body)?;
+                    let pages = serde_json::from_slice::<
+                        ListResponse<crate::object::page::PageResponse>,
+                    >(&body)?;
 
                     results.extend(pages.results);
 
