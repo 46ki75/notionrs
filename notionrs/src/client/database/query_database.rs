@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{object::page::page_response::PageResponse, object::response::ListResponse};
+use crate::object::response::ListResponse;
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct QueryDatabaseClient {
@@ -11,7 +11,7 @@ pub struct QueryDatabaseClient {
 
     pub(crate) filter: Option<crate::object::request::filter::Filter>,
 
-    pub(crate) sorts: Vec<crate::object::database::Sort>,
+    pub(crate) sorts: Vec<crate::object::request::sort::Sort>,
 
     pub(crate) start_cursor: Option<String>,
 
@@ -24,7 +24,7 @@ pub struct QueryDatabaseRequestBody {
     pub(crate) filter: Option<crate::object::request::filter::Filter>,
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) sorts: Vec<crate::object::database::Sort>,
+    pub(crate) sorts: Vec<crate::object::request::sort::Sort>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) start_cursor: Option<String>,
@@ -34,7 +34,9 @@ pub struct QueryDatabaseRequestBody {
 }
 
 impl QueryDatabaseClient {
-    pub async fn send(self) -> Result<ListResponse<PageResponse>, crate::error::Error> {
+    pub async fn send(
+        self,
+    ) -> Result<ListResponse<crate::object::page::PageResponse>, crate::error::Error> {
         match self.database_id {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/databases/{}/query", id);
@@ -66,7 +68,9 @@ impl QueryDatabaseClient {
                     .await
                     .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-                let pages = serde_json::from_slice::<ListResponse<PageResponse>>(&body)?;
+                let pages = serde_json::from_slice::<
+                    ListResponse<crate::object::page::PageResponse>,
+                >(&body)?;
 
                 Ok(pages)
             }

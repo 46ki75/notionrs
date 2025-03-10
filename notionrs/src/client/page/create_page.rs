@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-use crate::object::page::page_response::PageResponse;
-
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct CreatePageClient {
     /// The reqwest http client
@@ -13,8 +11,7 @@ pub struct CreatePageClient {
     /// Cannot specify the same database ID as the parent database's page_id  
     pub(crate) database_id: Option<String>,
 
-    pub(crate) properties:
-        std::collections::HashMap<String, crate::object::page::properties::PageProperty>,
+    pub(crate) properties: std::collections::HashMap<String, crate::object::page::PageProperty>,
 
     pub(crate) children: Option<Vec<crate::object::block::Block>>,
 
@@ -27,8 +24,7 @@ pub struct CreatePageClient {
 pub struct CreatePageRequestBody {
     pub(crate) parent: crate::object::parent::Parent,
 
-    pub(crate) properties:
-        std::collections::HashMap<String, crate::object::page::properties::PageProperty>,
+    pub(crate) properties: std::collections::HashMap<String, crate::object::page::PageProperty>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) children: Option<Vec<crate::object::block::Block>>,
@@ -47,7 +43,7 @@ impl CreatePageClient {
     /// When the response type is not specific,
     /// use `send::<HashMap<String, PageProperty>>()`.
     /// (Type inference for the property field cannot be used.)
-    pub async fn send(self) -> Result<PageResponse, crate::error::Error> {
+    pub async fn send(self) -> Result<crate::object::page::PageResponse, crate::error::Error> {
         let mut parent: Option<crate::object::parent::Parent> = None;
 
         if let Some(page_id) = self.page_id {
@@ -100,7 +96,7 @@ impl CreatePageClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let page: PageResponse = serde_json::from_slice::<PageResponse>(&body)?;
+        let page = serde_json::from_slice::<crate::object::page::PageResponse>(&body)?;
 
         Ok(page)
     }
