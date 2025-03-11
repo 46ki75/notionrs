@@ -9,7 +9,7 @@ license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/notionrs"
 categories = ["web-programming::http-client"]
 keywords = ["notion", "notion-api"]
-readme = "README.md"
+readme = "../README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -21,7 +21,7 @@ serde_json = "1.0.140"
 serde_plain = "1.0.2"
 thiserror = "2.0.12"
 
-notionrs_macro = { path = "../notionrs_macro" }
+notionrs_macro = "1.0.0-alpha"
 
 [dev-dependencies]
 tokio = { version = "1.43.0", features = ["full"] }

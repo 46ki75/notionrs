@@ -760,7 +760,7 @@ version = "1.0.0-alpha.37"
 dependencies = [
  "chrono",
  "dotenvy",
- "notionrs_macro",
+ "notionrs_macro 1.0.0-alpha.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "reqwest",
  "serde",
  "serde_json",
@@ -772,7 +772,18 @@ dependencies = [
 
 [[package]]
 name = "notionrs_macro"
-version = "0.1.0"
+version = "1.0.0-alpha.1"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "notionrs_macro"
+version = "1.0.0-alpha.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c707c5c85f9b7f2f07e12e3a88e840db4f9044d78cc209ed77ec5ab1df51da81"
 dependencies = [
  "proc-macro2",
  "quote",

@@ -1,7 +1,5 @@
-use core::panic;
-
 use quote::quote;
-use syn::{Data, DeriveInput, Expr, Fields, Lit, Meta, MetaNameValue};
+use syn::{Data, DeriveInput, Expr, Fields, Lit, Meta, MetaNameValue, Type};
 
 pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
     let struct_name = input.ident;
@@ -20,9 +18,7 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
 
         let comment = generate_comment(f);
 
-        if field_ty == &syn::parse_str("String").unwrap()
-        // String
-        {
+        if is_string_type(field_ty) {
             quote! {
                 #comment
                 pub fn #field_name<T>(mut self, #field_name: T) -> Self
@@ -33,10 +29,8 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
                     self
                 }
             }
-        } else if is_option_type(field_ty)
-        // Option<T>
-        {
-            let inner_ty = if let syn::Type::Path(type_path) = field_ty {
+        } else if is_option_type(field_ty) {
+            let inner_ty = if let Type::Path(type_path) = field_ty {
                 if let Some(first_segment) = type_path.path.segments.first() {
                     if let syn::PathArguments::AngleBracketed(args) = &first_segment.arguments {
                         if let syn::GenericArgument::Type(ty) = args.args.first().unwrap() {
@@ -54,9 +48,7 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
                 panic!("Option type must have a generic argument");
             };
 
-            if inner_ty == &syn::parse_str("String").unwrap()
-            // Option<String>
-            {
+            if is_string_type(inner_ty) {
                 quote! {
                     #comment
                     pub fn #field_name<T>(mut self, #field_name: T) -> Self
@@ -75,9 +67,7 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
                     }
                 }
             }
-        } else
-        // object
-        {
+        } else {
             quote! {
                 #comment
                 pub fn #field_name(mut self, #field_name: #field_ty) -> Self {
@@ -136,10 +126,19 @@ fn generate_comment(f: &syn::Field) -> proc_macro2::TokenStream {
     comment
 }
 
-fn is_option_type(ty: &syn::Type) -> bool {
-    if let syn::Type::Path(type_path) = ty {
+fn is_option_type(ty: &Type) -> bool {
+    if let Type::Path(type_path) = ty {
         if let Some(first_segment) = type_path.path.segments.first() {
             return first_segment.ident == "Option";
+        }
+    }
+    false
+}
+
+fn is_string_type(ty: &Type) -> bool {
+    if let Type::Path(type_path) = ty {
+        if let Some(segment) = type_path.path.segments.first() {
+            return segment.ident == "String";
         }
     }
     false
