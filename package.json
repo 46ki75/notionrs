@@ -19,6 +19,6 @@
         "vitepress": "^1.6.3"
     },
     "dependencies": {
-        "@notionhq/client": "^2.2.16"
+        "@notionhq/client": "^2.3.0"
     }
 }
