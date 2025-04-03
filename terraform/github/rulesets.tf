@@ -1,21 +1,3 @@
-resource "github_repository_ruleset" "branch_restrict_deletion" {
-  name        = "branch-restrict-deletion"
-  repository  = github_repository.notionrs.name
-  target      = "branch"
-  enforcement = "active"
-
-  conditions {
-    ref_name {
-      include = ["~DEFAULT_BRANCH", "refs/heads/develop"]
-      exclude = []
-    }
-  }
-
-  rules {
-    deletion = true
-  }
-}
-
 data "github_app" "github_actions" {
   slug = "github-actions"
 }
@@ -28,7 +10,7 @@ resource "github_repository_ruleset" "branch_require_pr" {
 
   conditions {
     ref_name {
-      include = ["~DEFAULT_BRANCH", "refs/heads/develop", "refs/heads/release/**/*"]
+      include = ["~DEFAULT_BRANCH"]
       exclude = []
     }
   }
@@ -44,31 +26,6 @@ resource "github_repository_ruleset" "branch_require_pr" {
         integration_id = data.github_app.github_actions.id
       }
     }
-  }
-}
-
-resource "github_repository_ruleset" "branch_restrict_mutation_release" {
-  name        = "branch-restrict-mutation-release"
-  repository  = github_repository.notionrs.name
-  target      = "branch"
-  enforcement = "active"
-
-  conditions {
-    ref_name {
-      include = ["refs/heads/release/**/*"]
-      exclude = []
-    }
-  }
-
-  rules {
-    creation = true
-    deletion = true
-  }
-
-  bypass_actors {
-    actor_id    = 5 # Admin
-    actor_type  = "RepositoryRole"
-    bypass_mode = "always"
   }
 }
 
