@@ -17,6 +17,7 @@ pub use self::paragraph::ParagraphBlock;
 pub use self::quote::QuoteBlock;
 pub use self::synced_block::SyncedBlock;
 pub use self::table::TableBlock;
+pub use self::table_of_contents::TableOfContentsBlock;
 pub use self::table_row::TableRowBlock;
 pub use self::template::TemplateBlock;
 pub use self::to_do::ToDoBlock;
@@ -39,6 +40,7 @@ pub mod paragraph;
 pub mod quote;
 pub mod synced_block;
 pub mod table;
+pub mod table_of_contents;
 pub mod table_row;
 pub mod template;
 pub mod to_do;
@@ -184,6 +186,9 @@ pub enum Block {
     SyncedBlock {
         synced_block: synced_block::SyncedBlock,
     },
+    TableOfContents {
+        table_of_contents: table_of_contents::TableOfContentsBlock,
+    },
     Table {
         table: table::TableBlock,
     },
@@ -232,6 +237,7 @@ impl std::fmt::Display for Block {
             Block::Pdf { pdf } => write!(f, "{}", pdf),
             Block::Quote { quote } => write!(f, "{}", quote),
             Block::SyncedBlock { synced_block } => write!(f, "{}", synced_block),
+            Block::TableOfContents { table_of_contents } => write!(f, "{}", table_of_contents),
             Block::Table { table } => write!(f, "{}", table),
             Block::TableRow { table_row } => write!(f, "{}", table_row),
             Block::Template { template } => write!(f, "{}", template),
