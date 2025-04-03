@@ -58,6 +58,9 @@ async fn main() -> Result<(), Error> {
             Block::Pdf { pdf: _ } => todo!(),
             Block::Quote { quote: _ } => todo!(),
             Block::SyncedBlock { synced_block: _ } => todo!(),
+            Block::TableOfContents {
+                table_of_contents: _,
+            } => todo!(),
             Block::Table { table: _ } => todo!(),
             Block::TableRow { table_row: _ } => todo!(),
             Block::Template { template: _ } => todo!(),

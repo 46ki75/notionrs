@@ -9,3 +9,5 @@ node_modules/
 # Vitepress
 **/.vitepress/cache/
 **/.vitepress/dist/
+
+.pnpm-store/

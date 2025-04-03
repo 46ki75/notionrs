@@ -1,7 +1,7 @@
 [package]
 name = "notionrs"
 description = "A Notion API client that provides type-safe request serialization and response deserialization"
-version = "1.0.0-alpha.37"
+version = "1.0.0-alpha.38"
 edition = "2024"
 authors = ["Chomolungma Shirayuki"]
 repository = "https://github.com/46ki75/notionrs"
@@ -9,22 +9,22 @@ license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/notionrs"
 categories = ["web-programming::http-client"]
 keywords = ["notion", "notion-api"]
-readme = "README.md"
+readme = "../README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 chrono = { version = "0.4.40", features = ["serde"] }
-reqwest = { version = "0.12.12", default-features = false }
+reqwest = { version = "0.12.15", default-features = false }
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.140"
 serde_plain = "1.0.2"
 thiserror = "2.0.12"
 
-notionrs_macro = { path = "../notionrs_macro" }
+notionrs_macro = "1.0.0-alpha"
 
 [dev-dependencies]
-tokio = { version = "1.43.0", features = ["full"] }
+tokio = { version = "1.44.1", features = ["full"] }
 dotenvy = "0.15.0"
 serial_test = "3.2.0"
 
