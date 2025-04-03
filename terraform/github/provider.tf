@@ -12,7 +12,7 @@ terraform {
 
     workspaces {
       project = "notionrs"
-      name    = "shared"
+      name    = "notionrs"
     }
   }
 }
