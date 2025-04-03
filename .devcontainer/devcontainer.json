@@ -6,9 +6,7 @@
   "customizations": {
     "vscode": {
       "settings": {
-        "rust-analyzer.linkedProjects": [
-          "./Cargo.toml"
-        ],
+        "rust-analyzer.linkedProjects": ["./Cargo.toml"],
         "rust-analyzer.showUnlinkedFileNotification": false
       },
       "extensions": [
@@ -26,7 +24,10 @@
         // Rust
         "rust-lang.rust-analyzer",
         "tamasfe.even-better-toml",
-        "fill-labs.dependi"
+        "fill-labs.dependi",
+
+        // Terraform
+        "HashiCorp.terraform"
       ]
     }
   },
@@ -34,10 +35,9 @@
     "ghcr.io/devcontainers-extra/features/starship": {},
     "ghcr.io/devcontainers/features/github-cli": {},
     "ghcr.io/devcontainers/features/node": {},
-    "ghcr.io/devcontainers/features/rust": {}
+    "ghcr.io/devcontainers/features/rust": {},
+    "ghcr.io/devcontainers/features/terraform": {}
   },
-  "forwardPorts": [
-    5173
-  ],
+  "forwardPorts": [5173],
   "postCreateCommand": "echo 'eval \"$(starship init bash)\"' >> ~/.bashrc"
 }
