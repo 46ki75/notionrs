@@ -6,29 +6,38 @@
   "customizations": {
     "vscode": {
       "settings": {
-        "rust-analyzer.linkedProjects": [
-          "./Cargo.toml"
-        ],
+        "rust-analyzer.linkedProjects": ["./Cargo.toml"],
         "rust-analyzer.showUnlinkedFileNotification": false
       },
       "extensions": [
-        "rust-lang.rust-analyzer",
-        "fill-labs.dependi",
-        "panicbit.cargo",
-        "tamasfe.even-better-toml",
-        "Gruntfuggly.todo-tree",
+        "GitHub.vscode-pull-request-github",
+        "GitHub.vscode-github-actions",
         "usernamehw.errorlens",
-        "yzhang.markdown-all-in-one"
+        "Gruntfuggly.todo-tree",
+        "christian-kohler.path-intellisense",
+        "ms-azuretools.vscode-docker",
+        "DavidAnson.vscode-markdownlint",
+        "yzhang.markdown-all-in-one",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+
+        // Rust
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "fill-labs.dependi",
+
+        // Terraform
+        "HashiCorp.terraform"
       ]
     }
   },
   "features": {
     "ghcr.io/devcontainers-extra/features/starship": {},
+    "ghcr.io/devcontainers/features/github-cli": {},
     "ghcr.io/devcontainers/features/node": {},
-    "ghcr.io/devcontainers-extra/features/pnpm": {},
-    "ghcr.io/devcontainers/features/rust": {}
+    "ghcr.io/devcontainers/features/rust": {},
+    "ghcr.io/devcontainers/features/terraform": {}
   },
-  "forwardPorts": [
-    5173
-  ]
+  "forwardPorts": [5173],
+  "postCreateCommand": "echo 'eval \"$(starship init bash)\"' >> ~/.bashrc"
 }
