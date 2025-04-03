@@ -19,3 +19,13 @@ updates:
       - "46ki75"
     reviewers:
       - "46ki75"
+
+  - package-ecosystem: "terraform"
+    directory: "/terraform"
+    schedule:
+      interval: "daily"
+    target-branch: "develop"
+    assignees:
+      - "46ki75"
+    reviewers:
+      - "46ki75"
