@@ -13,9 +13,7 @@
       },
       "extensions": [
         "GitHub.vscode-pull-request-github",
-        "GitHub.copilot",
-        "GitHub.copilot-chat",
-        "github.vscode-github-actions",
+        "GitHub.vscode-github-actions",
         "usernamehw.errorlens",
         "Gruntfuggly.todo-tree",
         "christian-kohler.path-intellisense",
