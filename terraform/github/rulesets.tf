@@ -68,7 +68,7 @@ resource "github_repository_ruleset" "branch_restrict_mutation_release" {
   bypass_actors {
     actor_id    = 5 # Admin
     actor_type  = "RepositoryRole"
-    bypass_mode = "pull_request"
+    bypass_mode = "always"
   }
 }
 
