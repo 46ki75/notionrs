@@ -5,6 +5,8 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "develop"
+    labels:
+      - "Rust"
     assignees:
       - "46ki75"
     reviewers:
@@ -15,6 +17,8 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "develop"
+    labels:
+      - "npm"
     assignees:
       - "46ki75"
     reviewers:
@@ -25,6 +29,8 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "develop"
+    labels:
+      - "Terraform"
     assignees:
       - "46ki75"
     reviewers:
