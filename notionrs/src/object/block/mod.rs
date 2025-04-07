@@ -330,16 +330,8 @@ mod unit_tests {
             chrono::Utc.with_ymd_and_hms(2024, 8, 17, 2, 50, 0).unwrap();
         assert_eq!(block.last_edited_time, expected_last_edited_time);
 
-        match block.created_by {
-            crate::object::user::User::Bot(bot) => {
-                assert_eq!(bot.object, "user");
-                assert_eq!(bot.id, "21d48f75-3f61-4c36-8b24-7447ca72fb3a");
-            }
-            crate::object::user::User::Person(person) => {
-                assert_eq!(person.object, "user");
-                assert_eq!(person.id, "21d48f75-3f61-4c36-8b24-7447ca72fb3a");
-            }
-        }
+        assert_eq!(block.created_by.object, "user");
+        assert_eq!(block.created_by.id, "21d48f75-3f61-4c36-8b24-7447ca72fb3a");
 
         assert!(!block.has_children);
         assert!(!block.archived);

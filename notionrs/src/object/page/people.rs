@@ -63,7 +63,6 @@ impl std::fmt::Display for PagePeopleProperty {
 
 #[cfg(test)]
 mod unit_tests {
-    use core::panic;
 
     use super::*;
 
@@ -99,20 +98,15 @@ mod unit_tests {
 
         assert_eq!(people.id, Some("pAoV".to_string()));
 
-        match &people.people.first().unwrap() {
-            crate::object::user::User::Person(p) => {
-                assert_eq!(p.id, "4050d499-9586-4352-85a2-d4cb55a68200");
-                assert_eq!(p.name, Some("46ki75".to_string()));
-                assert_eq!(p.avatar_url, None);
-                assert_eq!(p.r#type, Some("person".to_string()));
-                assert_eq!(
-                    p.person.as_ref().unwrap().email,
-                    Some("46ki75@example.com".to_string())
-                );
-            }
-            crate::object::user::User::Bot(_) => {
-                panic!()
-            }
-        }
+        let p = &people.people.first().unwrap();
+
+        assert_eq!(p.id, "4050d499-9586-4352-85a2-d4cb55a68200");
+        assert_eq!(p.name, Some("46ki75".to_string()));
+        assert_eq!(p.avatar_url, None);
+        assert_eq!(p.r#type, Some("person".to_string()));
+        assert_eq!(
+            p.person.as_ref().unwrap().email,
+            Some("46ki75@example.com".to_string())
+        );
     }
 }
