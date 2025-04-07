@@ -88,19 +88,16 @@ mod unit_tests {
 
         assert_eq!(last_edited_by.id, Some("fR4s".to_string()));
 
-        match &last_edited_by.last_edited_by {
-            crate::object::user::User::Bot(_) => panic!(),
-            crate::object::user::User::Person(person) => {
-                assert_eq!(person.object, "user");
-                assert_eq!(person.id, "cb497a8c-1c30-4c22-87af-f8b0c1ee7389");
-                assert_eq!(person.name, Some("Sam".to_string()));
-                assert_eq!(person.avatar_url, None);
-                assert_eq!(person.r#type, Some("person".to_string()));
-                assert_eq!(
-                    person.person.as_ref().unwrap().email,
-                    Some("info@example.com".to_string())
-                );
-            }
-        }
+        let person = &last_edited_by.last_edited_by;
+
+        assert_eq!(person.object, "user");
+        assert_eq!(person.id, "cb497a8c-1c30-4c22-87af-f8b0c1ee7389");
+        assert_eq!(person.name, Some("Sam".to_string()));
+        assert_eq!(person.avatar_url, None);
+        assert_eq!(person.r#type, Some("person".to_string()));
+        assert_eq!(
+            person.person.as_ref().unwrap().email,
+            Some("info@example.com".to_string())
+        );
     }
 }

@@ -6,10 +6,7 @@ async fn main() -> Result<(), notionrs::error::Error> {
 
     let response = request.send().await?;
 
-    let name = match response {
-        notionrs::object::user::User::Bot(bot) => bot.name,
-        notionrs::object::user::User::Person(person) => person.name,
-    };
+    let name = response.name;
 
     match name {
         None => println!("No name found"),
