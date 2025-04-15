@@ -756,7 +756,7 @@ dependencies = [
 
 [[package]]
 name = "notionrs"
-version = "1.0.0-alpha.39"
+version = "1.0.0-alpha.40"
 dependencies = [
  "chrono",
  "dotenvy",
