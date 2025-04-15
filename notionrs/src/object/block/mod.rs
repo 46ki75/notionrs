@@ -207,7 +207,7 @@ pub enum Block {
     Video {
         video: crate::object::file::File,
     },
-    Unknown(serde_json::Value),
+    Unsupported(serde_json::Value),
 }
 
 impl std::fmt::Display for Block {
@@ -244,7 +244,7 @@ impl std::fmt::Display for Block {
             Block::ToDo { to_do } => write!(f, "{}", to_do),
             Block::Toggle { toggle } => write!(f, "{}", toggle),
             Block::Video { video } => write!(f, "{}", video),
-            Block::Unknown(value) => write!(f, "{:?}", value),
+            _ => write!(f, "unsupported"),
         }
     }
 }
