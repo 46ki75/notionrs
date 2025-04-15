@@ -67,7 +67,7 @@ async fn main() -> Result<(), Error> {
             Block::ToDo { to_do: _ } => todo!(),
             Block::Toggle { toggle: _ } => todo!(),
             Block::Video { video: _ } => todo!(),
-            Block::Unknown(_) => todo!(),
+            _ => todo!(),
         }
     }
 
