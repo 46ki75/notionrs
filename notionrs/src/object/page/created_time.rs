@@ -36,7 +36,7 @@ pub struct PageCreatedTimeProperty {
 
 impl Default for PageCreatedTimeProperty {
     fn default() -> Self {
-        self::PageCreatedTimeProperty {
+        Self {
             id: None,
             created_time: time::OffsetDateTime::now_utc(),
         }
