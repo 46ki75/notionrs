@@ -713,7 +713,7 @@ dependencies = [
 
 [[package]]
 name = "notionrs"
-version = "1.0.0-alpha.40"
+version = "1.0.0-alpha.41"
 dependencies = [
  "dotenvy",
  "notionrs_macro 1.0.0-alpha.1 (registry+https://github.com/rust-lang/crates.io-index)",
