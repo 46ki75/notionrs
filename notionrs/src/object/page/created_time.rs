@@ -21,7 +21,7 @@ use serde::{Deserialize, Serialize};
 ///   }
 /// }
 /// ```
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default, notionrs_macro::Setter)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, notionrs_macro::Setter)]
 pub struct PageCreatedTimeProperty {
     /// An underlying identifier for the property.
     /// `id` remains constant when the property name changes.
@@ -30,13 +30,29 @@ pub struct PageCreatedTimeProperty {
 
     /// The date and time that the page was created.
     /// The created_time value can’t be updated.
-    pub created_time: chrono::DateTime<chrono::FixedOffset>,
+    #[serde(with = "time::serde::rfc3339")]
+    pub created_time: time::OffsetDateTime,
+}
+
+impl Default for PageCreatedTimeProperty {
+    fn default() -> Self {
+        Self {
+            id: None,
+            created_time: time::OffsetDateTime::now_utc(),
+        }
+    }
 }
 
 impl std::fmt::Display for PageCreatedTimeProperty {
     /// display the created time in RFC3339 format
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.created_time.to_rfc3339())
+        write!(
+            f,
+            "{}",
+            self.created_time
+                .format(&time::format_description::well_known::Rfc3339)
+                .unwrap()
+        )
     }
 }
 
@@ -48,7 +64,6 @@ impl std::fmt::Display for PageCreatedTimeProperty {
 
 #[cfg(test)]
 mod unit_tests {
-    use chrono::TimeZone;
 
     use super::*;
 
@@ -73,7 +88,10 @@ mod unit_tests {
 
         assert_eq!(created_time.id, Some("sv%3Fi".to_string()));
 
-        let expected_created_time = chrono::Utc.with_ymd_and_hms(2024, 4, 3, 10, 55, 0).unwrap();
+        let expected_created_time = time::OffsetDateTime::new_utc(
+            time::Date::from_calendar_date(2024, time::Month::April, 3).unwrap(),
+            time::Time::from_hms(10, 55, 0).unwrap(),
+        );
         assert_eq!(created_time.created_time, expected_created_time);
     }
 }

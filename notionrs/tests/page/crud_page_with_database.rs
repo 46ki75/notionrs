@@ -167,7 +167,13 @@ mod integration_tests {
             "Date".to_string(),
             notionrs::object::page::PageProperty::Date(
                 notionrs::object::page::PageDateProperty::from(
-                    chrono::DateTime::parse_from_rfc3339("2024-10-26T09:03:00.000Z").unwrap(),
+                    notionrs::object::date::DateOrDateTime::DateTime(
+                        time::OffsetDateTime::parse(
+                            "2024-10-26T09:03:00.000Z",
+                            &time::format_description::well_known::Rfc3339,
+                        )
+                        .unwrap(),
+                    ),
                 ),
             ),
         );

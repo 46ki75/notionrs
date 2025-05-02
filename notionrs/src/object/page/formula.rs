@@ -87,7 +87,7 @@ pub struct FormulaBoolean {
 #[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
 pub struct FormulaDate {
     /// Calculated value of the database property
-    pub date: Option<chrono::DateTime<chrono::FixedOffset>>,
+    pub date: Option<crate::object::date::DateOrDateTime>,
 }
 
 /// ```json

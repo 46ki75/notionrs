@@ -28,13 +28,20 @@ pub struct PageLastEditedTimeProperty {
     pub id: Option<String>,
 
     /// The date and time that the page was last edited.
-    pub last_edited_time: chrono::DateTime<chrono::FixedOffset>,
+    #[serde(with = "time::serde::rfc3339")]
+    pub last_edited_time: time::OffsetDateTime,
 }
 
 impl std::fmt::Display for PageLastEditedTimeProperty {
     /// Display
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.last_edited_time.to_rfc3339())
+        write!(
+            f,
+            "{}",
+            self.last_edited_time
+                .format(&time::format_description::well_known::Rfc3339)
+                .unwrap_or("[Invalid Format]".to_owned())
+        )
     }
 }
 
@@ -46,8 +53,6 @@ impl std::fmt::Display for PageLastEditedTimeProperty {
 
 #[cfg(test)]
 mod unit_tests {
-
-    use chrono::TimeZone;
 
     use super::*;
 
@@ -71,8 +76,11 @@ mod unit_tests {
         let last_edited_time = last_edited_time_map.get("Last edited time").unwrap();
 
         assert_eq!(last_edited_time.id, Some("sv%3Fi".to_string()));
-        let expected_last_edited_time =
-            chrono::Utc.with_ymd_and_hms(2024, 4, 3, 10, 55, 0).unwrap();
+
+        let expected_last_edited_time = time::OffsetDateTime::new_utc(
+            time::Date::from_calendar_date(2024, time::Month::April, 3).unwrap(),
+            time::Time::from_hms(10, 55, 0).unwrap(),
+        );
         assert_eq!(last_edited_time.last_edited_time, expected_last_edited_time);
     }
 }
