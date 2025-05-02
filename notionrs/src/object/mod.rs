@@ -1,6 +1,7 @@
 pub mod block;
 pub mod color;
 pub mod database;
+pub mod date;
 pub mod emoji;
 pub mod file;
 pub mod icon;

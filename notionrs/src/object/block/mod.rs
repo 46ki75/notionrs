@@ -85,13 +85,13 @@ pub struct BlockResponse {
 
     /// This value is provided in ISO 8601 format.
     /// To convert it back to the original string,
-    /// use the `.to_rfc3339()` method from `chrono`.
-    pub created_time: chrono::DateTime<chrono::FixedOffset>,
+    #[serde(with = "time::serde::rfc3339")]
+    pub created_time: time::OffsetDateTime,
 
     /// This value is provided in ISO 8601 format.
     /// To convert it back to the original string,
-    /// use the `.to_rfc3339()` method from `chrono`.
-    pub last_edited_time: chrono::DateTime<chrono::FixedOffset>,
+    #[serde(with = "time::serde::rfc3339")]
+    pub last_edited_time: time::OffsetDateTime,
 
     pub created_by: crate::object::user::User,
 
@@ -259,7 +259,6 @@ impl std::fmt::Display for Block {
 
 #[cfg(test)]
 mod unit_tests {
-    use chrono::TimeZone;
 
     use super::*;
 
@@ -325,11 +324,16 @@ mod unit_tests {
             _ => panic!(),
         }
 
-        let expected_created_time = chrono::Utc.with_ymd_and_hms(2024, 8, 17, 2, 50, 0).unwrap();
+        let expected_created_time = time::OffsetDateTime::new_utc(
+            time::Date::from_calendar_date(2024, time::Month::August, 17).unwrap(),
+            time::Time::from_hms(2, 50, 0).unwrap(),
+        );
         assert_eq!(block.created_time, expected_created_time);
 
-        let expected_last_edited_time =
-            chrono::Utc.with_ymd_and_hms(2024, 8, 17, 2, 50, 0).unwrap();
+        let expected_last_edited_time = time::OffsetDateTime::new_utc(
+            time::Date::from_calendar_date(2024, time::Month::August, 17).unwrap(),
+            time::Time::from_hms(2, 50, 0).unwrap(),
+        );
         assert_eq!(block.last_edited_time, expected_last_edited_time);
 
         assert_eq!(block.created_by.object, "user");

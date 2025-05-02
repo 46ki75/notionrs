@@ -103,8 +103,10 @@ impl std::fmt::Display for PageProperty {
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PageResponse {
     pub id: String,
-    pub created_time: chrono::DateTime<chrono::FixedOffset>,
-    pub last_edited_time: chrono::DateTime<chrono::FixedOffset>,
+    #[serde(with = "time::serde::rfc3339")]
+    pub created_time: time::OffsetDateTime,
+    #[serde(with = "time::serde::rfc3339")]
+    pub last_edited_time: time::OffsetDateTime,
     pub created_by: User,
     pub last_edited_by: User,
     pub cover: Option<File>,

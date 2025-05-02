@@ -1,5 +1,4 @@
-use chrono::{DateTime, FixedOffset, NaiveDate, TimeZone};
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Serialize};
 
 /// <https://developers.notion.com/reference/page-property-values#date>
 ///
@@ -56,48 +55,19 @@ pub struct PageDateProperty {
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default, notionrs_macro::Setter)]
 pub struct PageDatePropertyParameter {
     /// A date, with an optional time.
-    #[serde(deserialize_with = "deserialize_date_or_datetime")]
-    pub start: Option<DateTime<FixedOffset>>,
+    pub start: Option<crate::object::date::DateOrDateTime>,
 
     /// A string representing the end of a date range.
     /// If the value is null, then the date value is not a range.
-    #[serde(deserialize_with = "deserialize_date_or_datetime")]
-    pub end: Option<DateTime<FixedOffset>>,
+    pub end: Option<crate::object::date::DateOrDateTime>,
 
     /// Always `null`. The time zone is already included in the formats of start and end times.
     #[serde(skip_deserializing)]
     pub time_zone: Option<String>,
 }
 
-fn deserialize_date_or_datetime<'de, D>(
-    deserializer: D,
-) -> Result<Option<DateTime<FixedOffset>>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let date_str = Option::<String>::deserialize(deserializer)?;
-
-    if let Some(date_str) = date_str {
-        if let Ok(date) = NaiveDate::parse_from_str(&date_str, "%Y-%m-%d") {
-            return Ok(Some(
-                FixedOffset::east_opt(0).unwrap().from_utc_datetime(
-                    &date
-                        .and_hms_opt(0, 0, 0)
-                        .ok_or_else(|| serde::de::Error::custom("Invalid time"))?,
-                ),
-            ));
-        }
-        if let Ok(datetime) = DateTime::parse_from_rfc3339(&date_str) {
-            return Ok(Some(datetime));
-        }
-        return Err(serde::de::Error::custom("Invalid date or datetime format"));
-    }
-
-    Ok(None)
-}
-
 impl PageDateProperty {
-    pub fn start(&mut self, start: chrono::DateTime<chrono::FixedOffset>) -> &mut Self {
+    pub fn start(&mut self, start: crate::object::date::DateOrDateTime) -> &mut Self {
         match &mut self.date {
             Some(date) => date.start = Some(start),
             None => {
@@ -110,7 +80,7 @@ impl PageDateProperty {
         self
     }
 
-    pub fn end(&mut self, end: chrono::DateTime<chrono::FixedOffset>) -> &mut Self {
+    pub fn end(&mut self, end: crate::object::date::DateOrDateTime) -> &mut Self {
         match &mut self.date {
             Some(date) => date.end = Some(end),
             None => {
@@ -124,8 +94,8 @@ impl PageDateProperty {
     }
 }
 
-impl From<chrono::DateTime<chrono::FixedOffset>> for PageDateProperty {
-    fn from(value: chrono::DateTime<chrono::FixedOffset>) -> Self {
+impl From<crate::object::date::DateOrDateTime> for PageDateProperty {
+    fn from(value: crate::object::date::DateOrDateTime) -> Self {
         Self {
             id: None,
             date: Some(PageDatePropertyParameter {
@@ -149,7 +119,7 @@ impl std::fmt::Display for PageDateProperty {
 impl std::fmt::Display for PageDatePropertyParameter {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self.start {
-            Some(start) => write!(f, "{}", start.to_rfc3339()),
+            Some(start) => write!(f, "{}", start),
             None => write!(f, ""),
         }
     }
@@ -190,9 +160,19 @@ mod unit_tests {
         assert_eq!(date.id, Some("w%5E%7DO".to_string()));
 
         if let Some(property) = &date.date {
-            let expected_start =
-                chrono::DateTime::parse_from_rfc3339("2024-04-04T00:00:00.000+02:00").unwrap();
-            assert_eq!(property.start, Some(expected_start));
+            let expected_start = time::OffsetDateTime::parse(
+                "2024-04-04T00:00:00.000+02:00",
+                &time::format_description::well_known::Rfc3339,
+            )
+            .unwrap();
+            assert_eq!(
+                match property.start.unwrap() {
+                    crate::object::date::DateOrDateTime::Date(_) => panic!(),
+                    crate::object::date::DateOrDateTime::DateTime(offset_date_time) =>
+                        offset_date_time,
+                },
+                expected_start
+            );
             assert_eq!(property.end, None);
             assert_eq!(property.time_zone, None);
         }

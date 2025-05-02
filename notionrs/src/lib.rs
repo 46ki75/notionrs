@@ -5,3 +5,4 @@ pub mod client;
 pub mod error;
 pub mod r#macro;
 pub mod object;
+pub(crate) mod serde;
