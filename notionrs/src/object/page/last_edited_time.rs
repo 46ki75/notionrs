@@ -39,8 +39,7 @@ impl std::fmt::Display for PageLastEditedTimeProperty {
             f,
             "{}",
             self.last_edited_time
-                .format(&time::format_description::well_known::Rfc3339)
-                .unwrap_or("[Invalid Format]".to_owned())
+                .format(&time::format_description::well_known::Rfc3339)?
         )
     }
 }
