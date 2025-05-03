@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
-pub struct CrateCommentClient {
+pub struct CreateCommentClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
@@ -23,7 +23,7 @@ pub struct CreateCommentRequestBody {
     rich_text: Vec<crate::object::rich_text::RichText>,
 }
 
-impl CrateCommentClient {
+impl CreateCommentClient {
     pub async fn send(self) -> Result<crate::object::comment::Comment, crate::error::Error> {
         match self.rich_text {
             None => Err(crate::error::Error::RequestParameter(

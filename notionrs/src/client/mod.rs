@@ -295,8 +295,8 @@ impl Client {
     //
     // # --------------------------------------------------------------------------------
 
-    pub fn create_comment(&self) -> crate::client::comment::create_comment::CrateCommentClient {
-        crate::client::comment::create_comment::CrateCommentClient {
+    pub fn create_comment(&self) -> crate::client::comment::create_comment::CreateCommentClient {
+        crate::client::comment::create_comment::CreateCommentClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }
