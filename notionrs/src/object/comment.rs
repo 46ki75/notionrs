@@ -16,16 +16,45 @@ pub struct Comment {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub discussion_id: Option<String>,
 
+    #[serde(skip_serializing)]
     #[serde(with = "time::serde::rfc3339")]
     pub created_time: time::OffsetDateTime,
 
+    #[serde(skip_serializing)]
     #[serde(with = "time::serde::rfc3339")]
     pub last_edited_time: time::OffsetDateTime,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_serializing)]
     pub created_by: Option<crate::object::user::User>,
 
     pub rich_text: Vec<crate::object::rich_text::RichText>,
+}
+
+impl Default for Comment {
+    fn default() -> Self {
+        Comment {
+            object: "comment".to_string(),
+            id: String::new(),
+            parent: None,
+            discussion_id: None,
+            created_time: time::OffsetDateTime::now_utc(),
+            last_edited_time: time::OffsetDateTime::now_utc(),
+            created_by: None,
+            rich_text: vec![],
+        }
+    }
+}
+
+impl<T> From<T> for Comment
+where
+    T: AsRef<str>,
+{
+    fn from(value: T) -> Self {
+        Self {
+            rich_text: vec![crate::object::rich_text::RichText::from(value)],
+            ..Default::default()
+        }
+    }
 }
 
 impl std::fmt::Display for Comment {
