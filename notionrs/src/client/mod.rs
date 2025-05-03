@@ -1,4 +1,5 @@
 pub mod block;
+pub mod comment;
 pub mod database;
 pub mod page;
 pub mod search;
@@ -283,6 +284,28 @@ impl Client {
 
     pub fn search_page(&self) -> crate::client::search::SearchPageClient {
         crate::client::search::SearchPageClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // comment
+    //
+    // # --------------------------------------------------------------------------------
+
+    pub fn create_comment(&self) -> crate::client::comment::create_comment::CrateCommentClient {
+        crate::client::comment::create_comment::CrateCommentClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn retrieve_comments(
+        &self,
+    ) -> crate::client::comment::retrieve_comments::RetrieveCommentsClient {
+        crate::client::comment::retrieve_comments::RetrieveCommentsClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }

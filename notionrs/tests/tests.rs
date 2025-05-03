@@ -1,5 +1,7 @@
 #[path = "block/mod.rs"]
 mod block;
+#[path = "comment.rs"]
+mod comment;
 #[path = "database/mod.rs"]
 mod database;
 #[path = "page/mod.rs"]
