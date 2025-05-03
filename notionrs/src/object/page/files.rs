@@ -3,11 +3,11 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/page-property-values#files>
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
-///                 `id` remains constant when the property name changes.
+///   `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"files"`
 /// - `$.['*'].files`: An array of objects containing information about
-///                    the [files](https://developers.notion.com/reference/file-object).
-///                    If the file does not exist, an empty array will be returned.
+///   the [files](https://developers.notion.com/reference/file-object).
+///   If the file does not exist, an empty array will be returned.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///

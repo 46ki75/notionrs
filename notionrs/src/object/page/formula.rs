@@ -6,14 +6,14 @@ use serde::{Deserialize, Serialize};
 /// a formula described in the database's properties.
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
-///                 `id` remains constant when the property name changes.
+///   `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"formula"`
 /// - `$.['*'].formula.type`: A string indicating the data type of the result of the formula.
-///                         Possible type values are:
-///                         - `boolean`
-///                         - `date`
-///                         - `number`
-///                         - `string`
+///   Possible type values are:
+///   - `boolean`
+///   - `date`
+///   - `number`
+///   - `string`
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
