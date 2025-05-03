@@ -10,7 +10,8 @@ pub struct Comment {
     #[serde(skip_serializing)]
     pub id: String,
 
-    pub parent: crate::object::parent::Parent,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub parent: Option<crate::object::parent::Parent>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub discussion_id: Option<String>,
