@@ -14,6 +14,7 @@ pub enum Parent {
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct DatabaseParent {
     /// always "database_id"
+    #[serde(skip_serializing)]
     pub r#type: String,
     pub database_id: String,
 }
@@ -40,6 +41,7 @@ impl From<String> for DatabaseParent {
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct PageParent {
     /// always "page_id"
+    #[serde(skip_serializing)]
     pub r#type: String,
     pub page_id: String,
 }
@@ -66,6 +68,7 @@ impl From<String> for PageParent {
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct WorkspaceParent {
     /// always "workspace"
+    #[serde(skip_serializing)]
     pub r#type: String,
     /// always `true`
     pub workspace: bool,
@@ -75,6 +78,7 @@ pub struct WorkspaceParent {
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct BlockParent {
     /// always "block_id"
+    #[serde(skip_serializing)]
     pub r#type: String,
     pub block_id: String,
 }
