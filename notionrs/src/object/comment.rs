@@ -1,17 +1,29 @@
 use serde::{Deserialize, Serialize};
 
+/// When creating a new comment, either the parent.page_id or discussion_id parameter must be provided — not both.
 #[derive(Debug, Deserialize, Serialize, Clone, notionrs_macro::Setter)]
 pub struct Comment {
     /// Always `"comment"`,
+    #[serde(skip_serializing)]
     pub object: String,
+
+    #[serde(skip_serializing)]
     pub id: String,
+
     pub parent: crate::object::parent::Parent,
-    pub discussion_id: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discussion_id: Option<String>,
+
     #[serde(with = "time::serde::rfc3339")]
     pub created_time: time::OffsetDateTime,
+
     #[serde(with = "time::serde::rfc3339")]
     pub last_edited_time: time::OffsetDateTime,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub created_by: Option<crate::object::user::User>,
+
     pub rich_text: Vec<crate::object::rich_text::RichText>,
 }
 
@@ -75,7 +87,7 @@ mod unit_tests {
 
         assert_eq!(
             comment.discussion_id,
-            "1e834608-d5c9-80a2-ab7a-001c2c516cfd"
+            Some("1e834608-d5c9-80a2-ab7a-001c2c516cfd".to_string())
         );
     }
 }
