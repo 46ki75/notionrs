@@ -185,11 +185,11 @@ mod unit_tests {
                     "created_time": "2024-07-09T18:33:00.000Z",
                     "created_by": {
                         "object": "user",
-                        "id": "d7592761-a145-4788-ba2c-d67bbfaed77f"
+                        "id": "426d05f1-ce5c-4077-b206-10fd26daa2a8"
                     },
                     "last_edited_by": {
                         "object": "user",
-                        "id": "d7592761-a145-4788-ba2c-d67bbfaed77f"
+                        "id": "426d05f1-ce5c-4077-b206-10fd26daa2a8"
                     },
                     "last_edited_time": "2024-10-24T19:25:00.000Z",
                     "title": [
@@ -468,5 +468,99 @@ mod unit_tests {
         assert_eq!(result.object, "list");
         assert!(matches!(result.results[0], SearchResultItem::Page(_)));
         assert!(matches!(result.results[1], SearchResultItem::Database(_)));
+    }
+
+    #[test]
+    fn deserialize_comment_result() {
+        let json_data = r#"
+        {
+            "object": "list",
+            "results": [
+                {
+                    "object": "comment",
+                    "id": "1e834608-d5c9-8021-894d-001df60d9340",
+                    "parent": {
+                        "type": "block_id",
+                        "block_id": "1e334608-d5c9-80a4-a8a3-e524a536c43f"
+                    },
+                    "discussion_id": "1e834608-d5c9-80a2-ab7a-001c2c516cfd",
+                    "created_time": "2025-05-03T11:45:00.000Z",
+                    "last_edited_time": "2025-05-03T11:53:00.000Z",
+                    "created_by": {
+                        "object": "user",
+                        "id": "426d05f1-ce5c-4077-b206-10fd26daa2a8"
+                    },
+                    "rich_text": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            "href": null
+                        }
+                    ]
+                },
+                {
+                    "object": "comment",
+                    "id": "1e834608-d5c9-8066-bb14-001df6afc208",
+                    "parent": {
+                        "type": "block_id",
+                        "block_id": "1e334608-d5c9-80a4-a8a3-e524a536c43f"
+                    },
+                    "discussion_id": "1e834608-d5c9-80a2-ab7a-001c2c516cfd",
+                    "created_time": "2025-05-03T11:45:00.000Z",
+                    "last_edited_time": "2025-05-03T11:54:00.000Z",
+                    "created_by": {
+                        "object": "user",
+                        "id": "426d05f1-ce5c-4077-b206-10fd26daa2a8"
+                    },
+                    "rich_text": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Etiam ut lectus non odio lacinia tincidunt.",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Etiam ut lectus non odio lacinia tincidunt.",
+                            "href": null
+                        }
+                    ]
+                }
+            ],
+            "next_cursor": null,
+            "has_more": false,
+            "type": "comment",
+            "comment": {},
+            "developer_survey": "https://notionup.typeform.com/to/bllBsoI4?utm_source=postman",
+            "request_id": "ee3aa7b3-4d66-4775-9afa-54c283306f98"
+        }
+        "#;
+
+        let result: ListResponse<crate::object::comment::Comment> =
+            serde_json::from_str(json_data).unwrap();
+
+        assert_eq!(result.object, "list");
+
+        for result in result.results {
+            assert_eq!(result.object, "comment");
+        }
     }
 }
