@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/page-property-values#checkbox>
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
-///                 `id` remains constant when the property name changes.
+///   `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"checkbox"`
 /// - `$.['*'].checkbox`: Whether the checkbox is checked (`true`) or unchecked (`false`).
 ///

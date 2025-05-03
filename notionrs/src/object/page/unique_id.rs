@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/page-property-values#unique-id>
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
-///                 `id` remains constant when the property name changes.
+///   `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"unique_id"`
 /// - `$.['*'].unique_id`: A unique ID assigned through auto increment
 ///

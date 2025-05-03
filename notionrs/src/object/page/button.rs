@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// - `$.['*'].id`: An underlying identifier for the property.
-///                 `id` remains constant when the property name changes.
+///   `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"button"`
 /// - `$.['*'].button`: Always an empty object
 ///

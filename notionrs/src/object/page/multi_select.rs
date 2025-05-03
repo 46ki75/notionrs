@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/page-property-values#multi-select>
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
-///                 `id` remains constant when the property name changes.
+///   `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"multi_select"`
 /// - `$.['*'].multi_select`: Array of Select object
 ///

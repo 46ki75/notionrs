@@ -3,11 +3,11 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/page-property-values#relation>
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
-///                 `id` remains constant when the property name changes.
+///   `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"relation"`
 /// - `$.['*'].relation`: An array of related page references.
-///                       A page reference is an object with an id key and
-///                       a string value corresponding to a page ID in another database.
+///   A page reference is an object with an id key and
+///   a string value corresponding to a page ID in another database.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///

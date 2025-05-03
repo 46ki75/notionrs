@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/page-property-values#status>
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
-///                 `id` remains constant when the property name changes.
+///   `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"status"`
 /// - `$.['*'].status`: Select object
 ///

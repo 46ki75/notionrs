@@ -3,11 +3,11 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/page-property-values#created-by>
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
-///                 `id` remains constant when the property name changes.
+///   `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"created_by"`
 /// - `$.['*'].created_by`: A [user object](https://developers.notion.com/reference/user)
-///                         containing information about the user who created the page.
-///                         `created_by` can’t be updated.
+///   containing information about the user who created the page.
+///   `created_by` can’t be updated.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///

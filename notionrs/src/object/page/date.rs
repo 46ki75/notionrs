@@ -3,12 +3,12 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/page-property-values#date>
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
-///                 `id` remains constant when the property name changes.
+///   `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"date"`
 /// - `$.['*'].date`: If the value is blank, it will be `null`.
 /// - `$.['*'].date.start`: A date, with an optional time.
 /// - `$.['*'].date.end`: A string representing the end of a date range.
-///                         If the value is null, then the date value is not a range.
+///   If the value is null, then the date value is not a range.
 /// - `$.['*'].date.time_zone`: Always `null`. The time zone is already included in the formats of start and end times.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.

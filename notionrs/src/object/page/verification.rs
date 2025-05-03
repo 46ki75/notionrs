@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 /// - `$.['*'].state`: The verification state of the page. `"verified"` or `"unverified"`.
 /// - `$.['*'].verified_by`: Always `"url"`
 /// - `$.['*'].date?`: If the page if verified, a User object will be included to indicate the user who verified the page.
-///                   If an expiration date is set for the verification, an end date (end) will be included.
+///   If an expiration date is set for the verification, an end date (end) will be included.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///

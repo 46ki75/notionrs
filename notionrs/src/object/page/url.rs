@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// <https://developers.notion.com/reference/page-property-values#url>
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
-///                 `id` remains constant when the property name changes.
+///   `id` remains constant when the property name changes.
 /// - `$.['*'].type`: Always `"url"`
 /// - `$.['*'].url`: A string that describes a web address.
 ///
