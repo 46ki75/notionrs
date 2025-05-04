@@ -1,5 +1,5 @@
 [package]
-name = "notionrs-schema"
+name = "notionrs_schema"
 description = "Shared schema definitions for the Notion API used by the notionrs ecosystem."
 version = "1.0.0-rc.1"
 edition = "2024"
