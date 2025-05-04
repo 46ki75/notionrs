@@ -1,14 +1,11 @@
-use notionrs::{
-    client::Client,
-    error::Error,
-    object::block::{Block, BlockResponse},
-};
+use notionrs::prelude::*;
+use notionrs::{Client, Error};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     let client = Client::new().secret("API_KEY");
 
-    let request: notionrs::client::block::get_block_children::GetBlockChildrenClient = client
+    let request = client
         .get_block_children()
         .block_id("BLOCK_ID")
         .page_size(100);
