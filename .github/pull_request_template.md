@@ -12,7 +12,7 @@
 
 ## Checklist
 
-- [ ] The target branch for this PR is either `develop` or `release/*`.
+- [ ] The target branch for this PR is `main`.
 - [ ] Unit tests have been added.
 - [ ] All unit tests pass.
 - [ ] Documentation has been updated if necessary.
