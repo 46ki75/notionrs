@@ -1,4 +1,4 @@
-#[derive(Debug, notionrs_macro::Setter)]
+#[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct DeleteBlockClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,

@@ -4,7 +4,7 @@ use crate::{object::response::ListResponse, object::user::User};
 
 /// A request builder for performing `list_users` operations.
 
-#[derive(Debug, notionrs_macro::Setter)]
+#[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct ListUsersClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,

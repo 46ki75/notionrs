@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, notionrs_macro::Setter)]
+#[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct UpdateBlockClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,

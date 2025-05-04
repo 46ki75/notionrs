@@ -10,6 +10,17 @@ pub struct GetBlockChildrenClient {
     pub(crate) start_cursor: Option<String>,
 }
 
+impl Default for GetBlockChildrenClient {
+    fn default() -> Self {
+        Self {
+            reqwest_client: reqwest::Client::default(),
+            block_id: None,
+            page_size: 100,
+            start_cursor: None,
+        }
+    }
+}
+
 impl GetBlockChildrenClient {
     // TODO: docs for send
     pub async fn send(
