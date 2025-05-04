@@ -1,18 +1,18 @@
-name: Check Documentation Build
+name: Check Notion SDK Release
 
 on:
-  push:
-    paths:
-      - "docs/**"
-  pull_request:
-    paths:
-      - "docs/**"
-  schedule:
-    - cron: "0 0 * * *"
   workflow_dispatch:
+  schedule:
+    - cron: "0 10 * * *"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build:
+  check:
+    name: Check Notion SDK Release
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,7 +21,8 @@ jobs:
           - 22.x
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
@@ -38,5 +39,6 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Run Build
-        run: pnpm run docs:build
+      - name: Run Scripts
+        run: pnpm start
+        working-directory: ./scripts/check-upstream-release

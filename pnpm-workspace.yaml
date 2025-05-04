@@ -1,3 +1,4 @@
 packages:
-  - docs/
-  - scripts/
+  - ./docs/
+  - ./scripts/prepare-test/
+  - ./scripts/check-upstream-release/

@@ -1,0 +1,7 @@
+{
+    "name": "prepare-test",
+    "type": "module",
+    "dependencies": {
+        "@notionhq/client": "^2.3.0"
+    }
+}

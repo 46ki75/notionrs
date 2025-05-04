@@ -1,0 +1,10 @@
+{
+    "name": "check-upstream-release",
+    "type": "module",
+    "scripts": {
+        "start": "tsx ./src/index.ts"
+    },
+    "dependencies": {
+        "@actions/github": "^6.0.0"
+    }
+}

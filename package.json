@@ -4,8 +4,8 @@
         "docs:dev": "vitepress dev docs",
         "docs:build": "vitepress build docs",
         "docs:preview": "vitepress preview docs",
-        "test:prepare": "tsx ./scripts/src/prepare.ts",
-        "test:cleanup": "tsx ./scripts/src/cleanup.ts",
+        "test:prepare": "tsx ./scripts/prepare-test/src/prepare.ts",
+        "test:cleanup": "tsx ./scripts/prepare-test/src/cleanup.ts",
         "pretest": "npm run test:prepare",
         "test": "RUST_TEST_THREADS=1 cargo test",
         "posttest": "npm run test:cleanup"
@@ -15,10 +15,9 @@
         "dotenv": "^16.5.0",
         "prettier": "^3.5.3",
         "tsx": "^4.19.4",
-        "typescript": "^5.8.3",
-        "vitepress": "^1.6.3"
+        "typescript": "^5.8.3"
     },
     "dependencies": {
-        "@notionhq/client": "^2.3.0"
+        "vitepress": "^1.6.3"
     }
 }
