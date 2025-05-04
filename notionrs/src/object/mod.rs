@@ -1,16 +1,17 @@
 pub mod block;
+pub mod database;
+pub mod page;
+pub mod request;
+pub mod rich_text;
+
 pub mod color;
 pub mod comment;
-pub mod database;
 pub mod date;
 pub mod emoji;
 pub mod file;
 pub mod icon;
 pub mod language;
-pub mod page;
 pub mod parent;
-pub mod request;
 pub mod response;
-pub mod rich_text;
 pub mod select;
 pub mod user;

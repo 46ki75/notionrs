@@ -1,28 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-pub use self::bookmark::BookmarkBlock;
-pub use self::bulleted_list_item::BulletedListItemBlock;
-pub use self::callout::CalloutBlock;
-pub use self::child_database::ChildDatabaseBlock;
-pub use self::child_page::ChildPageBlock;
-pub use self::code::CodeBlock;
-pub use self::column::ColumnBlock;
-pub use self::column_list::ColumnListBlock;
-pub use self::embed::EmbedBlock;
-pub use self::equation::EquationBlock;
-pub use self::heading::HeadingBlock;
-pub use self::link_preview::LinkPreviewBlock;
-pub use self::numbered_list_item::NumberedListItemBlock;
-pub use self::paragraph::ParagraphBlock;
-pub use self::quote::QuoteBlock;
-pub use self::synced_block::SyncedBlock;
-pub use self::table::TableBlock;
-pub use self::table_of_contents::TableOfContentsBlock;
-pub use self::table_row::TableRowBlock;
-pub use self::template::TemplateBlock;
-pub use self::to_do::ToDoBlock;
-pub use self::toggle::ToggleBlock;
-
 pub mod bookmark;
 pub mod bulleted_list_item;
 pub mod callout;

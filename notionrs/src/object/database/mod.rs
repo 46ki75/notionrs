@@ -24,20 +24,6 @@ pub mod unique_id;
 pub mod url;
 pub mod verification;
 
-pub use {
-    button::DatabaseButtonProperty, checkbox::DatabaseCheckboxProperty,
-    created_by::DatabaseCreatedByProperty, created_time::DatabaseCreatedTimeProperty,
-    date::DatabaseDateProperty, email::DatabaseEmailProperty, files::DatabaseFilesProperty,
-    formula::DatabaseFormulaProperty, last_edited_by::DatabaseLastEditedByProperty,
-    last_edited_time::DatabaseLastEditedTimeProperty, multi_select::DatabaseMultiSelectProperty,
-    number::DatabaseNumberProperty, people::DatabasePeopleProperty,
-    phone_number::DatabasePhoneNumberProperty, relation::DatabaseRelationProperty,
-    rich_text::DatabaseRichTextProperty, rollup::*, select::DatabaseSelectProperty,
-    status::DatabaseStatusProperty, title::DatabaseTitleProperty,
-    unique_id::DatabaseUniqueIdProperty, url::DatabaseUrlProperty,
-    verification::DatabaseVerificationProperty,
-};
-
 #[derive(Debug, Deserialize, Serialize, Clone, notionrs_macro::Setter)]
 pub struct DatabaseResponse {
     pub id: String,
