@@ -6,7 +6,7 @@ use crate::color_setters;
 ///
 /// Callout block objects contain the following
 /// information within the callout property:
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct CalloutBlock {
     /// The rich text in the callout block.
     pub rich_text: Vec<crate::object::rich_text::RichText>,
@@ -19,11 +19,6 @@ pub struct CalloutBlock {
 }
 
 impl CalloutBlock {
-    pub fn rich_text(mut self, rich_text: Vec<crate::object::rich_text::RichText>) -> Self {
-        self.rich_text = rich_text;
-        self
-    }
-
     color_setters!(self, self.color);
 }
 
