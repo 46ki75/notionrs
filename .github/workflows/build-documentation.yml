@@ -3,12 +3,12 @@ name: Check Documentation Build
 on:
   push:
     paths:
-      - 'docs/**'
+      - "docs/**"
   pull_request:
     paths:
-      - 'docs/**'
+      - "docs/**"
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
