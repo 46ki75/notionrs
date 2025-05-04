@@ -12,7 +12,7 @@ impl GetPagePropertyItemClient {
     // TODO: docs for send
     pub async fn send(
         self,
-    ) -> Result<notionrs_schema::object::page::PageProperty, crate::error::Error> {
+    ) -> Result<notionrs_types::object::page::PageProperty, crate::error::Error> {
         let page_id = self.page_id.ok_or(crate::error::Error::RequestParameter(
             "`page_id` is not set.".to_string(),
         ))?;
@@ -44,7 +44,7 @@ impl GetPagePropertyItemClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let user = serde_json::from_slice::<notionrs_schema::object::page::PageProperty>(&body)?;
+        let user = serde_json::from_slice::<notionrs_types::object::page::PageProperty>(&body)?;
 
         Ok(user)
     }

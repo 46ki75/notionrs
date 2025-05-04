@@ -1,12 +1,12 @@
 [package]
-name = "notionrs-schema"
+name = "notionrs_types"
 description = "Shared schema definitions for the Notion API used by the notionrs ecosystem."
 version = "1.0.0-rc.1"
 edition = "2024"
 authors = ["Chomolungma Shirayuki"]
 repository = "https://github.com/46ki75/notionrs"
 license = "MIT OR Apache-2.0"
-documentation = "https://docs.rs/notionrs-schema"
+documentation = "https://docs.rs/notionrs_types"
 categories = ["web-programming::http-client"]
 keywords = ["notion", "notion-api"]
 readme = "./README.md"

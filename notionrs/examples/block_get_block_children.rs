@@ -1,5 +1,5 @@
-use notionrs_schema::prelude::*;
 use notionrs::{Client, Error};
+use notionrs_types::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {

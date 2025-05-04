@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use notionrs_schema::object::rich_text::RichText;
+use notionrs_types::object::rich_text::RichText;
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct CreateDatabaseClient {
@@ -16,18 +16,18 @@ pub struct CreateDatabaseClient {
     pub(crate) description: Vec<RichText>,
 
     pub(crate) properties:
-        std::collections::HashMap<String, notionrs_schema::object::database::DatabaseProperty>,
+        std::collections::HashMap<String, notionrs_types::object::database::DatabaseProperty>,
 
     /// This can be configured even though it's not in the official Notion API documentation
-    pub(crate) icon: Option<notionrs_schema::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
-    pub(crate) cover: Option<notionrs_schema::object::file::File>,
+    pub(crate) cover: Option<notionrs_types::object::file::File>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateDatabaseRequestBody {
-    pub(crate) parent: notionrs_schema::object::parent::PageParent,
+    pub(crate) parent: notionrs_types::object::parent::PageParent,
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) title: Vec<RichText>,
@@ -38,25 +38,25 @@ pub struct CreateDatabaseRequestBody {
     pub(crate) description: Vec<RichText>,
 
     pub(crate) properties:
-        std::collections::HashMap<String, notionrs_schema::object::database::DatabaseProperty>,
+        std::collections::HashMap<String, notionrs_types::object::database::DatabaseProperty>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<notionrs_schema::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) cover: Option<notionrs_schema::object::file::File>,
+    pub(crate) cover: Option<notionrs_types::object::file::File>,
 }
 
 impl CreateDatabaseClient {
     pub async fn send(
         self,
-    ) -> Result<notionrs_schema::object::database::DatabaseResponse, crate::error::Error> {
+    ) -> Result<notionrs_types::object::database::DatabaseResponse, crate::error::Error> {
         let page_id = self.page_id.unwrap();
 
         let request_body_struct = CreateDatabaseRequestBody {
-            parent: notionrs_schema::object::parent::PageParent::from(page_id),
+            parent: notionrs_types::object::parent::PageParent::from(page_id),
             properties: self.properties,
             title: self.title,
             description: self.description,
@@ -88,8 +88,8 @@ impl CreateDatabaseClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let database: notionrs_schema::object::database::DatabaseResponse =
-            serde_json::from_slice::<notionrs_schema::object::database::DatabaseResponse>(&body)?;
+        let database: notionrs_types::object::database::DatabaseResponse =
+            serde_json::from_slice::<notionrs_types::object::database::DatabaseResponse>(&body)?;
 
         Ok(database)
     }

@@ -18,15 +18,15 @@ resource "github_repository_ruleset" "branch_require_pr" {
   rules {
     required_status_checks {
       required_check {
-        context        = "Unit Test (notionrs)"
+        context        = "Unit Test (notionrs_types)"
         integration_id = data.github_app.github_actions.id
       }
       required_check {
-        context        = "Unit Test (notionrs-macro)"
+        context        = "Unit Test (notionrs_macro)"
         integration_id = data.github_app.github_actions.id
       }
       required_check {
-        context        = "Integration Test (notionrs-macro)"
+        context        = "Integration Test (notionrs_macro)"
         integration_id = data.github_app.github_actions.id
       }
     }

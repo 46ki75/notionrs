@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use notionrs_schema::object::rich_text::RichText;
+use notionrs_types::object::rich_text::RichText;
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct UpdateDatabaseClient {
@@ -19,14 +19,14 @@ pub struct UpdateDatabaseClient {
     /// Note that it differs from the `create_database()` method in that it is optional.
     pub(crate) properties: std::collections::HashMap<
         String,
-        Option<notionrs_schema::object::database::DatabaseProperty>,
+        Option<notionrs_types::object::database::DatabaseProperty>,
     >,
 
     /// This can be configured even though it's not in the official Notion API documentation
-    pub(crate) icon: Option<notionrs_schema::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
-    pub(crate) cover: Option<notionrs_schema::object::file::File>,
+    pub(crate) cover: Option<notionrs_types::object::file::File>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -43,22 +43,22 @@ pub struct UpdateDatabaseRequestBody {
     /// Note that it differs from the `create_database()` method in that it is optional.
     pub(crate) properties: std::collections::HashMap<
         String,
-        Option<notionrs_schema::object::database::DatabaseProperty>,
+        Option<notionrs_types::object::database::DatabaseProperty>,
     >,
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<notionrs_schema::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) cover: Option<notionrs_schema::object::file::File>,
+    pub(crate) cover: Option<notionrs_types::object::file::File>,
 }
 
 impl UpdateDatabaseClient {
     pub async fn send(
         self,
-    ) -> Result<notionrs_schema::object::database::DatabaseResponse, crate::error::Error> {
+    ) -> Result<notionrs_types::object::database::DatabaseResponse, crate::error::Error> {
         let database_id = self
             .database_id
             .ok_or(crate::error::Error::RequestParameter(
@@ -97,8 +97,8 @@ impl UpdateDatabaseClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let database: notionrs_schema::object::database::DatabaseResponse =
-            serde_json::from_slice::<notionrs_schema::object::database::DatabaseResponse>(&body)?;
+        let database: notionrs_types::object::database::DatabaseResponse =
+            serde_json::from_slice::<notionrs_types::object::database::DatabaseResponse>(&body)?;
 
         Ok(database)
     }

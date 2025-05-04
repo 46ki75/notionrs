@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use notionrs_schema::prelude::*;
+use notionrs_types::prelude::*;
 use notionrs::{Client, Error};
 
 #[tokio::main]

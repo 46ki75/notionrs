@@ -1,5 +1,5 @@
 use notionrs::client::Client;
-use notionrs_schema::prelude::*;
+use notionrs_types::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

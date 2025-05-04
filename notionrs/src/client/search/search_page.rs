@@ -7,7 +7,7 @@ pub struct SearchPageClient {
 
     pub(crate) query: Option<String>,
 
-    pub(crate) sort: Option<notionrs_schema::object::request::search::SearchSort>,
+    pub(crate) sort: Option<notionrs_types::object::request::search::SearchSort>,
 
     /// Specify the cursor position at the beginning. In the query result,
     /// there is a field called `next_cursor` through
@@ -25,10 +25,10 @@ pub struct SearchPageRequestBody {
     pub(crate) query: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) filter: Option<notionrs_schema::object::request::search::SearchFilter>,
+    pub(crate) filter: Option<notionrs_types::object::request::search::SearchFilter>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) sort: Option<notionrs_schema::object::request::search::SearchSort>,
+    pub(crate) sort: Option<notionrs_types::object::request::search::SearchSort>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) start_cursor: Option<String>,
@@ -41,8 +41,8 @@ impl SearchPageClient {
     pub async fn send(
         self,
     ) -> Result<
-        notionrs_schema::object::response::ListResponse<
-            notionrs_schema::object::page::PageResponse,
+        notionrs_types::object::response::ListResponse<
+            notionrs_types::object::page::PageResponse,
         >,
         crate::error::Error,
     > {
@@ -50,7 +50,7 @@ impl SearchPageClient {
 
         let request_body = serde_json::to_string(&SearchPageRequestBody {
             query: self.query,
-            filter: Some(notionrs_schema::object::request::search::SearchFilter::page()),
+            filter: Some(notionrs_types::object::request::search::SearchFilter::page()),
             sort: self.sort,
             start_cursor: self.start_cursor,
             page_size: self.page_size,
@@ -77,8 +77,8 @@ impl SearchPageClient {
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let pages = serde_json::from_slice::<
-            notionrs_schema::object::response::ListResponse<
-                notionrs_schema::object::page::PageResponse,
+            notionrs_types::object::response::ListResponse<
+                notionrs_types::object::page::PageResponse,
             >,
         >(&body)?;
 
@@ -87,11 +87,11 @@ impl SearchPageClient {
 
     /// Sort by the last edited time of the page in ascending order.
     pub fn sort_timestamp_asc(self) -> Self {
-        self.sort(notionrs_schema::object::request::search::SearchSort::asc())
+        self.sort(notionrs_types::object::request::search::SearchSort::asc())
     }
 
     /// Sort by the last edited time of the page in descending order.
     pub fn sort_timestamp_desc(self) -> Self {
-        self.sort(notionrs_schema::object::request::search::SearchSort::desc())
+        self.sort(notionrs_types::object::request::search::SearchSort::desc())
     }
 }

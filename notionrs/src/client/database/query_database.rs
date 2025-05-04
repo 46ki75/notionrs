@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use notionrs_schema::object::response::ListResponse;
+use notionrs_types::object::response::ListResponse;
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct QueryDatabaseClient {
@@ -9,9 +9,9 @@ pub struct QueryDatabaseClient {
 
     pub(crate) database_id: Option<String>,
 
-    pub(crate) filter: Option<notionrs_schema::object::request::filter::Filter>,
+    pub(crate) filter: Option<notionrs_types::object::request::filter::Filter>,
 
-    pub(crate) sorts: Vec<notionrs_schema::object::request::sort::Sort>,
+    pub(crate) sorts: Vec<notionrs_types::object::request::sort::Sort>,
 
     pub(crate) start_cursor: Option<String>,
 
@@ -21,10 +21,10 @@ pub struct QueryDatabaseClient {
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct QueryDatabaseRequestBody {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) filter: Option<notionrs_schema::object::request::filter::Filter>,
+    pub(crate) filter: Option<notionrs_types::object::request::filter::Filter>,
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) sorts: Vec<notionrs_schema::object::request::sort::Sort>,
+    pub(crate) sorts: Vec<notionrs_types::object::request::sort::Sort>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) start_cursor: Option<String>,
@@ -36,7 +36,7 @@ pub struct QueryDatabaseRequestBody {
 impl QueryDatabaseClient {
     pub async fn send(
         self,
-    ) -> Result<ListResponse<notionrs_schema::object::page::PageResponse>, crate::error::Error>
+    ) -> Result<ListResponse<notionrs_types::object::page::PageResponse>, crate::error::Error>
     {
         match self.database_id {
             Some(id) => {
@@ -70,7 +70,7 @@ impl QueryDatabaseClient {
                     .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
                 let pages = serde_json::from_slice::<
-                    ListResponse<notionrs_schema::object::page::PageResponse>,
+                    ListResponse<notionrs_types::object::page::PageResponse>,
                 >(&body)?;
 
                 Ok(pages)
