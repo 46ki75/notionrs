@@ -9,7 +9,7 @@ license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/notionrs-schema"
 categories = ["web-programming::http-client"]
 keywords = ["notion", "notion-api"]
-readme = "../README.md"
+readme = "./README.md"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
