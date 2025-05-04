@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs::prelude::*;
+    use notionrs_schema::prelude::*;
 
     #[tokio::test]
     async fn crud_audio_block() -> Result<(), notionrs::Error> {
@@ -19,7 +19,7 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = Block::Audio {
-            audio: notionrs::object::file::File::default()
+            audio: notionrs_schema::object::file::File::default()
                 .url("https://example.com/sample.wav")
                 .caption(vec![RichText::from("my caption")]),
         };

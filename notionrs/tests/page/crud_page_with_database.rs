@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs::prelude::*;
+    use notionrs_schema::prelude::*;
 
     #[tokio::test]
     async fn crud_page_with_database() -> Result<(), notionrs::Error> {
@@ -40,16 +40,16 @@ mod integration_tests {
         );
 
         let options = vec![
-            notionrs::object::select::Select::default()
-                .color(notionrs::object::select::SelectColor::Blue)
+            notionrs_schema::object::select::Select::default()
+                .color(notionrs_schema::object::select::SelectColor::Blue)
                 .name("IT")
                 .id("id"),
-            notionrs::object::select::Select::default()
-                .color(notionrs::object::select::SelectColor::Red)
+            notionrs_schema::object::select::Select::default()
+                .color(notionrs_schema::object::select::SelectColor::Red)
                 .name("SoC")
                 .id("id"),
-            notionrs::object::select::Select::default()
-                .color(notionrs::object::select::SelectColor::Green)
+            notionrs_schema::object::select::Select::default()
+                .color(notionrs_schema::object::select::SelectColor::Green)
                 .name("SoC")
                 .id("id"),
         ];
@@ -97,11 +97,11 @@ mod integration_tests {
             .title(vec![RichText::from("Database Title")])
             .description(vec![RichText::from("Description of the Database")])
             .properties(properties)
-            .icon(notionrs::object::icon::Icon::Emoji(
-                notionrs::object::emoji::Emoji::from("🚧"),
+            .icon(notionrs_schema::object::icon::Icon::Emoji(
+                notionrs_schema::object::emoji::Emoji::from("🚧"),
             ))
-            .cover(notionrs::object::file::File::External(
-                notionrs::object::file::ExternalFile::from(
+            .cover(notionrs_schema::object::file::File::External(
+                notionrs_schema::object::file::ExternalFile::from(
                     "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
                 ),
             ));
@@ -134,7 +134,7 @@ mod integration_tests {
         properties.insert(
             "Date".to_string(),
             PageProperty::Date(PageDateProperty::from(
-                notionrs::object::date::DateOrDateTime::DateTime(
+                notionrs_schema::object::date::DateOrDateTime::DateTime(
                     time::OffsetDateTime::parse(
                         "2024-10-26T09:03:00.000Z",
                         &time::format_description::well_known::Rfc3339,
@@ -154,7 +154,7 @@ mod integration_tests {
             PageProperty::Files(PageFilesProperty::from("https://example.com/file.txt")),
         );
 
-        let option = notionrs::object::select::Select::from("IT");
+        let option = notionrs_schema::object::select::Select::from("IT");
 
         properties.insert(
             "Tags".to_string(),
@@ -189,11 +189,11 @@ mod integration_tests {
             .create_page()
             .properties(properties)
             .database_id(response.id)
-            .icon(notionrs::object::icon::Icon::Emoji(
-                notionrs::object::emoji::Emoji::from("🚧"),
+            .icon(notionrs_schema::object::icon::Icon::Emoji(
+                notionrs_schema::object::emoji::Emoji::from("🚧"),
             ))
-            .cover(notionrs::object::file::File::External(
-                notionrs::object::file::ExternalFile::from(
+            .cover(notionrs_schema::object::file::File::External(
+                notionrs_schema::object::file::ExternalFile::from(
                     "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
                 ),
             ));

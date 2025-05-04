@@ -1,7 +1,5 @@
 use serde::Serialize;
 
-use crate::{object::response::ListResponse, object::user::User};
-
 /// A request builder for performing `list_users` operations.
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
@@ -35,7 +33,12 @@ struct LinsUserQueryParams {
 
 impl ListUsersClient {
     /// Send a request to the API endpoint of Notion.
-    pub async fn send(&mut self) -> Result<ListResponse<User>, crate::error::Error> {
+    pub async fn send(
+        &mut self,
+    ) -> Result<
+        notionrs_schema::object::response::ListResponse<notionrs_schema::object::user::User>,
+        crate::error::Error,
+    > {
         let url = "https://api.notion.com/v1/users";
         let mut results = Vec::new();
 
@@ -62,7 +65,11 @@ impl ListUsersClient {
                     .await
                     .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-                let users_response = serde_json::from_slice::<ListResponse<User>>(&body)?;
+                let users_response = serde_json::from_slice::<
+                    notionrs_schema::object::response::ListResponse<
+                        notionrs_schema::object::user::User,
+                    >,
+                >(&body)?;
 
                 results.extend(users_response.results);
 
@@ -74,7 +81,7 @@ impl ListUsersClient {
                 }
             }
 
-            Ok(ListResponse {
+            Ok(notionrs_schema::object::response::ListResponse {
                 object: "list".to_string(),
                 r#type: Some("user".to_string()),
                 results,
@@ -103,7 +110,11 @@ impl ListUsersClient {
                 .await
                 .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-            let users = serde_json::from_slice::<ListResponse<User>>(&body)?;
+            let users = serde_json::from_slice::<
+                notionrs_schema::object::response::ListResponse<
+                    notionrs_schema::object::user::User,
+                >,
+            >(&body)?;
 
             Ok(users)
         }

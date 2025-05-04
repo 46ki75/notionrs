@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs::prelude::*;
+    use notionrs_schema::prelude::*;
 
     #[tokio::test]
     async fn crud_synced_block() -> Result<(), notionrs::Error> {

@@ -11,29 +11,31 @@ pub struct CreatePageClient {
     /// Cannot specify the same database ID as the parent database's page_id  
     pub(crate) database_id: Option<String>,
 
-    pub(crate) properties: std::collections::HashMap<String, crate::object::page::PageProperty>,
+    pub(crate) properties:
+        std::collections::HashMap<String, notionrs_schema::object::page::PageProperty>,
 
-    pub(crate) children: Option<Vec<crate::object::block::Block>>,
+    pub(crate) children: Option<Vec<notionrs_schema::object::block::Block>>,
 
-    pub(crate) icon: Option<crate::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_schema::object::icon::Icon>,
 
-    pub(crate) cover: Option<crate::object::file::File>,
+    pub(crate) cover: Option<notionrs_schema::object::file::File>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreatePageRequestBody {
-    pub(crate) parent: crate::object::parent::Parent,
+    pub(crate) parent: notionrs_schema::object::parent::Parent,
 
-    pub(crate) properties: std::collections::HashMap<String, crate::object::page::PageProperty>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) children: Option<Vec<crate::object::block::Block>>,
+    pub(crate) properties:
+        std::collections::HashMap<String, notionrs_schema::object::page::PageProperty>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<crate::object::icon::Icon>,
+    pub(crate) children: Option<Vec<notionrs_schema::object::block::Block>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) cover: Option<crate::object::file::File>,
+    pub(crate) icon: Option<notionrs_schema::object::icon::Icon>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) cover: Option<notionrs_schema::object::file::File>,
 }
 
 impl CreatePageClient {
@@ -43,18 +45,20 @@ impl CreatePageClient {
     /// When the response type is not specific,
     /// use `send::<HashMap<String, PageProperty>>()`.
     /// (Type inference for the property field cannot be used.)
-    pub async fn send(self) -> Result<crate::object::page::PageResponse, crate::error::Error> {
-        let mut parent: Option<crate::object::parent::Parent> = None;
+    pub async fn send(
+        self,
+    ) -> Result<notionrs_schema::object::page::PageResponse, crate::error::Error> {
+        let mut parent: Option<notionrs_schema::object::parent::Parent> = None;
 
         if let Some(page_id) = self.page_id {
-            parent = Some(crate::object::parent::Parent::PageParent(
-                crate::object::parent::PageParent::from(page_id),
+            parent = Some(notionrs_schema::object::parent::Parent::PageParent(
+                notionrs_schema::object::parent::PageParent::from(page_id),
             ));
         }
 
         if let Some(database_id) = self.database_id {
-            parent = Some(crate::object::parent::Parent::DatabaseParent(
-                crate::object::parent::DatabaseParent::from(database_id),
+            parent = Some(notionrs_schema::object::parent::Parent::DatabaseParent(
+                notionrs_schema::object::parent::DatabaseParent::from(database_id),
             ));
         }
 
@@ -96,7 +100,7 @@ impl CreatePageClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let page = serde_json::from_slice::<crate::object::page::PageResponse>(&body)?;
+        let page = serde_json::from_slice::<notionrs_schema::object::page::PageResponse>(&body)?;
 
         Ok(page)
     }

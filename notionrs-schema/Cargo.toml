@@ -1,0 +1,27 @@
+[package]
+name = "notionrs-schema"
+description = "Shared schema definitions for the Notion API used by the notionrs ecosystem."
+version = "1.0.0-rc.1"
+edition = "2024"
+authors = ["Chomolungma Shirayuki"]
+repository = "https://github.com/46ki75/notionrs"
+license = "MIT OR Apache-2.0"
+documentation = "https://docs.rs/notionrs-schema"
+categories = ["web-programming::http-client"]
+keywords = ["notion", "notion-api"]
+readme = "./README.md"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_plain = "1.0"
+
+notionrs_macro = "1.0.0-alpha"
+time = { version = "0.3", features = [
+    "serde",
+    "parsing",
+    "formatting",
+    "macros",
+] }
+
+[dev-dependencies]
+serde_json = "1.0"

@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs::prelude::*;
+    use notionrs_schema::prelude::*;
 
     #[tokio::test]
     async fn create_database() -> Result<(), notionrs::Error> {
@@ -105,16 +105,16 @@ mod integration_tests {
         );
 
         let options = vec![
-            notionrs::object::select::Select::default()
-                .color(notionrs::object::select::SelectColor::Blue)
+            notionrs_schema::object::select::Select::default()
+                .color(notionrs_schema::object::select::SelectColor::Blue)
                 .name("IT")
                 .id("id"),
-            notionrs::object::select::Select::default()
-                .color(notionrs::object::select::SelectColor::Red)
+            notionrs_schema::object::select::Select::default()
+                .color(notionrs_schema::object::select::SelectColor::Red)
                 .name("SoC")
                 .id("id"),
-            notionrs::object::select::Select::default()
-                .color(notionrs::object::select::SelectColor::Green)
+            notionrs_schema::object::select::Select::default()
+                .color(notionrs_schema::object::select::SelectColor::Green)
                 .name("SoC")
                 .id("id"),
         ];
@@ -170,11 +170,11 @@ mod integration_tests {
                 "Description of the Database (changed)",
             )])
             .properties(properties)
-            .icon(notionrs::object::icon::Icon::Emoji(
-                notionrs::object::emoji::Emoji::from("🚧"),
+            .icon(notionrs_schema::object::icon::Icon::Emoji(
+                notionrs_schema::object::emoji::Emoji::from("🚧"),
             ))
-            .cover(notionrs::object::file::File::External(
-                notionrs::object::file::ExternalFile::from(
+            .cover(notionrs_schema::object::file::File::External(
+                notionrs_schema::object::file::ExternalFile::from(
                     "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
                 ),
             ));

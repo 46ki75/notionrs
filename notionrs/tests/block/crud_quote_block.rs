@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs::prelude::*;
+    use notionrs_schema::prelude::*;
 
     #[tokio::test]
     async fn crud_quote_block() -> Result<(), notionrs::Error> {
@@ -61,7 +61,7 @@ mod integration_tests {
         let block = match response.block {
             Block::Quote { quote } => {
                 assert_eq!(quote.rich_text, vec![rich_text]);
-                assert_eq!(quote.color, notionrs::object::color::Color::BlueBackground);
+                assert_eq!(quote.color, notionrs_schema::object::color::Color::BlueBackground);
                 Block::Quote {
                     quote: quote.green_background(),
                 }

@@ -96,7 +96,7 @@ mod unit_tests {
     use super::*;
 
     #[test]
-    fn deserialize_user_bot() -> Result<(), crate::error::Error> {
+    fn deserialize_user_bot() -> Result<(), Box<dyn std::error::Error>> {
         let json_data = r#"
         {
             "object": "user",
@@ -126,7 +126,7 @@ mod unit_tests {
     }
 
     #[test]
-    fn deserialize_user_person() -> Result<(), crate::error::Error> {
+    fn deserialize_user_person() -> Result<(), Box<dyn std::error::Error>> {
         let json_data = r#"
         {
             "object": "user",

@@ -26,10 +26,12 @@ impl GetBlockChildrenClient {
     pub async fn send(
         self,
     ) -> Result<
-        crate::object::response::ListResponse<crate::object::block::BlockResponse>,
+        notionrs_schema::object::response::ListResponse<
+            notionrs_schema::object::block::BlockResponse,
+        >,
         crate::error::Error,
     > {
-        let mut result_blocks: Vec<crate::object::block::BlockResponse> = vec![];
+        let mut result_blocks: Vec<notionrs_schema::object::block::BlockResponse> = vec![];
 
         let block_id = &self.block_id.ok_or(crate::error::Error::RequestParameter(
             "`block_id` is not set.".to_string(),
@@ -63,12 +65,14 @@ impl GetBlockChildrenClient {
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let list_response = serde_json::from_slice::<
-            crate::object::response::ListResponse<crate::object::block::BlockResponse>,
+            notionrs_schema::object::response::ListResponse<
+                notionrs_schema::object::block::BlockResponse,
+            >,
         >(&body)?;
 
         result_blocks.extend(list_response.results);
 
-        Ok(crate::object::response::ListResponse {
+        Ok(notionrs_schema::object::response::ListResponse {
             object: "list".into(),
             results: result_blocks,
             next_cursor: start_cursor.clone(),

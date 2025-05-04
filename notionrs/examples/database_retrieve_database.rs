@@ -14,7 +14,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .get("Tags")
         .ok_or("Tags property not found".to_string())?;
 
-    if let notionrs::object::database::DatabaseProperty::MultiSelect(tags) = tags_property {
+    if let notionrs_schema::object::database::DatabaseProperty::MultiSelect(tags) = tags_property {
         for tag in tags.multi_select.options.clone() {
             println!("Tag: {}", tag.name);
         }

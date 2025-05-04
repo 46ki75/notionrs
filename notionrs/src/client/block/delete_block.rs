@@ -8,7 +8,9 @@ pub struct DeleteBlockClient {
 
 impl DeleteBlockClient {
     // TODO: docs for send
-    pub async fn send(self) -> Result<crate::object::block::BlockResponse, crate::error::Error> {
+    pub async fn send(
+        self,
+    ) -> Result<notionrs_schema::object::block::BlockResponse, crate::error::Error> {
         let block_id = self.block_id.ok_or(crate::error::Error::RequestParameter(
             "`block_id` is not set.".to_string(),
         ))?;
@@ -31,7 +33,7 @@ impl DeleteBlockClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let block = serde_json::from_slice::<crate::object::block::BlockResponse>(&body)?;
+        let block = serde_json::from_slice::<notionrs_schema::object::block::BlockResponse>(&body)?;
 
         Ok(block)
     }
