@@ -42,3 +42,5 @@ jobs:
       - name: Run Scripts
         run: pnpm start
         working-directory: ./scripts/check-upstream-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
