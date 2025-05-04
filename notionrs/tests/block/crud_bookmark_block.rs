@@ -1,5 +1,5 @@
 mod integration_tests {
-    use notionrs_schema::prelude::*;
+    use notionrs_types::prelude::*;
 
     #[tokio::test]
     async fn crud_bookmark_block() -> Result<(), notionrs::Error> {

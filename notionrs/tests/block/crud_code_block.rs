@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs_schema::prelude::*;
+    use notionrs_types::prelude::*;
 
     #[tokio::test]
     async fn crud_code_block() -> Result<(), notionrs::Error> {
@@ -26,7 +26,7 @@ mod integration_tests {
             code: CodeBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .caption(vec![caption.clone()])
-                .lnaguage(notionrs_schema::object::language::Language::Javascript),
+                .lnaguage(notionrs_types::object::language::Language::Javascript),
         };
 
         let request = client
@@ -60,11 +60,11 @@ mod integration_tests {
                 assert_eq!(code.caption, vec![caption]);
                 assert_eq!(
                     code.language,
-                    notionrs_schema::object::language::Language::Javascript
+                    notionrs_types::object::language::Language::Javascript
                 );
                 Block::Code {
                     code: code
-                        .lnaguage(notionrs_schema::object::language::Language::Typescript)
+                        .lnaguage(notionrs_types::object::language::Language::Typescript)
                         .caption(vec![RichText::from("index.ts")]),
                 }
             }

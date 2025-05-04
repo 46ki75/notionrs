@@ -6,7 +6,7 @@ pub struct GetSelfClient {
 
 impl GetSelfClient {
     /// Send a request to the API endpoint of Notion.
-    pub async fn send(self) -> Result<notionrs_schema::object::user::User, crate::error::Error> {
+    pub async fn send(self) -> Result<notionrs_types::object::user::User, crate::error::Error> {
         let url = String::from("https://api.notion.com/v1/users/me");
 
         let request = self.reqwest_client.get(url);
@@ -25,7 +25,7 @@ impl GetSelfClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let user = serde_json::from_slice::<notionrs_schema::object::user::User>(&body)?;
+        let user = serde_json::from_slice::<notionrs_types::object::user::User>(&body)?;
 
         Ok(user)
     }

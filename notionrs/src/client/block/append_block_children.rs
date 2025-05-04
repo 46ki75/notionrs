@@ -11,12 +11,12 @@ pub struct AppendBlockChildrenClient {
     /// The ID of the existing block that the new block should be appended after.
     pub(crate) after: Option<String>,
 
-    pub(crate) children: Vec<notionrs_schema::object::block::Block>,
+    pub(crate) children: Vec<notionrs_types::object::block::Block>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AppendBlockChildrenRequestBody {
-    pub(crate) children: Vec<notionrs_schema::object::block::Block>,
+    pub(crate) children: Vec<notionrs_types::object::block::Block>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) after: Option<String>,
@@ -29,8 +29,8 @@ impl AppendBlockChildrenClient {
     pub async fn send(
         self,
     ) -> Result<
-        notionrs_schema::object::response::ListResponse<
-            notionrs_schema::object::block::BlockResponse,
+        notionrs_types::object::response::ListResponse<
+            notionrs_types::object::block::BlockResponse,
         >,
         crate::error::Error,
     > {
@@ -68,8 +68,8 @@ impl AppendBlockChildrenClient {
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let block = serde_json::from_slice::<
-            notionrs_schema::object::response::ListResponse<
-                notionrs_schema::object::block::BlockResponse,
+            notionrs_types::object::response::ListResponse<
+                notionrs_types::object::block::BlockResponse,
             >,
         >(&body)?;
 

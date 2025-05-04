@@ -1,4 +1,4 @@
-use notionrs_schema::object::user::User;
+use notionrs_types::object::user::User;
 
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct GetUserClient {

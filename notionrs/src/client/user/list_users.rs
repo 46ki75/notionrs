@@ -36,7 +36,7 @@ impl ListUsersClient {
     pub async fn send(
         &mut self,
     ) -> Result<
-        notionrs_schema::object::response::ListResponse<notionrs_schema::object::user::User>,
+        notionrs_types::object::response::ListResponse<notionrs_types::object::user::User>,
         crate::error::Error,
     > {
         let url = "https://api.notion.com/v1/users";
@@ -66,8 +66,8 @@ impl ListUsersClient {
                     .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
                 let users_response = serde_json::from_slice::<
-                    notionrs_schema::object::response::ListResponse<
-                        notionrs_schema::object::user::User,
+                    notionrs_types::object::response::ListResponse<
+                        notionrs_types::object::user::User,
                     >,
                 >(&body)?;
 
@@ -81,7 +81,7 @@ impl ListUsersClient {
                 }
             }
 
-            Ok(notionrs_schema::object::response::ListResponse {
+            Ok(notionrs_types::object::response::ListResponse {
                 object: "list".to_string(),
                 r#type: Some("user".to_string()),
                 results,
@@ -111,8 +111,8 @@ impl ListUsersClient {
                 .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
             let users = serde_json::from_slice::<
-                notionrs_schema::object::response::ListResponse<
-                    notionrs_schema::object::user::User,
+                notionrs_types::object::response::ListResponse<
+                    notionrs_types::object::user::User,
                 >,
             >(&body)?;
 

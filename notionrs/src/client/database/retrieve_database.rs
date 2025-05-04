@@ -9,7 +9,7 @@ pub struct RetrieveDatabaseClient {
 impl RetrieveDatabaseClient {
     pub async fn send(
         self,
-    ) -> Result<notionrs_schema::object::database::DatabaseResponse, crate::error::Error> {
+    ) -> Result<notionrs_types::object::database::DatabaseResponse, crate::error::Error> {
         let database_id = self
             .database_id
             .ok_or(crate::error::Error::RequestParameter(
@@ -35,7 +35,7 @@ impl RetrieveDatabaseClient {
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let database =
-            serde_json::from_slice::<notionrs_schema::object::database::DatabaseResponse>(&body)?;
+            serde_json::from_slice::<notionrs_types::object::database::DatabaseResponse>(&body)?;
 
         Ok(database)
     }

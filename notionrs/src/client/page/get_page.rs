@@ -10,7 +10,7 @@ pub struct GetPageClient {
 impl GetPageClient {
     pub async fn send(
         self,
-    ) -> Result<notionrs_schema::object::page::PageResponse, crate::error::Error> {
+    ) -> Result<notionrs_types::object::page::PageResponse, crate::error::Error> {
         match self.page_id {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/pages/{}", id);
@@ -32,7 +32,7 @@ impl GetPageClient {
                     .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
                 let page =
-                    serde_json::from_slice::<notionrs_schema::object::page::PageResponse>(&body)?;
+                    serde_json::from_slice::<notionrs_types::object::page::PageResponse>(&body)?;
 
                 Ok(page)
             }

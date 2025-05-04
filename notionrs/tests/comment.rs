@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs_schema::prelude::*;
+    use notionrs_types::prelude::*;
 
     // # --------------------------------------------------------------------------------
     //

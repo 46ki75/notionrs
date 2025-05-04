@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs_schema::prelude::*;
+    use notionrs_types::prelude::*;
 
     #[tokio::test]
     async fn crud_page() -> Result<(), notionrs::Error> {
@@ -29,11 +29,11 @@ mod integration_tests {
             .create_page()
             .properties(properties)
             .page_id(page_id)
-            .icon(notionrs_schema::object::icon::Icon::Emoji(
-                notionrs_schema::object::emoji::Emoji::from("🚧"),
+            .icon(notionrs_types::object::icon::Icon::Emoji(
+                notionrs_types::object::emoji::Emoji::from("🚧"),
             ))
-            .cover(notionrs_schema::object::file::File::External(
-                notionrs_schema::object::file::ExternalFile::from(
+            .cover(notionrs_types::object::file::File::External(
+                notionrs_types::object::file::ExternalFile::from(
                     "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
                 ),
             ));

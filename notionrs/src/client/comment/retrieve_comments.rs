@@ -25,7 +25,7 @@ impl RetrieveCommentsClient {
     pub async fn send(
         self,
     ) -> Result<
-        notionrs_schema::object::response::ListResponse<notionrs_schema::object::comment::Comment>,
+        notionrs_types::object::response::ListResponse<notionrs_types::object::comment::Comment>,
         crate::error::Error,
     > {
         match self.block_id {
@@ -58,8 +58,8 @@ impl RetrieveCommentsClient {
                     .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
                 let comments = serde_json::from_slice::<
-                    notionrs_schema::object::response::ListResponse<
-                        notionrs_schema::object::comment::Comment,
+                    notionrs_types::object::response::ListResponse<
+                        notionrs_types::object::comment::Comment,
                     >,
                 >(&body)?;
 

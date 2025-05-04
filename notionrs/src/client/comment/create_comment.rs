@@ -9,24 +9,24 @@ pub struct CreateCommentClient {
 
     pub(crate) discussion_id: Option<String>,
 
-    pub(crate) rich_text: Option<Vec<notionrs_schema::object::rich_text::RichText>>,
+    pub(crate) rich_text: Option<Vec<notionrs_types::object::rich_text::RichText>>,
 }
 
 #[derive(Debug, Serialize)]
 pub struct CreateCommentRequestBody {
     #[serde(skip_serializing_if = "Option::is_none")]
-    parent: Option<notionrs_schema::object::parent::Parent>,
+    parent: Option<notionrs_types::object::parent::Parent>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     discussion_id: Option<String>,
 
-    rich_text: Vec<notionrs_schema::object::rich_text::RichText>,
+    rich_text: Vec<notionrs_types::object::rich_text::RichText>,
 }
 
 impl CreateCommentClient {
     pub async fn send(
         self,
-    ) -> Result<notionrs_schema::object::comment::Comment, crate::error::Error> {
+    ) -> Result<notionrs_types::object::comment::Comment, crate::error::Error> {
         match self.rich_text {
             None => Err(crate::error::Error::RequestParameter(
                 "rich_text is not set.".to_string(),
@@ -45,8 +45,8 @@ impl CreateCommentClient {
 
                     let body = CreateCommentRequestBody {
                         parent: self.page_id.map(|page_id| {
-                            notionrs_schema::object::parent::Parent::PageParent(
-                                notionrs_schema::object::parent::PageParent {
+                            notionrs_types::object::parent::Parent::PageParent(
+                                notionrs_types::object::parent::PageParent {
                                     r#type: "page".to_string(),
                                     page_id,
                                 },
@@ -81,7 +81,7 @@ impl CreateCommentClient {
                         .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
                     let comment =
-                        serde_json::from_slice::<notionrs_schema::object::comment::Comment>(&body)?;
+                        serde_json::from_slice::<notionrs_types::object::comment::Comment>(&body)?;
 
                     Ok(comment)
                 }

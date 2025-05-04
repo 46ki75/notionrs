@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs_schema::prelude::*;
+    use notionrs_types::prelude::*;
 
     #[tokio::test]
     async fn create_database() -> Result<(), notionrs::Error> {
@@ -105,16 +105,16 @@ mod integration_tests {
         );
 
         let options = vec![
-            notionrs_schema::object::select::Select::default()
-                .color(notionrs_schema::object::select::SelectColor::Blue)
+            notionrs_types::object::select::Select::default()
+                .color(notionrs_types::object::select::SelectColor::Blue)
                 .name("IT")
                 .id("id"),
-            notionrs_schema::object::select::Select::default()
-                .color(notionrs_schema::object::select::SelectColor::Red)
+            notionrs_types::object::select::Select::default()
+                .color(notionrs_types::object::select::SelectColor::Red)
                 .name("SoC")
                 .id("id"),
-            notionrs_schema::object::select::Select::default()
-                .color(notionrs_schema::object::select::SelectColor::Green)
+            notionrs_types::object::select::Select::default()
+                .color(notionrs_types::object::select::SelectColor::Green)
                 .name("SoC")
                 .id("id"),
         ];
@@ -170,11 +170,11 @@ mod integration_tests {
                 "Description of the Database (changed)",
             )])
             .properties(properties)
-            .icon(notionrs_schema::object::icon::Icon::Emoji(
-                notionrs_schema::object::emoji::Emoji::from("🚧"),
+            .icon(notionrs_types::object::icon::Icon::Emoji(
+                notionrs_types::object::emoji::Emoji::from("🚧"),
             ))
-            .cover(notionrs_schema::object::file::File::External(
-                notionrs_schema::object::file::ExternalFile::from(
+            .cover(notionrs_types::object::file::File::External(
+                notionrs_types::object::file::ExternalFile::from(
                     "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
                 ),
             ));
