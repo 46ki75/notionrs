@@ -724,7 +724,7 @@ dependencies = [
 
 [[package]]
 name = "notionrs"
-version = "1.0.0-beta.1"
+version = "1.0.0-beta.2"
 dependencies = [
  "dotenvy",
  "notionrs-schema 1.0.0-rc.1 (registry+https://github.com/rust-lang/crates.io-index)",

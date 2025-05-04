@@ -49,7 +49,7 @@ As part of the alpha release, the following features are available. Please note 
 Below is a basic example. (More detailed documentation is coming soon, so please stay tuned!)
 
 ```rs
-use notionrs::prelude::*;
+use notionrs_schema::prelude::*;
 use notionrs::{Client, Error};
 
 #[tokio::main]
