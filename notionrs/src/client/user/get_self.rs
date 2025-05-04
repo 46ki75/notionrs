@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct GetSelfClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,

@@ -1,6 +1,6 @@
 use crate::object::user::User;
 
-#[derive(Debug, notionrs_macro::Setter)]
+#[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct GetUserClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,

@@ -85,9 +85,7 @@ impl Client {
     pub fn list_users(&self) -> crate::client::user::list_users::ListUsersClient {
         crate::client::user::list_users::ListUsersClient {
             reqwest_client: self.reqwest_client.clone(),
-            start_cursor: None,
-            page_size: None,
-            recursive: false,
+            ..Default::default()
         }
     }
 
@@ -95,7 +93,7 @@ impl Client {
     pub fn get_user(&self) -> crate::client::user::get_user::GetUserClient {
         crate::client::user::get_user::GetUserClient {
             reqwest_client: self.reqwest_client.clone(),
-            user_id: None,
+            ..Default::default()
         }
     }
 
@@ -116,7 +114,7 @@ impl Client {
     pub fn get_page(&self) -> crate::client::page::get_page::GetPageClient {
         crate::client::page::get_page::GetPageClient {
             reqwest_client: self.reqwest_client.clone(),
-            page_id: None,
+            ..Default::default()
         }
     }
 
@@ -126,8 +124,7 @@ impl Client {
     ) -> crate::client::page::get_page_property_item::GetPagePropertyItemClient {
         crate::client::page::get_page_property_item::GetPagePropertyItemClient {
             reqwest_client: self.reqwest_client.clone(),
-            page_id: None,
-            property_id: None,
+            ..Default::default()
         }
     }
 
@@ -205,7 +202,7 @@ impl Client {
     pub fn get_block(&self) -> crate::client::block::get_block::GetBlockClient {
         crate::client::block::get_block::GetBlockClient {
             reqwest_client: self.reqwest_client.clone(),
-            block_id: None,
+            ..Default::default()
         }
     }
 
@@ -215,9 +212,7 @@ impl Client {
     ) -> crate::client::block::get_block_children::GetBlockChildrenClient {
         crate::client::block::get_block_children::GetBlockChildrenClient {
             reqwest_client: self.reqwest_client.clone(),
-            block_id: None,
-            page_size: 100,
-            start_cursor: None,
+            ..Default::default()
         }
     }
 
@@ -227,8 +222,7 @@ impl Client {
     ) -> crate::client::block::get_block_children_all::GetBlockChildrenAllClient {
         crate::client::block::get_block_children_all::GetBlockChildrenAllClient {
             reqwest_client: self.reqwest_client.clone(),
-            block_id: None,
-            start_cursor: None,
+            ..Default::default()
         }
     }
 
@@ -236,7 +230,7 @@ impl Client {
     pub fn delete_block(&self) -> crate::client::block::delete_block::DeleteBlockClient {
         crate::client::block::delete_block::DeleteBlockClient {
             reqwest_client: self.reqwest_client.clone(),
-            block_id: None,
+            ..Default::default()
         }
     }
 
@@ -246,9 +240,7 @@ impl Client {
     ) -> crate::client::block::append_block_children::AppendBlockChildrenClient {
         crate::client::block::append_block_children::AppendBlockChildrenClient {
             reqwest_client: self.reqwest_client.clone(),
-            block_id: None,
-            after: None,
-            children: vec![],
+            ..Default::default()
         }
     }
 
@@ -256,9 +248,7 @@ impl Client {
     pub fn update_block(&self) -> crate::client::block::update_block::UpdateBlockClient {
         crate::client::block::update_block::UpdateBlockClient {
             reqwest_client: self.reqwest_client.clone(),
-            block_id: None,
-            archived: None,
-            block: None,
+            ..Default::default()
         }
     }
 
@@ -268,6 +258,7 @@ impl Client {
     //
     // # --------------------------------------------------------------------------------
 
+    // TODO: docs
     pub fn search(&self) -> crate::client::search::SearchClient {
         crate::client::search::SearchClient {
             reqwest_client: self.reqwest_client.clone(),
@@ -275,6 +266,7 @@ impl Client {
         }
     }
 
+    // TODO: docs
     pub fn search_database(&self) -> crate::client::search::SearchDatabaseClient {
         crate::client::search::SearchDatabaseClient {
             reqwest_client: self.reqwest_client.clone(),
@@ -282,6 +274,7 @@ impl Client {
         }
     }
 
+    // TODO: docs
     pub fn search_page(&self) -> crate::client::search::SearchPageClient {
         crate::client::search::SearchPageClient {
             reqwest_client: self.reqwest_client.clone(),
@@ -295,6 +288,7 @@ impl Client {
     //
     // # --------------------------------------------------------------------------------
 
+    // TODO: docs
     pub fn create_comment(&self) -> crate::client::comment::create_comment::CreateCommentClient {
         crate::client::comment::create_comment::CreateCommentClient {
             reqwest_client: self.reqwest_client.clone(),
@@ -302,6 +296,7 @@ impl Client {
         }
     }
 
+    // TODO: docs
     pub fn retrieve_comments(
         &self,
     ) -> crate::client::comment::retrieve_comments::RetrieveCommentsClient {
