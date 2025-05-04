@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs::prelude::*;
+    use notionrs_schema::prelude::*;
 
     #[tokio::test]
     async fn crud_callout_block() -> Result<(), notionrs::Error> {
@@ -56,7 +56,7 @@ mod integration_tests {
                 assert_eq!(callout.rich_text, vec![rich_text]);
                 assert_eq!(
                     callout.color,
-                    notionrs::object::color::Color::BlueBackground
+                    notionrs_schema::object::color::Color::BlueBackground
                 );
                 Block::Callout {
                     callout: callout.green_background(),

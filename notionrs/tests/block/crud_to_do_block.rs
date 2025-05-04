@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs::prelude::*;
+    use notionrs_schema::prelude::*;
 
     #[tokio::test]
     async fn crud_to_do_block() -> Result<(), notionrs::Error> {
@@ -54,7 +54,7 @@ mod integration_tests {
         let block = match response.block {
             Block::ToDo { to_do } => {
                 assert_eq!(to_do.rich_text, vec![rich_text]);
-                assert_eq!(to_do.color, notionrs::object::color::Color::Default);
+                assert_eq!(to_do.color, notionrs_schema::object::color::Color::Default);
                 Block::ToDo {
                     to_do: to_do.green_background(),
                 }

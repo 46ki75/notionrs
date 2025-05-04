@@ -1,4 +1,4 @@
-use notionrs::prelude::*;
+use notionrs_schema::prelude::*;
 use notionrs::{Client, Error};
 
 #[tokio::main]

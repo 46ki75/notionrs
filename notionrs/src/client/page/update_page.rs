@@ -7,26 +7,30 @@ pub struct UpdatePageClient {
 
     pub(crate) page_id: Option<String>,
 
-    pub(crate) properties: std::collections::HashMap<String, crate::object::page::PageProperty>,
+    pub(crate) properties:
+        std::collections::HashMap<String, notionrs_schema::object::page::PageProperty>,
 
-    pub(crate) icon: Option<crate::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_schema::object::icon::Icon>,
 
-    pub(crate) cover: Option<crate::object::file::File>,
+    pub(crate) cover: Option<notionrs_schema::object::file::File>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdatePageRequestBody {
-    pub(crate) properties: std::collections::HashMap<String, crate::object::page::PageProperty>,
+    pub(crate) properties:
+        std::collections::HashMap<String, notionrs_schema::object::page::PageProperty>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<crate::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_schema::object::icon::Icon>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) cover: Option<crate::object::file::File>,
+    pub(crate) cover: Option<notionrs_schema::object::file::File>,
 }
 
 impl UpdatePageClient {
-    pub async fn send(self) -> Result<crate::object::page::PageResponse, crate::error::Error> {
+    pub async fn send(
+        self,
+    ) -> Result<notionrs_schema::object::page::PageResponse, crate::error::Error> {
         let page_id = self.page_id.ok_or(crate::error::Error::RequestParameter(
             "`page_id` is not set.".to_string(),
         ))?;
@@ -61,7 +65,7 @@ impl UpdatePageClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let page = serde_json::from_slice::<crate::object::page::PageResponse>(&body)?;
+        let page = serde_json::from_slice::<notionrs_schema::object::page::PageResponse>(&body)?;
 
         Ok(page)
     }

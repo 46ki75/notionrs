@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs::prelude::*;
+    use notionrs_schema::prelude::*;
 
     #[tokio::test]
     async fn crud_paragraph_block() -> Result<(), notionrs::Error> {
@@ -56,7 +56,7 @@ mod integration_tests {
                 assert_eq!(paragraph.rich_text, vec![rich_text]);
                 assert_eq!(
                     paragraph.color,
-                    notionrs::object::color::Color::BlueBackground
+                    notionrs_schema::object::color::Color::BlueBackground
                 );
                 Block::Paragraph {
                     paragraph: paragraph.green_background(),

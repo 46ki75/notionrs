@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use notionrs::prelude::*;
+    use notionrs_schema::prelude::*;
 
     #[tokio::test]
     async fn crud_numbered_list_item_block() -> Result<(), notionrs::Error> {
@@ -56,7 +56,7 @@ mod integration_tests {
                 assert_eq!(numbered_list_item.rich_text, vec![rich_text]);
                 assert_eq!(
                     numbered_list_item.color,
-                    notionrs::object::color::Color::BlueBackground
+                    notionrs_schema::object::color::Color::BlueBackground
                 );
                 Block::NumberedListItem {
                     numbered_list_item: numbered_list_item.green_background(),

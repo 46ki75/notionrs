@@ -6,7 +6,7 @@ pub use search_page::*;
 
 use serde::{Deserialize, Serialize};
 
-use crate::object::response::ListResponse;
+use notionrs_schema::object::response::ListResponse;
 
 #[derive(Debug, Default)]
 pub struct SearchClient {
@@ -22,10 +22,10 @@ pub struct SearchRequestBody {
     pub(crate) query: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) filter: Option<crate::object::request::search::SearchFilter>,
+    pub(crate) filter: Option<notionrs_schema::object::request::search::SearchFilter>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) sort: Option<crate::object::request::search::SearchSort>,
+    pub(crate) sort: Option<notionrs_schema::object::request::search::SearchSort>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) start_cursor: Option<String>,
@@ -37,7 +37,10 @@ pub struct SearchRequestBody {
 impl SearchClient {
     pub async fn send(
         self,
-    ) -> Result<ListResponse<crate::object::response::SearchResultItem>, crate::error::Error> {
+    ) -> Result<
+        ListResponse<notionrs_schema::object::response::SearchResultItem>,
+        crate::error::Error,
+    > {
         let url = String::from("https://api.notion.com/v1/search");
 
         let request_body = serde_json::to_string(&self.body)?;
@@ -63,7 +66,7 @@ impl SearchClient {
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
         let pages = serde_json::from_slice::<
-            ListResponse<crate::object::response::SearchResultItem>,
+            ListResponse<notionrs_schema::object::response::SearchResultItem>,
         >(&body)?;
 
         Ok(pages)
@@ -91,31 +94,31 @@ impl SearchClient {
     }
 
     pub fn sort_timestamp_asc(self) -> Self {
-        self.sort(crate::object::request::search::SearchSort::asc())
+        self.sort(notionrs_schema::object::request::search::SearchSort::asc())
     }
 
     pub fn sort_timestamp_desc(self) -> Self {
-        self.sort(crate::object::request::search::SearchSort::desc())
+        self.sort(notionrs_schema::object::request::search::SearchSort::desc())
     }
 
     /// Restricts search results to only database types.
     /// It is recommended to use the search_database method, which returns results that are not in an enum format.
     pub fn filter_database(self) -> Self {
-        self.filter(crate::object::request::search::SearchFilter::database())
+        self.filter(notionrs_schema::object::request::search::SearchFilter::database())
     }
 
     /// Restricts search results to only page types.
     /// It is recommended to use the search_page method, which returns results that are not in an enum format.
     pub fn filter_page(self) -> Self {
-        self.filter(crate::object::request::search::SearchFilter::page())
+        self.filter(notionrs_schema::object::request::search::SearchFilter::page())
     }
 
-    fn filter(mut self, filter: crate::object::request::search::SearchFilter) -> Self {
+    fn filter(mut self, filter: notionrs_schema::object::request::search::SearchFilter) -> Self {
         self.body.filter = Some(filter);
         self
     }
 
-    fn sort(mut self, sort: crate::object::request::search::SearchSort) -> Self {
+    fn sort(mut self, sort: notionrs_schema::object::request::search::SearchSort) -> Self {
         self.body.sort = Some(sort);
         self
     }
