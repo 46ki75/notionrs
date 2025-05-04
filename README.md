@@ -38,6 +38,9 @@ As part of the alpha release, the following features are available. Please note 
   - List all users
   - Retrieve a user
   - Retrieve your token's bot user
+- Comments
+  - Create comment
+  - Retrieve comments
 - Search
   - Search by title
 
@@ -46,30 +49,24 @@ As part of the alpha release, the following features are available. Please note 
 Below is a basic example. (More detailed documentation is coming soon, so please stay tuned!)
 
 ```rs
-use notionrs::{
-    block::{Block, ParagraphBlock},
-    error::Error,
-    Client, RichText,
-};
+use notionrs::prelude::*;
+use notionrs::{Client, Error};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    dotenvy::dotenv().ok();
+    let client = Client::new().secret("API_KEY");
 
-    let client = Client::new();
-
-    // Here, we're retrieving the ID from an environment variable,
-    // but you can change the method of retrieval to suit your needs.
-    let block_id = std::env::var("NOTION_PAGE_ID").unwrap();
+    let rich_text = RichText::from("rich text");
 
     let block = Block::Paragraph {
-        paragraph: ParagraphBlock::new()
-            .rich_text(vec![RichText::from("Time to start with Notion in Rust")]),
+        paragraph: ParagraphBlock::default()
+            .rich_text(vec![rich_text.clone()])
+            .blue_background(),
     };
 
     let request = client
         .append_block_children()
-        .block_id(block_id.clone())
+        .block_id("PARENT_BLOCK_ID")
         .children(vec![block]);
 
     let response = request.send().await?;
