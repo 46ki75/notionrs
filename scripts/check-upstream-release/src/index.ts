@@ -9,6 +9,10 @@ A new version of [\`notion-sdk-js\`](https://github.com/makenotion/notion-sdk-js
 Please review the changelog and update the schema as necessary.
 
 - 📄 Release notes: https://github.com/makenotion/notion-sdk-js/releases/tag/${version}
+
+---
+
+This issue was generated automatically.
 `.trim();
 
 const releases = await octokit.rest.repos.listReleases({
@@ -27,10 +31,8 @@ if (published_at == null) {
 }
 
 if (
-  // TODO:
-  //   new Date(published_at).getTime() >
-  //   new Date(Date.now() + 24 * 60 * 60 * 1000).getTime()
-  true
+  new Date(published_at).getTime() >
+  new Date(Date.now() + 24 * 60 * 60 * 1000).getTime() // 1 [day]
 ) {
   console.log({ name, published_at });
 
@@ -40,6 +42,6 @@ if (
     title: `[notion-sdk-js] New release detected: ${name}`,
     body: body(name),
     assignee: "46ki75",
-    labels: [],
+    labels: ["auto-generated", "notion-sdk-js"],
   });
 }
