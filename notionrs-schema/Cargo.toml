@@ -1,0 +1,19 @@
+[package]
+name = "notionrs-schema"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_plain = "1.0"
+
+notionrs_macro = "1.0.0-alpha"
+time = { version = "0.3", features = [
+    "serde",
+    "parsing",
+    "formatting",
+    "macros",
+] }
+
+[dev-dependencies]
+serde_json = "1.0"

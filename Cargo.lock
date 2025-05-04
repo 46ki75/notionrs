@@ -739,6 +739,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "notionrs-schema"
+version = "0.1.0"
+dependencies = [
+ "notionrs_macro 1.0.0-alpha.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde",
+ "serde_json",
+ "serde_plain",
+ "time",
+]
+
+[[package]]
 name = "notionrs_macro"
 version = "1.0.0-alpha.1"
 dependencies = [
