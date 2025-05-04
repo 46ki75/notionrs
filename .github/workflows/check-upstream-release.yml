@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   check:
+    name: Check Notion SDK Release
     runs-on: ubuntu-latest
 
     strategy:
