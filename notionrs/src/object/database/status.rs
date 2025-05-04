@@ -15,11 +15,11 @@ pub struct DatabaseStatusProperty {
     #[serde(skip_serializing)]
     pub description: Option<String>,
 
-    pub status: DatabaseSelectOptionProperty,
+    pub status: DatabaseStatusOptionProperty,
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseSelectOptionProperty {
+pub struct DatabaseStatusOptionProperty {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     options: Vec<crate::object::select::Select>,
 
