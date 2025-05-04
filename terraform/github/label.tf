@@ -78,14 +78,6 @@ resource "github_issue_label" "rust" {
   description = "Pull requests that update Cargo.toml or its lock file."
 }
 
-// GitLab Flow
-resource "github_issue_label" "main_to_develop" {
-  repository  = github_repository.notionrs.name
-  name        = "main → develop"
-  color       = "34744c"
-  description = "Synchronize changes from the main branch into develop."
-}
-
 resource "github_issue_label" "release" {
   repository  = github_repository.notionrs.name
   name        = "Release"
@@ -93,9 +85,16 @@ resource "github_issue_label" "release" {
   description = "Merge release changes into the main branch."
 }
 
-resource "github_issue_label" "version_bump" {
+resource "github_issue_label" "auto_generated" {
   repository  = github_repository.notionrs.name
-  name        = "Version Bump"
+  name        = "auto-generated"
   color       = "555b67"
-  description = "Update version numbers for release."
+  description = "Issues created automatically by workflows or bots"
+}
+
+resource "github_issue_label" "notion_sdk_js" {
+  repository  = github_repository.notionrs.name
+  name        = "notion-sdk-js"
+  color       = "868e9c"
+  description = "Related to the upstream Notion SDK for JavaScript"
 }
