@@ -25,7 +25,7 @@ updates:
       - "46ki75"
 
   - package-ecosystem: "terraform"
-    directory: "/terraform"
+    directory: "/terraform/github"
     schedule:
       interval: "daily"
     target-branch: "main"
