@@ -89,6 +89,16 @@ crate::impl_from_as_ref!(LinkPreviewMention, url);
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default, notionrs_macro::Setter)]
 pub struct LinkMention {
     pub href: String,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub link_author: Option<String>,
+    pub link_provider: Option<String>,
+    pub thumbnail_url: Option<String>,
+    pub icon_url: Option<String>,
+    pub iframe_url: Option<String>,
+    pub height: Option<u32>,
+    pub padding: Option<u32>,
+    pub padding_top: Option<u32>,
 }
 crate::impl_display_from_string_field!(LinkMention, href);
 crate::impl_from_as_ref!(LinkMention, href);
