@@ -1,18 +1,5 @@
-use notionrs::{
-    client::Client,
-    error::Error,
-    object::{
-        database::{
-            DatabaseMultiSelectProperty, DatabaseProperty, DatabaseRichTextProperty,
-            DatabaseUrlProperty,
-        },
-        emoji::Emoji,
-        file::{ExternalFile, File},
-        icon::Icon,
-        rich_text::RichText,
-        select::{Select, SelectColor},
-    },
-};
+use notionrs::prelude::*;
+use notionrs::{Client, Error};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {

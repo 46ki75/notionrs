@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_table_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_table_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -16,24 +18,24 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::object::rich_text::RichText::from("rich text");
+        let rich_text = RichText::from("rich text");
 
-        let block = notionrs::object::block::Block::Table {
-            table: notionrs::object::block::TableBlock::default()
+        let block = Block::Table {
+            table: TableBlock::default()
                 .table_width(2)
                 .has_column_header(true)
                 .has_row_header(true)
                 .children(vec![
-                    notionrs::object::block::Block::TableRow {
-                        table_row: notionrs::object::block::TableRowBlock::default()
+                    Block::TableRow {
+                        table_row: TableRowBlock::default()
                             .cells(vec![vec![rich_text.clone()], vec![rich_text.clone()]]),
                     },
-                    notionrs::object::block::Block::TableRow {
-                        table_row: notionrs::object::block::TableRowBlock::default()
+                    Block::TableRow {
+                        table_row: TableRowBlock::default()
                             .cells(vec![vec![rich_text.clone()], vec![rich_text.clone()]]),
                     },
-                    notionrs::object::block::Block::TableRow {
-                        table_row: notionrs::object::block::TableRowBlock::default()
+                    Block::TableRow {
+                        table_row: TableRowBlock::default()
                             .cells(vec![vec![rich_text.clone()], vec![rich_text.clone()]]),
                     },
                 ]),

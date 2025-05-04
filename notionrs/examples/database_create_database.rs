@@ -1,13 +1,7 @@
 use std::collections::HashMap;
 
-use notionrs::{
-    client::Client,
-    error::Error,
-    object::{
-        database::{DatabaseEmailProperty, DatabaseProperty},
-        rich_text::RichText,
-    },
-};
+use notionrs::prelude::*;
+use notionrs::{Client, Error};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {

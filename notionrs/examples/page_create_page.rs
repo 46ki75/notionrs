@@ -1,11 +1,5 @@
-use notionrs::{
-    client::Client,
-    error::Error,
-    object::{
-        page::{PageMultiSelectProperty, PageProperty, PageTitleProperty},
-        select::{Select, SelectColor},
-    },
-};
+use notionrs::prelude::*;
+use notionrs::{Client, Error};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {

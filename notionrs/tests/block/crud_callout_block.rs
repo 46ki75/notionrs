@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_callout_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_callout_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -16,10 +18,10 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::object::rich_text::RichText::from("callout!");
+        let rich_text = RichText::from("callout!");
 
-        let block = notionrs::object::block::Block::Callout {
-            callout: notionrs::object::block::CalloutBlock::default()
+        let block = Block::Callout {
+            callout: CalloutBlock::default()
                 .blue_background()
                 .rich_text(vec![rich_text.clone()]),
         };
@@ -50,13 +52,13 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::object::block::Block::Callout { callout } => {
+            Block::Callout { callout } => {
                 assert_eq!(callout.rich_text, vec![rich_text]);
                 assert_eq!(
                     callout.color,
                     notionrs::object::color::Color::BlueBackground
                 );
-                notionrs::object::block::Block::Callout {
+                Block::Callout {
                     callout: callout.green_background(),
                 }
             }

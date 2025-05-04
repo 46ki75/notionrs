@@ -1,85 +1,69 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn create_database() -> Result<(), notionrs::error::Error> {
+    async fn create_database() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let mut properties = std::collections::HashMap::new();
 
         properties.insert(
             "Title".to_string(),
-            notionrs::object::database::DatabaseProperty::Title(
-                notionrs::object::database::DatabaseTitleProperty::default(),
-            ),
+            DatabaseProperty::Title(DatabaseTitleProperty::default()),
         );
 
         properties.insert(
             "My Checkbox".to_string(),
-            notionrs::object::database::DatabaseProperty::Checkbox(
-                notionrs::object::database::DatabaseCheckboxProperty::default(),
-            ),
+            DatabaseProperty::Checkbox(DatabaseCheckboxProperty::default()),
         );
 
         properties.insert(
             "Created User".to_string(),
-            notionrs::object::database::DatabaseProperty::CreatedBy(
-                notionrs::object::database::DatabaseCreatedByProperty::default(),
-            ),
+            DatabaseProperty::CreatedBy(DatabaseCreatedByProperty::default()),
         );
 
         properties.insert(
             "Created Time".to_string(),
-            notionrs::object::database::DatabaseProperty::CreatedTime(
-                notionrs::object::database::DatabaseCreatedTimeProperty::default(),
-            ),
+            DatabaseProperty::CreatedTime(DatabaseCreatedTimeProperty::default()),
         );
 
         properties.insert(
             "Date".to_string(),
-            notionrs::object::database::DatabaseProperty::Date(
-                notionrs::object::database::DatabaseDateProperty::default(),
-            ),
+            DatabaseProperty::Date(DatabaseDateProperty::default()),
         );
 
         properties.insert(
             "email".to_string(),
-            notionrs::object::database::DatabaseProperty::Email(
-                notionrs::object::database::DatabaseEmailProperty::default(),
-            ),
+            DatabaseProperty::Email(DatabaseEmailProperty::default()),
         );
 
         properties.insert(
             "Files & Media".to_string(),
-            notionrs::object::database::DatabaseProperty::Files(
-                notionrs::object::database::DatabaseFilesProperty::default(),
-            ),
+            DatabaseProperty::Files(DatabaseFilesProperty::default()),
         );
 
         properties.insert(
             "formula".to_string(),
-            notionrs::object::database::DatabaseProperty::Formula(
-                notionrs::object::database::DatabaseFormulaProperty::from(r#"{{notion:block_property:BtVS:00000000-0000-0000-0000-000000000000:8994905a-074a-415f-9bcf-d1f8b4fa38e4}}/2"#),
+            DatabaseProperty::Formula(
+                DatabaseFormulaProperty::from(r#"{{notion:block_property:BtVS:00000000-0000-0000-0000-000000000000:8994905a-074a-415f-9bcf-d1f8b4fa38e4}}/2"#),
             ),
         );
 
         properties.insert(
             "Last Edited User".to_string(),
-            notionrs::object::database::DatabaseProperty::LastEditedBy(
-                notionrs::object::database::DatabaseLastEditedByProperty::default(),
-            ),
+            DatabaseProperty::LastEditedBy(DatabaseLastEditedByProperty::default()),
         );
 
         properties.insert(
             "Last Edited Time".to_string(),
-            notionrs::object::database::DatabaseProperty::LastEditedTime(
-                notionrs::object::database::DatabaseLastEditedTimeProperty::default(),
-            ),
+            DatabaseProperty::LastEditedTime(DatabaseLastEditedTimeProperty::default()),
         );
 
         let options = vec![
@@ -99,64 +83,46 @@ mod integration_tests {
 
         properties.insert(
             "Tags".to_string(),
-            notionrs::object::database::DatabaseProperty::MultiSelect(
-                notionrs::object::database::DatabaseMultiSelectProperty::default()
-                    .options(options.clone()),
+            DatabaseProperty::MultiSelect(
+                DatabaseMultiSelectProperty::default().options(options.clone()),
             ),
         );
 
         properties.insert(
             "Number".to_string(),
-            notionrs::object::database::DatabaseProperty::Number(
-                notionrs::object::database::DatabaseNumberProperty::default(),
-            ),
+            DatabaseProperty::Number(DatabaseNumberProperty::default()),
         );
 
         properties.insert(
             "People".to_string(),
-            notionrs::object::database::DatabaseProperty::People(
-                notionrs::object::database::DatabasePeopleProperty::default(),
-            ),
+            DatabaseProperty::People(DatabasePeopleProperty::default()),
         );
 
         properties.insert(
             "Phone".to_string(),
-            notionrs::object::database::DatabaseProperty::PhoneNumber(
-                notionrs::object::database::DatabasePhoneNumberProperty::default(),
-            ),
+            DatabaseProperty::PhoneNumber(DatabasePhoneNumberProperty::default()),
         );
 
         properties.insert(
             "Rich Text".to_string(),
-            notionrs::object::database::DatabaseProperty::RichText(
-                notionrs::object::database::DatabaseRichTextProperty::default(),
-            ),
+            DatabaseProperty::RichText(DatabaseRichTextProperty::default()),
         );
 
         properties.insert(
             "Select".to_string(),
-            notionrs::object::database::DatabaseProperty::Select(
-                notionrs::object::database::DatabaseSelectProperty::default()
-                    .options(options.clone()),
-            ),
+            DatabaseProperty::Select(DatabaseSelectProperty::default().options(options.clone())),
         );
 
         properties.insert(
             "URL".to_string(),
-            notionrs::object::database::DatabaseProperty::Url(
-                notionrs::object::database::DatabaseUrlProperty::default(),
-            ),
+            DatabaseProperty::Url(DatabaseUrlProperty::default()),
         );
 
         let request = client
             .create_database()
             .page_id(page_id)
-            .title(vec![notionrs::object::rich_text::RichText::from(
-                "Database Title",
-            )])
-            .description(vec![notionrs::object::rich_text::RichText::from(
-                "Description of the Database",
-            )])
+            .title(vec![RichText::from("Database Title")])
+            .description(vec![RichText::from("Description of the Database")])
             .properties(properties)
             .icon(notionrs::object::icon::Icon::Emoji(
                 notionrs::object::emoji::Emoji::from("🚧"),

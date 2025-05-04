@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_column_list_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_column_list_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -16,20 +18,18 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::object::rich_text::RichText::from("child");
+        let rich_text = RichText::from("child");
 
-        let grandchildren = notionrs::object::block::Block::Paragraph {
-            paragraph: notionrs::object::block::ParagraphBlock::default()
-                .rich_text(vec![rich_text.clone()]),
+        let grandchildren = Block::Paragraph {
+            paragraph: ParagraphBlock::default().rich_text(vec![rich_text.clone()]),
         };
 
-        let child = notionrs::object::block::Block::Column {
-            column: notionrs::object::block::ColumnBlock::default().children(vec![grandchildren]),
+        let child = Block::Column {
+            column: ColumnBlock::default().children(vec![grandchildren]),
         };
 
-        let block = notionrs::object::block::Block::ColumnList {
-            column_list: notionrs::object::block::ColumnListBlock::default()
-                .children(vec![child.clone(), child.clone()]),
+        let block = Block::ColumnList {
+            column_list: ColumnListBlock::default().children(vec![child.clone(), child.clone()]),
         };
 
         let request = client

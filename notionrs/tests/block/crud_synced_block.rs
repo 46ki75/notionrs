@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_synced_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_synced_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -18,14 +20,14 @@ mod integration_tests {
 
         // origin
 
-        let block = notionrs::object::block::Block::Bookmark {
-            bookmark: notionrs::object::block::BookmarkBlock::default().url("https://example.com"),
+        let block = Block::Bookmark {
+            bookmark: BookmarkBlock::default().url("https://example.com"),
         };
 
         let children = vec![block];
 
-        let block = notionrs::object::block::Block::SyncedBlock {
-            synced_block: notionrs::object::block::SyncedBlock::default().children(children),
+        let block = Block::SyncedBlock {
+            synced_block: SyncedBlock::default().children(children),
         };
 
         let request = client
@@ -39,8 +41,8 @@ mod integration_tests {
 
         // sync
 
-        let block = notionrs::object::block::Block::SyncedBlock {
-            synced_block: notionrs::object::block::SyncedBlock::default()
+        let block = Block::SyncedBlock {
+            synced_block: SyncedBlock::default()
                 .block_id(response.results.first().unwrap().id.clone()),
         };
 

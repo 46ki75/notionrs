@@ -8,14 +8,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
         let response = client
             .query_database_all()
             .database_id(database_id)
@@ -34,14 +34,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_page_size() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_page_size() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
         let response = client
             .query_database_all()
             .database_id(database_id)
@@ -60,14 +60,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_simple() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_simple() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter =
             notionrs::object::request::filter::Filter::date_before("Created time", "2024-07-01");
@@ -86,14 +86,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_checkbox() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_checkbox() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::checkbox_is_checked("Checkbox"),
@@ -114,14 +114,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_date_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_date_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::date_after("Created time", "2024-07-01"),
@@ -160,14 +160,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_files_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_files_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::files_is_empty("Files & media"),
@@ -188,14 +188,14 @@ mod integration_tests {
 
     // #[tokio::test]
     // #[serial_test::serial]
-    // async fn query_database_all_filter_formula_filter() -> Result<(), notionrs::error::Error> {
+    // async fn query_database_all_filter_formula_filter() -> Result<(), notionrs::Error> {
     //     dotenvy::dotenv().ok();
     //     dotenvy::from_path(std::path::Path::new(".env.test"))
     //         .expect("Failed to load .env.test file");
 
     //     let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-    //     let client = notionrs::client::Client::new();
+    //     let client = notionrs::Client::new();
 
     //     let filter = notionrs::object::request::filter::Filter::or(vec![
     //         notionrs::object::request::filter::Filter::formula_number_does_not_equal("formula", 0),
@@ -222,14 +222,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_multi_select_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_multi_select_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::multi_select_contains("Multi-select", "0"),
@@ -255,14 +255,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_number_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_number_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::number_does_not_equal("Number", 20),
@@ -291,14 +291,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_people_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_people_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::people_contains(
@@ -327,14 +327,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_phone_number_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_phone_number_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::phone_number_contains("Phone Number", "0"),
@@ -373,14 +373,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_relation_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_relation_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::relation_contains(
@@ -409,14 +409,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_rollup_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_rollup_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::rollup_any(
@@ -447,14 +447,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_rich_text_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_rich_text_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::rich_text_contains("Text", "0"),
@@ -481,14 +481,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_select_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_select_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::select_does_not_equal("Select", "0"),
@@ -511,14 +511,14 @@ mod integration_tests {
 
     // #[tokio::test]
     // #[serial_test::serial]
-    // async fn query_database_all_filter_status_filter() -> Result<(), notionrs::error::Error> {
+    // async fn query_database_all_filter_status_filter() -> Result<(), notionrs::Error> {
     //     dotenvy::dotenv().ok();
     //     dotenvy::from_path(std::path::Path::new(".env.test"))
     //         .expect("Failed to load .env.test file");
 
     //     let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-    //     let client = notionrs::client::Client::new();
+    //     let client = notionrs::Client::new();
 
     //     let filter = notionrs::object::request::filter::Filter::or(vec![
     //         notionrs::object::request::filter::Filter::status_does_not_equal("Status", "0"),
@@ -541,14 +541,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_timestamp_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_timestamp_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::timestamp_after("2024-07-01"),
@@ -581,14 +581,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_filter_unique_id_filter() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_filter_unique_id_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let filter = notionrs::object::request::filter::Filter::or(vec![
             notionrs::object::request::filter::Filter::unique_id_does_not_equal("ID", 20),
@@ -619,14 +619,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_all_sort() -> Result<(), notionrs::error::Error> {
+    async fn query_database_all_sort() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let sorts = vec![notionrs::object::request::sort::Sort::asc("Created time")];
 

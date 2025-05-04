@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_audio_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_audio_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -16,12 +18,10 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = notionrs::object::block::Block::Audio {
+        let block = Block::Audio {
             audio: notionrs::object::file::File::default()
                 .url("https://example.com/sample.wav")
-                .caption(vec![notionrs::object::rich_text::RichText::from(
-                    "my caption",
-                )]),
+                .caption(vec![RichText::from("my caption")]),
         };
 
         let request = client
@@ -50,9 +50,9 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::object::block::Block::Audio { audio } => {
+            Block::Audio { audio } => {
                 assert_eq!(audio.get_url(), "https://example.com/sample.wav");
-                notionrs::object::block::Block::Audio {
+                Block::Audio {
                     audio: audio.url("https://example.com/foobar.wav"),
                 }
             }

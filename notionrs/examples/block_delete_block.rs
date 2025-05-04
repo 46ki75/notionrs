@@ -1,4 +1,4 @@
-use notionrs::{client::Client, error::Error};
+use notionrs::{Client, Error};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {

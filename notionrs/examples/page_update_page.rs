@@ -1,8 +1,5 @@
-use notionrs::{
-    client::Client,
-    error::Error,
-    object::page::{PageProperty, PageTitleProperty},
-};
+use notionrs::prelude::*;
+use notionrs::{Client, Error};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {

@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_equation_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_equation_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -16,8 +18,8 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = notionrs::object::block::Block::Equation {
-            equation: notionrs::object::block::EquationBlock {
+        let block = Block::Equation {
+            equation: EquationBlock {
                 expression: "e=mc^2".to_string(),
             },
         };
@@ -48,9 +50,9 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::object::block::Block::Equation { equation } => {
+            Block::Equation { equation } => {
                 assert_eq!(equation.expression, "e=mc^2");
-                notionrs::object::block::Block::Equation {
+                Block::Equation {
                     equation: equation
                         .expression(r#"\overline{A \lor B} = \overline{A} \land \overline{B}"#),
                 }

@@ -1,14 +1,15 @@
 mod integration_tests {
+    use notionrs::prelude::*;
 
     #[tokio::test]
-    async fn crud_bookmark_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_bookmark_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -16,8 +17,8 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let block = notionrs::object::block::Block::Bookmark {
-            bookmark: notionrs::object::block::BookmarkBlock::default().url("https://example.com"),
+        let block = Block::Bookmark {
+            bookmark: BookmarkBlock::default().url("https://example.com"),
         };
 
         let request = client
@@ -46,9 +47,9 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::object::block::Block::Bookmark { bookmark } => {
+            Block::Bookmark { bookmark } => {
                 assert_eq!(bookmark.url, "https://example.com");
-                notionrs::object::block::Block::Bookmark {
+                Block::Bookmark {
                     bookmark: bookmark.url("https://example.com/index.html"),
                 }
             }

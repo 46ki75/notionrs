@@ -8,10 +8,10 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn search() -> Result<(), notionrs::error::Error> {
+    async fn search() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let request = client.search().query("").sort_timestamp_asc();
 
@@ -30,10 +30,10 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn search_page() -> Result<(), notionrs::error::Error> {
+    async fn search_page() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let request = client.search_page().query("").sort_timestamp_asc();
 
@@ -52,10 +52,10 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn search_database() -> Result<(), notionrs::error::Error> {
+    async fn search_database() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let request = client.search_database().query("").sort_timestamp_asc();
 

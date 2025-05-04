@@ -1,4 +1,5 @@
-use notionrs::{client::Client, error::Error, object::rich_text::RichText};
+use notionrs::prelude::*;
+use notionrs::{Client, Error};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
@@ -6,8 +7,8 @@ async fn main() -> Result<(), Error> {
 
     let rich_text = RichText::from("rich text");
 
-    let block = notionrs::object::block::Block::Paragraph {
-        paragraph: notionrs::object::block::ParagraphBlock::default()
+    let block = Block::Paragraph {
+        paragraph: ParagraphBlock::default()
             .rich_text(vec![rich_text.clone()])
             .blue_background(),
     };

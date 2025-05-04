@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_paragraph_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_paragraph_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -16,10 +18,10 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::object::rich_text::RichText::from("rich text");
+        let rich_text = RichText::from("rich text");
 
-        let block = notionrs::object::block::Block::Paragraph {
-            paragraph: notionrs::object::block::ParagraphBlock::default()
+        let block = Block::Paragraph {
+            paragraph: ParagraphBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .blue_background(),
         };
@@ -50,13 +52,13 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::object::block::Block::Paragraph { paragraph } => {
+            Block::Paragraph { paragraph } => {
                 assert_eq!(paragraph.rich_text, vec![rich_text]);
                 assert_eq!(
                     paragraph.color,
                     notionrs::object::color::Color::BlueBackground
                 );
-                notionrs::object::block::Block::Paragraph {
+                Block::Paragraph {
                     paragraph: paragraph.green_background(),
                 }
             }

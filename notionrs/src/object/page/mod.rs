@@ -29,18 +29,6 @@ pub mod unique_id;
 pub mod url;
 pub mod verification;
 
-pub use {
-    button::PageButtonProperty, checkbox::PageCheckboxProperty, created_by::PageCreatedByProperty,
-    created_time::PageCreatedTimeProperty, date::PageDateProperty, email::PageEmailProperty,
-    files::PageFilesProperty, formula::PageFormulaProperty,
-    last_edited_by::PageLastEditedByProperty, last_edited_time::PageLastEditedTimeProperty,
-    multi_select::PageMultiSelectProperty, number::PageNumberProperty, people::PagePeopleProperty,
-    phone_number::PagePhoneNumberProperty, relation::PageRelationProperty,
-    rich_text::PageRichTextProperty, rollup::PageRollupProperty, select::PageSelectProperty,
-    status::PageStatusProperty, title::PageTitleProperty, unique_id::PageUniqueIdProperty,
-    url::PageUrlProperty, verification::PageVerificationProperty,
-};
-
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum PageProperty {

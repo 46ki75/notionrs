@@ -1,7 +1,7 @@
 mod integration_tests {
 
     use notionrs::client;
-    use notionrs::error::Error;
+    use notionrs::Error;
 
     /// This integration test cannot be run unless explicit permission
     /// for user reading is granted in the Notion API key issuance settings.
