@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_heading_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_heading_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -16,10 +18,10 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::object::rich_text::RichText::from("Heading2 !");
+        let rich_text = RichText::from("Heading2 !");
 
-        let block = notionrs::object::block::Block::Heading2 {
-            heading_2: notionrs::object::block::HeadingBlock::default()
+        let block = Block::Heading2 {
+            heading_2: HeadingBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .children(vec![])
                 .is_toggleable(true),
@@ -51,10 +53,10 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::object::block::Block::Heading2 { heading_2 } => {
+            Block::Heading2 { heading_2 } => {
                 assert_eq!(heading_2.rich_text, vec![rich_text]);
                 assert!(heading_2.is_toggleable);
-                notionrs::object::block::Block::Heading2 {
+                Block::Heading2 {
                     heading_2: heading_2.red().is_toggleable(false),
                 }
             }

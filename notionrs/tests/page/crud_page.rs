@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_page() -> Result<(), notionrs::error::Error> {
+    async fn crud_page() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -20,9 +22,7 @@ mod integration_tests {
 
         properties.insert(
             "title".to_string(),
-            notionrs::object::page::PageProperty::Title(
-                notionrs::object::page::PageTitleProperty::from("My Page Title"),
-            ),
+            PageProperty::Title(PageTitleProperty::from("My Page Title")),
         );
 
         let request = client
@@ -50,9 +50,7 @@ mod integration_tests {
 
         properties.insert(
             "title".to_string(),
-            notionrs::object::page::PageProperty::Title(
-                notionrs::object::page::PageTitleProperty::from("My Page Title (Changed)"),
-            ),
+            PageProperty::Title(PageTitleProperty::from("My Page Title (Changed)")),
         );
 
         let request = client

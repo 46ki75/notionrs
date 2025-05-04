@@ -1,12 +1,12 @@
 mod integration_tests {
 
     #[tokio::test]
-    async fn retrieve_database() -> Result<(), notionrs::error::Error> {
+    async fn retrieve_database() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //

@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_code_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_code_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -16,12 +18,12 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::object::rich_text::RichText::from("console.log(0)");
+        let rich_text = RichText::from("console.log(0)");
 
-        let caption = notionrs::object::rich_text::RichText::from("index.js");
+        let caption = RichText::from("index.js");
 
-        let block = notionrs::object::block::Block::Code {
-            code: notionrs::object::block::CodeBlock::default()
+        let block = Block::Code {
+            code: CodeBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .caption(vec![caption.clone()])
                 .lnaguage(notionrs::object::language::Language::Javascript),
@@ -53,19 +55,17 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::object::block::Block::Code { code } => {
+            Block::Code { code } => {
                 assert_eq!(code.rich_text, vec![rich_text]);
                 assert_eq!(code.caption, vec![caption]);
                 assert_eq!(
                     code.language,
                     notionrs::object::language::Language::Javascript
                 );
-                notionrs::object::block::Block::Code {
+                Block::Code {
                     code: code
                         .lnaguage(notionrs::object::language::Language::Typescript)
-                        .caption(vec![notionrs::object::rich_text::RichText::from(
-                            "index.ts",
-                        )]),
+                        .caption(vec![RichText::from("index.ts")]),
                 }
             }
             e => panic!("{:?}", e),

@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_bulleted_list_item_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_bulleted_list_item_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -16,10 +18,10 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::object::rich_text::RichText::from("list item");
+        let rich_text = RichText::from("list item");
 
-        let block = notionrs::object::block::Block::BulletedListItem {
-            bulleted_list_item: notionrs::object::block::BulletedListItemBlock::default()
+        let block = Block::BulletedListItem {
+            bulleted_list_item: BulletedListItemBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .blue_background(),
         };
@@ -50,13 +52,13 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::object::block::Block::BulletedListItem { bulleted_list_item } => {
+            Block::BulletedListItem { bulleted_list_item } => {
                 assert_eq!(bulleted_list_item.rich_text, vec![rich_text]);
                 assert_eq!(
                     bulleted_list_item.color,
                     notionrs::object::color::Color::BlueBackground
                 );
-                notionrs::object::block::Block::BulletedListItem {
+                Block::BulletedListItem {
                     bulleted_list_item: bulleted_list_item.green_background(),
                 }
             }

@@ -1,14 +1,16 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_toggle_block() -> Result<(), notionrs::error::Error> {
+    async fn crud_toggle_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         // # --------------------------------------------------------------------------------
         //
@@ -16,10 +18,10 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let rich_text = notionrs::object::rich_text::RichText::from("Toggle");
+        let rich_text = RichText::from("Toggle");
 
-        let block = notionrs::object::block::Block::Toggle {
-            toggle: notionrs::object::block::ToggleBlock::default()
+        let block = Block::Toggle {
+            toggle: ToggleBlock::default()
                 .rich_text(vec![rich_text.clone()])
                 .children(vec![]),
         };
@@ -50,9 +52,9 @@ mod integration_tests {
         // # --------------------------------------------------------------------------------
 
         let block = match response.block {
-            notionrs::object::block::Block::Toggle { toggle } => {
+            Block::Toggle { toggle } => {
                 assert_eq!(toggle.rich_text, vec![rich_text]);
-                notionrs::object::block::Block::Toggle {
+                Block::Toggle {
                     toggle: toggle.red(),
                 }
             }

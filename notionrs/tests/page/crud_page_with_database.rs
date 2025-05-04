@@ -1,50 +1,42 @@
 mod integration_tests {
 
+    use notionrs::prelude::*;
+
     #[tokio::test]
-    async fn crud_page_with_database() -> Result<(), notionrs::error::Error> {
+    async fn crud_page_with_database() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new(".env.test"))
             .expect("Failed to load .env.test file");
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::client::Client::new();
+        let client = notionrs::Client::new();
 
         let mut properties = std::collections::HashMap::new();
 
         properties.insert(
             "Title".to_string(),
-            notionrs::object::database::DatabaseProperty::Title(
-                notionrs::object::database::DatabaseTitleProperty::default(),
-            ),
+            DatabaseProperty::Title(DatabaseTitleProperty::default()),
         );
 
         properties.insert(
             "My Checkbox".to_string(),
-            notionrs::object::database::DatabaseProperty::Checkbox(
-                notionrs::object::database::DatabaseCheckboxProperty::default(),
-            ),
+            DatabaseProperty::Checkbox(DatabaseCheckboxProperty::default()),
         );
 
         properties.insert(
             "Date".to_string(),
-            notionrs::object::database::DatabaseProperty::Date(
-                notionrs::object::database::DatabaseDateProperty::default(),
-            ),
+            DatabaseProperty::Date(DatabaseDateProperty::default()),
         );
 
         properties.insert(
             "email".to_string(),
-            notionrs::object::database::DatabaseProperty::Email(
-                notionrs::object::database::DatabaseEmailProperty::default(),
-            ),
+            DatabaseProperty::Email(DatabaseEmailProperty::default()),
         );
 
         properties.insert(
             "Files & Media".to_string(),
-            notionrs::object::database::DatabaseProperty::Files(
-                notionrs::object::database::DatabaseFilesProperty::default(),
-            ),
+            DatabaseProperty::Files(DatabaseFilesProperty::default()),
         );
 
         let options = vec![
@@ -64,64 +56,46 @@ mod integration_tests {
 
         properties.insert(
             "Tags".to_string(),
-            notionrs::object::database::DatabaseProperty::MultiSelect(
-                notionrs::object::database::DatabaseMultiSelectProperty::default()
-                    .options(options.clone()),
+            DatabaseProperty::MultiSelect(
+                DatabaseMultiSelectProperty::default().options(options.clone()),
             ),
         );
 
         properties.insert(
             "Number".to_string(),
-            notionrs::object::database::DatabaseProperty::Number(
-                notionrs::object::database::DatabaseNumberProperty::default(),
-            ),
+            DatabaseProperty::Number(DatabaseNumberProperty::default()),
         );
 
         properties.insert(
             "People".to_string(),
-            notionrs::object::database::DatabaseProperty::People(
-                notionrs::object::database::DatabasePeopleProperty::default(),
-            ),
+            DatabaseProperty::People(DatabasePeopleProperty::default()),
         );
 
         properties.insert(
             "Phone".to_string(),
-            notionrs::object::database::DatabaseProperty::PhoneNumber(
-                notionrs::object::database::DatabasePhoneNumberProperty::default(),
-            ),
+            DatabaseProperty::PhoneNumber(DatabasePhoneNumberProperty::default()),
         );
 
         properties.insert(
             "Rich Text".to_string(),
-            notionrs::object::database::DatabaseProperty::RichText(
-                notionrs::object::database::DatabaseRichTextProperty::default(),
-            ),
+            DatabaseProperty::RichText(DatabaseRichTextProperty::default()),
         );
 
         properties.insert(
             "Select".to_string(),
-            notionrs::object::database::DatabaseProperty::Select(
-                notionrs::object::database::DatabaseSelectProperty::default()
-                    .options(options.clone()),
-            ),
+            DatabaseProperty::Select(DatabaseSelectProperty::default().options(options.clone())),
         );
 
         properties.insert(
             "URL".to_string(),
-            notionrs::object::database::DatabaseProperty::Url(
-                notionrs::object::database::DatabaseUrlProperty::default(),
-            ),
+            DatabaseProperty::Url(DatabaseUrlProperty::default()),
         );
 
         let request = client
             .create_database()
             .page_id(page_id)
-            .title(vec![notionrs::object::rich_text::RichText::from(
-                "Database Title",
-            )])
-            .description(vec![notionrs::object::rich_text::RichText::from(
-                "Description of the Database",
-            )])
+            .title(vec![RichText::from("Database Title")])
+            .description(vec![RichText::from("Description of the Database")])
             .properties(properties)
             .icon(notionrs::object::icon::Icon::Emoji(
                 notionrs::object::emoji::Emoji::from("🚧"),
@@ -144,90 +118,69 @@ mod integration_tests {
 
         properties.insert(
             "Title".to_string(),
-            notionrs::object::page::PageProperty::Title(
-                notionrs::object::page::PageTitleProperty::from("My Page Title"),
-            ),
+            PageProperty::Title(PageTitleProperty::from("My Page Title")),
         );
 
         properties.insert(
             "My Checkbox".to_string(),
-            notionrs::object::page::PageProperty::Checkbox(
-                notionrs::object::page::PageCheckboxProperty::from(true),
-            ),
+            PageProperty::Checkbox(PageCheckboxProperty::from(true)),
         );
 
         properties.insert(
             "Rich Text".to_string(),
-            notionrs::object::page::PageProperty::RichText(
-                notionrs::object::page::PageRichTextProperty::from("description"),
-            ),
+            PageProperty::RichText(PageRichTextProperty::from("description")),
         );
 
         properties.insert(
             "Date".to_string(),
-            notionrs::object::page::PageProperty::Date(
-                notionrs::object::page::PageDateProperty::from(
-                    notionrs::object::date::DateOrDateTime::DateTime(
-                        time::OffsetDateTime::parse(
-                            "2024-10-26T09:03:00.000Z",
-                            &time::format_description::well_known::Rfc3339,
-                        )
-                        .unwrap(),
-                    ),
+            PageProperty::Date(PageDateProperty::from(
+                notionrs::object::date::DateOrDateTime::DateTime(
+                    time::OffsetDateTime::parse(
+                        "2024-10-26T09:03:00.000Z",
+                        &time::format_description::well_known::Rfc3339,
+                    )
+                    .unwrap(),
                 ),
-            ),
+            )),
         );
 
         properties.insert(
             "email".to_string(),
-            notionrs::object::page::PageProperty::Email(
-                notionrs::object::page::PageEmailProperty::from("info@example.com"),
-            ),
+            PageProperty::Email(PageEmailProperty::from("info@example.com")),
         );
 
         properties.insert(
             "Files & Media".to_string(),
-            notionrs::object::page::PageProperty::Files(
-                notionrs::object::page::PageFilesProperty::from("https://example.com/file.txt"),
-            ),
+            PageProperty::Files(PageFilesProperty::from("https://example.com/file.txt")),
         );
 
         let option = notionrs::object::select::Select::from("IT");
 
         properties.insert(
             "Tags".to_string(),
-            notionrs::object::page::PageProperty::MultiSelect(
-                notionrs::object::page::PageMultiSelectProperty::default()
-                    .multi_select(vec![option]),
+            PageProperty::MultiSelect(
+                PageMultiSelectProperty::default().multi_select(vec![option]),
             ),
         );
 
         properties.insert(
             "Number".to_string(),
-            notionrs::object::page::PageProperty::Number(
-                notionrs::object::page::PageNumberProperty::from(100000),
-            ),
+            PageProperty::Number(PageNumberProperty::from(100000)),
         );
 
         properties.insert(
             "Phone".to_string(),
-            notionrs::object::page::PageProperty::PhoneNumber(
-                notionrs::object::page::PagePhoneNumberProperty::from("083-0000-0000"),
-            ),
+            PageProperty::PhoneNumber(PagePhoneNumberProperty::from("083-0000-0000")),
         );
 
         properties.insert(
             "Select".to_string(),
-            notionrs::object::page::PageProperty::Select(
-                notionrs::object::page::PageSelectProperty::from("IT"),
-            ),
+            PageProperty::Select(PageSelectProperty::from("IT")),
         );
 
         properties.insert(
             "URL".to_string(),
-            notionrs::object::page::PageProperty::Url(
-                notionrs::object::page::PageUrlProperty::from("IT"),
-            ),
+            PageProperty::Url(PageUrlProperty::from("IT")),
         );
 
         println!("{}", serde_json::to_string(&properties).unwrap());
