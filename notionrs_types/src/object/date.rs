@@ -28,20 +28,39 @@ pub enum DateOrDateTime {
     #[serde(with = "time::serde::rfc3339")]
     DateTime(time::OffsetDateTime),
 }
-
 impl std::fmt::Display for DateOrDateTime {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let date = match self {
+        let text = match self {
             DateOrDateTime::Date(date) => date.to_string(),
-            DateOrDateTime::DateTime(offset_date_time) => offset_date_time.to_string(),
+            DateOrDateTime::DateTime(offset_date_time) => offset_date_time
+                .format(&time::format_description::well_known::Rfc3339)
+                .unwrap_or_else(|_| "<invalid datetime>".into()),
         };
-
-        write!(f, "{}", date)
+        write!(f, "{}", text)
     }
 }
 
 impl Default for DateOrDateTime {
     fn default() -> Self {
         Self::DateTime(time::OffsetDateTime::now_utc())
+    }
+}
+
+#[cfg(test)]
+mod unit_tests {
+
+    use super::*;
+
+    #[test]
+    fn display_date_time_is_rfc3339() {
+        let value: DateOrDateTime =
+            DateOrDateTime::DateTime(time::macros::datetime!(2024-05-01 12:00 UTC));
+        assert_eq!(value.to_string(), "2024-05-01T12:00:00Z");
+    }
+
+    #[test]
+    fn display_date_is_iso8601() {
+        let value = DateOrDateTime::Date(time::macros::date!(2024 - 05 - 01));
+        assert_eq!(value.to_string(), "2024-05-01");
     }
 }
