@@ -36,7 +36,7 @@ time = { version = "0.3", features = [
 ] }
 
 [dev-dependencies]
-tokio = { version = "1.44.2", features = ["full"] }
+tokio = { version = "1.45.0", features = ["full"] }
 dotenvy = "0.15.0"
 serial_test = "3.2.0"
 
