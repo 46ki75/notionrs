@@ -2,6 +2,9 @@ import { getOctokit } from "@actions/github";
 
 const octokit = getOctokit(process.env.GITHUB_TOKEN!);
 
+const title = (version: string) =>
+  `[notion-sdk-js] New release detected: ${version}`;
+
 const body = (version: string) =>
   `
 A new version of [\`notion-sdk-js\`](https://github.com/makenotion/notion-sdk-js) has been released: **${version}**
@@ -20,9 +23,9 @@ const releases = await octokit.rest.repos.listReleases({
   repo: "notion-sdk-js",
 });
 
-const { name, published_at } = releases.data[0];
+const { name: version, published_at } = releases.data[0];
 
-if (name == null) {
+if (version == null) {
   throw new Error("name is null.");
 }
 
@@ -30,17 +33,21 @@ if (published_at == null) {
   throw new Error("published_at is null.");
 }
 
-if (
-  new Date(published_at).getTime() >
-  new Date(Date.now() + 24 * 60 * 60 * 1000).getTime() // 1 [day]
-) {
-  console.log({ name, published_at });
+console.log({ name: version, published_at });
 
+const issues = await octokit.paginate(octokit.rest.issues.list, {
+  owner: "46ki75",
+  repo: "notionrs",
+});
+
+const isAlreadyCreated = issues.some((issue) => issue.title.includes(version));
+
+if (isAlreadyCreated) {
   await octokit.rest.issues.create({
     owner: "46ki75",
     repo: "notionrs",
-    title: `[notion-sdk-js] New release detected: ${name}`,
-    body: body(name),
+    title: title(version),
+    body: body(version),
     assignee: "46ki75",
     labels: ["auto-generated", "notion-sdk-js"],
   });
