@@ -40,6 +40,8 @@ const issues = await octokit.paginate(octokit.rest.issues.listForRepo, {
   repo: "notionrs",
 });
 
+console.log(issues.map((issue) => issue.title));
+
 const isAlreadyCreated = issues.some((issue) => issue.title.includes(version));
 
 if (isAlreadyCreated) {
