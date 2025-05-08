@@ -35,14 +35,16 @@ if (published_at == null) {
 
 console.log({ name: version, published_at });
 
-const issues = await octokit.paginate(octokit.rest.issues.list, {
+const issues = await octokit.paginate(octokit.rest.issues.listForRepo, {
   owner: "46ki75",
   repo: "notionrs",
 });
 
+console.log(issues.map((issue) => issue.title));
+
 const isAlreadyCreated = issues.some((issue) => issue.title.includes(version));
 
-if (isAlreadyCreated) {
+if (!isAlreadyCreated) {
   await octokit.rest.issues.create({
     owner: "46ki75",
     repo: "notionrs",
