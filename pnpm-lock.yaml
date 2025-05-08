@@ -37,8 +37,8 @@ importers:
   scripts/prepare-test:
     dependencies:
       '@notionhq/client':
-        specifier: ^3.0.0
-        version: 3.0.0
+        specifier: ^3.0.1
+        version: 3.0.1
 
 packages:
 
@@ -461,8 +461,8 @@ packages:
   '@jridgewell/sourcemap-codec@1.5.0':
     resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
 
-  '@notionhq/client@3.0.0':
-    resolution: {integrity: sha512-TlWxZT/rsrjGWJOrnVuiLAlWNPXDumHyRMcw81bJcy2RupSyfjjUCYRELDEyZog48sjVK69/hHLIAwOF3C+ECQ==}
+  '@notionhq/client@3.0.1':
+    resolution: {integrity: sha512-vHtFKrRKQg2PZSky1A9fTe+L9/WxNYRJWHmD6ZiBNgeN5jnFmv27ootRl9ROzEm/N+mOxfTo37EnuCHsaPgETg==}
     engines: {node: '>=18'}
 
   '@octokit/auth-token@4.0.0':
@@ -1371,7 +1371,7 @@ snapshots:
 
   '@jridgewell/sourcemap-codec@1.5.0': {}
 
-  '@notionhq/client@3.0.0': {}
+  '@notionhq/client@3.0.1': {}
 
   '@octokit/auth-token@4.0.0': {}
 
