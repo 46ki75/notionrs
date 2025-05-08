@@ -44,7 +44,7 @@ console.log(issues.map((issue) => issue.title));
 
 const isAlreadyCreated = issues.some((issue) => issue.title.includes(version));
 
-if (isAlreadyCreated) {
+if (!isAlreadyCreated) {
   await octokit.rest.issues.create({
     owner: "46ki75",
     repo: "notionrs",
