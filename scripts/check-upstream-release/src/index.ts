@@ -39,6 +39,7 @@ const issues = await octokit.paginate(octokit.rest.issues.listForRepo, {
   owner: "46ki75",
   repo: "notionrs",
   state: "all",
+  labels: "notion-sdk-js",
 });
 
 console.log(issues.map((issue) => issue.title));
