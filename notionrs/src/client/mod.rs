@@ -156,15 +156,6 @@ impl Client {
         }
     }
 
-    pub fn query_database_all(
-        &self,
-    ) -> crate::client::database::query_database_all::QueryDatabaseAllClient {
-        crate::client::database::query_database_all::QueryDatabaseAllClient {
-            reqwest_client: self.reqwest_client.clone(),
-            ..Default::default()
-        }
-    }
-
     pub fn create_database(
         &self,
     ) -> crate::client::database::create_database::CreateDatabaseClient {
@@ -304,5 +295,30 @@ impl Client {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }
+    }
+
+    pub async fn paginate<C, T>(client: C) -> Result<Vec<T>, crate::error::Error>
+    where
+        C: crate::r#trait::Paginate<T> + Clone,
+    {
+        let mut results: Vec<T> = vec![];
+        let mut next_cursor: Option<String> = None;
+
+        loop {
+            let result = client
+                .clone()
+                .paginate_start_cursor(next_cursor.clone())
+                .paginate_send()
+                .await?;
+
+            results.extend(result.results);
+
+            match result.next_cursor {
+                Some(c) => next_cursor = Some(c),
+                None => break,
+            }
+        }
+
+        Ok(results)
     }
 }

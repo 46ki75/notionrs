@@ -1,4 +1,4 @@
-#[derive(Debug, notionrs_macro::Setter)]
+#[derive(Debug, Clone, notionrs_macro::Setter)]
 pub struct GetBlockChildrenClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -8,6 +8,29 @@ pub struct GetBlockChildrenClient {
     pub(crate) page_size: u64,
 
     pub(crate) start_cursor: Option<String>,
+}
+
+#[async_trait::async_trait]
+impl crate::r#trait::Paginate<notionrs_types::object::block::BlockResponse>
+    for GetBlockChildrenClient
+{
+    fn paginate_start_cursor(self, start_cursor: Option<String>) -> Self {
+        match start_cursor {
+            Some(c) => self.start_cursor(c),
+            None => self,
+        }
+    }
+
+    async fn paginate_send(
+        self,
+    ) -> Result<
+        notionrs_types::object::response::ListResponse<
+            notionrs_types::object::block::BlockResponse,
+        >,
+        crate::error::Error,
+    > {
+        Ok(self.send().await?)
+    }
 }
 
 impl Default for GetBlockChildrenClient {

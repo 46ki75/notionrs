@@ -34,6 +34,7 @@ time = { version = "0.3", features = [
     "formatting",
     "macros",
 ] }
+async-trait = "0.1.88"
 
 [dev-dependencies]
 tokio = { version = "1.45.0", features = ["full"] }

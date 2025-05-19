@@ -16,11 +16,8 @@ mod integration_tests {
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
-        let response = client
-            .query_database_all()
-            .database_id(database_id)
-            .send()
-            .await?;
+        let response =
+            notionrs::Client::paginate(client.query_database().database_id(database_id)).await?;
         println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
@@ -42,11 +39,8 @@ mod integration_tests {
         let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
-        let response = client
-            .query_database_all()
-            .database_id(database_id)
-            .send()
-            .await?;
+        let response =
+            notionrs::Client::paginate(client.query_database().database_id(database_id)).await?;
         println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
@@ -74,12 +68,13 @@ mod integration_tests {
             "2024-07-01",
         );
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -102,12 +97,13 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::checkbox_is_not_checked("Checkbox"),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -157,12 +153,13 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::date_this_week("Created time"),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -185,12 +182,13 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::files_is_not_empty("Files & media"),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -257,12 +255,13 @@ mod integration_tests {
             ),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -295,12 +294,13 @@ mod integration_tests {
             ),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -331,12 +331,13 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::people_is_not_empty("User"),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -385,12 +386,13 @@ mod integration_tests {
             ),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -421,12 +423,13 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::relation_is_not_empty("Relation"),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -459,12 +462,13 @@ mod integration_tests {
             ),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -497,12 +501,13 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::rich_text_starts_with("Text", "0"),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -527,12 +532,13 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::select_is_not_empty("Select"),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -597,12 +603,13 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::timestamp_this_week(),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -633,12 +640,13 @@ mod integration_tests {
             ),
         ]);
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .filter(filter);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .filter(filter),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -666,12 +674,13 @@ mod integration_tests {
             "Created time",
         )];
 
-        let request = client
-            .query_database_all()
-            .database_id(database_id)
-            .sorts(sorts);
-
-        let response = request.send().await?;
+        let response = notionrs::Client::paginate(
+            client
+                .query_database()
+                .database_id(database_id)
+                .sorts(sorts),
+        )
+        .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 

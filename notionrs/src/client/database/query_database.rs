@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use notionrs_types::object::response::ListResponse;
 
-#[derive(Debug, Default, notionrs_macro::Setter)]
+#[derive(Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct QueryDatabaseClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -16,6 +16,25 @@ pub struct QueryDatabaseClient {
     pub(crate) start_cursor: Option<String>,
 
     pub(crate) page_size: Option<u32>,
+}
+
+#[async_trait::async_trait]
+impl crate::r#trait::Paginate<notionrs_types::object::page::PageResponse> for QueryDatabaseClient {
+    fn paginate_start_cursor(self, start_cursor: Option<String>) -> Self {
+        match start_cursor {
+            Some(c) => self.start_cursor(c),
+            None => self,
+        }
+    }
+
+    async fn paginate_send(
+        self,
+    ) -> Result<
+        notionrs_types::object::response::ListResponse<notionrs_types::object::page::PageResponse>,
+        crate::error::Error,
+    > {
+        Ok(self.send().await?)
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
@@ -36,8 +55,7 @@ pub struct QueryDatabaseRequestBody {
 impl QueryDatabaseClient {
     pub async fn send(
         self,
-    ) -> Result<ListResponse<notionrs_types::object::page::PageResponse>, crate::error::Error>
-    {
+    ) -> Result<ListResponse<notionrs_types::object::page::PageResponse>, crate::error::Error> {
         match self.database_id {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/databases/{}/query", id);
