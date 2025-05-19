@@ -19,24 +19,7 @@ pub struct SearchPageClient {
     pub(crate) page_size: Option<u32>,
 }
 
-#[async_trait::async_trait]
-impl crate::r#trait::Paginate<notionrs_types::object::page::PageResponse> for SearchPageClient {
-    fn paginate_start_cursor(self, start_cursor: Option<String>) -> Self {
-        match start_cursor {
-            Some(c) => self.start_cursor(c),
-            None => self,
-        }
-    }
-
-    async fn paginate_send(
-        self,
-    ) -> Result<
-        notionrs_types::object::response::ListResponse<notionrs_types::object::page::PageResponse>,
-        crate::error::Error,
-    > {
-        Ok(self.send().await?)
-    }
-}
+crate::impl_paginate!(SearchPageClient, notionrs_types::object::page::PageResponse);
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SearchPageRequestBody {
