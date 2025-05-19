@@ -299,26 +299,52 @@ impl Client {
 
     pub async fn paginate<C, T>(client: C) -> Result<Vec<T>, crate::error::Error>
     where
-        C: crate::r#trait::Paginate<T> + Clone,
+        C: crate::r#trait::Paginate<T> + Clone + Send + 'static,
+        T: Send + 'static,
     {
-        let mut results: Vec<T> = vec![];
-        let mut next_cursor: Option<String> = None;
-
-        loop {
-            let result = client
-                .clone()
-                .paginate_start_cursor(next_cursor.clone())
-                .paginate_send()
-                .await?;
-
-            results.extend(result.results);
-
-            match result.next_cursor {
-                Some(c) => next_cursor = Some(c),
-                None => break,
-            }
-        }
-
+        use futures::TryStreamExt;
+        let results = Self::paginate_stream(client).try_collect().await?;
         Ok(results)
+    }
+
+    pub fn paginate_stream<C, T>(
+        client: C,
+    ) -> std::pin::Pin<Box<dyn futures::Stream<Item = Result<T, crate::error::Error>> + Send>>
+    where
+        C: crate::r#trait::Paginate<T> + Clone + Send + 'static,
+        T: Send + 'static,
+    {
+        Box::pin(futures::stream::try_unfold(
+            (client, None::<String>, true, Vec::<T>::new().into_iter()),
+            |(client, next_cursor, has_more, mut buffer)| async move {
+                if let Some(item) = buffer.next() {
+                    return Ok(Some((item, (client, next_cursor, has_more, buffer))));
+                } else if !has_more {
+                    return Ok(None);
+                };
+
+                let response = client
+                    .clone()
+                    .paginate_start_cursor(next_cursor)
+                    .paginate_send()
+                    .await?;
+
+                let mut new_buffer = response.results.into_iter();
+
+                let maybe_first_item = new_buffer.next();
+
+                let state = (
+                    client,
+                    response.next_cursor,
+                    response.has_more.unwrap_or_default(),
+                    new_buffer,
+                );
+
+                match maybe_first_item {
+                    Some(first_item) => Ok(Some((first_item, state))),
+                    None => Ok(None),
+                }
+            },
+        ))
     }
 }
