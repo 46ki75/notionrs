@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use notionrs_types::object::response::ListResponse;
 
-#[derive(Debug, Default, notionrs_macro::Setter)]
+#[derive(Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct QueryDatabaseClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -17,6 +17,11 @@ pub struct QueryDatabaseClient {
 
     pub(crate) page_size: Option<u32>,
 }
+
+crate::impl_paginate!(
+    QueryDatabaseClient,
+    notionrs_types::object::page::PageResponse
+);
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct QueryDatabaseRequestBody {
@@ -36,8 +41,7 @@ pub struct QueryDatabaseRequestBody {
 impl QueryDatabaseClient {
     pub async fn send(
         self,
-    ) -> Result<ListResponse<notionrs_types::object::page::PageResponse>, crate::error::Error>
-    {
+    ) -> Result<ListResponse<notionrs_types::object::page::PageResponse>, crate::error::Error> {
         match self.database_id {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/databases/{}/query", id);

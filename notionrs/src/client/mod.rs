@@ -156,15 +156,6 @@ impl Client {
         }
     }
 
-    pub fn query_database_all(
-        &self,
-    ) -> crate::client::database::query_database_all::QueryDatabaseAllClient {
-        crate::client::database::query_database_all::QueryDatabaseAllClient {
-            reqwest_client: self.reqwest_client.clone(),
-            ..Default::default()
-        }
-    }
-
     pub fn create_database(
         &self,
     ) -> crate::client::database::create_database::CreateDatabaseClient {
@@ -211,16 +202,6 @@ impl Client {
         &self,
     ) -> crate::client::block::get_block_children::GetBlockChildrenClient {
         crate::client::block::get_block_children::GetBlockChildrenClient {
-            reqwest_client: self.reqwest_client.clone(),
-            ..Default::default()
-        }
-    }
-
-    // TODO: docs
-    pub fn get_block_children_all(
-        &self,
-    ) -> crate::client::block::get_block_children_all::GetBlockChildrenAllClient {
-        crate::client::block::get_block_children_all::GetBlockChildrenAllClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }
@@ -304,5 +285,56 @@ impl Client {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }
+    }
+
+    pub async fn paginate<C, T>(client: C) -> Result<Vec<T>, crate::error::Error>
+    where
+        C: crate::r#trait::Paginate<T> + Clone + Send + 'static,
+        T: Send + 'static,
+    {
+        use futures::TryStreamExt;
+        let results = Self::paginate_stream(client).try_collect().await?;
+        Ok(results)
+    }
+
+    pub fn paginate_stream<C, T>(
+        client: C,
+    ) -> std::pin::Pin<Box<dyn futures::Stream<Item = Result<T, crate::error::Error>> + Send>>
+    where
+        C: crate::r#trait::Paginate<T> + Clone + Send + 'static,
+        T: Send + 'static,
+    {
+        Box::pin(futures::stream::try_unfold(
+            (client, None::<String>, true, Vec::<T>::new().into_iter()),
+            |(client, next_cursor, has_more, mut buffer)| async move {
+                if let Some(item) = buffer.next() {
+                    return Ok(Some((item, (client, next_cursor, has_more, buffer))));
+                } else if !has_more {
+                    return Ok(None);
+                };
+
+                let response = client
+                    .clone()
+                    .paginate_start_cursor(next_cursor)
+                    .paginate_send()
+                    .await?;
+
+                let mut new_buffer = response.results.into_iter();
+
+                let maybe_first_item = new_buffer.next();
+
+                let state = (
+                    client,
+                    response.next_cursor,
+                    response.has_more.unwrap_or_default(),
+                    new_buffer,
+                );
+
+                match maybe_first_item {
+                    Some(first_item) => Ok(Some((first_item, state))),
+                    None => Ok(None),
+                }
+            },
+        ))
     }
 }

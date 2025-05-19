@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Default, notionrs_macro::Setter)]
+#[derive(Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct SearchDatabaseClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -18,6 +18,11 @@ pub struct SearchDatabaseClient {
     /// If not specified, the default is 100.
     pub(crate) page_size: Option<u32>,
 }
+
+crate::impl_paginate!(
+    SearchDatabaseClient,
+    notionrs_types::object::database::DatabaseResponse
+);
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct SearchDatabaseRequestBody {

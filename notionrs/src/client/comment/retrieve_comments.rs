@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-#[derive(Debug, Default, notionrs_macro::Setter)]
+#[derive(Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct RetrieveCommentsClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -11,6 +11,11 @@ pub struct RetrieveCommentsClient {
 
     pub(crate) start_cursor: Option<String>,
 }
+
+crate::impl_paginate!(
+    RetrieveCommentsClient,
+    notionrs_types::object::comment::Comment
+);
 
 #[derive(Serialize)]
 struct RetrieveCommentsQueryParams {

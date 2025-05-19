@@ -1,4 +1,4 @@
-#[derive(Debug, notionrs_macro::Setter)]
+#[derive(Debug, Clone, notionrs_macro::Setter)]
 pub struct GetBlockChildrenClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -9,6 +9,11 @@ pub struct GetBlockChildrenClient {
 
     pub(crate) start_cursor: Option<String>,
 }
+
+crate::impl_paginate!(
+    GetBlockChildrenClient,
+    notionrs_types::object::block::BlockResponse
+);
 
 impl Default for GetBlockChildrenClient {
     fn default() -> Self {
