@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Default, notionrs_macro::Setter)]
+#[derive(Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct SearchPageClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -17,6 +17,25 @@ pub struct SearchPageClient {
     /// The amount of data retrieved in one query.
     /// If not specified, the default is 100.
     pub(crate) page_size: Option<u32>,
+}
+
+#[async_trait::async_trait]
+impl crate::r#trait::Paginate<notionrs_types::object::page::PageResponse> for SearchPageClient {
+    fn paginate_start_cursor(self, start_cursor: Option<String>) -> Self {
+        match start_cursor {
+            Some(c) => self.start_cursor(c),
+            None => self,
+        }
+    }
+
+    async fn paginate_send(
+        self,
+    ) -> Result<
+        notionrs_types::object::response::ListResponse<notionrs_types::object::page::PageResponse>,
+        crate::error::Error,
+    > {
+        Ok(self.send().await?)
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
@@ -41,9 +60,7 @@ impl SearchPageClient {
     pub async fn send(
         self,
     ) -> Result<
-        notionrs_types::object::response::ListResponse<
-            notionrs_types::object::page::PageResponse,
-        >,
+        notionrs_types::object::response::ListResponse<notionrs_types::object::page::PageResponse>,
         crate::error::Error,
     > {
         let url = String::from("https://api.notion.com/v1/search");
