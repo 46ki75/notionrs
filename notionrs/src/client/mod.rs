@@ -310,6 +310,15 @@ impl Client {
         }
     }
 
+    pub fn complete_file_upload(
+        &self,
+    ) -> crate::client::file_upload::complete_file_upload::CompleteFileUploadClient {
+        crate::client::file_upload::complete_file_upload::CompleteFileUploadClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     pub fn retrieve_file_upload(
         &self,
     ) -> crate::client::file_upload::retrieve_file_upload::RetrieveFileUploadClient {
