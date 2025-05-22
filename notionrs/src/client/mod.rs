@@ -319,10 +319,10 @@ impl Client {
         }
     }
 
-    pub fn list_file_upload(
+    pub fn list_file_uploads(
         &self,
-    ) -> crate::client::file_upload::list_file_upload::ListFileUploadClient {
-        crate::client::file_upload::list_file_upload::ListFileUploadClient {
+    ) -> crate::client::file_upload::list_file_uploads::ListFileUploadClient {
+        crate::client::file_upload::list_file_uploads::ListFileUploadClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }

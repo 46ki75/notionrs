@@ -8,7 +8,7 @@ mod integration_tests {
 
         let client = notionrs::Client::new().secret(secret);
 
-        let _response = client.list_file_upload().send().await?;
+        let _response = client.list_file_uploads().send().await?;
 
         Ok(())
     }
@@ -21,7 +21,7 @@ mod integration_tests {
 
         let client = notionrs::Client::new().secret(secret);
 
-        let _response = notionrs::Client::paginate(client.list_file_upload()).await?;
+        let _response = notionrs::Client::paginate(client.list_file_uploads()).await?;
 
         Ok(())
     }
