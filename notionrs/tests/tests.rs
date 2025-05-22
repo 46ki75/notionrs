@@ -4,6 +4,8 @@ mod block;
 mod comment;
 #[path = "database/mod.rs"]
 mod database;
+#[path = "file_upload/mod.rs"]
+mod file_upload;
 #[path = "page/mod.rs"]
 mod page;
 #[path = "search.rs"]
