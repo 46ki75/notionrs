@@ -26,7 +26,7 @@ pub struct FileUpload {
 
     pub content_type: String,
 
-    pub content_length: u64,
+    pub content_length: Option<u64>,
 
     pub number_of_parts: Option<NumberOfParts>,
 }
