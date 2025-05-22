@@ -809,7 +809,7 @@ dependencies = [
 
 [[package]]
 name = "notionrs_types"
-version = "1.0.0-rc.4"
+version = "1.0.0-rc.5"
 dependencies = [
  "notionrs_macro 1.0.0-alpha.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",

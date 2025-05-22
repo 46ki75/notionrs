@@ -22,9 +22,9 @@ pub struct FileUpload {
 
     pub status: FileUploadStatus,
 
-    pub filename: String,
+    pub filename: Option<String>,
 
-    pub content_type: String,
+    pub content_type: Option<String>,
 
     pub content_length: Option<u64>,
 
@@ -94,6 +94,6 @@ mod unit_tests {
 
         assert_eq!(object, "file_upload".to_owned());
         assert_eq!(id, "1fb34608-d5c9-81c5-8327-00b20e785bdb".to_owned());
-        assert_eq!(filename, "85323087.jpg".to_owned());
+        assert_eq!(filename, Some("85323087.jpg".to_owned()));
     }
 }
