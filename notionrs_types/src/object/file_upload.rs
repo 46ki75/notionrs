@@ -11,8 +11,8 @@ pub struct FileUpload {
     #[serde(with = "time::serde::rfc3339")]
     pub last_edited_time: time::OffsetDateTime,
 
-    #[serde(with = "time::serde::rfc3339")]
-    pub expiry_time: time::OffsetDateTime,
+    #[serde(with = "time::serde::rfc3339::option")]
+    pub expiry_time: Option<time::OffsetDateTime>,
 
     pub upload_url: Option<String>,
 
