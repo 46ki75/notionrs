@@ -38,15 +38,10 @@ use serde::{Deserialize, Serialize};
 /// ```
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 #[non_exhaustive]
-#[serde(tag = "type")]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum File {
-    #[serde(rename = "external")]
     External(ExternalFile),
-
-    #[serde(rename = "file")]
     NotionHosted(NotionHostedFile),
-
-    #[serde(rename = "file_upload")]
     ApiUploaded(ApiUploadedFile),
 }
 
