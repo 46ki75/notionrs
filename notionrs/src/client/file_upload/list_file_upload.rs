@@ -11,7 +11,7 @@ pub struct ListFileUploadClient {
     pub page_size: Option<u8>,
 }
 
-#[derive(Debug, Default, serde::Serialize, notionrs_macro::Setter)]
+#[derive(Debug, Default, serde::Serialize)]
 pub struct ListFileUploadQueryParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status: Option<FileUploadStatus>,

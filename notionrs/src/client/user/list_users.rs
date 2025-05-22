@@ -1,8 +1,10 @@
 use serde::Serialize;
 
+use notionrs_types::prelude::*;
+
 /// A request builder for performing `list_users` operations.
 
-#[derive(Debug, Default, notionrs_macro::Setter)]
+#[derive(Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct ListUsersClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
@@ -13,110 +15,37 @@ pub struct ListUsersClient {
     /// The number of items to fetch at once. Defaults to 100 if not specified.
     /// Minimum 1, maximum 100
     pub(crate) page_size: Option<u8>,
-
-    /// Whether to fetch data recursively.
-    /// If `true`, fetches all data without pagination.
-    /// If `false`, performs pagination.
-    pub(crate) recursive: bool,
 }
 
 /// Query parameters for making requests to the endpoint.
-#[derive(Serialize)]
-struct LinsUserQueryParams {
+#[derive(Serialize, Debug, Clone)]
+struct ListUserQueryParams {
     /// If supplied, this endpoint will return a page of results starting after the cursor provided.
     /// If not supplied, this endpoint will return the first page of results.
+    #[serde(skip_serializing_if = "Option::is_none")]
     start_cursor: Option<String>,
 
     /// The number of items from the full list desired in the response. Maximum: 100
+    #[serde(skip_serializing_if = "Option::is_none")]
     page_size: Option<u8>,
 }
 
+crate::impl_paginate!(ListUsersClient, User);
+
 impl ListUsersClient {
     /// Send a request to the API endpoint of Notion.
-    pub async fn send(
-        &mut self,
-    ) -> Result<
-        notionrs_types::object::response::ListResponse<notionrs_types::object::user::User>,
-        crate::error::Error,
-    > {
+    pub async fn send(self) -> Result<ListResponse<User>, crate::error::Error> {
         let url = "https://api.notion.com/v1/users";
-        let mut results = Vec::new();
 
-        if self.recursive {
-            loop {
-                let params = LinsUserQueryParams {
-                    start_cursor: self.start_cursor.clone(),
-                    page_size: Some(100),
-                };
+        let params = ListUserQueryParams {
+            start_cursor: self.start_cursor.clone(),
+            page_size: self.page_size,
+        };
 
-                let request = self.reqwest_client.get(url).query(&params);
+        let request = self.reqwest_client.get(url).query(&params);
 
-                let response = request
-                    .send()
-                    .await
-                    .map_err(|e| crate::error::Error::Network(e.to_string()))?;
+        let response: ListResponse<User> = crate::util::send_and_convert(request).await?;
 
-                if !response.status().is_success() {
-                    return Err(crate::error::Error::try_from_response_async(response).await);
-                }
-
-                let body = response
-                    .bytes()
-                    .await
-                    .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
-
-                let users_response = serde_json::from_slice::<
-                    notionrs_types::object::response::ListResponse<
-                        notionrs_types::object::user::User,
-                    >,
-                >(&body)?;
-
-                results.extend(users_response.results);
-
-                match users_response.next_cursor {
-                    Some(next_cursor) => {
-                        self.start_cursor = Some(next_cursor.clone());
-                    }
-                    None => break,
-                }
-            }
-
-            Ok(notionrs_types::object::response::ListResponse {
-                object: "list".to_string(),
-                r#type: Some("user".to_string()),
-                results,
-                next_cursor: None,
-                has_more: Some(false),
-            })
-        } else {
-            let params = LinsUserQueryParams {
-                start_cursor: self.start_cursor.clone(),
-                page_size: self.page_size,
-            };
-
-            let request = self.reqwest_client.get(url).query(&params);
-
-            let response = request
-                .send()
-                .await
-                .map_err(|e| crate::error::Error::Network(e.to_string()))?;
-
-            if !response.status().is_success() {
-                return Err(crate::error::Error::try_from_response_async(response).await);
-            }
-
-            let body = response
-                .bytes()
-                .await
-                .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
-
-            let users = serde_json::from_slice::<
-                notionrs_types::object::response::ListResponse<
-                    notionrs_types::object::user::User,
-                >,
-            >(&body)?;
-
-            Ok(users)
-        }
+        Ok(response)
     }
 }
