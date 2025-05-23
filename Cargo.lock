@@ -753,7 +753,7 @@ dependencies = [
  "dotenvy",
  "futures",
  "notionrs_macro 1.0.0-alpha.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "notionrs_types 1.0.0-rc.1",
+ "notionrs_types 1.0.0-rc.5",
  "reqwest",
  "serde",
  "serde_json",
@@ -786,23 +786,23 @@ dependencies = [
 
 [[package]]
 name = "notionrs_types"
-version = "1.0.0-rc.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a2c8edef7e97723947e28f8133bdd905528a35b0e19a63050c4297c74219a32a"
+version = "1.0.0-rc.2"
 dependencies = [
  "notionrs_macro 1.0.0-alpha.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
+ "serde_json",
  "serde_plain",
  "time",
 ]
 
 [[package]]
 name = "notionrs_types"
-version = "1.0.0-rc.2"
+version = "1.0.0-rc.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "06c187f2e5420d2cee0a9ace4f9d443e72d97cc4018f831d53db272d0b1e97d1"
 dependencies = [
  "notionrs_macro 1.0.0-alpha.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
- "serde_json",
  "serde_plain",
  "time",
 ]
