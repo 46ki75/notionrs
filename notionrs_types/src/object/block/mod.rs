@@ -380,13 +380,14 @@ mod unit_tests {
 
         match block.block {
             Block::File { file } => match file {
-                crate::object::file::File::Uploaded(uploaded_file) => {
+                crate::object::file::File::NotionHosted(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.name,
                         Some("2024-07-18 202106.png".to_string())
                     )
                 }
                 crate::object::file::File::External(_) => panic!("Unexpected!"),
+                _ => panic!(),
             },
             _ => panic!("Unexpected!"),
         }
@@ -433,13 +434,14 @@ mod unit_tests {
 
         match block.block {
             Block::Image { image } => match image {
-                crate::object::file::File::Uploaded(uploaded_file) => {
+                crate::object::file::File::NotionHosted(uploaded_file) => {
                     assert_eq!(
                         uploaded_file.file.url,
                         "https://prod-files-secure.s3.us-west-2.amazonaws.com/"
                     )
                 }
                 crate::object::file::File::External(_) => panic!("Unexpected!"),
+                _ => panic!(),
             },
             _ => panic!("Unexpected!"),
         }

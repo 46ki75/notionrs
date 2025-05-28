@@ -127,7 +127,7 @@ mod unit_tests {
 
         for file in &file.files {
             match &file {
-                crate::object::file::File::Uploaded(f) => {
+                crate::object::file::File::NotionHosted(f) => {
                     assert_eq!(f.name, Some("0208a.jpg".to_string()));
                     assert_eq!(
                         f.file.url,
@@ -139,6 +139,7 @@ mod unit_tests {
                     assert_eq!(f.name, Some("Favicon.ico".to_string()));
                     assert_eq!(f.external.url, "https://www.notion.so/images/favicon.ico");
                 }
+                _ => panic!(),
             }
         }
     }

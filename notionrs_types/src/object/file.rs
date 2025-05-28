@@ -37,10 +37,12 @@ use serde::{Deserialize, Serialize};
 /// }
 /// ```
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
-#[serde(untagged)]
+#[non_exhaustive]
+#[serde(untagged, rename_all = "snake_case")]
 pub enum File {
     External(ExternalFile),
-    Uploaded(UploadedFile),
+    NotionHosted(NotionHostedFile),
+    ApiUploaded(ApiUploadedFile),
 }
 
 impl File {
@@ -49,7 +51,8 @@ impl File {
     pub fn get_url(&self) -> String {
         match self {
             File::External(f) => f.external.url.clone(),
-            File::Uploaded(f) => f.file.url.clone(),
+            File::NotionHosted(f) => f.file.url.clone(),
+            File::ApiUploaded(_) => unimplemented!(),
         }
     }
 
@@ -91,7 +94,8 @@ impl std::fmt::Display for File {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             File::External(file) => write!(f, "{}", file),
-            File::Uploaded(file) => write!(f, "{}", file),
+            File::NotionHosted(file) => write!(f, "{}", file),
+            File::ApiUploaded(_) => unimplemented!(),
         }
     }
 }
@@ -123,11 +127,6 @@ impl Default for File {
 /// ```
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 pub struct ExternalFile {
-    /// always "external"
-    // An error occurs if this field is present when calling the block creation API.
-    #[serde(skip_serializing)]
-    pub r#type: String,
-
     /// file
     pub external: ExternalFileParameter,
 
@@ -159,7 +158,6 @@ impl ExternalFile {
 impl Default for ExternalFile {
     fn default() -> Self {
         Self {
-            r#type: "external".to_string(),
             external: ExternalFileParameter::default(),
             name: None,
             caption: None,
@@ -194,11 +192,9 @@ impl std::fmt::Display for ExternalFileParameter {
 //
 // # --------------------------------------------------------------------------------
 
-/// ## UploadedFile
+/// ## NotionHostedFile
 ///
 /// **This struct is read-only.**
-///
-/// **Note**: The Notion API does not support file uploads.
 ///
 /// When a file is uploaded to Notion, it becomes an object as shown below.
 ///
@@ -212,12 +208,9 @@ impl std::fmt::Display for ExternalFileParameter {
 /// }
 /// ```
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
-pub struct UploadedFile {
-    /// always "file"
-    pub r#type: String,
-
+pub struct NotionHostedFile {
     /// file
-    pub file: UploadedFileParameter,
+    pub file: NotionHostedFileParameter,
 
     /// File caption (can only be set in the file type block or database properties)
     pub name: Option<String>,
@@ -226,7 +219,7 @@ pub struct UploadedFile {
     pub caption: Option<Vec<crate::object::rich_text::RichText>>,
 }
 
-impl std::fmt::Display for UploadedFile {
+impl std::fmt::Display for NotionHostedFile {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.file.url)
     }
@@ -234,7 +227,7 @@ impl std::fmt::Display for UploadedFile {
 
 /// file
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
-pub struct UploadedFileParameter {
+pub struct NotionHostedFileParameter {
     /// Signed URL for the file (Amazon S3)
     pub url: String,
 
@@ -242,21 +235,41 @@ pub struct UploadedFileParameter {
     pub expiry_time: String,
 }
 
-impl std::fmt::Display for UploadedFileParameter {
+impl std::fmt::Display for NotionHostedFileParameter {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.url)
     }
 }
 
-impl Default for UploadedFile {
+impl Default for NotionHostedFile {
     fn default() -> Self {
         Self {
-            r#type: "file".to_string(),
-            file: UploadedFileParameter::default(),
+            file: NotionHostedFileParameter::default(),
             name: None,
             caption: None,
         }
     }
+}
+
+// # --------------------------------------------------------------------------------
+//
+// file (uploaded via notion api)
+//
+// # --------------------------------------------------------------------------------
+
+/// ## ExternalFile
+///
+/// <https://developers.notion.com/reference/file-object#files-uploaded-in-the-api-type-file_upload>
+///
+/// This struct is used **only when sending a request**.
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+pub struct ApiUploadedFile {
+    pub file_upload: ApiUploadedFileParameter,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+pub struct ApiUploadedFileParameter {
+    pub id: String,
 }
 
 // # --------------------------------------------------------------------------------
@@ -284,7 +297,6 @@ mod unit_tests {
 
         assert_eq!(file.name, None);
         assert_eq!(file.caption, None);
-        assert_eq!(file.r#type, "external");
         assert_eq!(
             file.external.url,
             "https://www.notion.so/images/favicon.ico"
@@ -303,11 +315,10 @@ mod unit_tests {
         }
         "#;
 
-        let file = serde_json::from_str::<UploadedFile>(json_data).unwrap();
+        let file = serde_json::from_str::<NotionHostedFile>(json_data).unwrap();
 
         assert_eq!(file.name, None);
         assert_eq!(file.caption, None);
-        assert_eq!(file.r#type, "file");
         assert_eq!(
             file.file.url,
             "https://prod-files-secure.s3.us-west-2.amazonaws.com/daa95f86-2d56-4e18-be3b-16d81b31dc0d"

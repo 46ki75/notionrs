@@ -1,11 +1,10 @@
 pub mod block;
 pub mod comment;
 pub mod database;
+pub mod file_upload;
 pub mod page;
 pub mod search;
 pub mod user;
-
-use std::env;
 
 #[derive(Default, Debug)]
 pub struct Client {
@@ -17,7 +16,7 @@ impl Client {
     pub fn new() -> Self {
         let mut headers = reqwest::header::HeaderMap::new();
 
-        let secret = env::var("NOTION_TOKEN").unwrap_or_else(|_| String::new());
+        let secret = std::env::var("NOTION_TOKEN").unwrap_or_else(|_| String::new());
 
         headers.insert(
             "Notion-Version",
@@ -282,6 +281,57 @@ impl Client {
         &self,
     ) -> crate::client::comment::retrieve_comments::RetrieveCommentsClient {
         crate::client::comment::retrieve_comments::RetrieveCommentsClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // File Upload
+    //
+    // # --------------------------------------------------------------------------------
+
+    pub fn create_file_upload(
+        &self,
+    ) -> crate::client::file_upload::create_file_upload::CreateFileUploadClient {
+        crate::client::file_upload::create_file_upload::CreateFileUploadClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn send_file_upload(
+        &self,
+    ) -> crate::client::file_upload::send_file_upload::SendFileUploadClient {
+        crate::client::file_upload::send_file_upload::SendFileUploadClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn complete_file_upload(
+        &self,
+    ) -> crate::client::file_upload::complete_file_upload::CompleteFileUploadClient {
+        crate::client::file_upload::complete_file_upload::CompleteFileUploadClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn retrieve_file_upload(
+        &self,
+    ) -> crate::client::file_upload::retrieve_file_upload::RetrieveFileUploadClient {
+        crate::client::file_upload::retrieve_file_upload::RetrieveFileUploadClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn list_file_uploads(
+        &self,
+    ) -> crate::client::file_upload::list_file_uploads::ListFileUploadClient {
+        crate::client::file_upload::list_file_uploads::ListFileUploadClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }

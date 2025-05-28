@@ -2,7 +2,7 @@
 async fn main() -> Result<(), notionrs::error::Error> {
     let client = notionrs::client::Client::new();
 
-    let mut request = client.list_users();
+    let request = client.list_users();
 
     let response = request.send().await?;
 
