@@ -66,6 +66,16 @@ pub struct BotOwner {
 
     /// Whether the bot's owner is the workspace.
     pub workspace: bool,
+
+    /// Information about the limits and restrictions that apply to the bot's workspace.
+    pub workspace_limits: Option<WorkspaceLimits>,
+}
+
+/// Information about the limits and restrictions that apply to the bot's workspace.
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default, notionrs_macro::Setter)]
+pub struct WorkspaceLimits {
+    /// The maximum allowable size of a file upload, in bytes.
+    pub max_file_upload_size_in_bytes: u64,
 }
 
 impl Default for User {
@@ -109,7 +119,10 @@ mod unit_tests {
                     "type": "workspace",
                     "workspace": true
                 },
-                "workspace_name": "notionrs integration test"
+                "workspace_name": "notionrs integration test",
+                "workspace_limits": {
+                    "max_file_upload_size_in_bytes": 5368709120
+                }
             }
         }
         "#;
