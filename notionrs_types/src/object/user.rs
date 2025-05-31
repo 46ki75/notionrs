@@ -119,7 +119,10 @@ mod unit_tests {
                     "type": "workspace",
                     "workspace": true
                 },
-                "workspace_name": "notionrs integration test"
+                "workspace_name": "notionrs integration test",
+                "workspace_limits": {
+                    "max_file_upload_size_in_bytes": 5368709120
+                }
             }
         }
         "#;
