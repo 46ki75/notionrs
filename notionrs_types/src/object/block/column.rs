@@ -6,6 +6,8 @@ pub struct ColumnBlock {
     /// If you need to retrieve the child blocks, you will have to send a request to this block again.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub children: Option<Vec<super::Block>>,
+
+    pub width_ratio: f64,
 }
 
 impl ColumnBlock {
