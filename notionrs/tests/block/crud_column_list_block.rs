@@ -29,7 +29,11 @@ mod integration_tests {
         };
 
         let block = Block::ColumnList {
-            column_list: ColumnListBlock::default().children(vec![child.clone(), child.clone()]),
+            column_list: ColumnListBlock::default().children(vec![
+                child.clone(),
+                child.clone(),
+                child.clone(),
+            ]),
         };
 
         let request = client
