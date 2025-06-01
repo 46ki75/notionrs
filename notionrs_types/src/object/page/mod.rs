@@ -89,7 +89,9 @@ impl std::fmt::Display for PageProperty {
 
 /// <https://developers.notion.com/reference/page>
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct PageResponse {
+pub struct PageResponse<
+    PropertyMap = std::collections::HashMap<String, crate::object::page::PageProperty>,
+> {
     pub id: String,
     #[serde(with = "time::serde::rfc3339")]
     pub created_time: time::OffsetDateTime,
@@ -101,7 +103,7 @@ pub struct PageResponse {
     pub icon: Option<Icon>,
     pub parent: Parent,
     pub archived: bool,
-    pub properties: std::collections::HashMap<String, crate::object::page::PageProperty>,
+    pub properties: PropertyMap,
     pub url: String,
     pub public_url: Option<String>,
     pub developer_survey: Option<String>,
@@ -117,6 +119,7 @@ pub struct PageResponse {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
 
     #[test]
     fn deserialize_wiki_page() {
@@ -132,6 +135,76 @@ mod tests {
 
         let _page = serde_json::from_str::<crate::object::page::PageResponse>(json_data)
             .expect("An error occurred while deserializing the page");
+    }
+
+    #[test]
+    fn deserialize_page_custom_struct() {
+        let json_data = include_str!("./seeds/page.json");
+
+        #[derive(Debug, serde::Deserialize, serde::Serialize, Clone)]
+        struct CustomProperty {
+            #[serde(rename = "Files & media")]
+            files: files::PageFilesProperty,
+
+            #[serde(rename = "User")]
+            user: people::PagePeopleProperty,
+
+            email: email::PageEmailProperty,
+
+            #[serde(rename = "Date")]
+            date: date::PageDateProperty,
+
+            #[serde(rename = "Checkbox")]
+            checkbox: checkbox::PageCheckboxProperty,
+
+            #[serde(rename = "URL")]
+            url: url::PageUrlProperty,
+
+            #[serde(rename = "Phone Number")]
+            phone_number: phone_number::PagePhoneNumberProperty,
+
+            #[serde(rename = "Text")]
+            text: rich_text::PageRichTextProperty,
+
+            #[serde(rename = "Select")]
+            select: select::PageSelectProperty,
+
+            #[serde(rename = "Button")]
+            button: button::PageButtonProperty,
+
+            #[serde(rename = "Relation")]
+            relation: relation::PageRelationProperty,
+
+            #[serde(rename = "LastUpdatedBy")]
+            last_edited_by: last_edited_by::PageLastEditedByProperty,
+
+            #[serde(rename = "ID")]
+            unique_id: unique_id::PageUniqueIdProperty,
+
+            #[serde(rename = "Multi-select")]
+            multi_select: multi_select::PageMultiSelectProperty,
+
+            #[serde(rename = "LastUpdatedAt")]
+            last_edited_time: last_edited_time::PageLastEditedTimeProperty,
+
+            formula: formula::PageFormulaProperty,
+
+            #[serde(rename = "CreatedBy")]
+            created_by: created_by::PageCreatedByProperty,
+
+            #[serde(rename = "Status")]
+            status: status::PageStatusProperty,
+
+            #[serde(rename = "Rollup")]
+            rollup: rollup::PageRollupProperty,
+
+            #[serde(rename = "Title")]
+            title: title::PageTitleProperty,
+        }
+
+        let _page =
+            serde_json::from_str::<crate::object::page::PageResponse<CustomProperty>>(json_data)
+                .expect("An error occurred while deserializing the page");
     }
 
     #[test]
