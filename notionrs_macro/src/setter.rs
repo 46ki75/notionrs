@@ -15,10 +15,13 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
     let field_setters = fields.iter().map(|f| {
         let field_name = &f.ident;
         let field_ty = &f.ty;
+        let attribute = &f.attrs;
 
         let comment = generate_comment(f);
 
-        if is_string_type(field_ty) {
+        if is_skip(attribute) {
+            quote! {}
+        } else if is_string_type(field_ty) {
             quote! {
                 #comment
                 pub fn #field_name<T>(mut self, #field_name: T) -> Self
@@ -142,4 +145,9 @@ fn is_string_type(ty: &Type) -> bool {
         }
     }
     false
+}
+
+fn is_skip(attrs: &Vec<syn::Attribute>) -> bool {
+    let flag = attrs.iter().any(|attr| attr.path().is_ident("skip"));
+    flag
 }
