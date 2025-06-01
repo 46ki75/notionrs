@@ -24,8 +24,8 @@ pub mod unique_id;
 pub mod url;
 pub mod verification;
 
-#[derive(Debug, Deserialize, Serialize, Clone, notionrs_macro::Setter)]
-pub struct DatabaseResponse {
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct DatabaseResponse<PropertyMap = std::collections::HashMap<String, DatabaseProperty>> {
     pub id: String,
 
     pub created_time: String,
@@ -54,7 +54,7 @@ pub struct DatabaseResponse {
 
     pub description: Vec<crate::object::rich_text::RichText>,
 
-    pub properties: std::collections::HashMap<String, DatabaseProperty>,
+    pub properties: PropertyMap,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
