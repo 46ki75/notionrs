@@ -7,6 +7,9 @@ pub struct TestDeriveSetter {
     pub i32_field: i32,
 
     pub i32_option_field: Option<i32>,
+
+    #[skip]
+    pub skip: String,
 }
 
 #[test]
