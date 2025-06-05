@@ -10,6 +10,8 @@ pub struct UpdatePageClient {
     pub(crate) properties:
         std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
 
+    pub(crate) in_trash: Option<bool>,
+
     pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
 
     pub(crate) cover: Option<notionrs_types::object::file::File>,
@@ -19,6 +21,9 @@ pub struct UpdatePageClient {
 pub struct UpdatePageRequestBody {
     pub(crate) properties:
         std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) in_trash: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
@@ -37,6 +42,7 @@ impl UpdatePageClient {
 
         let request_body_struct = UpdatePageRequestBody {
             properties: self.properties,
+            in_trash: self.in_trash,
             icon: self.icon,
             cover: self.cover,
         };
