@@ -13,7 +13,7 @@
     "devDependencies": {
         "@types/node": "^24.0.3",
         "dotenv": "^16.5.0",
-        "prettier": "^3.5.3",
+        "prettier": "^3.6.1",
         "tsx": "^4.20.3",
         "typescript": "^5.8.3"
     },
