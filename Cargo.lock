@@ -823,7 +823,7 @@ dependencies = [
 
 [[package]]
 name = "notionrs_types"
-version = "1.0.0-rc.9"
+version = "1.0.0-rc.10"
 dependencies = [
  "notionrs_macro 1.0.0-alpha.1",
  "serde",
