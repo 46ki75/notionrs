@@ -12,7 +12,7 @@ pub struct CalloutBlock {
     pub rich_text: Vec<crate::object::rich_text::RichText>,
 
     /// An emoji or file object that represents the callout's icon. If the callout does not have an icon.
-    pub icon: crate::object::icon::Icon,
+    pub icon: Option<crate::object::icon::Icon>,
 
     /// The color of the block.
     pub color: crate::object::color::Color,
@@ -113,7 +113,7 @@ mod unit_tests {
             _ => panic!(),
         }
 
-        match callout.icon {
+        match callout.icon.unwrap() {
             crate::object::icon::Icon::Emoji(emoji) => {
                 assert_eq!(emoji.r#type, "emoji");
                 assert_eq!(emoji.emoji, "💡".to_string());
