@@ -1,7 +1,7 @@
 [package]
 name = "notionrs_types"
 description = "Shared schema definitions for the Notion API used by the notionrs ecosystem."
-version = "1.0.0-rc.9"
+version = "1.0.0-rc.10"
 edition = "2024"
 authors = ["Chomolungma Shirayuki"]
 repository = "https://github.com/46ki75/notionrs"
