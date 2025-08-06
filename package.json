@@ -18,6 +18,6 @@
         "typescript": "^5.9.2"
     },
     "dependencies": {
-        "vitepress": "^1.6.3"
+        "vitepress": "^1.6.4"
     }
 }
