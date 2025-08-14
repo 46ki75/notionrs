@@ -12,6 +12,6 @@ documentation = "https://docs.rs/notionrs"
 proc-macro = true
 
 [dependencies]
-syn = { version = "2.0.104", features = ["derive", "parsing"] }
+syn = { version = "2.0.105", features = ["derive", "parsing"] }
 proc-macro2 = "1.0.97"
 quote = "1.0.40"
