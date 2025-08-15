@@ -34,7 +34,7 @@ time = { version = "0.3", features = [
     "formatting",
     "macros",
 ] }
-async-trait = "0.1.88"
+async-trait = "0.1.89"
 futures = "0.3.31"
 bytes = "1.10.1"
 
