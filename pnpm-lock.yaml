@@ -16,8 +16,8 @@ importers:
         specifier: ^24.3.0
         version: 24.3.0
       dotenv:
-        specifier: ^17.2.1
-        version: 17.2.1
+        specifier: ^17.2.2
+        version: 17.2.2
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
@@ -811,8 +811,8 @@ packages:
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
 
-  dotenv@17.2.1:
-    resolution: {integrity: sha512-kQhDYKZecqnM0fCnzI5eIv5L4cAe/iRI+HqMbO/hbRdTAeXDG+M9FjipUxNfbARuEg4iHIbhnhs78BCHNbSxEQ==}
+  dotenv@17.2.2:
+    resolution: {integrity: sha512-Sf2LSQP+bOlhKWWyhFsn0UsfdK/kCWRv1iuA2gXAwt3dyNabr6QSj00I2V10pidqz69soatm9ZwZvpQMTIOd5Q==}
     engines: {node: '>=12'}
 
   emoji-regex-xs@1.0.0:
@@ -1735,7 +1735,7 @@ snapshots:
     dependencies:
       dequal: 2.0.3
 
-  dotenv@17.2.1: {}
+  dotenv@17.2.2: {}
 
   emoji-regex-xs@1.0.0: {}
 
