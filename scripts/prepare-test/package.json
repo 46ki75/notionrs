@@ -2,6 +2,6 @@
     "name": "prepare-test",
     "type": "module",
     "dependencies": {
-        "@notionhq/client": "^4.0.2"
+        "@notionhq/client": "^5.0.0"
     }
 }
