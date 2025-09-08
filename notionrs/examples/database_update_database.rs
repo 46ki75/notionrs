@@ -1,5 +1,5 @@
-use notionrs_types::prelude::*;
 use notionrs::{Client, Error};
+use notionrs_types::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
@@ -18,7 +18,7 @@ async fn main() -> Result<(), Error> {
             .id("id"),
         Select::default()
             .color(SelectColor::Green)
-            .name("SoC")
+            .name("TPM")
             .id("id"),
     ];
 

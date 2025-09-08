@@ -34,7 +34,7 @@ async fn main() -> Result<(), Error> {
             .id("id"),
         Select::default()
             .color(SelectColor::Green)
-            .name("SoC")
+            .name("TPM")
             .id("id"),
     ];
 
