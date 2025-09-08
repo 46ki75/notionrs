@@ -77,7 +77,7 @@ mod integration_tests {
                 .id("id"),
             notionrs_types::object::select::Select::default()
                 .color(notionrs_types::object::select::SelectColor::Green)
-                .name("SoC")
+                .name("TPM")
                 .id("id"),
         ];
 
