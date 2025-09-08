@@ -15,7 +15,7 @@ readme = "./README.md"
 serde = { version = "1.0", features = ["derive"] }
 serde_plain = "1.0"
 
-notionrs_macro = { version = "0.1.0", path = "../notionrs_macro" }
+notionrs_macro = { version = "0.2.0", path = "../notionrs_macro" }
 time = { version = "0.3", features = [
     "serde",
     "parsing",

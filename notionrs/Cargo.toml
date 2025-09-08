@@ -15,7 +15,7 @@ readme = "../README.md"
 
 [dependencies]
 notionrs_types = { version = "0.1.0", path = "../notionrs_types" }
-notionrs_macro = { version = "0.1.0", path = "../notionrs_macro" }
+notionrs_macro = { version = "0.2.0", path = "../notionrs_macro" }
 
 reqwest = { version = "0.12", features = [
     "gzip",
