@@ -12,6 +12,7 @@ pub struct CalloutBlock {
     pub rich_text: Vec<crate::object::rich_text::RichText>,
 
     /// An emoji or file object that represents the callout's icon. If the callout does not have an icon.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub icon: Option<crate::object::icon::Icon>,
 
     /// The color of the block.
