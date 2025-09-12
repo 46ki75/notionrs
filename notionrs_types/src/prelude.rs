@@ -5,7 +5,7 @@ pub use crate::object::{
         link_preview::*, numbered_list_item::*, paragraph::*, quote::*, synced_block::*, table::*,
         table_of_contents::*, table_row::*, template::*, to_do::*, toggle::*,
     },
-    database::{
+    data_source::{
         DatabaseProperty, DatabaseResponse, button::*, checkbox::*, created_by::*, created_time::*,
         date::*, email::*, files::*, formula::*, last_edited_by::*, last_edited_time::*,
         multi_select::*, number::*, people::*, phone_number::*, relation::*, rich_text::*,

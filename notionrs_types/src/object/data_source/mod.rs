@@ -109,7 +109,7 @@ mod unit_tests {
                 assert_eq!(num.name, "Number");
                 assert_eq!(
                     num.number.format,
-                    crate::object::database::number::NumberFormat::Number
+                    crate::object::data_source::number::NumberFormat::Number
                 );
             }
             _ => {

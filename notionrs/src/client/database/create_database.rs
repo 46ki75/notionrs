@@ -16,7 +16,7 @@ pub struct CreateDatabaseClient {
     pub(crate) description: Vec<RichText>,
 
     pub(crate) properties:
-        std::collections::HashMap<String, notionrs_types::object::database::DatabaseProperty>,
+        std::collections::HashMap<String, notionrs_types::object::data_source::DatabaseProperty>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
@@ -28,7 +28,7 @@ pub struct CreateDatabaseClient {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateDatabaseRequestBodyPropertyPart {
     pub(crate) initial_data_source:
-        std::collections::HashMap<String, notionrs_types::object::database::DatabaseProperty>,
+        std::collections::HashMap<String, notionrs_types::object::data_source::DatabaseProperty>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -57,7 +57,7 @@ pub struct CreateDatabaseRequestBody {
 impl CreateDatabaseClient {
     pub async fn send(
         self,
-    ) -> Result<notionrs_types::object::database::DatabaseResponse, crate::error::Error> {
+    ) -> Result<notionrs_types::object::data_source::DatabaseResponse, crate::error::Error> {
         let page_id = self.page_id.unwrap();
 
         let request_body_struct = CreateDatabaseRequestBody {
@@ -95,8 +95,8 @@ impl CreateDatabaseClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let database: notionrs_types::object::database::DatabaseResponse =
-            serde_json::from_slice::<notionrs_types::object::database::DatabaseResponse>(&body)?;
+        let database: notionrs_types::object::data_source::DatabaseResponse =
+            serde_json::from_slice::<notionrs_types::object::data_source::DatabaseResponse>(&body)?;
 
         Ok(database)
     }

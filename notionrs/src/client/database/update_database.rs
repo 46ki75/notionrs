@@ -23,7 +23,7 @@ pub struct UpdateDatabaseClient {
     /// Note that it differs from the `create_database()` method in that it is optional.
     pub(crate) properties: std::collections::HashMap<
         String,
-        Option<notionrs_types::object::database::DatabaseProperty>,
+        Option<notionrs_types::object::data_source::DatabaseProperty>,
     >,
 
     /// This can be configured even though it's not in the official Notion API documentation
@@ -52,7 +52,7 @@ pub struct UpdateDatabaseRequestBody {
     /// Note that it differs from the `create_database()` method in that it is optional.
     pub(crate) properties: std::collections::HashMap<
         String,
-        Option<notionrs_types::object::database::DatabaseProperty>,
+        Option<notionrs_types::object::data_source::DatabaseProperty>,
     >,
 
     /// This can be configured even though it's not in the official Notion API documentation
@@ -67,7 +67,7 @@ pub struct UpdateDatabaseRequestBody {
 impl UpdateDatabaseClient {
     pub async fn send(
         self,
-    ) -> Result<notionrs_types::object::database::DatabaseResponse, crate::error::Error> {
+    ) -> Result<notionrs_types::object::data_source::DatabaseResponse, crate::error::Error> {
         let database_id = self
             .database_id
             .ok_or(crate::error::Error::RequestParameter(
@@ -107,8 +107,8 @@ impl UpdateDatabaseClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let database: notionrs_types::object::database::DatabaseResponse =
-            serde_json::from_slice::<notionrs_types::object::database::DatabaseResponse>(&body)?;
+        let database: notionrs_types::object::data_source::DatabaseResponse =
+            serde_json::from_slice::<notionrs_types::object::data_source::DatabaseResponse>(&body)?;
 
         Ok(database)
     }
