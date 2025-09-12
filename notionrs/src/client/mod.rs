@@ -129,6 +129,15 @@ impl Client {
         }
     }
 
+    pub fn retrieve_database(
+        &self,
+    ) -> crate::client::database::retrieve_database::RetrieveDatabaseClient {
+        crate::client::database::retrieve_database::RetrieveDatabaseClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
     // Data Source
