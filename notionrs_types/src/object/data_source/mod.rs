@@ -50,6 +50,35 @@ pub struct DatabaseResponse {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct DataSourceResponse {
+    pub id: String,
+
+    pub created_time: String,
+
+    pub last_edited_time: String,
+
+    pub parent: crate::object::parent::DatabaseParent,
+
+    pub properties: std::collections::HashMap<String, DataSourceProperty>,
+
+    pub icon: Option<crate::object::icon::Icon>,
+
+    pub cover: Option<crate::object::file::File>,
+
+    pub url: String,
+
+    pub title: Vec<crate::object::rich_text::RichText>,
+
+    pub archived: bool,
+
+    pub in_trash: bool,
+
+    pub description: Vec<crate::object::rich_text::RichText>,
+
+    pub public_url: Option<String>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum DataSourceProperty {
     Button(button::DataSourceButtonProperty),
@@ -88,35 +117,79 @@ mod unit_tests {
     use super::*;
 
     #[test]
-    pub fn aa() {
+    pub fn deserialize_data_source_response() {
         let json_data = r#"
+{
+    "object": "data_source",
+    "id": "26c34608-d5c9-811e-931b-000b5bc01985",
+    "cover": null,
+    "icon": null,
+    "created_time": "2025-05-31T02:22:00.000Z",
+    "created_by": {
+        "object": "user",
+        "id": "d7592761-a145-4788-ba2c-d67bbfaed77f"
+    },
+    "last_edited_by": {
+        "object": "user",
+        "id": "d7592761-a145-4788-ba2c-d67bbfaed77f"
+    },
+    "last_edited_time": "2025-08-31T16:29:00.000Z",
+    "title": [
         {
-            "id": "~B%7BT",
-            "name": "Number",
-            "description": "",
+            "type": "text",
+            "text": {
+                "content": "New child data source",
+                "link": null
+            },
+            "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+            },
+            "plain_text": "New child data source",
+            "href": null
+        }
+    ],
+    "description": [],
+    "is_inline": true,
+    "properties": {
+        "Count": {
+            "id": "KBHY",
+            "name": "Count",
+            "description": null,
             "type": "number",
             "number": {
                 "format": "number"
             }
+        },
+        "Title": {
+            "id": "title",
+            "name": "Title",
+            "description": null,
+            "type": "title",
+            "title": {}
         }
+    },
+    "parent": {
+        "type": "database_id",
+        "database_id": "20434608-d5c9-8048-ac7f-d7fe5f300cd3"
+    },
+    "database_parent": {
+        "type": "page_id",
+        "page_id": "20434608-d5c9-8062-a995-e4505bd3ac14"
+    },
+    "url": "https://www.notion.so/20434608d5c98048ac7fd7fe5f300cd3",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "developer_survey": "https://notionup.typeform.com/to/bllBsoI4?utm_source=postman",
+    "request_id": "aa6a89be-0b55-47e1-93e8-c0f5eedceae9"
+}
         "#;
 
-        let number = serde_json::from_str::<DataSourceProperty>(json_data).unwrap();
-
-        match number {
-            DataSourceProperty::Number(num) => {
-                assert_eq!(num.id, Some("~B%7BT".to_string()));
-                assert_eq!(num.name, "Number");
-                assert_eq!(
-                    num.number.format,
-                    crate::object::data_source::number::NumberFormat::Number
-                );
-            }
-            _ => {
-                panic!(
-                    "A different variant was detected, although a DatabaseProperty::Number variant was expected."
-                )
-            }
-        }
+        let _ = serde_json::from_str::<DataSourceResponse>(json_data).unwrap();
     }
 }
