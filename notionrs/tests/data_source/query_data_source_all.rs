@@ -15,7 +15,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
         let response =
             notionrs::Client::paginate(client.query_data_source().data_source_id(data_source_id))
                 .await?;
@@ -39,7 +40,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
         let response =
             notionrs::Client::paginate(client.query_data_source().data_source_id(data_source_id))
                 .await?;
@@ -63,7 +65,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::date_before(
             "Created time",
@@ -92,7 +95,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::checkbox_is_checked("Checkbox"),
@@ -121,7 +125,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::date_after(
@@ -177,7 +182,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::files_is_empty("Files & media"),
@@ -240,7 +246,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::multi_select_contains(
@@ -279,7 +286,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::number_does_not_equal("Number", 20),
@@ -318,7 +326,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::people_contains(
@@ -355,7 +364,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::phone_number_contains(
@@ -410,7 +420,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::relation_contains(
@@ -447,7 +458,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::rollup_any(
@@ -486,7 +498,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::rich_text_contains("Text", "0"),
@@ -525,7 +538,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::select_does_not_equal("Select", "0"),
@@ -586,7 +600,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::timestamp_after("2024-07-01"),
@@ -627,7 +642,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::unique_id_does_not_equal("ID", 20),
@@ -670,7 +686,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let sorts = vec![notionrs_types::object::request::sort::Sort::asc(
             "Created time",

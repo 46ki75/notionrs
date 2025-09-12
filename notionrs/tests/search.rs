@@ -9,9 +9,11 @@ mod integration_tests {
     #[tokio::test]
     #[serial_test::serial]
     async fn search() -> Result<(), notionrs::Error> {
-        // dotenvy::dotenv().ok();
+        dotenvy::from_path(std::path::Path::new("../.env")).ok();
 
-        // let client = notionrs::Client::new();
+        //         let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let _client = notionrs::Client::new(notion_api_key);
 
         // let request = client.search().query("").sort_timestamp_asc();
 
@@ -31,9 +33,11 @@ mod integration_tests {
     #[tokio::test]
     #[serial_test::serial]
     async fn search_page() -> Result<(), notionrs::Error> {
-        // dotenvy::dotenv().ok();
+        dotenvy::from_path(std::path::Path::new("../.env")).ok();
 
-        // let client = notionrs::Client::new();
+        //         let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let _client = notionrs::Client::new(notion_api_key);
 
         // let request = client.search_page().query("").sort_timestamp_asc();
 
@@ -53,9 +57,10 @@ mod integration_tests {
     #[tokio::test]
     #[serial_test::serial]
     async fn search_database() -> Result<(), notionrs::Error> {
-        // dotenvy::dotenv().ok();
+        dotenvy::from_path(std::path::Path::new("../.env")).ok();
 
-        // let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let _client = notionrs::Client::new(notion_api_key);
 
         // let request = client.search_database().query("").sort_timestamp_asc();
 

@@ -7,7 +7,8 @@ mod integration_tests {
         let data_source_id =
             std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+                let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         // # --------------------------------------------------------------------------------
         //

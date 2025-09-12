@@ -3,7 +3,8 @@ use notionrs_types::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = Client::new().secret("NOTION_TOKEN");
+    let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+    let client = Client::new(notion_api_key);
 
     let filter = Filter::timestamp_past_month();
 

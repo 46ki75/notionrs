@@ -6,9 +6,8 @@ mod integration_tests {
     async fn upload_file() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
-        let secret = std::env::var("NOTION_TOKEN").unwrap_or_else(|_| String::new());
-
-        let client = notionrs::Client::new().secret(secret);
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let id = client
             .create_file_upload()

@@ -4,9 +4,8 @@ mod integration_tests {
     async fn list_file_upload() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
-        let secret = std::env::var("NOTION_TOKEN").unwrap_or_else(|_| String::new());
-
-        let client = notionrs::Client::new().secret(secret);
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let _response = client.list_file_uploads().send().await?;
 
@@ -17,9 +16,8 @@ mod integration_tests {
     async fn list_file_upload_all() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
-        let secret = std::env::var("NOTION_TOKEN").unwrap_or_else(|_| String::new());
-
-        let client = notionrs::Client::new().secret(secret);
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let _response = notionrs::Client::paginate(client.list_file_uploads()).await?;
 

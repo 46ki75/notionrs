@@ -16,7 +16,8 @@ mod integration_tests {
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+                let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let rich_text = vec![RichText::from("Test Comment!")];
 
@@ -46,7 +47,8 @@ mod integration_tests {
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+                let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let request = client.retrieve_comments().block_id(page_id);
 

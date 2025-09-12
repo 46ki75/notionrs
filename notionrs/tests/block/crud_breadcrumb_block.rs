@@ -9,7 +9,8 @@ mod integration_tests {
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 
-        let client = notionrs::Client::new();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         // # --------------------------------------------------------------------------------
         //

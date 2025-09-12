@@ -1,11 +1,12 @@
 use std::collections::HashMap;
 
+use notionrs::Error;
 use notionrs_types::prelude::*;
-use notionrs::{Client, Error};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    let client = Client::new().secret("NOTION_TOKEN");
+    let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+    let client = notionrs::Client::new(notion_api_key);
 
     let title = vec![RichText::from("Database Title")];
 

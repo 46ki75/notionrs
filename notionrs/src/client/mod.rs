@@ -14,10 +14,9 @@ pub struct Client {
 
 impl Client {
     // TODO: docs: new method
-    pub fn new() -> Self {
+    pub fn new(notion_api_key: impl AsRef<str>) -> Self {
         let mut headers = reqwest::header::HeaderMap::new();
-
-        let secret = std::env::var("NOTION_TOKEN").unwrap_or_else(|_| String::new());
+        let secret = notion_api_key.as_ref().to_string();
 
         headers.insert(
             "Notion-Version",
@@ -37,42 +36,6 @@ impl Client {
         Client {
             reqwest_client: client,
         }
-    }
-
-    /// This method sets the token used for calling the Notion API.
-    /// If you don't set it, the client will automatically read
-    /// and use the environment variable named `NOTION_TOKEN` during initialization.
-    ///
-    /// For details on obtaining a Notion token, please refer to the
-    /// [Notion Developer Documentation](https://developers.notion.com/docs/authorization).
-    ///
-    /// ```no_run
-    /// use notionrs::client::Client;
-    /// // ...
-    /// let client = Client::new().secret("secret_XXXXXXXXXXXXXX");
-    /// ```
-    pub fn secret<T>(mut self, notion_api_key: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        let mut headers = reqwest::header::HeaderMap::new();
-        let secret = notion_api_key.as_ref().to_string();
-
-        headers.insert(
-            "Notion-Version",
-            reqwest::header::HeaderValue::from_static("2022-06-28"),
-        );
-        headers.insert(
-            "Authorization",
-            reqwest::header::HeaderValue::from_str(&format!("Bearer {}", secret))
-                .expect("Invalid header value"),
-        );
-
-        self.reqwest_client = reqwest::Client::builder()
-            .default_headers(headers)
-            .build()
-            .unwrap();
-        self
     }
 
     // # --------------------------------------------------------------------------------
