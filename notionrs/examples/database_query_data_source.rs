@@ -1,4 +1,4 @@
-use notionrs::client::Client;
+use notionrs::Client;
 use notionrs_types::prelude::*;
 
 #[tokio::main]
