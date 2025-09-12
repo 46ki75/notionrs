@@ -55,6 +55,7 @@ Below is a basic example.
 notionrs = { version = "0" }
 notionrs_types = { version = "0" }
 tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
 ```
 
 `src/main.rs`:
@@ -62,6 +63,7 @@ tokio = { version = "1", features = ["full"] }
 ```rs
 use notionrs::Client;
 use notionrs_types::prelude::*;
+use serde::{Deserialize, Serialize};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -78,17 +80,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .filter(filter)
         .sorts(vec![sort]);
 
-    let response = request.send().await?;
+    #[derive(Debug, Clone, Serialize, Deserialize)]
+    struct MyProperties {
+        #[serde(rename = "My Title")]
+        pub title: PageTitleProperty,
+    }
+
+    let response = request.send::<MyProperties>().await?;
 
     for page in response.results {
-        let title_property = page
-            .properties
-            .get("Name")
-            .ok_or("Property not found".to_string())?;
-
-        if let PageProperty::Title(title) = title_property {
-            println!("Title: {}", title);
-        }
+        println!("{}", page.properties.title.to_string());
     }
 
     Ok(())

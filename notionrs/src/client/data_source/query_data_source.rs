@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
-use notionrs_types::object::response::ListResponse;
+use notionrs_types::prelude::*;
 
 #[derive(Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct QueryDataSourceClient {
@@ -39,9 +39,12 @@ pub struct QueryDataSourceRequestBody {
 }
 
 impl QueryDataSourceClient {
-    pub async fn send(
+    pub async fn send<T>(
         self,
-    ) -> Result<ListResponse<notionrs_types::object::page::PageResponse>, crate::error::Error> {
+    ) -> Result<ListResponse<notionrs_types::object::page::PageResponse<T>>, crate::error::Error>
+    where
+        T: Serialize + DeserializeOwned + Clone,
+    {
         match self.data_source_id {
             Some(id) => {
                 let url = format!("https://api.notion.com/v1/data_sources/{}/query", id);
@@ -74,7 +77,7 @@ impl QueryDataSourceClient {
                     .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
                 let pages = serde_json::from_slice::<
-                    ListResponse<notionrs_types::object::page::PageResponse>,
+                    ListResponse<notionrs_types::object::page::PageResponse<T>>,
                 >(&body)?;
 
                 Ok(pages)

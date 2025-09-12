@@ -6,6 +6,8 @@ mod integration_tests {
     //
     // # --------------------------------------------------------------------------------
 
+    use notionrs_types::prelude::*;
+
     #[tokio::test]
     #[serial_test::serial]
     async fn query_data_source() -> Result<(), notionrs::Error> {
@@ -20,7 +22,7 @@ mod integration_tests {
         let res = client
             .query_data_source()
             .data_source_id(data_source_id)
-            .send()
+            .send::<std::collections::HashMap<String, PageProperty>>()
             .await?;
         println!("{}", serde_json::to_string(&res)?);
 
@@ -48,7 +50,7 @@ mod integration_tests {
             .query_data_source()
             .data_source_id(data_source_id)
             .page_size(1)
-            .send()
+            .send::<std::collections::HashMap<String, PageProperty>>()
             .await?;
         println!("{}", serde_json::to_string(&res)?);
 
@@ -83,7 +85,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -112,7 +116,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -168,7 +174,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -197,7 +205,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -231,7 +241,7 @@ mod integration_tests {
     //         .data_source_id(data_source_id)
     //         .filter(filter);
 
-    //     let response = request.send().await?;
+    //     let response = request.send::<std::collections::HashMap<String,PageProperty>>().await?;
 
     //     println!("{}", serde_json::to_string(&response)?);
 
@@ -270,7 +280,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -309,7 +321,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -346,7 +360,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -401,7 +417,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -438,7 +456,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -477,7 +497,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -516,7 +538,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -547,7 +571,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -577,7 +603,7 @@ mod integration_tests {
     //         .data_source_id(data_source_id)
     //         .filter(filter);
 
-    //     let response = request.send().await?;
+    //     let response = request.send::<std::collections::HashMap<String,PageProperty>>().await?;
 
     //     println!("{}", serde_json::to_string(&response)?);
 
@@ -618,7 +644,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -655,7 +683,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .filter(filter);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -689,7 +719,9 @@ mod integration_tests {
             .data_source_id(data_source_id)
             .sorts(sorts);
 
-        let response = request.send().await?;
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
 
         println!("{}", serde_json::to_string(&response)?);
 

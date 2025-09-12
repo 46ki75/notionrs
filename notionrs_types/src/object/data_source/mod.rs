@@ -25,7 +25,7 @@ pub mod url;
 pub mod verification;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct DataSourceResponse {
+pub struct DataSourceResponse<T = std::collections::HashMap<String, DataSourceProperty>> {
     pub id: String,
 
     pub created_time: String,
@@ -34,7 +34,7 @@ pub struct DataSourceResponse {
 
     pub parent: crate::object::parent::DatabaseParent,
 
-    pub properties: std::collections::HashMap<String, DataSourceProperty>,
+    pub properties: T,
 
     pub icon: Option<crate::object::icon::Icon>,
 
