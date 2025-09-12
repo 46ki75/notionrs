@@ -153,6 +153,15 @@ impl Client {
         }
     }
 
+    pub fn create_data_source(
+        &self,
+    ) -> crate::client::data_source::create_data_source::CreateDataSourceClient {
+        crate::client::data_source::create_data_source::CreateDataSourceClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     pub fn retrieve_data_source(
         &self,
     ) -> crate::client::data_source::retrieve_data_source::RetrieveDataSourceClient {

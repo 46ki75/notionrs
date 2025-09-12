@@ -11,7 +11,8 @@ pub struct CreateDataSourceClient {
     pub(crate) database_id: Option<String>,
 
     /// Property schema of the new data source.
-    pub(crate) properties: Option<DataSourceProperty>,
+    pub(crate) properties:
+        std::collections::HashMap<String, notionrs_types::object::data_source::DataSourceProperty>,
 
     /// Property schema of the new data source.
     pub(crate) title: Vec<RichText>,
@@ -23,7 +24,8 @@ pub struct CreateDataSourceClient {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateDataSourceRequestBody {
     pub(crate) parent: DatabaseParent,
-    pub(crate) properties: DataSourceProperty,
+    pub(crate) properties:
+        std::collections::HashMap<String, notionrs_types::object::data_source::DataSourceProperty>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) title: Vec<RichText>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -36,26 +38,25 @@ impl CreateDataSourceClient {
     ) -> Result<notionrs_types::object::data_source::DataSourceResponse, crate::error::Error> {
         let url = "https://api.notion.com/v1/data_sources";
 
-        let request_body =
-            if let (Some(database_id), Some(properties)) = (self.database_id, self.properties) {
-                let req = CreateDataSourceRequestBody {
-                    parent: DatabaseParent {
-                        r#type: "database".to_owned(),
-                        database_id,
-                    },
-                    properties,
-                    title: self.title,
-                    icon: self.icon,
-                };
+        let request_body = if let Some(database_id) = self.database_id {
+            let req = CreateDataSourceRequestBody {
+                parent: DatabaseParent {
+                    r#type: "database".to_owned(),
+                    database_id,
+                },
+                properties: self.properties,
+                title: self.title,
+                icon: self.icon,
+            };
 
-                let string = serde_json::to_string(&req)?;
+            let string = serde_json::to_string(&req)?;
 
-                Ok(string)
-            } else {
-                Err(crate::error::Error::RequestParameter(
-                    "Either parent.database_id or properties is not specified.".to_string(),
-                ))
-            }?;
+            Ok(string)
+        } else {
+            Err(crate::error::Error::RequestParameter(
+                "database_id is not set.".to_string(),
+            ))
+        }?;
 
         let request = self
             .reqwest_client
