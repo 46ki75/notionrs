@@ -16,54 +16,54 @@ mod integration_tests {
 
         properties.insert(
             "Title".to_string(),
-            DatabaseProperty::Title(DataSourceTitleProperty::default()),
+            DataSourceProperty::Title(DataSourceTitleProperty::default()),
         );
 
         properties.insert(
             "My Checkbox".to_string(),
-            DatabaseProperty::Checkbox(DataSourceCheckboxProperty::default()),
+            DataSourceProperty::Checkbox(DataSourceCheckboxProperty::default()),
         );
 
         properties.insert(
             "Created User".to_string(),
-            DatabaseProperty::CreatedBy(DataSourceCreatedByProperty::default()),
+            DataSourceProperty::CreatedBy(DataSourceCreatedByProperty::default()),
         );
 
         properties.insert(
             "Created Time".to_string(),
-            DatabaseProperty::CreatedTime(DataSourceCreatedTimeProperty::default()),
+            DataSourceProperty::CreatedTime(DataSourceCreatedTimeProperty::default()),
         );
 
         properties.insert(
             "Date".to_string(),
-            DatabaseProperty::Date(DataSourceDateProperty::default()),
+            DataSourceProperty::Date(DataSourceDateProperty::default()),
         );
 
         properties.insert(
             "email".to_string(),
-            DatabaseProperty::Email(DataSourceEmailProperty::default()),
+            DataSourceProperty::Email(DataSourceEmailProperty::default()),
         );
 
         properties.insert(
             "Files & Media".to_string(),
-            DatabaseProperty::Files(DataSourceFilesProperty::default()),
+            DataSourceProperty::Files(DataSourceFilesProperty::default()),
         );
 
         properties.insert(
             "formula".to_string(),
-            DatabaseProperty::Formula(
+            DataSourceProperty::Formula(
                 DataSourceFormulaProperty::from(r#"{{notion:block_property:BtVS:00000000-0000-0000-0000-000000000000:8994905a-074a-415f-9bcf-d1f8b4fa38e4}}/2"#),
             ),
         );
 
         properties.insert(
             "Last Edited User".to_string(),
-            DatabaseProperty::LastEditedBy(DataSourceLastEditedByProperty::default()),
+            DataSourceProperty::LastEditedBy(DataSourceLastEditedByProperty::default()),
         );
 
         properties.insert(
             "Last Edited Time".to_string(),
-            DatabaseProperty::LastEditedTime(DataSourceLastEditedTimeProperty::default()),
+            DataSourceProperty::LastEditedTime(DataSourceLastEditedTimeProperty::default()),
         );
 
         let options = vec![
@@ -83,39 +83,41 @@ mod integration_tests {
 
         properties.insert(
             "Tags".to_string(),
-            DatabaseProperty::MultiSelect(
+            DataSourceProperty::MultiSelect(
                 DataSourceMultiSelectProperty::default().options(options.clone()),
             ),
         );
 
         properties.insert(
             "Number".to_string(),
-            DatabaseProperty::Number(DataSourceNumberProperty::default()),
+            DataSourceProperty::Number(DataSourceNumberProperty::default()),
         );
 
         properties.insert(
             "People".to_string(),
-            DatabaseProperty::People(DataSourcePeopleProperty::default()),
+            DataSourceProperty::People(DataSourcePeopleProperty::default()),
         );
 
         properties.insert(
             "Phone".to_string(),
-            DatabaseProperty::PhoneNumber(DataSourcePhoneNumberProperty::default()),
+            DataSourceProperty::PhoneNumber(DataSourcePhoneNumberProperty::default()),
         );
 
         properties.insert(
             "Rich Text".to_string(),
-            DatabaseProperty::RichText(DataSourceRichTextProperty::default()),
+            DataSourceProperty::RichText(DataSourceRichTextProperty::default()),
         );
 
         properties.insert(
             "Select".to_string(),
-            DatabaseProperty::Select(DataSourceSelectProperty::default().options(options.clone())),
+            DataSourceProperty::Select(
+                DataSourceSelectProperty::default().options(options.clone()),
+            ),
         );
 
         properties.insert(
             "URL".to_string(),
-            DatabaseProperty::Url(DataSourceUrlProperty::default()),
+            DataSourceProperty::Url(DataSourceUrlProperty::default()),
         );
 
         let request = client

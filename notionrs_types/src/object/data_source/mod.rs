@@ -51,7 +51,7 @@ pub struct DatabaseResponse {
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
-pub enum DatabaseProperty {
+pub enum DataSourceProperty {
     Button(button::DataSourceButtonProperty),
     Checkbox(checkbox::DataSourceCheckboxProperty),
     CreatedBy(created_by::DataSourceCreatedByProperty),
@@ -101,10 +101,10 @@ mod unit_tests {
         }
         "#;
 
-        let number = serde_json::from_str::<DatabaseProperty>(json_data).unwrap();
+        let number = serde_json::from_str::<DataSourceProperty>(json_data).unwrap();
 
         match number {
-            DatabaseProperty::Number(num) => {
+            DataSourceProperty::Number(num) => {
                 assert_eq!(num.id, Some("~B%7BT".to_string()));
                 assert_eq!(num.name, "Number");
                 assert_eq!(

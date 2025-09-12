@@ -21,12 +21,12 @@ mod integration_tests {
 
         properties.insert(
             "Old Title".to_string(),
-            DatabaseProperty::Title(DataSourceTitleProperty::default()),
+            DataSourceProperty::Title(DataSourceTitleProperty::default()),
         );
 
         properties.insert(
             "My Checkbox".to_string(),
-            DatabaseProperty::Checkbox(DataSourceCheckboxProperty::default()),
+            DataSourceProperty::Checkbox(DataSourceCheckboxProperty::default()),
         );
 
         let request = client
@@ -50,7 +50,7 @@ mod integration_tests {
 
         properties.insert(
             "Old Title".to_string(),
-            Some(DatabaseProperty::Title(
+            Some(DataSourceProperty::Title(
                 DataSourceTitleProperty::default().name("New Title"),
             )),
         );
@@ -59,48 +59,48 @@ mod integration_tests {
 
         properties.insert(
             "Created User".to_string(),
-            Some(DatabaseProperty::CreatedBy(
+            Some(DataSourceProperty::CreatedBy(
                 DataSourceCreatedByProperty::default(),
             )),
         );
 
         properties.insert(
             "Created Time".to_string(),
-            Some(DatabaseProperty::CreatedTime(
+            Some(DataSourceProperty::CreatedTime(
                 DataSourceCreatedTimeProperty::default(),
             )),
         );
 
         properties.insert(
             "Date".to_string(),
-            Some(DatabaseProperty::Date(DataSourceDateProperty::default())),
+            Some(DataSourceProperty::Date(DataSourceDateProperty::default())),
         );
 
         properties.insert(
             "email".to_string(),
-            Some(DatabaseProperty::Email(DataSourceEmailProperty::default())),
+            Some(DataSourceProperty::Email(DataSourceEmailProperty::default())),
         );
 
         properties.insert(
             "Files & Media".to_string(),
-            Some(DatabaseProperty::Files(DataSourceFilesProperty::default())),
+            Some(DataSourceProperty::Files(DataSourceFilesProperty::default())),
         );
 
         properties.insert(
             "formula".to_string(),
-            Some(DatabaseProperty::Formula(DataSourceFormulaProperty::from(r#"{{notion:block_property:BtVS:00000000-0000-0000-0000-000000000000:8994905a-074a-415f-9bcf-d1f8b4fa38e4}}/2"#),)),
+            Some(DataSourceProperty::Formula(DataSourceFormulaProperty::from(r#"{{notion:block_property:BtVS:00000000-0000-0000-0000-000000000000:8994905a-074a-415f-9bcf-d1f8b4fa38e4}}/2"#),)),
         );
 
         properties.insert(
             "Last Edited User".to_string(),
-            Some(DatabaseProperty::LastEditedBy(
+            Some(DataSourceProperty::LastEditedBy(
                 DataSourceLastEditedByProperty::default(),
             )),
         );
 
         properties.insert(
             "Last Edited Time".to_string(),
-            Some(DatabaseProperty::LastEditedTime(
+            Some(DataSourceProperty::LastEditedTime(
                 DataSourceLastEditedTimeProperty::default(),
             )),
         );
@@ -122,45 +122,49 @@ mod integration_tests {
 
         properties.insert(
             "Tags".to_string(),
-            Some(DatabaseProperty::MultiSelect(
+            Some(DataSourceProperty::MultiSelect(
                 DataSourceMultiSelectProperty::default().options(options.clone()),
             )),
         );
 
         properties.insert(
             "Number".to_string(),
-            Some(DatabaseProperty::Number(DataSourceNumberProperty::default())),
+            Some(DataSourceProperty::Number(
+                DataSourceNumberProperty::default(),
+            )),
         );
 
         properties.insert(
             "People".to_string(),
-            Some(DatabaseProperty::People(DataSourcePeopleProperty::default())),
+            Some(DataSourceProperty::People(
+                DataSourcePeopleProperty::default(),
+            )),
         );
 
         properties.insert(
             "Phone".to_string(),
-            Some(DatabaseProperty::PhoneNumber(
+            Some(DataSourceProperty::PhoneNumber(
                 DataSourcePhoneNumberProperty::default(),
             )),
         );
 
         properties.insert(
             "Rich Text".to_string(),
-            Some(DatabaseProperty::RichText(
+            Some(DataSourceProperty::RichText(
                 DataSourceRichTextProperty::default(),
             )),
         );
 
         properties.insert(
             "Select".to_string(),
-            Some(DatabaseProperty::Select(
+            Some(DataSourceProperty::Select(
                 DataSourceSelectProperty::default().options(options.clone()),
             )),
         );
 
         properties.insert(
             "URL".to_string(),
-            Some(DatabaseProperty::Url(DataSourceUrlProperty::default())),
+            Some(DataSourceProperty::Url(DataSourceUrlProperty::default())),
         );
 
         let request = client

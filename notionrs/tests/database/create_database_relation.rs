@@ -16,7 +16,7 @@ mod integration_tests {
 
         properties.insert(
             "Title".to_string(),
-            DatabaseProperty::Title(DataSourceTitleProperty::default()),
+            DataSourceProperty::Title(DataSourceTitleProperty::default()),
         );
 
         let request = client

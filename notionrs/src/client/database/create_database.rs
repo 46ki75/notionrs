@@ -16,7 +16,7 @@ pub struct CreateDatabaseClient {
     pub(crate) description: Vec<RichText>,
 
     pub(crate) properties:
-        std::collections::HashMap<String, notionrs_types::object::data_source::DatabaseProperty>,
+        std::collections::HashMap<String, notionrs_types::object::data_source::DataSourceProperty>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
@@ -28,7 +28,7 @@ pub struct CreateDatabaseClient {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateDatabaseRequestBodyPropertyPart {
     pub(crate) initial_data_source:
-        std::collections::HashMap<String, notionrs_types::object::data_source::DatabaseProperty>,
+        std::collections::HashMap<String, notionrs_types::object::data_source::DataSourceProperty>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

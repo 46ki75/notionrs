@@ -23,7 +23,7 @@ pub struct UpdateDatabaseClient {
     /// Note that it differs from the `create_database()` method in that it is optional.
     pub(crate) properties: std::collections::HashMap<
         String,
-        Option<notionrs_types::object::data_source::DatabaseProperty>,
+        Option<notionrs_types::object::data_source::DataSourceProperty>,
     >,
 
     /// This can be configured even though it's not in the official Notion API documentation
@@ -52,7 +52,7 @@ pub struct UpdateDatabaseRequestBody {
     /// Note that it differs from the `create_database()` method in that it is optional.
     pub(crate) properties: std::collections::HashMap<
         String,
-        Option<notionrs_types::object::data_source::DatabaseProperty>,
+        Option<notionrs_types::object::data_source::DataSourceProperty>,
     >,
 
     /// This can be configured even though it's not in the official Notion API documentation
