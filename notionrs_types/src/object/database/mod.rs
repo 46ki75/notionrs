@@ -25,16 +25,12 @@ pub mod url;
 pub mod verification;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct DatabaseResponse<PropertyMap = std::collections::HashMap<String, DatabaseProperty>> {
+pub struct DatabaseResponse {
     pub id: String,
 
     pub created_time: String,
 
     pub last_edited_time: String,
-
-    pub created_by: crate::object::user::User,
-
-    pub last_edited_by: crate::object::user::User,
 
     pub cover: Option<crate::object::file::File>,
 
@@ -44,8 +40,6 @@ pub struct DatabaseResponse<PropertyMap = std::collections::HashMap<String, Data
 
     pub public_url: Option<String>,
 
-    pub archived: bool,
-
     pub in_trash: bool,
 
     pub is_inline: bool,
@@ -53,8 +47,6 @@ pub struct DatabaseResponse<PropertyMap = std::collections::HashMap<String, Data
     pub title: Vec<crate::object::rich_text::RichText>,
 
     pub description: Vec<crate::object::rich_text::RichText>,
-
-    pub properties: PropertyMap,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]

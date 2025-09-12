@@ -41,7 +41,6 @@ impl From<String> for DatabaseParent {
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct PageParent {
     /// always "page_id"
-    #[serde(skip_serializing)]
     pub r#type: String,
     pub page_id: String,
 }

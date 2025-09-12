@@ -3,8 +3,8 @@ mod integration_tests {
     #[tokio::test]
     async fn get_page() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env"))
+            .expect("Failed to load ../.env file");
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 

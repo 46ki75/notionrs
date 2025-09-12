@@ -28,7 +28,7 @@ pub struct SearchFilter {
 pub enum SearchFilterType {
     #[default]
     Page,
-    Database,
+    DataSource,
 }
 
 impl SearchFilter {
@@ -41,7 +41,7 @@ impl SearchFilter {
 
     pub fn database() -> Self {
         SearchFilter {
-            value: SearchFilterType::Database,
+            value: SearchFilterType::DataSource,
             property: String::from("object"),
         }
     }

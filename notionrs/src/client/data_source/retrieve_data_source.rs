@@ -1,22 +1,22 @@
 #[derive(Debug, Default, notionrs_macro::Setter)]
-pub struct RetrieveDatabaseClient {
+pub struct RetrieveDataSourceClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
-    pub(crate) database_id: Option<String>,
+    pub(crate) data_source_id: Option<String>,
 }
 
-impl RetrieveDatabaseClient {
+impl RetrieveDataSourceClient {
     pub async fn send(
         self,
     ) -> Result<notionrs_types::object::database::DatabaseResponse, crate::error::Error> {
-        let database_id = self
-            .database_id
+        let data_source_id = self
+            .data_source_id
             .ok_or(crate::error::Error::RequestParameter(
-                "`database_id` is not set.".to_string(),
+                "`data_source_id` is not set.".to_string(),
             ))?;
 
-        let url = format!("https://api.notion.com/v1/databases/{}", database_id);
+        let url = format!("https://api.notion.com/v1/data_sources/{}", data_source_id);
 
         let request = self.reqwest_client.get(url);
 

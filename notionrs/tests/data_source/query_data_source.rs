@@ -2,23 +2,23 @@ mod integration_tests {
 
     // # --------------------------------------------------------------------------------
     //
-    // query_database
+    // query_data_source
     //
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database() -> Result<(), notionrs::Error> {
+    async fn query_data_source() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
         let res = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .send()
             .await?;
         println!("{}", serde_json::to_string(&res)?);
@@ -34,17 +34,17 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_page_size() -> Result<(), notionrs::Error> {
+    async fn query_data_source_page_size() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
         let res = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .page_size(1)
             .send()
             .await?;
@@ -61,12 +61,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_simple() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_simple() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -76,8 +76,8 @@ mod integration_tests {
         );
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -89,12 +89,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_checkbox() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_checkbox() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -104,8 +104,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -117,12 +117,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_date_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_date_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -159,8 +159,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -172,12 +172,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_files_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_files_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -187,8 +187,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -200,12 +200,12 @@ mod integration_tests {
 
     // #[tokio::test]
     // #[serial_test::serial]
-    // async fn query_database_filter_formula_filter() -> Result<(), notionrs::Error> {
+    // async fn query_data_source_filter_formula_filter() -> Result<(), notionrs::Error> {
     //     dotenvy::dotenv().ok();
-    //     dotenvy::from_path(std::path::Path::new(".env.test"))
-    //         .expect("Failed to load .env.test file");
+    //     dotenvy::from_path(std::path::Path::new("../.env"))
+    //         .expect("Failed to load ../.env file");
 
-    //     let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+    //     let data_source_id = std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
     //     let client = notionrs::Client::new();
 
@@ -221,8 +221,8 @@ mod integration_tests {
     //     ]);
 
     //     let request = client
-    //         .query_database()
-    //         .database_id(database_id)
+    //         .query_data_source()
+    //         .data_source_id(data_source_id)
     //         .filter(filter);
 
     //     let response = request.send().await?;
@@ -234,12 +234,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_multi_select_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_multi_select_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -259,8 +259,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -272,12 +272,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_number_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_number_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -297,8 +297,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -310,12 +310,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_people_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_people_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -333,8 +333,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -346,12 +346,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_phone_number_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_phone_number_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -387,8 +387,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -400,12 +400,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_relation_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_relation_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -423,8 +423,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -436,12 +436,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_rollup_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_rollup_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -461,8 +461,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -474,12 +474,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_rich_text_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_rich_text_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -499,8 +499,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -512,12 +512,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_select_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_select_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -529,8 +529,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -542,12 +542,12 @@ mod integration_tests {
 
     // #[tokio::test]
     // #[serial_test::serial]
-    // async fn query_database_filter_status_filter() -> Result<(), notionrs::Error> {
+    // async fn query_data_source_filter_status_filter() -> Result<(), notionrs::Error> {
     //     dotenvy::dotenv().ok();
-    //     dotenvy::from_path(std::path::Path::new(".env.test"))
-    //         .expect("Failed to load .env.test file");
+    //     dotenvy::from_path(std::path::Path::new("../.env"))
+    //         .expect("Failed to load ../.env file");
 
-    //     let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+    //     let data_source_id = std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
     //     let client = notionrs::Client::new();
 
@@ -559,8 +559,8 @@ mod integration_tests {
     //     ]);
 
     //     let request = client
-    //         .query_database()
-    //         .database_id(database_id)
+    //         .query_data_source()
+    //         .data_source_id(data_source_id)
     //         .filter(filter);
 
     //     let response = request.send().await?;
@@ -572,12 +572,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_timestamp_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_timestamp_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -599,8 +599,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -612,12 +612,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_filter_unique_id_filter() -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_unique_id_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -635,8 +635,8 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .filter(filter);
 
         let response = request.send().await?;
@@ -654,12 +654,12 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn query_database_sort() -> Result<(), notionrs::Error> {
+    async fn query_data_source_sort() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
-        let database_id = std::env::var("NOTION_IT_DATABASE_ID").unwrap_or_else(|_| String::new());
+        let data_source_id =
+            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
         let client = notionrs::Client::new();
 
@@ -668,8 +668,8 @@ mod integration_tests {
         )];
 
         let request = client
-            .query_database()
-            .database_id(database_id)
+            .query_data_source()
+            .data_source_id(data_source_id)
             .sorts(sorts);
 
         let response = request.send().await?;

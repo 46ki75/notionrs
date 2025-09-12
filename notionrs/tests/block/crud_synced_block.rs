@@ -5,8 +5,8 @@ mod integration_tests {
     #[tokio::test]
     async fn crud_synced_block() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env"))
+            .expect("Failed to load ../.env file");
 
         let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
 

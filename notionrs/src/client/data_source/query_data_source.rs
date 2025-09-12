@@ -3,11 +3,11 @@ use serde::{Deserialize, Serialize};
 use notionrs_types::object::response::ListResponse;
 
 #[derive(Debug, Default, Clone, notionrs_macro::Setter)]
-pub struct QueryDatabaseClient {
+pub struct QueryDataSourceClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
-    pub(crate) database_id: Option<String>,
+    pub(crate) data_source_id: Option<String>,
 
     pub(crate) filter: Option<notionrs_types::object::request::filter::Filter>,
 
@@ -19,12 +19,12 @@ pub struct QueryDatabaseClient {
 }
 
 crate::impl_paginate!(
-    QueryDatabaseClient,
+    QueryDataSourceClient,
     notionrs_types::object::page::PageResponse
 );
 
 #[derive(Debug, Serialize, Deserialize, Default)]
-pub struct QueryDatabaseRequestBody {
+pub struct QueryDataSourceRequestBody {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) filter: Option<notionrs_types::object::request::filter::Filter>,
 
@@ -38,15 +38,15 @@ pub struct QueryDatabaseRequestBody {
     pub(crate) page_size: Option<u32>,
 }
 
-impl QueryDatabaseClient {
+impl QueryDataSourceClient {
     pub async fn send(
         self,
     ) -> Result<ListResponse<notionrs_types::object::page::PageResponse>, crate::error::Error> {
-        match self.database_id {
+        match self.data_source_id {
             Some(id) => {
-                let url = format!("https://api.notion.com/v1/databases/{}/query", id);
+                let url = format!("https://api.notion.com/v1/data_sources/{}/query", id);
 
-                let request_body = serde_json::to_string(&QueryDatabaseRequestBody {
+                let request_body = serde_json::to_string(&QueryDataSourceRequestBody {
                     filter: self.filter.clone(),
                     sorts: self.sorts.clone(),
                     start_cursor: self.start_cursor.clone(),

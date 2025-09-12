@@ -15,7 +15,7 @@ pub struct ListResponse<T> {
 #[serde(tag = "object", rename_all = "snake_case")]
 pub enum SearchResultItem {
     Page(crate::object::page::PageResponse),
-    Database(crate::object::database::DatabaseResponse),
+    DataSource(crate::object::database::DatabaseResponse),
 }
 
 // # --------------------------------------------------------------------------------
@@ -467,7 +467,7 @@ mod unit_tests {
         let result: ListResponse<SearchResultItem> = serde_json::from_str(json_data).unwrap();
         assert_eq!(result.object, "list");
         assert!(matches!(result.results[0], SearchResultItem::Page(_)));
-        assert!(matches!(result.results[1], SearchResultItem::Database(_)));
+        assert!(matches!(result.results[1], SearchResultItem::DataSource(_)));
     }
 
     #[test]

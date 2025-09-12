@@ -1,5 +1,6 @@
 pub mod block;
 pub mod comment;
+pub mod data_source;
 pub mod database;
 pub mod file_upload;
 pub mod page;
@@ -20,7 +21,7 @@ impl Client {
 
         headers.insert(
             "Notion-Version",
-            reqwest::header::HeaderValue::from_static("2022-06-28"),
+            reqwest::header::HeaderValue::from_static("2025-09-03"),
         );
         headers.insert(
             "Authorization",
@@ -147,14 +148,6 @@ impl Client {
     //
     // # --------------------------------------------------------------------------------
 
-    // TODO: docs
-    pub fn query_database(&self) -> crate::client::database::query_database::QueryDatabaseClient {
-        crate::client::database::query_database::QueryDatabaseClient {
-            reqwest_client: self.reqwest_client.clone(),
-            ..Default::default()
-        }
-    }
-
     pub fn create_database(
         &self,
     ) -> crate::client::database::create_database::CreateDatabaseClient {
@@ -173,10 +166,25 @@ impl Client {
         }
     }
 
-    pub fn retrieve_database(
+    // # --------------------------------------------------------------------------------
+    //
+    // Data Source
+    //
+    // # --------------------------------------------------------------------------------
+
+    pub fn query_data_source(
         &self,
-    ) -> crate::client::database::retrieve_database::RetrieveDatabaseClient {
-        crate::client::database::retrieve_database::RetrieveDatabaseClient {
+    ) -> crate::client::data_source::query_data_source::QueryDataSourceClient {
+        crate::client::data_source::query_data_source::QueryDataSourceClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn retrieve_data_source(
+        &self,
+    ) -> crate::client::data_source::retrieve_data_source::RetrieveDataSourceClient {
+        crate::client::data_source::retrieve_data_source::RetrieveDataSourceClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }

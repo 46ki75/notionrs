@@ -10,10 +10,9 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn search() -> Result<(), notionrs::Error> {
+    async fn create_comment() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
@@ -43,8 +42,7 @@ mod integration_tests {
     #[serial_test::serial]
     async fn retrieve_comments() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 

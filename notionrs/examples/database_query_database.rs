@@ -10,8 +10,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let sort = Sort::desc("Created Time");
 
     let request = client
-        .query_database()
-        .database_id("DATABASE_ID")
+        .query_data_source()
+        .data_source_id("DATA_SOURCE_ID")
         .filter(filter)
         .sorts(vec![sort]);
 

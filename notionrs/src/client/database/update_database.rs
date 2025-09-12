@@ -15,6 +15,10 @@ pub struct UpdateDatabaseClient {
     /// Can be used as a description for the database.
     pub(crate) description: Vec<RichText>,
 
+    /// Whether the database should be displayed inline in the parent page.
+    /// If not provided, the inline status will not be updated.
+    pub(crate) is_inline: Option<bool>,
+
     /// When updating, passing a value of `null` (None) will remove the property.
     /// Note that it differs from the `create_database()` method in that it is optional.
     pub(crate) properties: std::collections::HashMap<
@@ -38,6 +42,11 @@ pub struct UpdateDatabaseRequestBody {
     /// Can be used as a description for the database.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) description: Vec<RichText>,
+
+    /// Whether the database should be displayed inline in the parent page.
+    /// If not provided, the inline status will not be updated.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) is_inline: Option<bool>,
 
     /// When updating, passing a value of `null` (None) will remove the property.
     /// Note that it differs from the `create_database()` method in that it is optional.
@@ -69,6 +78,7 @@ impl UpdateDatabaseClient {
             properties: self.properties,
             title: self.title,
             description: self.description,
+            is_inline: self.is_inline,
             icon: self.icon,
             cover: self.cover,
         };
