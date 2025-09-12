@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabasePhoneNumberProperty {
+pub struct DataSourcePhoneNumberProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -40,7 +40,8 @@ mod unit_tests {
         }
         "#;
 
-        let phone_number = serde_json::from_str::<DatabasePhoneNumberProperty>(json_data).unwrap();
+        let phone_number =
+            serde_json::from_str::<DataSourcePhoneNumberProperty>(json_data).unwrap();
 
         assert_eq!(phone_number.id, Some("ULHa".to_string()));
         assert_eq!(phone_number.name, "Contact phone number");

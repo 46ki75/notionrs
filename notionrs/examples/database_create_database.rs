@@ -14,7 +14,7 @@ async fn main() -> Result<(), Error> {
 
     properties.insert(
         "email".to_string(),
-        DatabaseProperty::Email(DatabaseEmailProperty::default()),
+        DatabaseProperty::Email(DataSourceEmailProperty::default()),
     );
 
     let request = client.create_database().page_id("PAGE_ID").title(title);

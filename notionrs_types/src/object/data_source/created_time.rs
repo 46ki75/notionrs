@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseCreatedTimeProperty {
+pub struct DataSourceCreatedTimeProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -40,7 +40,8 @@ mod unit_tests {
         }
         "#;
 
-        let created_time = serde_json::from_str::<DatabaseCreatedTimeProperty>(json_data).unwrap();
+        let created_time =
+            serde_json::from_str::<DataSourceCreatedTimeProperty>(json_data).unwrap();
 
         assert_eq!(created_time.id, Some("XcAf".to_string()));
         assert_eq!(created_time.name, "Created time");

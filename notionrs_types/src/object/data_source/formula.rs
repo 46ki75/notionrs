@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseFormulaProperty {
+pub struct DataSourceFormulaProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -15,21 +15,21 @@ pub struct DatabaseFormulaProperty {
     #[serde(skip_serializing)]
     pub description: Option<String>,
 
-    pub formula: DatabaseFormulaExpressionProperty,
+    pub formula: DataSourceFormulaExpressionProperty,
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-pub struct DatabaseFormulaExpressionProperty {
+pub struct DataSourceFormulaExpressionProperty {
     expression: String,
 }
 
-impl<T> From<T> for DatabaseFormulaProperty
+impl<T> From<T> for DataSourceFormulaProperty
 where
     T: AsRef<str>,
 {
     fn from(expression: T) -> Self {
         Self {
-            formula: DatabaseFormulaExpressionProperty {
+            formula: DataSourceFormulaExpressionProperty {
                 expression: expression.as_ref().to_string(),
             },
             ..Default::default()
@@ -60,7 +60,7 @@ mod unit_tests {
         }
         "#;
 
-        let formula = serde_json::from_str::<DatabaseFormulaProperty>(json_data).unwrap();
+        let formula = serde_json::from_str::<DataSourceFormulaProperty>(json_data).unwrap();
 
         assert_eq!(formula.id, Some("YU%7C%40".to_string()));
         assert_eq!(formula.name, "Updated price");

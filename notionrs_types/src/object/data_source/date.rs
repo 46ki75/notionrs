@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseDateProperty {
+pub struct DataSourceDateProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -40,7 +40,7 @@ mod unit_tests {
         }
         "#;
 
-        let date = serde_json::from_str::<DatabaseDateProperty>(json_data).unwrap();
+        let date = serde_json::from_str::<DataSourceDateProperty>(json_data).unwrap();
 
         assert_eq!(date.id, Some("AJP%7D".to_string()));
         assert_eq!(date.name, "Task due date");

@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseCheckboxProperty {
+pub struct DataSourceCheckboxProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -40,7 +40,7 @@ mod unit_tests {
         }
         "#;
 
-        let checkbox = serde_json::from_str::<DatabaseCheckboxProperty>(json_data).unwrap();
+        let checkbox = serde_json::from_str::<DataSourceCheckboxProperty>(json_data).unwrap();
 
         assert_eq!(checkbox.id, Some("XjE%60".to_string()));
         assert_eq!(checkbox.name, "Checkbox");

@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseLastEditedTimeProperty {
+pub struct DataSourceLastEditedTimeProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -41,7 +41,7 @@ mod unit_tests {
         "#;
 
         let last_edited_time =
-            serde_json::from_str::<DatabaseLastEditedTimeProperty>(json_data).unwrap();
+            serde_json::from_str::<DataSourceLastEditedTimeProperty>(json_data).unwrap();
 
         assert_eq!(last_edited_time.id, Some("jGdo".to_string()));
         assert_eq!(last_edited_time.name, "Last edited time");

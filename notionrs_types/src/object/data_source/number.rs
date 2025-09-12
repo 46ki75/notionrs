@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseNumberProperty {
+pub struct DataSourceNumberProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -15,13 +15,13 @@ pub struct DatabaseNumberProperty {
     #[serde(skip_serializing)]
     pub description: Option<String>,
 
-    pub number: DatabaseNumberFormatProperty,
+    pub number: DataSourceNumberFormatProperty,
 }
 
 #[derive(
     Deserialize, Serialize, Debug, Default, Clone, Copy, PartialEq, Eq, notionrs_macro::Setter,
 )]
-pub struct DatabaseNumberFormatProperty {
+pub struct DataSourceNumberFormatProperty {
     pub format: NumberFormat,
 }
 
@@ -95,7 +95,7 @@ mod unit_tests {
         }
         "#;
 
-        let number = serde_json::from_str::<DatabaseNumberProperty>(json_data).unwrap();
+        let number = serde_json::from_str::<DataSourceNumberProperty>(json_data).unwrap();
 
         assert_eq!(number.id, Some("%7B%5D_P".to_string()));
         assert_eq!(number.name, "Price");

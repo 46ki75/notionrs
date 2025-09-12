@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseRelationProperty {
+pub struct DataSourceRelationProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -15,11 +15,11 @@ pub struct DatabaseRelationProperty {
     #[serde(skip_serializing)]
     pub description: Option<String>,
 
-    pub relation: DatabaseRelationDetail,
+    pub relation: DataSourceRelationDetail,
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseRelationDetail {
+pub struct DataSourceRelationDetail {
     /// The database that the relation property refers to.
     /// The corresponding linked page values must belong to the database in order to be valid.
     pub database_id: String,
@@ -30,11 +30,11 @@ pub struct DatabaseRelationDetail {
 
     /// Used when creating a two-way relation.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub dual_property: Option<DatabaseRelationDualProperty>,
+    pub dual_property: Option<DataSourceRelationDualProperty>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseRelationDualProperty {
+pub struct DataSourceRelationDualProperty {
     /// The ID of the property for creating a two-way relation.
     pub synced_property_id: String,
 
@@ -42,13 +42,13 @@ pub struct DatabaseRelationDualProperty {
     pub synced_property_name: String,
 }
 
-impl DatabaseRelationProperty {
+impl DataSourceRelationProperty {
     pub fn create_one_way_relation<T>(database_id: T) -> Self
     where
         T: AsRef<str>,
     {
         Self {
-            relation: DatabaseRelationDetail {
+            relation: DataSourceRelationDetail {
                 database_id: database_id.as_ref().to_string(),
                 single_property: Some(std::collections::HashMap::new()),
                 ..Default::default()
@@ -68,9 +68,9 @@ impl DatabaseRelationProperty {
         U: AsRef<str>,
     {
         Self {
-            relation: DatabaseRelationDetail {
+            relation: DataSourceRelationDetail {
                 database_id: database_id.as_ref().to_string(),
-                dual_property: Some(DatabaseRelationDualProperty {
+                dual_property: Some(DataSourceRelationDualProperty {
                     synced_property_id: synced_property_id.as_ref().to_string(),
                     synced_property_name: synced_property_name.as_ref().to_string(),
                 }),
@@ -109,7 +109,7 @@ mod unit_tests {
         }
         "#;
 
-        let relation = serde_json::from_str::<DatabaseRelationProperty>(json_data).unwrap();
+        let relation = serde_json::from_str::<DataSourceRelationProperty>(json_data).unwrap();
 
         assert_eq!(relation.id, Some("VGw%7B".to_string()));
         assert_eq!(relation.name, "Relation");

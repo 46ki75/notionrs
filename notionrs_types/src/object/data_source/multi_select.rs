@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseMultiSelectProperty {
+pub struct DataSourceMultiSelectProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -15,15 +15,15 @@ pub struct DatabaseMultiSelectProperty {
     #[serde(skip_serializing)]
     pub description: Option<String>,
 
-    pub multi_select: DatabaseMultiSelectOptionProperty,
+    pub multi_select: DataSourceMultiSelectOptionProperty,
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseMultiSelectOptionProperty {
+pub struct DataSourceMultiSelectOptionProperty {
     pub options: Vec<crate::object::select::Select>,
 }
 
-impl DatabaseMultiSelectProperty {
+impl DataSourceMultiSelectProperty {
     pub fn options(mut self, options: Vec<crate::object::select::Select>) -> Self {
         self.multi_select.options = options;
         self
@@ -74,7 +74,8 @@ mod unit_tests {
         }
         "#;
 
-        let multi_select = serde_json::from_str::<DatabaseMultiSelectProperty>(json_data).unwrap();
+        let multi_select =
+            serde_json::from_str::<DataSourceMultiSelectProperty>(json_data).unwrap();
 
         assert_eq!(multi_select.id, Some("flsb".to_string()));
         assert_eq!(multi_select.name, "Store availability");

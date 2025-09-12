@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseTitleProperty {
+pub struct DataSourceTitleProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -40,7 +40,7 @@ mod unit_tests {
         }
         "#;
 
-        let title = serde_json::from_str::<DatabaseTitleProperty>(json_data).unwrap();
+        let title = serde_json::from_str::<DataSourceTitleProperty>(json_data).unwrap();
 
         assert_eq!(title.id, Some("title".to_string()));
         assert_eq!(title.name, "Project name");

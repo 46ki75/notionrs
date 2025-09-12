@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseSelectProperty {
+pub struct DataSourceSelectProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -15,15 +15,15 @@ pub struct DatabaseSelectProperty {
     #[serde(skip_serializing)]
     pub description: Option<String>,
 
-    pub select: DatabaseSelectOptionProperty,
+    pub select: DataSourceSelectOptionProperty,
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseSelectOptionProperty {
+pub struct DataSourceSelectOptionProperty {
     options: Vec<crate::object::select::Select>,
 }
 
-impl DatabaseSelectProperty {
+impl DataSourceSelectProperty {
     pub fn options(mut self, options: Vec<crate::object::select::Select>) -> Self {
         self.select.options = options;
         self
@@ -69,7 +69,7 @@ mod unit_tests {
         }
         "#;
 
-        let select = serde_json::from_str::<DatabaseSelectProperty>(json_data).unwrap();
+        let select = serde_json::from_str::<DataSourceSelectProperty>(json_data).unwrap();
 
         assert_eq!(select.id, Some("%40Q%5BM".to_string()));
         assert_eq!(select.name, "Food group");

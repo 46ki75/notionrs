@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseRichTextProperty {
+pub struct DataSourceRichTextProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -40,7 +40,7 @@ mod unit_tests {
         }
         "#;
 
-        let rich_text = serde_json::from_str::<DatabaseRichTextProperty>(json_data).unwrap();
+        let rich_text = serde_json::from_str::<DataSourceRichTextProperty>(json_data).unwrap();
 
         assert_eq!(rich_text.id, Some("NZZ%3B".to_string()));
         assert_eq!(rich_text.name, "Project description");

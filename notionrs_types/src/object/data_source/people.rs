@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabasePeopleProperty {
+pub struct DataSourcePeopleProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -40,7 +40,7 @@ mod unit_tests {
         }
         "#;
 
-        let people = serde_json::from_str::<DatabasePeopleProperty>(json_data).unwrap();
+        let people = serde_json::from_str::<DataSourcePeopleProperty>(json_data).unwrap();
 
         assert_eq!(people.id, Some("FlgQ".to_string()));
         assert_eq!(people.name, "Project owner");

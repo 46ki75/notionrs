@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseButtonProperty {
+pub struct DataSourceButtonProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,

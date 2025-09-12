@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseUrlProperty {
+pub struct DataSourceUrlProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -40,7 +40,7 @@ mod unit_tests {
         }
         "#;
 
-        let url = serde_json::from_str::<DatabaseUrlProperty>(json_data).unwrap();
+        let url = serde_json::from_str::<DataSourceUrlProperty>(json_data).unwrap();
 
         assert_eq!(url.id, Some("BZKU".to_string()));
         assert_eq!(url.name, "Project URL");

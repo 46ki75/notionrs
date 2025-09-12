@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseCreatedByProperty {
+pub struct DataSourceCreatedByProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -40,7 +40,7 @@ mod unit_tests {
         }
         "#;
 
-        let created_by = serde_json::from_str::<DatabaseCreatedByProperty>(json_data).unwrap();
+        let created_by = serde_json::from_str::<DataSourceCreatedByProperty>(json_data).unwrap();
 
         assert_eq!(created_by.id, Some("%7Cy~C".to_string()));
         assert_eq!(created_by.name, "CreatedBy");

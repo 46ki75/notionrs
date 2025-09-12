@@ -26,20 +26,20 @@ async fn main() -> Result<(), Error> {
     properties.insert(
         "Tags".to_string(),
         Some(DatabaseProperty::MultiSelect(
-            DatabaseMultiSelectProperty::default().options(options.clone()),
+            DataSourceMultiSelectProperty::default().options(options.clone()),
         )),
     );
 
     properties.insert(
         "Rich Text".to_string(),
         Some(DatabaseProperty::RichText(
-            DatabaseRichTextProperty::default(),
+            DataSourceRichTextProperty::default(),
         )),
     );
 
     properties.insert(
         "URL".to_string(),
-        Some(DatabaseProperty::Url(DatabaseUrlProperty::default())),
+        Some(DatabaseProperty::Url(DataSourceUrlProperty::default())),
     );
 
     let request = client

@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseVerificationProperty {
+pub struct DataSourceVerificationProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,

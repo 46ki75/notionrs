@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseFilesProperty {
+pub struct DataSourceFilesProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -40,7 +40,7 @@ mod unit_tests {
         }
         "#;
 
-        let files = serde_json::from_str::<DatabaseFilesProperty>(json_data).unwrap();
+        let files = serde_json::from_str::<DataSourceFilesProperty>(json_data).unwrap();
 
         assert_eq!(files.id, Some("pb%3E%5B".to_string()));
         assert_eq!(files.name, "Product image");

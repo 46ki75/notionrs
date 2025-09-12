@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseRollupProperty {
+pub struct DataSourceRollupProperty {
     /// Property Identifier
     #[serde(skip_serializing)]
     pub id: Option<String>,
@@ -15,11 +15,11 @@ pub struct DatabaseRollupProperty {
     #[serde(skip_serializing)]
     pub description: Option<String>,
 
-    pub rollup: DatabaseRollupDetail,
+    pub rollup: DataSourceRollupDetail,
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
-pub struct DatabaseRollupDetail {
+pub struct DataSourceRollupDetail {
     pub function: RollupFunction,
 
     /// The id of the related database property that is rolled up.
@@ -93,7 +93,7 @@ mod unit_tests {
         }
         "#;
 
-        let rollup = serde_json::from_str::<DatabaseRollupProperty>(json_data).unwrap();
+        let rollup = serde_json::from_str::<DataSourceRollupProperty>(json_data).unwrap();
 
         assert_eq!(rollup.id, Some("%5E%7Cy%3C".to_string()));
         assert_eq!(rollup.name, "Estimated total project time");
