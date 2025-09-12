@@ -57,7 +57,7 @@ pub struct CreateDatabaseRequestBody {
 impl CreateDatabaseClient {
     pub async fn send(
         self,
-    ) -> Result<notionrs_types::object::data_source::DatabaseResponse, crate::error::Error> {
+    ) -> Result<notionrs_types::object::database::DatabaseResponse, crate::error::Error> {
         let page_id = self.page_id.unwrap();
 
         let request_body_struct = CreateDatabaseRequestBody {
@@ -95,8 +95,8 @@ impl CreateDatabaseClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let database: notionrs_types::object::data_source::DatabaseResponse =
-            serde_json::from_slice::<notionrs_types::object::data_source::DatabaseResponse>(&body)?;
+        let database: notionrs_types::object::database::DatabaseResponse =
+            serde_json::from_slice::<notionrs_types::object::database::DatabaseResponse>(&body)?;
 
         Ok(database)
     }

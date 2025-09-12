@@ -3,7 +3,7 @@ mod integration_tests {
     use notionrs_types::prelude::*;
 
     #[tokio::test]
-    async fn create_database() -> Result<(), notionrs::Error> {
+    async fn update_database() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
@@ -46,127 +46,6 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let mut properties = std::collections::HashMap::new();
-
-        properties.insert(
-            "Old Title".to_string(),
-            Some(DataSourceProperty::Title(
-                DataSourceTitleProperty::default().name("New Title"),
-            )),
-        );
-
-        properties.insert("My Checkbox".to_string(), None);
-
-        properties.insert(
-            "Created User".to_string(),
-            Some(DataSourceProperty::CreatedBy(
-                DataSourceCreatedByProperty::default(),
-            )),
-        );
-
-        properties.insert(
-            "Created Time".to_string(),
-            Some(DataSourceProperty::CreatedTime(
-                DataSourceCreatedTimeProperty::default(),
-            )),
-        );
-
-        properties.insert(
-            "Date".to_string(),
-            Some(DataSourceProperty::Date(DataSourceDateProperty::default())),
-        );
-
-        properties.insert(
-            "email".to_string(),
-            Some(DataSourceProperty::Email(DataSourceEmailProperty::default())),
-        );
-
-        properties.insert(
-            "Files & Media".to_string(),
-            Some(DataSourceProperty::Files(DataSourceFilesProperty::default())),
-        );
-
-        properties.insert(
-            "formula".to_string(),
-            Some(DataSourceProperty::Formula(DataSourceFormulaProperty::from(r#"{{notion:block_property:BtVS:00000000-0000-0000-0000-000000000000:8994905a-074a-415f-9bcf-d1f8b4fa38e4}}/2"#),)),
-        );
-
-        properties.insert(
-            "Last Edited User".to_string(),
-            Some(DataSourceProperty::LastEditedBy(
-                DataSourceLastEditedByProperty::default(),
-            )),
-        );
-
-        properties.insert(
-            "Last Edited Time".to_string(),
-            Some(DataSourceProperty::LastEditedTime(
-                DataSourceLastEditedTimeProperty::default(),
-            )),
-        );
-
-        let options = vec![
-            notionrs_types::object::select::Select::default()
-                .color(notionrs_types::object::select::SelectColor::Blue)
-                .name("IT")
-                .id("id"),
-            notionrs_types::object::select::Select::default()
-                .color(notionrs_types::object::select::SelectColor::Red)
-                .name("SoC")
-                .id("id"),
-            notionrs_types::object::select::Select::default()
-                .color(notionrs_types::object::select::SelectColor::Green)
-                .name("TPM")
-                .id("id"),
-        ];
-
-        properties.insert(
-            "Tags".to_string(),
-            Some(DataSourceProperty::MultiSelect(
-                DataSourceMultiSelectProperty::default().options(options.clone()),
-            )),
-        );
-
-        properties.insert(
-            "Number".to_string(),
-            Some(DataSourceProperty::Number(
-                DataSourceNumberProperty::default(),
-            )),
-        );
-
-        properties.insert(
-            "People".to_string(),
-            Some(DataSourceProperty::People(
-                DataSourcePeopleProperty::default(),
-            )),
-        );
-
-        properties.insert(
-            "Phone".to_string(),
-            Some(DataSourceProperty::PhoneNumber(
-                DataSourcePhoneNumberProperty::default(),
-            )),
-        );
-
-        properties.insert(
-            "Rich Text".to_string(),
-            Some(DataSourceProperty::RichText(
-                DataSourceRichTextProperty::default(),
-            )),
-        );
-
-        properties.insert(
-            "Select".to_string(),
-            Some(DataSourceProperty::Select(
-                DataSourceSelectProperty::default().options(options.clone()),
-            )),
-        );
-
-        properties.insert(
-            "URL".to_string(),
-            Some(DataSourceProperty::Url(DataSourceUrlProperty::default())),
-        );
-
         let request = client
             .update_database()
             .database_id(response.id)
@@ -174,7 +53,6 @@ mod integration_tests {
             .description(vec![RichText::from(
                 "Description of the Database (changed)",
             )])
-            .properties(properties)
             .icon(notionrs_types::object::icon::Icon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ))

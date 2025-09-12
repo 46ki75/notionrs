@@ -49,7 +49,6 @@ async fn main() -> Result<(), Error> {
         .description(vec![RichText::from(
             "Description of the Database (changed)",
         )])
-        .properties(properties)
         .icon(Icon::Emoji(Emoji::from("🚧")))
         .cover(File::External(ExternalFile::from(
             "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",

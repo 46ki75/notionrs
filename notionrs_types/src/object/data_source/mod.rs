@@ -25,31 +25,6 @@ pub mod url;
 pub mod verification;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct DatabaseResponse {
-    pub id: String,
-
-    pub created_time: String,
-
-    pub last_edited_time: String,
-
-    pub cover: Option<crate::object::file::File>,
-
-    pub icon: Option<crate::object::icon::Icon>,
-
-    pub url: String,
-
-    pub public_url: Option<String>,
-
-    pub in_trash: bool,
-
-    pub is_inline: bool,
-
-    pub title: Vec<crate::object::rich_text::RichText>,
-
-    pub description: Vec<crate::object::rich_text::RichText>,
-}
-
-#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct DataSourceResponse {
     pub id: String,
 

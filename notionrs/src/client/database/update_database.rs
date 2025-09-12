@@ -19,12 +19,9 @@ pub struct UpdateDatabaseClient {
     /// If not provided, the inline status will not be updated.
     pub(crate) is_inline: Option<bool>,
 
-    /// When updating, passing a value of `null` (None) will remove the property.
-    /// Note that it differs from the `create_database()` method in that it is optional.
-    pub(crate) properties: std::collections::HashMap<
-        String,
-        Option<notionrs_types::object::data_source::DataSourceProperty>,
-    >,
+    /// Whether the database should be moved to or from the trash.
+    /// If not provided, the trash status will not be updated.
+    pub(crate) in_trash: Option<bool>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
@@ -38,28 +35,18 @@ pub struct UpdateDatabaseRequestBody {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) title: Vec<RichText>,
 
-    /// Field that can be added, though not documented in Notion's API documentation.
-    /// Can be used as a description for the database.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) description: Vec<RichText>,
 
-    /// Whether the database should be displayed inline in the parent page.
-    /// If not provided, the inline status will not be updated.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) is_inline: Option<bool>,
 
-    /// When updating, passing a value of `null` (None) will remove the property.
-    /// Note that it differs from the `create_database()` method in that it is optional.
-    pub(crate) properties: std::collections::HashMap<
-        String,
-        Option<notionrs_types::object::data_source::DataSourceProperty>,
-    >,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) in_trash: Option<bool>,
 
-    /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
 
-    /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) cover: Option<notionrs_types::object::file::File>,
 }
@@ -67,7 +54,7 @@ pub struct UpdateDatabaseRequestBody {
 impl UpdateDatabaseClient {
     pub async fn send(
         self,
-    ) -> Result<notionrs_types::object::data_source::DatabaseResponse, crate::error::Error> {
+    ) -> Result<notionrs_types::object::database::DatabaseResponse, crate::error::Error> {
         let database_id = self
             .database_id
             .ok_or(crate::error::Error::RequestParameter(
@@ -75,10 +62,10 @@ impl UpdateDatabaseClient {
             ))?;
 
         let request_body_struct = UpdateDatabaseRequestBody {
-            properties: self.properties,
             title: self.title,
             description: self.description,
             is_inline: self.is_inline,
+            in_trash: self.in_trash,
             icon: self.icon,
             cover: self.cover,
         };
@@ -107,8 +94,8 @@ impl UpdateDatabaseClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let database: notionrs_types::object::data_source::DatabaseResponse =
-            serde_json::from_slice::<notionrs_types::object::data_source::DatabaseResponse>(&body)?;
+        let database: notionrs_types::object::database::DatabaseResponse =
+            serde_json::from_slice::<notionrs_types::object::database::DatabaseResponse>(&body)?;
 
         Ok(database)
     }

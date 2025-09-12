@@ -1,5 +1,6 @@
 pub mod block;
 pub mod data_source;
+pub mod database;
 pub mod page;
 pub mod request;
 pub mod rich_text;
