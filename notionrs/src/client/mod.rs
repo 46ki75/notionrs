@@ -171,6 +171,15 @@ impl Client {
         }
     }
 
+    pub fn update_data_source(
+        &self,
+    ) -> crate::client::data_source::update_data_source::UpdateDataSourceClient {
+        crate::client::data_source::update_data_source::UpdateDataSourceClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
     // Block

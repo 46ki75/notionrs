@@ -3,7 +3,7 @@ mod integration_tests {
     use notionrs_types::prelude::*;
 
     #[tokio::test]
-    async fn create_data_source() -> Result<(), notionrs::Error> {
+    async fn crud_data_source() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
@@ -139,14 +139,33 @@ mod integration_tests {
             .create_data_source()
             .database_id(&database_id)
             .title(vec![RichText::from("Database Title")])
-            .properties(properties)
+            .properties(properties.clone())
             .icon(notionrs_types::object::icon::Icon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ));
 
         let response = request.send().await?;
 
+        let data_source_id = &response.id;
+
         println!("{}", serde_json::to_string(&response).unwrap());
+
+        // # --------------------------------------------------------------------------------
+        //
+        // update_data_source
+        //
+        // # --------------------------------------------------------------------------------
+
+        let request = client
+            .update_data_source()
+            .data_source_id(&data_source_id)
+            .title(vec![RichText::from("New Database Title")])
+            .properties(properties.clone())
+            .icon(notionrs_types::object::icon::Icon::Emoji(
+                notionrs_types::object::emoji::Emoji::from("🚧"),
+            ));
+
+        let _response = request.send().await?;
 
         // # --------------------------------------------------------------------------------
         //
