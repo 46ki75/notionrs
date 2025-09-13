@@ -6,6 +6,10 @@ mod integration_tests {
     //
     // # --------------------------------------------------------------------------------
 
+    use futures::TryStreamExt;
+    use notionrs::r#trait::PaginateExt;
+    use notionrs_types::prelude::*;
+
     #[tokio::test]
     #[serial_test::serial]
     async fn query_data_source_all() -> Result<(), notionrs::Error> {
@@ -17,9 +21,13 @@ mod integration_tests {
 
         let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
         let client = notionrs::Client::new(notion_api_key);
-        let response =
-            notionrs::Client::paginate(client.query_data_source().data_source_id(data_source_id))
-                .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
         println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
@@ -42,9 +50,13 @@ mod integration_tests {
 
         let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
         let client = notionrs::Client::new(notion_api_key);
-        let response =
-            notionrs::Client::paginate(client.query_data_source().data_source_id(data_source_id))
-                .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
         println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
@@ -73,13 +85,14 @@ mod integration_tests {
             "2024-07-01",
         );
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -103,13 +116,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::checkbox_is_not_checked("Checkbox"),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -160,13 +174,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::date_this_week("Created time"),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -190,13 +205,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::files_is_not_empty("Files & media"),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -264,13 +280,14 @@ mod integration_tests {
             ),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -304,13 +321,14 @@ mod integration_tests {
             ),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -342,13 +360,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::people_is_not_empty("User"),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -398,13 +417,14 @@ mod integration_tests {
             ),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -436,13 +456,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::relation_is_not_empty("Relation"),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -476,13 +497,14 @@ mod integration_tests {
             ),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -516,13 +538,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::rich_text_starts_with("Text", "0"),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -548,13 +571,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::select_is_not_empty("Select"),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -620,13 +644,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::timestamp_this_week(),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -658,13 +683,14 @@ mod integration_tests {
             ),
         ]);
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .filter(filter),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -693,13 +719,14 @@ mod integration_tests {
             "Created time",
         )];
 
-        let response = notionrs::Client::paginate(
-            client
-                .query_data_source()
-                .data_source_id(data_source_id)
-                .sorts(sorts),
-        )
-        .await?;
+        let response: Vec<PageResponse> = client
+            .query_data_source()
+            .data_source_id(data_source_id)
+            .sorts(sorts)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 

@@ -43,7 +43,7 @@ impl QueryDataSourceClient {
         self,
     ) -> Result<ListResponse<notionrs_types::object::page::PageResponse<T>>, crate::error::Error>
     where
-        T: Serialize + DeserializeOwned + Clone,
+        T: Serialize + DeserializeOwned + Clone + Send + Sync + 'static,
     {
         match self.data_source_id {
             Some(id) => {

@@ -89,7 +89,10 @@ impl std::fmt::Display for PageProperty {
 
 /// <https://developers.notion.com/reference/page>
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct PageResponse<T = std::collections::HashMap<String, crate::object::page::PageProperty>> {
+pub struct PageResponse<T = std::collections::HashMap<String, crate::object::page::PageProperty>>
+where
+    T: Clone + Send + 'static,
+{
     pub id: String,
     #[serde(with = "time::serde::rfc3339")]
     pub created_time: time::OffsetDateTime,
