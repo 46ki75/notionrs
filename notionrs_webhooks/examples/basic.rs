@@ -1,10 +1,3 @@
-# NotionRs Webhooks
-
-This crate provides event deserialization and signature verification features for Notion webhooks.
-
-Minimal example:
-
-```rs
 use axum::{response::IntoResponse, routing::post};
 use http::{StatusCode, request::Parts};
 use notionrs_webhooks::PageContentUpdated;
@@ -49,4 +42,3 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
     axum::serve(listener, router).await.unwrap();
 }
-```

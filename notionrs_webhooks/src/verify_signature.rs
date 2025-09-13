@@ -3,12 +3,15 @@ use sha2::Sha256;
 
 type HmacSha256 = Hmac<Sha256>;
 
-pub fn verify_signature(verification_token: &[u8], body: &[u8], x_notion_signature: &str) -> bool {
+pub fn verify_signature(verification_token: &[u8], body: &[u8], x_notion_signature: &[u8]) -> bool {
     let mut mac = HmacSha256::new_from_slice(verification_token).expect("key length");
     mac.update(body);
-    let tag = x_notion_signature
-        .strip_prefix("sha256=")
-        .unwrap_or(x_notion_signature);
+    // x_notion_signature is &[u8], so we need to handle the prefix as bytes
+    let tag = if x_notion_signature.starts_with(b"sha256=") {
+        &x_notion_signature[7..]
+    } else {
+        x_notion_signature
+    };
     match hex::decode(tag) {
         Ok(tag_bytes) => mac.verify_slice(&tag_bytes).is_ok(),
         Err(_) => false,
@@ -31,7 +34,7 @@ mod tests {
         let key = b"test-key";
         let msg = b"important message";
         let tag = sign(key, msg);
-        assert!(verify_signature(key, msg, &tag));
+        assert!(verify_signature(key, msg, tag.as_bytes()));
     }
 
     #[test]
@@ -40,7 +43,7 @@ mod tests {
         let msg = b"important message";
         let tag = sign(key, msg);
         let wrong_msg = b"tampered message";
-        assert!(!verify_signature(key, wrong_msg, &tag));
+        assert!(!verify_signature(key, wrong_msg, tag.as_bytes()));
     }
 
     #[test]
@@ -49,7 +52,7 @@ mod tests {
         let wrong_key = b"other-key";
         let msg = b"important message";
         let tag = sign(key, msg);
-        assert!(!verify_signature(wrong_key, msg, &tag));
+        assert!(!verify_signature(wrong_key, msg, tag.as_bytes()));
     }
 
     #[test]
@@ -60,6 +63,6 @@ mod tests {
         let mut tag_bytes = hex::decode(tag.strip_prefix("sha256=").unwrap()).unwrap();
         tag_bytes[0] ^= 0xff;
         let wrong_tag = format!("sha256={}", hex::encode(tag_bytes));
-        assert!(!verify_signature(key, msg, &wrong_tag));
+        assert!(!verify_signature(key, msg, wrong_tag.as_bytes()));
     }
 }
