@@ -1,5 +1,6 @@
 [package]
 name = "notionrs_webhooks"
+description = "Event deserialization and signature verification for Notion webhooks"
 version = "0.1.0"
 edition = "2024"
 authors = ["Ikuma Yamashita"]
