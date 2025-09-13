@@ -6,12 +6,9 @@
 
 ![ogp](./assets/ogp.webp)
 
-**Status: Alpha Release! (Under Construction**) 🚧
-
 This project is currently under active development and is not yet ready for production use. Features and API stability may change without notice. Contributions and feedback are welcome!
 
 - [♻ Release Notes](https://github.com/46ki75/notionrs/releases)
-- [💡 User Guide | Documentation](https://46ki75.github.io/notionrs/) (Under Construction)
 - [🛠️ API Reference (docs.rs)](https://docs.rs/notionrs/latest/notionrs/)
 
 ## Features currently released
@@ -26,9 +23,13 @@ As part of the alpha release, the following features are available. Please note 
   - Delete a block
 - Databases
   - Create a database
-  - Query a database
-  - Retrieve a database
   - Update a database
+  - Retrieve a database
+- Data sources
+  - Create a data source
+  - Update a data source
+  - Retrieve a data source
+  - Query a data source
 - Pages
   - Create a page
   - Retrieve a page property item
@@ -46,32 +47,50 @@ As part of the alpha release, the following features are available. Please note 
 
 ## Basic Usage
 
-Below is a basic example. (More detailed documentation is coming soon, so please stay tuned!)
+Below is a basic example.
+
+`Cargo.toml`:
+
+```toml
+notionrs = { version = "0" }
+notionrs_types = { version = "0" }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+```
+
+`src/main.rs`:
 
 ```rs
+use notionrs::Client;
 use notionrs_types::prelude::*;
-use notionrs::{Client, Error};
+use serde::{Deserialize, Serialize};
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
-    let client = Client::new().secret("API_KEY");
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+    let client = Client::new(notion_api_key);
 
-    let rich_text = RichText::from("rich text");
+    let filter = Filter::timestamp_past_month();
 
-    let block = Block::Paragraph {
-        paragraph: ParagraphBlock::default()
-            .rich_text(vec![rich_text.clone()])
-            .blue_background(),
-    };
+    let sort = Sort::desc("Created Time");
 
     let request = client
-        .append_block_children()
-        .block_id("PARENT_BLOCK_ID")
-        .children(vec![block]);
+        .query_data_source()
+        .data_source_id("DATA_SOURCE_ID")
+        .filter(filter)
+        .sorts(vec![sort]);
 
-    let response = request.send().await?;
+    #[derive(Debug, Clone, Serialize, Deserialize)]
+    struct MyProperties {
+        #[serde(rename = "My Title")]
+        pub title: PageTitleProperty,
+    }
 
-    println!("{:?}", response);
+    let response = request.send::<MyProperties>().await?;
+
+    for page in response.results {
+        println!("{}", page.properties.title.to_string());
+    }
 
     Ok(())
 }

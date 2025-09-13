@@ -21,7 +21,7 @@ pub struct SearchDatabaseClient {
 
 crate::impl_paginate!(
     SearchDatabaseClient,
-    notionrs_types::object::database::DatabaseResponse
+    notionrs_types::object::data_source::DataSourceResponse
 );
 
 #[derive(Debug, Serialize, Deserialize, Default)]
@@ -47,7 +47,7 @@ impl SearchDatabaseClient {
         self,
     ) -> Result<
         notionrs_types::object::response::ListResponse<
-            notionrs_types::object::database::DatabaseResponse,
+            notionrs_types::object::data_source::DataSourceResponse,
         >,
         crate::error::Error,
     > {
@@ -83,7 +83,7 @@ impl SearchDatabaseClient {
 
         let pages = serde_json::from_slice::<
             notionrs_types::object::response::ListResponse<
-                notionrs_types::object::database::DatabaseResponse,
+                notionrs_types::object::data_source::DataSourceResponse,
             >,
         >(&body)?;
 

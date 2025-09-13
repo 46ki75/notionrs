@@ -3,7 +3,8 @@ use notionrs_types::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    let client = Client::new().secret("API_KEY");
+    let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+    let client = Client::new(notion_api_key);
 
     let request = client
         .get_block_children()

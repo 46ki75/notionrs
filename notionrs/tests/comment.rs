@@ -10,14 +10,14 @@ mod integration_tests {
 
     #[tokio::test]
     #[serial_test::serial]
-    async fn search() -> Result<(), notionrs::Error> {
+    async fn create_comment() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+                let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let rich_text = vec![RichText::from("Test Comment!")];
 
@@ -43,12 +43,12 @@ mod integration_tests {
     #[serial_test::serial]
     async fn retrieve_comments() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new(".env.test"))
-            .expect("Failed to load .env.test file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
-        let client = notionrs::Client::new();
+                let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
 
         let request = client.retrieve_comments().block_id(page_id);
 

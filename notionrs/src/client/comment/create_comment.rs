@@ -47,7 +47,7 @@ impl CreateCommentClient {
                         parent: self.page_id.map(|page_id| {
                             notionrs_types::object::parent::Parent::PageParent(
                                 notionrs_types::object::parent::PageParent {
-                                    r#type: "page".to_string(),
+                                    r#type: "page_id".to_string(),
                                     page_id,
                                 },
                             )

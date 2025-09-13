@@ -9,7 +9,8 @@ NOTION_TOKEN=secret_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 By doing this, the `NOTION_TOKEN` environment variable will be automatically loaded when you initialize the client.
 
 ```rs
-let client = notionrs::client::Client::new();
+    let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+    let client = Client::new(notion_api_key);
 ```
 
 Although `NOT recommended`, you can also hard-code the token using the `.secret()` method.

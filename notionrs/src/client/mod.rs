@@ -1,5 +1,6 @@
 pub mod block;
 pub mod comment;
+pub mod data_source;
 pub mod database;
 pub mod file_upload;
 pub mod page;
@@ -13,14 +14,13 @@ pub struct Client {
 
 impl Client {
     // TODO: docs: new method
-    pub fn new() -> Self {
+    pub fn new(notion_api_key: impl AsRef<str>) -> Self {
         let mut headers = reqwest::header::HeaderMap::new();
-
-        let secret = std::env::var("NOTION_TOKEN").unwrap_or_else(|_| String::new());
+        let secret = notion_api_key.as_ref().to_string();
 
         headers.insert(
             "Notion-Version",
-            reqwest::header::HeaderValue::from_static("2022-06-28"),
+            reqwest::header::HeaderValue::from_static("2025-09-03"),
         );
         headers.insert(
             "Authorization",
@@ -36,42 +36,6 @@ impl Client {
         Client {
             reqwest_client: client,
         }
-    }
-
-    /// This method sets the token used for calling the Notion API.
-    /// If you don't set it, the client will automatically read
-    /// and use the environment variable named `NOTION_TOKEN` during initialization.
-    ///
-    /// For details on obtaining a Notion token, please refer to the
-    /// [Notion Developer Documentation](https://developers.notion.com/docs/authorization).
-    ///
-    /// ```no_run
-    /// use notionrs::client::Client;
-    /// // ...
-    /// let client = Client::new().secret("secret_XXXXXXXXXXXXXX");
-    /// ```
-    pub fn secret<T>(mut self, notion_api_key: T) -> Self
-    where
-        T: AsRef<str>,
-    {
-        let mut headers = reqwest::header::HeaderMap::new();
-        let secret = notion_api_key.as_ref().to_string();
-
-        headers.insert(
-            "Notion-Version",
-            reqwest::header::HeaderValue::from_static("2022-06-28"),
-        );
-        headers.insert(
-            "Authorization",
-            reqwest::header::HeaderValue::from_str(&format!("Bearer {}", secret))
-                .expect("Invalid header value"),
-        );
-
-        self.reqwest_client = reqwest::Client::builder()
-            .default_headers(headers)
-            .build()
-            .unwrap();
-        self
     }
 
     // # --------------------------------------------------------------------------------
@@ -147,14 +111,6 @@ impl Client {
     //
     // # --------------------------------------------------------------------------------
 
-    // TODO: docs
-    pub fn query_database(&self) -> crate::client::database::query_database::QueryDatabaseClient {
-        crate::client::database::query_database::QueryDatabaseClient {
-            reqwest_client: self.reqwest_client.clone(),
-            ..Default::default()
-        }
-    }
-
     pub fn create_database(
         &self,
     ) -> crate::client::database::create_database::CreateDatabaseClient {
@@ -177,6 +133,48 @@ impl Client {
         &self,
     ) -> crate::client::database::retrieve_database::RetrieveDatabaseClient {
         crate::client::database::retrieve_database::RetrieveDatabaseClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // Data Source
+    //
+    // # --------------------------------------------------------------------------------
+
+    pub fn query_data_source(
+        &self,
+    ) -> crate::client::data_source::query_data_source::QueryDataSourceClient {
+        crate::client::data_source::query_data_source::QueryDataSourceClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn create_data_source(
+        &self,
+    ) -> crate::client::data_source::create_data_source::CreateDataSourceClient {
+        crate::client::data_source::create_data_source::CreateDataSourceClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn retrieve_data_source(
+        &self,
+    ) -> crate::client::data_source::retrieve_data_source::RetrieveDataSourceClient {
+        crate::client::data_source::retrieve_data_source::RetrieveDataSourceClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    pub fn update_data_source(
+        &self,
+    ) -> crate::client::data_source::update_data_source::UpdateDataSourceClient {
+        crate::client::data_source::update_data_source::UpdateDataSourceClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }
@@ -335,56 +333,5 @@ impl Client {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }
-    }
-
-    pub async fn paginate<C, T>(client: C) -> Result<Vec<T>, crate::error::Error>
-    where
-        C: crate::r#trait::Paginate<T> + Clone + Send + 'static,
-        T: Send + 'static,
-    {
-        use futures::TryStreamExt;
-        let results = Self::paginate_stream(client).try_collect().await?;
-        Ok(results)
-    }
-
-    pub fn paginate_stream<C, T>(
-        client: C,
-    ) -> std::pin::Pin<Box<dyn futures::Stream<Item = Result<T, crate::error::Error>> + Send>>
-    where
-        C: crate::r#trait::Paginate<T> + Clone + Send + 'static,
-        T: Send + 'static,
-    {
-        Box::pin(futures::stream::try_unfold(
-            (client, None::<String>, true, Vec::<T>::new().into_iter()),
-            |(client, next_cursor, has_more, mut buffer)| async move {
-                if let Some(item) = buffer.next() {
-                    return Ok(Some((item, (client, next_cursor, has_more, buffer))));
-                } else if !has_more {
-                    return Ok(None);
-                };
-
-                let response = client
-                    .clone()
-                    .paginate_start_cursor(next_cursor)
-                    .paginate_send()
-                    .await?;
-
-                let mut new_buffer = response.results.into_iter();
-
-                let maybe_first_item = new_buffer.next();
-
-                let state = (
-                    client,
-                    response.next_cursor,
-                    response.has_more.unwrap_or_default(),
-                    new_buffer,
-                );
-
-                match maybe_first_item {
-                    Some(first_item) => Ok(Some((first_item, state))),
-                    None => Ok(None),
-                }
-            },
-        ))
     }
 }

@@ -3,7 +3,8 @@ use notionrs_types::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    let client = Client::new().secret("NOTION_TOKEN");
+    let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+    let client = Client::new(notion_api_key);
 
     let mut properties = std::collections::HashMap::new();
 
@@ -24,21 +25,21 @@ async fn main() -> Result<(), Error> {
 
     properties.insert(
         "Tags".to_string(),
-        Some(DatabaseProperty::MultiSelect(
-            DatabaseMultiSelectProperty::default().options(options.clone()),
+        Some(DataSourceProperty::MultiSelect(
+            DataSourceMultiSelectProperty::default().options(options.clone()),
         )),
     );
 
     properties.insert(
         "Rich Text".to_string(),
-        Some(DatabaseProperty::RichText(
-            DatabaseRichTextProperty::default(),
+        Some(DataSourceProperty::RichText(
+            DataSourceRichTextProperty::default(),
         )),
     );
 
     properties.insert(
         "URL".to_string(),
-        Some(DatabaseProperty::Url(DatabaseUrlProperty::default())),
+        Some(DataSourceProperty::Url(DataSourceUrlProperty::default())),
     );
 
     let request = client
@@ -48,7 +49,6 @@ async fn main() -> Result<(), Error> {
         .description(vec![RichText::from(
             "Description of the Database (changed)",
         )])
-        .properties(properties)
         .icon(Icon::Emoji(Emoji::from("🚧")))
         .cover(File::External(ExternalFile::from(
             "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",

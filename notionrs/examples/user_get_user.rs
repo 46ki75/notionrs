@@ -1,6 +1,9 @@
+use notionrs::Client;
+
 #[tokio::main]
 async fn main() -> Result<(), notionrs::error::Error> {
-    let client = notionrs::client::Client::new();
+    let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+    let client = Client::new(notion_api_key);
 
     let request = client.get_user().user_id("USER_ID");
 

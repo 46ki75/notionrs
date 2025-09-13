@@ -16,13 +16,19 @@ pub struct CreateDatabaseClient {
     pub(crate) description: Vec<RichText>,
 
     pub(crate) properties:
-        std::collections::HashMap<String, notionrs_types::object::database::DatabaseProperty>,
+        std::collections::HashMap<String, notionrs_types::object::data_source::DataSourceProperty>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     pub(crate) cover: Option<notionrs_types::object::file::File>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CreateDatabaseRequestBodyPropertyPart {
+    pub(crate) initial_data_source:
+        std::collections::HashMap<String, notionrs_types::object::data_source::DataSourceProperty>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -37,8 +43,7 @@ pub struct CreateDatabaseRequestBody {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) description: Vec<RichText>,
 
-    pub(crate) properties:
-        std::collections::HashMap<String, notionrs_types::object::database::DatabaseProperty>,
+    pub(crate) properties: CreateDatabaseRequestBodyPropertyPart,
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -57,7 +62,9 @@ impl CreateDatabaseClient {
 
         let request_body_struct = CreateDatabaseRequestBody {
             parent: notionrs_types::object::parent::PageParent::from(page_id),
-            properties: self.properties,
+            properties: CreateDatabaseRequestBodyPropertyPart {
+                initial_data_source: self.properties,
+            },
             title: self.title,
             description: self.description,
             icon: self.icon,
