@@ -1,10 +1,12 @@
 # Notion API Client for Rust
 
-[![Unit Test](https://github.com/46ki75/notionrs/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/46ki75/notionrs/actions/workflows/unit-tests.yml)
+[![Unit Test](https://github.com/46ki75/notionrs/actions/workflows/test.yml/badge.svg)](https://github.com/46ki75/notionrs/actions/workflows/test.yml)
 [![Check Documentation Build](https://github.com/46ki75/notionrs/actions/workflows/build-documentation.yml/badge.svg)](https://github.com/46ki75/notionrs/actions/workflows/build-documentation.yml)
 [![Crates.io](https://img.shields.io/crates/v/notionrs?logo=rust)](https://crates.io/crates/notionrs/)
 
 ![ogp](./assets/ogp.webp)
+
+`notionrs` now supports `Notion-Version: 2025-09-03`.
 
 This project is currently under active development and is not yet ready for production use. Features and API stability may change without notice. Contributions and feedback are welcome!
 
