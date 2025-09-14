@@ -5,11 +5,11 @@ pub struct CreatePageClient {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
-    /// Cannot specify the same page ID as the parent page's database_id  
+    /// Cannot specify the same page ID as the parent page's data_source_id  
     pub(crate) page_id: Option<String>,
 
-    /// Cannot specify the same database ID as the parent database's page_id  
-    pub(crate) database_id: Option<String>,
+    /// Cannot specify the same data_source ID as the parent data_source's page_id  
+    pub(crate) data_source_id: Option<String>,
 
     pub(crate) properties:
         std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
@@ -56,15 +56,15 @@ impl CreatePageClient {
             ));
         }
 
-        if let Some(database_id) = self.database_id {
-            parent = Some(notionrs_types::object::parent::Parent::DatabaseParent(
-                notionrs_types::object::parent::DatabaseParent::from(database_id),
+        if let Some(data_source_id) = self.data_source_id {
+            parent = Some(notionrs_types::object::parent::Parent::DataSourceParent(
+                notionrs_types::object::parent::DataSourceParent::from(data_source_id),
             ));
         }
 
         let parent = parent.ok_or_else(|| {
             crate::error::Error::RequestParameter(
-                "Either `page_id` or `database_id` must be set.".to_string(),
+                "Either `page_id` or `data_source_id` must be set.".to_string(),
             )
         })?;
 

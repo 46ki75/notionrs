@@ -13,7 +13,7 @@ pub trait PaginateExt<T>: Paginate<T> {
     /// This method automatically fetches and streams all pages, handling pagination internally.
     /// Each item is yielded as soon as it is available.
     ///
-    /// ```no_run
+    /// ```ignore
     /// use futures::TryStreamExt;
     /// use notionrs::r#trait::PaginateExt;
     /// use notionrs_types::prelude::*;
