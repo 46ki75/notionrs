@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 #[serde(untagged)]
 pub enum Parent {
     DatabaseParent(DatabaseParent),
+    DataSourceParent(DataSourceParent),
     PageParent(PageParent),
     WorkspaceParent(WorkspaceParent),
     BlockParent(BlockParent),
@@ -33,6 +34,33 @@ impl From<String> for DatabaseParent {
         Self {
             r#type: "database_id".to_string(),
             database_id,
+        }
+    }
+}
+
+/// <https://developers.notion.com/reference/parent-object#data-source-parent>
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+pub struct DataSourceParent {
+    /// always "data_source_id"
+    #[serde(skip_serializing)]
+    pub r#type: String,
+    pub data_source_id: String,
+}
+
+impl From<&str> for DataSourceParent {
+    fn from(data_source_id: &str) -> Self {
+        Self {
+            r#type: "data_source_id".to_string(),
+            data_source_id: data_source_id.to_string(),
+        }
+    }
+}
+
+impl From<String> for DataSourceParent {
+    fn from(data_source_id: String) -> Self {
+        Self {
+            r#type: "data_source_id".to_string(),
+            data_source_id: data_source_id,
         }
     }
 }
