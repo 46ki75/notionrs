@@ -14,7 +14,7 @@ readme = "../README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-notionrs_types = { version = "0.2.0", path = "../notionrs_types" }
+notionrs_types = { version = "0.3.0", path = "../notionrs_types" }
 notionrs_macro = { version = "0.2.0", path = "../notionrs_macro" }
 
 reqwest = { version = "0.12", features = [
