@@ -569,7 +569,26 @@ impl Client {
 
                     markdown_list.push(String::new()); // New Line
                 }
-                notionrs_types::prelude::Block::SyncedBlock { .. } => continue,
+                notionrs_types::prelude::Block::SyncedBlock { synced_block } => {
+                    let block_id_to_fetch = synced_block
+                        .clone()
+                        .synced_from
+                        .map(|s| s.block_id)
+                        .unwrap_or_else(|| block.id.clone());
+
+                    if block.has_children || synced_block.synced_from.is_some() {
+                        if let Ok(children_resp) = self
+                            .get_block_children()
+                            .block_id(&block_id_to_fetch)
+                            .send()
+                            .await
+                        {
+                            for child in children_resp.results.into_iter().rev() {
+                                stack.push((child, indent));
+                            }
+                        }
+                    }
+                }
                 notionrs_types::prelude::Block::TableOfContents { .. } => continue,
                 notionrs_types::prelude::Block::Table { .. } => continue,
                 notionrs_types::prelude::Block::TableRow { .. } => continue,
