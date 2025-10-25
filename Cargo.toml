@@ -1,3 +1,50 @@
 [workspace]
 resolver = "3"
 members = ["notionrs", "notionrs_macro", "notionrs_types", "notionrs_webhooks"]
+
+[workspace.package]
+edition = "2024"
+authors = ["Ikuma Yamashita"]
+repository = "https://github.com/46ki75/notionrs"
+license = "MIT OR Apache-2.0"
+categories = ["web-programming::http-client"]
+keywords = ["notion", "notion-api"]
+
+[workspace.dependencies]
+# Ser/De
+serde = { version = "1.0", features = ["derive"] }
+serde_plain = "1.0"
+serde_json = "1.0"
+
+# time
+time = { version = "0.3", features = [
+    "serde",
+    "parsing",
+    "formatting",
+    "macros",
+] }
+
+# HTTP Client
+reqwest = { version = "0.12", features = [
+    "gzip",
+    "http2",
+    "multipart",
+], default-features = false }
+
+# Error
+thiserror = "2"
+
+# Utilities
+async-trait = "0.1.89"
+futures = "0.3.31"
+bytes = "1.10.1"
+dotenvy = "0.15.0"
+serial_test = "3.2.0"
+
+# Async Runtime
+tokio = { version = "1.48", features = ["full"] }
+
+# Macro
+syn = { version = "2.0.108", features = ["derive", "parsing"] }
+proc-macro2 = "1.0.103"
+quote = "1.0.41"

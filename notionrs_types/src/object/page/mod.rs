@@ -110,6 +110,7 @@ where
     pub developer_survey: Option<String>,
     pub request_id: Option<String>,
     pub in_trash: bool,
+    pub is_locked: bool,
 }
 
 // # --------------------------------------------------------------------------------

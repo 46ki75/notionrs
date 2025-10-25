@@ -1,47 +1,38 @@
 [package]
 name = "notionrs"
 description = "A Notion API client that provides type-safe request serialization and response deserialization"
-version = "0.3.0"
-edition = "2024"
-authors = ["Ikuma Yamashita"]
-repository = "https://github.com/46ki75/notionrs"
-license = "MIT OR Apache-2.0"
+version = "0.4.0"
+edition = { workspace = true }
+authors = { workspace = true }
+repository = { workspace = true }
+license = { workspace = true }
 documentation = "https://docs.rs/notionrs"
-categories = ["web-programming::http-client"]
-keywords = ["notion", "notion-api"]
+categories = { workspace = true }
+keywords = { workspace = true }
 readme = "../README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-notionrs_types = { version = "0.3.0", path = "../notionrs_types" }
+notionrs_types = { version = "0.4.0", path = "../notionrs_types" }
 notionrs_macro = { version = "0.2.0", path = "../notionrs_macro" }
 
-reqwest = { version = "0.12", features = [
-    "gzip",
-    "http2",
-    "multipart",
-], default-features = false }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-serde_plain = "1.0"
-thiserror = "2"
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_plain = { workspace = true }
 
+thiserror = { workspace = true }
 
-time = { version = "0.3", features = [
-    "serde",
-    "parsing",
-    "formatting",
-    "macros",
-] }
-async-trait = "0.1.89"
-futures = "0.3.31"
-bytes = "1.10.1"
+time = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+bytes = { workspace = true }
 
 [dev-dependencies]
-tokio = { version = "1.48.0", features = ["full"] }
-dotenvy = "0.15.0"
-serial_test = "3.2.0"
+tokio = { workspace = true }
+dotenvy = { workspace = true }
+serial_test = { workspace = true }
 
 [features]
 default = ["rustls-tls"]

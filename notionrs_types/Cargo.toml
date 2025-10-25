@@ -1,27 +1,22 @@
 [package]
 name = "notionrs_types"
 description = "Shared schema definitions for the Notion API used by the notionrs ecosystem."
-version = "0.3.0"
-edition = "2024"
-authors = ["Ikuma Yamashita"]
-repository = "https://github.com/46ki75/notionrs"
-license = "MIT OR Apache-2.0"
+version = "0.4.0"
+edition = { workspace = true }
+authors = { workspace = true }
+repository = { workspace = true }
+license = { workspace = true }
 documentation = "https://docs.rs/notionrs_types"
-categories = ["web-programming::http-client"]
-keywords = ["notion", "notion-api"]
+categories = { workspace = true }
+keywords = { workspace = true }
 readme = "./README.md"
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"] }
-serde_plain = "1.0"
+serde = { workspace = true }
+serde_plain = { workspace = true }
 
 notionrs_macro = { version = "0.2.0", path = "../notionrs_macro" }
-time = { version = "0.3", features = [
-    "serde",
-    "parsing",
-    "formatting",
-    "macros",
-] }
+time = { workspace = true }
 
 [dev-dependencies]
-serde_json = "1.0"
+serde_json = { workspace = true }
