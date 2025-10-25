@@ -351,7 +351,7 @@ impl Client {
             .send()
             .await?;
 
-        // Stack holds (BlockResponse, indent_level) - スタックに変更
+        // Stack holds (BlockResponse, indent_level); changed to stack for traversal
         let mut stack: Vec<(notionrs_types::prelude::BlockResponse, usize)> = Vec::new();
 
         for block in response.results.into_iter().rev() {
