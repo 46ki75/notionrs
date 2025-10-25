@@ -1,4 +1,7 @@
+use futures::TryStreamExt;
 use notionrs_types::prelude::*;
+
+use crate::PaginateExt;
 
 pub mod block;
 pub mod comment;
@@ -348,13 +351,14 @@ impl Client {
         let response = self
             .get_block_children()
             .block_id(block_id.as_ref())
-            .send()
+            .into_stream()
+            .try_collect::<Vec<BlockResponse>>()
             .await?;
 
         // Stack holds (BlockResponse, indent_level); changed to stack for traversal
         let mut stack: Vec<(notionrs_types::prelude::BlockResponse, usize)> = Vec::new();
 
-        for block in response.results.into_iter().rev() {
+        for block in response.into_iter().rev() {
             stack.push((block, 0));
         }
 
