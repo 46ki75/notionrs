@@ -2,13 +2,13 @@
 name = "notionrs"
 description = "A Notion API client that provides type-safe request serialization and response deserialization"
 version = "0.3.0"
-edition = "2024"
-authors = ["Ikuma Yamashita"]
-repository = "https://github.com/46ki75/notionrs"
-license = "MIT OR Apache-2.0"
+edition = { workspace = true }
+authors = { workspace = true }
+repository = { workspace = true }
+license = { workspace = true }
 documentation = "https://docs.rs/notionrs"
-categories = ["web-programming::http-client"]
-keywords = ["notion", "notion-api"]
+categories = { workspace = true }
+keywords = { workspace = true }
 readme = "../README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
