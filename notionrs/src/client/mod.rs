@@ -337,6 +337,7 @@ impl Client {
         }
     }
 
+    /// **Experimental**
     pub async fn to_markdown<T>(&self, block_id: T) -> Result<Vec<String>, crate::error::Error>
     where
         T: AsRef<str>,
@@ -441,13 +442,23 @@ impl Client {
                     markdown_list.push(format!("{}---", prefix));
                     markdown_list.push(String::new()); // New Line
                 }
-                notionrs_types::prelude::Block::Embed { .. } => continue,
+                notionrs_types::prelude::Block::Embed { embed } => {
+                    let prefix = "  ".repeat(indent);
+                    let url = embed.url;
+                    markdown_list.push(format!("{}<{}>", prefix, url));
+                    markdown_list.push(String::new()); // New Line
+                }
                 notionrs_types::prelude::Block::Equation { equation } => {
                     let prefix = "  ".repeat(indent);
                     markdown_list.push(format!("{}$${}$$", prefix, equation.expression));
                     markdown_list.push(String::new()); // New Line
                 }
-                notionrs_types::prelude::Block::File { .. } => continue,
+                notionrs_types::prelude::Block::File { file } => {
+                    let prefix = "  ".repeat(indent);
+                    let url = file.get_url();
+                    markdown_list.push(format!("{}<{}>", prefix, url));
+                    markdown_list.push(String::new()); // New Line
+                }
                 notionrs_types::prelude::Block::Heading1 { heading_1 } => {
                     let text = heading_1
                         .rich_text
@@ -548,7 +559,12 @@ impl Client {
                         }
                     }
                 }
-                notionrs_types::prelude::Block::Pdf { .. } => continue,
+                notionrs_types::prelude::Block::Pdf { pdf } => {
+                    let prefix = "  ".repeat(indent);
+                    let url = pdf.get_url();
+                    markdown_list.push(format!("{}<{}>", prefix, url));
+                    markdown_list.push(String::new()); // New Line
+                }
                 notionrs_types::prelude::Block::Quote { quote } => {
                     let text = quote
                         .rich_text
@@ -590,8 +606,57 @@ impl Client {
                     }
                 }
                 notionrs_types::prelude::Block::TableOfContents { .. } => continue,
-                notionrs_types::prelude::Block::Table { .. } => continue,
-                notionrs_types::prelude::Block::TableRow { .. } => continue,
+                notionrs_types::prelude::Block::Table { .. } => {
+                    let prefix = "  ".repeat(indent);
+
+                    if block.has_children {
+                        let children_resp =
+                            self.get_block_children().block_id(&block.id).send().await?;
+                        let rows: Vec<_> = children_resp.results;
+
+                        if rows.is_empty() {
+                            continue;
+                        }
+
+                        let mut table_rows = Vec::new();
+                        for row_block in rows {
+                            if let notionrs_types::prelude::Block::TableRow { table_row } =
+                                row_block.block
+                            {
+                                let cells: Vec<String> = table_row
+                                    .cells
+                                    .into_iter()
+                                    .map(|cell| {
+                                        cell.into_iter()
+                                            .map(|t| t.to_markdown())
+                                            .collect::<String>()
+                                    })
+                                    .collect();
+                                table_rows.push(cells);
+                            }
+                        }
+
+                        if table_rows.is_empty() {
+                            continue;
+                        }
+
+                        if let Some(header) = table_rows.first() {
+                            markdown_list.push(format!("{}| {} |", prefix, header.join(" | ")));
+
+                            let separator = vec!["---"; header.len()].join(" | ");
+                            markdown_list.push(format!("{}| {} |", prefix, separator));
+                        }
+
+                        for row in table_rows.iter().skip(1) {
+                            markdown_list.push(format!("{}| {} |", prefix, row.join(" | ")));
+                        }
+
+                        markdown_list.push(String::new());
+                    }
+                }
+                notionrs_types::prelude::Block::TableRow { .. } => {
+                    continue;
+                }
                 notionrs_types::prelude::Block::Template { .. } => continue,
                 notionrs_types::prelude::Block::ToDo { to_do } => {
                     let text = to_do
@@ -632,7 +697,12 @@ impl Client {
 
                     markdown_list.push(String::new()); // New Line
                 }
-                notionrs_types::prelude::Block::Video { .. } => continue,
+                notionrs_types::prelude::Block::Video { video } => {
+                    let prefix = "  ".repeat(indent);
+                    let url = video.get_url();
+                    markdown_list.push(format!("{}<{}>", prefix, url));
+                    markdown_list.push(String::new()); // New Line
+                }
                 notionrs_types::prelude::Block::Unsupported => continue,
             };
         }
