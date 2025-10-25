@@ -24,6 +24,7 @@
     },
     "archived": false,
     "in_trash": false,
+    "is_locked": false,
     "properties": {
         "Files & media": {
             "id": "%3AlnV",
