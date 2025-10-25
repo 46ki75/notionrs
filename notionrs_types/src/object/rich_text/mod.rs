@@ -262,6 +262,59 @@ where
     }
 }
 
+impl RichText {
+    pub fn to_markdown(&self) -> String {
+        let (text, href, annotations) = match self.clone() {
+            RichText::Text {
+                annotations,
+                plain_text,
+                href,
+                ..
+            } => (plain_text, href, annotations),
+            RichText::Mention {
+                annotations,
+                plain_text,
+                href,
+                ..
+            } => (plain_text, href, annotations),
+            RichText::Equation {
+                equation,
+                annotations,
+                href,
+                ..
+            } => (format!("${}$", equation.expression), href, annotations),
+        };
+
+        if let Some(href) = href {
+            format!("[{}]({})", text, href)
+        } else {
+            let mut md = text;
+
+            if annotations.italic {
+                md = format!("*{}*", md);
+            }
+
+            if annotations.bold {
+                md = format!("**{}**", md);
+            }
+
+            if annotations.underline {
+                md = format!("++{}++", md);
+            }
+
+            if annotations.strikethrough {
+                md = format!("~~{}~~", md);
+            }
+
+            if annotations.code {
+                md = format!("`{}`", md);
+            }
+
+            md
+        }
+    }
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test

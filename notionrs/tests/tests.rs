@@ -12,5 +12,7 @@ mod file_upload;
 mod page;
 #[path = "search.rs"]
 mod search;
+#[path = "to_markdown.rs"]
+mod to_markdown;
 #[path = "user/mod.rs"]
 mod user;
