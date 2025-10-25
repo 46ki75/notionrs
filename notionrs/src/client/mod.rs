@@ -1,3 +1,5 @@
+use notionrs_types::prelude::*;
+
 pub mod block;
 pub mod comment;
 pub mod data_source;
@@ -333,5 +335,378 @@ impl Client {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }
+    }
+
+    /// **Experimental**
+    pub async fn to_markdown<T>(&self, block_id: T) -> Result<Vec<String>, crate::error::Error>
+    where
+        T: AsRef<str>,
+    {
+        let mut markdown_list: Vec<String> = Vec::new();
+
+        // Retrieve first-level children for the provided block id.
+        let response = self
+            .get_block_children()
+            .block_id(block_id.as_ref())
+            .send()
+            .await?;
+
+        // Stack holds (BlockResponse, indent_level); changed to stack for traversal
+        let mut stack: Vec<(notionrs_types::prelude::BlockResponse, usize)> = Vec::new();
+
+        for block in response.results.into_iter().rev() {
+            stack.push((block, 0));
+        }
+
+        while let Some((block, indent)) = stack.pop() {
+            match block.block {
+                notionrs_types::prelude::Block::Audio { .. } => continue,
+                notionrs_types::prelude::Block::Bookmark { bookmark } => {
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}<{}>", prefix, bookmark.url));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::Breadcrumb { .. } => continue,
+                notionrs_types::prelude::Block::BulletedListItem { bulleted_list_item } => {
+                    let text = bulleted_list_item
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}- {}", prefix, text));
+
+                    if block.has_children {
+                        let children_resp =
+                            self.get_block_children().block_id(&block.id).send().await?;
+                        for child in children_resp.results.into_iter().rev() {
+                            stack.push((child, indent + 1));
+                        }
+                    }
+                }
+                notionrs_types::prelude::Block::Callout { callout } => {
+                    let text = callout
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}> {}", prefix, text));
+
+                    if block.has_children {
+                        let children_resp =
+                            self.get_block_children().block_id(&block.id).send().await?;
+                        for child in children_resp.results.into_iter().rev() {
+                            stack.push((child, indent));
+                        }
+                    }
+                }
+                notionrs_types::prelude::Block::ChildDatabase { .. } => continue,
+                notionrs_types::prelude::Block::ChildPage { .. } => continue,
+                notionrs_types::prelude::Block::Code { code } => {
+                    let text = code
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    let language = code.language.to_string();
+                    markdown_list.push(format!("{}```{}", prefix, language));
+                    markdown_list.push(format!("{}{}", prefix, text));
+                    markdown_list.push(format!("{}```", prefix));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::ColumnList { .. } => {
+                    if block.has_children {
+                        let children_resp =
+                            self.get_block_children().block_id(&block.id).send().await?;
+                        for child in children_resp.results.into_iter().rev() {
+                            stack.push((child, indent));
+                        }
+                    }
+                }
+                notionrs_types::prelude::Block::Column { .. } => {
+                    if block.has_children {
+                        let children_resp =
+                            self.get_block_children().block_id(&block.id).send().await?;
+                        for child in children_resp.results.into_iter().rev() {
+                            stack.push((child, indent));
+                        }
+                    }
+                }
+                notionrs_types::prelude::Block::Divider { .. } => {
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}---", prefix));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::Embed { embed } => {
+                    let prefix = "  ".repeat(indent);
+                    let url = embed.url;
+                    markdown_list.push(format!("{}<{}>", prefix, url));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::Equation { equation } => {
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}$${}$$", prefix, equation.expression));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::File { file } => {
+                    let prefix = "  ".repeat(indent);
+                    let url = file.get_url();
+                    markdown_list.push(format!("{}<{}>", prefix, url));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::Heading1 { heading_1 } => {
+                    let text = heading_1
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}# {}", prefix, text));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::Heading2 { heading_2 } => {
+                    let text = heading_2
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}## {}", prefix, text));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::Heading3 { heading_3 } => {
+                    let text = heading_3
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}### {}", prefix, text));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::Image { image } => {
+                    let prefix = "  ".repeat(indent);
+                    let url = image.get_url();
+                    let alt_text = match image {
+                        File::External(external_file) => external_file
+                            .caption
+                            .unwrap_or_default()
+                            .into_iter()
+                            .map(|t| t.to_string())
+                            .collect::<Vec<_>>()
+                            .join(""),
+                        File::NotionHosted(notion_hosted_file) => notion_hosted_file
+                            .caption
+                            .unwrap_or_default()
+                            .into_iter()
+                            .map(|t| t.to_string())
+                            .collect::<Vec<_>>()
+                            .join(""),
+                        File::ApiUploaded(..) => String::new(),
+                        _ => String::new(),
+                    };
+                    markdown_list.push(format!("{}![{}]({})", prefix, alt_text, url));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::LinkPreview { link_preview } => {
+                    let prefix = "  ".repeat(indent);
+                    let url = link_preview.url;
+                    markdown_list.push(format!("{}<{}>", prefix, url));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::NumberedListItem { numbered_list_item } => {
+                    let text = numbered_list_item
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}1. {}", prefix, text));
+
+                    if block.has_children {
+                        let children_resp =
+                            self.get_block_children().block_id(&block.id).send().await?;
+                        for child in children_resp.results.into_iter().rev() {
+                            stack.push((child, indent + 1));
+                        }
+                    }
+                }
+                notionrs_types::prelude::Block::Paragraph { paragraph } => {
+                    let text = paragraph
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}{}", prefix, text));
+                    markdown_list.push(String::new()); // New Line
+
+                    if block.has_children {
+                        let children_resp =
+                            self.get_block_children().block_id(&block.id).send().await?;
+                        for child in children_resp.results.into_iter().rev() {
+                            stack.push((child, indent));
+                        }
+                    }
+                }
+                notionrs_types::prelude::Block::Pdf { pdf } => {
+                    let prefix = "  ".repeat(indent);
+                    let url = pdf.get_url();
+                    markdown_list.push(format!("{}<{}>", prefix, url));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::Quote { quote } => {
+                    let text = quote
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}> {}", prefix, text));
+
+                    if block.has_children {
+                        let children_resp =
+                            self.get_block_children().block_id(&block.id).send().await?;
+                        for child in children_resp.results.into_iter().rev() {
+                            stack.push((child, indent));
+                        }
+                    }
+
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::SyncedBlock { synced_block } => {
+                    let block_id_to_fetch = synced_block
+                        .clone()
+                        .synced_from
+                        .map(|s| s.block_id)
+                        .unwrap_or_else(|| block.id.clone());
+
+                    if block.has_children || synced_block.synced_from.is_some() {
+                        if let Ok(children_resp) = self
+                            .get_block_children()
+                            .block_id(&block_id_to_fetch)
+                            .send()
+                            .await
+                        {
+                            for child in children_resp.results.into_iter().rev() {
+                                stack.push((child, indent));
+                            }
+                        }
+                    }
+                }
+                notionrs_types::prelude::Block::TableOfContents { .. } => continue,
+                notionrs_types::prelude::Block::Table { .. } => {
+                    let prefix = "  ".repeat(indent);
+
+                    if block.has_children {
+                        let children_resp =
+                            self.get_block_children().block_id(&block.id).send().await?;
+                        let rows: Vec<_> = children_resp.results;
+
+                        if rows.is_empty() {
+                            continue;
+                        }
+
+                        let mut table_rows = Vec::new();
+                        for row_block in rows {
+                            if let notionrs_types::prelude::Block::TableRow { table_row } =
+                                row_block.block
+                            {
+                                let cells: Vec<String> = table_row
+                                    .cells
+                                    .into_iter()
+                                    .map(|cell| {
+                                        cell.into_iter()
+                                            .map(|t| t.to_markdown())
+                                            .collect::<String>()
+                                    })
+                                    .collect();
+                                table_rows.push(cells);
+                            }
+                        }
+
+                        if table_rows.is_empty() {
+                            continue;
+                        }
+
+                        if let Some(header) = table_rows.first() {
+                            markdown_list.push(format!("{}| {} |", prefix, header.join(" | ")));
+
+                            let separator = vec!["---"; header.len()].join(" | ");
+                            markdown_list.push(format!("{}| {} |", prefix, separator));
+                        }
+
+                        for row in table_rows.iter().skip(1) {
+                            markdown_list.push(format!("{}| {} |", prefix, row.join(" | ")));
+                        }
+
+                        markdown_list.push(String::new());
+                    }
+                }
+                notionrs_types::prelude::Block::TableRow { .. } => {
+                    continue;
+                }
+                notionrs_types::prelude::Block::Template { .. } => continue,
+                notionrs_types::prelude::Block::ToDo { to_do } => {
+                    let text = to_do
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    let checkbox = if to_do.checked { "[x]" } else { "[ ]" };
+                    markdown_list.push(format!("{}- {} {}", prefix, checkbox, text));
+
+                    if block.has_children {
+                        let children_resp =
+                            self.get_block_children().block_id(&block.id).send().await?;
+                        for child in children_resp.results.into_iter().rev() {
+                            stack.push((child, indent + 1));
+                        }
+                    }
+                }
+                notionrs_types::prelude::Block::Toggle { toggle } => {
+                    let text = toggle
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}> **{}**", prefix, text));
+
+                    if block.has_children {
+                        let children_resp =
+                            self.get_block_children().block_id(&block.id).send().await?;
+                        for child in children_resp.results.into_iter().rev() {
+                            stack.push((child, indent));
+                        }
+                    }
+
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::Video { video } => {
+                    let prefix = "  ".repeat(indent);
+                    let url = video.get_url();
+                    markdown_list.push(format!("{}<{}>", prefix, url));
+                    markdown_list.push(String::new()); // New Line
+                }
+                notionrs_types::prelude::Block::Unsupported => continue,
+            };
+        }
+
+        Ok(markdown_list)
     }
 }
