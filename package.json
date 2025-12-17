@@ -11,7 +11,7 @@
         "posttest": "npm run test:cleanup"
     },
     "devDependencies": {
-        "@types/node": "^25.0.2",
+        "@types/node": "^25.0.3",
         "dotenv": "^17.2.3",
         "prettier": "^3.7.4",
         "tsx": "^4.21.0",
