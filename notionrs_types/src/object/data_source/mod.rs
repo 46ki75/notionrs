@@ -19,6 +19,7 @@ pub mod rich_text;
 pub mod rollup;
 pub mod select;
 pub mod status;
+pub mod template;
 pub mod title;
 pub mod unique_id;
 pub mod url;
