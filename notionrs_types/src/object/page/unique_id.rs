@@ -46,8 +46,9 @@ pub struct PageUniqueIdPropertyParameter {
     ///
     /// ---
     ///
-    /// Page templates might have references to undefined IDs.
     /// Notion API updates on 2025-10-14 introduced this breaking change.
+    /// This updates added the page template feature, and page templates are retrieved by some APIs.
+    /// When page templates include the `unique_id` property, it may be undefined.
     pub number: Option<u64>,
 }
 
