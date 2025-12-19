@@ -43,6 +43,11 @@ pub struct PageUniqueIdPropertyParameter {
     pub prefix: Option<String>,
 
     /// The ID count (auto-incrementing).
+    ///
+    /// ---
+    ///
+    /// Page templates might have references to undefined IDs.
+    /// Notion API updates on 2025-10-14 introduced this breaking change.
     pub number: Option<u64>,
 }
 
