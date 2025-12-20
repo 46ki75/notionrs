@@ -870,7 +870,7 @@ dependencies = [
 
 [[package]]
 name = "notionrs"
-version = "0.4.2"
+version = "0.5.0"
 dependencies = [
  "async-trait",
  "bytes",
@@ -882,6 +882,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_plain",
+ "serde_urlencoded",
  "serial_test",
  "thiserror",
  "time",
@@ -899,7 +900,7 @@ dependencies = [
 
 [[package]]
 name = "notionrs_types"
-version = "0.4.1"
+version = "0.5.0"
 dependencies = [
  "notionrs_macro",
  "serde",

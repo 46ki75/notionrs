@@ -29,9 +29,13 @@ pub enum Error {
     #[error("Notion request parameter error: {0}")]
     RequestParameter(String),
 
-    /// This error occurs when serialization or deserialization fails.
+    /// This error occurs when serialization or deserialization fails (JSON).
     #[error("Serialization/Deserialization error: {0}")]
-    Serde(#[from] serde_json::Error),
+    SerdeJson(#[from] serde_json::Error),
+
+    /// This error occurs when serialization or deserialization fails (URL-encoded).
+    #[error("Serialization/Deserialization error: {0}")]
+    SerdeUrlEncodedSerialize(#[from] serde_urlencoded::ser::Error),
 }
 
 /// Error response from the Notion API

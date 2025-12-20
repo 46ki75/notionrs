@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+/// @see <https://developers.notion.com/reference/post-page>
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct CreatePageClient {
     /// The reqwest http client
@@ -19,6 +20,8 @@ pub struct CreatePageClient {
     pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
 
     pub(crate) cover: Option<notionrs_types::object::file::File>,
+
+    pub(crate) template: Option<CreatePageTemplate>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -36,9 +39,42 @@ pub struct CreatePageRequestBody {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) cover: Option<notionrs_types::object::file::File>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) template: Option<CreatePageTemplate>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CreatePageTemplate {
+    /// Whether to apply no template and create a page from scratch manually (`"none"`),
+    /// the parent data source's default template (`"default"`),
+    /// or a specific template by ID (`template_id`). The default behavior is `"none"`.
+    pub(crate) r#type: String,
+
+    /// When `type=template_id`, provide the ID of a page template as the `template_id`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) template_id: Option<String>,
 }
 
 impl CreatePageClient {
+    /// When you want to create a page from a specific template, use this method to set the template ID.
+    pub fn template_id(mut self, template_id: String) -> Self {
+        self.template = Some(CreatePageTemplate {
+            r#type: "template_id".to_string(),
+            template_id: Some(template_id),
+        });
+        self
+    }
+
+    /// When you want to create a page from the default template of the parent data source, use this method.
+    pub fn template_default(mut self) -> Self {
+        self.template = Some(CreatePageTemplate {
+            r#type: "default".to_string(),
+            template_id: None,
+        });
+        self
+    }
+
     /// Send a request specifying generics.
     ///
     /// Create a struct with generics like `send::<MyResponse>()`.
@@ -74,6 +110,7 @@ impl CreatePageClient {
             children: self.children,
             icon: self.icon,
             cover: self.cover,
+            template: self.template,
         };
 
         let request_body = serde_json::to_string(&request_body_struct)?;

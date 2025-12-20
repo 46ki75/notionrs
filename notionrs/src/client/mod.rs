@@ -185,6 +185,15 @@ impl Client {
         }
     }
 
+    pub fn list_data_source_templates(
+        &self,
+    ) -> crate::client::data_source::list_data_source_templates::ListDataSourceTemplatesClient {
+        crate::client::data_source::list_data_source_templates::ListDataSourceTemplatesClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
     // Block

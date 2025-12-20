@@ -43,7 +43,13 @@ pub struct PageUniqueIdPropertyParameter {
     pub prefix: Option<String>,
 
     /// The ID count (auto-incrementing).
-    pub number: u64,
+    ///
+    /// ---
+    ///
+    /// Notion API updates on 2025-10-14 introduced this breaking change.
+    /// This updates added the page template feature, and page templates are retrieved by some APIs.
+    /// When page templates include the `unique_id` property, it may be undefined.
+    pub number: Option<u64>,
 }
 
 impl std::fmt::Display for PageUniqueIdProperty {
@@ -55,8 +61,8 @@ impl std::fmt::Display for PageUniqueIdProperty {
 impl std::fmt::Display for PageUniqueIdPropertyParameter {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match &self.prefix {
-            Some(prefix) => write!(f, "{}-{}", prefix, self.number),
-            None => write!(f, "{}", self.number),
+            Some(prefix) => write!(f, "{}-{:?}", prefix, self.number),
+            None => write!(f, "{:?}", self.number),
         }
     }
 }
@@ -96,6 +102,6 @@ mod unit_tests {
 
         assert_eq!(unique_id.id, Some("mBKy".to_string()));
         assert_eq!(unique_id.unique_id.prefix, Some("TES".to_string()));
-        assert_eq!(unique_id.unique_id.number, 434);
+        assert_eq!(unique_id.unique_id.number, Some(434));
     }
 }
