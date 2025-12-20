@@ -39,19 +39,20 @@ impl ListDataSourceTemplatesClient {
             }
         };
 
-        let url = format!("https://api.notion.com/v1/data_sources/{data_source_id}/templates");
-
         let request_params = serde_urlencoded::to_string(&ListDataSourceTemplatesRequestParams {
             name: self.name,
             start_cursor: self.start_cursor,
             page_size: self.page_size,
         })?;
 
+        let url = format!(
+            "https://api.notion.com/v1/data_sources/{data_source_id}/templates?{request_params}"
+        );
+
         let request = self
             .reqwest_client
-            .post(url)
-            .header("Content-Type", "application/json")
-            .body(request_params);
+            .get(url)
+            .header("Content-Type", "application/json");
 
         let response = request
             .send()
