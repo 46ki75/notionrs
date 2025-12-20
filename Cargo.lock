@@ -882,6 +882,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_plain",
+ "serde_urlencoded",
  "serial_test",
  "thiserror",
  "time",

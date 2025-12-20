@@ -15,6 +15,7 @@ keywords = ["notion", "notion-api"]
 serde = { version = "1.0", features = ["derive"] }
 serde_plain = "1.0"
 serde_json = "1.0"
+serde_urlencoded = "0.7"
 
 # time
 time = { version = "0.3", features = [
