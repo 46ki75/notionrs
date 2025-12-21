@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 
 /// <https://developers.notion.com/reference/property-object#place>
+///
+/// This property was added to Notion API on 2025-11-10.
+/// [@notionhq/notion-sdk-js@5.4.0 Release Note](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.4.0)
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq, notionrs_macro::Setter)]
 pub struct DataSourcePlaceProperty {
     /// Property Identifier
