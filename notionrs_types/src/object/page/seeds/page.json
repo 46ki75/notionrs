@@ -282,6 +282,18 @@
                     "href": null
                 }
             ]
+        },
+        "Place": {
+            "id": "%60j%3Bh",
+            "type": "place",
+            "place": {
+                "lat": 35.7357,
+                "lon": 139.65161,
+                "name": "Nerima-ku, Tokyo, Japan",
+                "address": "Nerima-ku, Tokyo, Japan",
+                "aws_place_id": "AQAAADkAj5aGFJcsAOdCoyrWV09Cn_AGAFSpLo37jXNvIb3dUlWND7nWItPkOH_InLtxQOYctjf-J_sLJxEz18aFXjUF4dbw3HNxwMmNucyPj74WUhp5hlF7qt93f3Y",
+                "google_place_id": null
+            }
         }
     },
     "url": "****",

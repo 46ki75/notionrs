@@ -14,6 +14,7 @@ pub mod multi_select;
 pub mod number;
 pub mod people;
 pub mod phone_number;
+pub mod place;
 pub mod relation;
 pub mod rich_text;
 pub mod rollup;
@@ -71,6 +72,7 @@ pub enum DataSourceProperty {
     Number(number::DataSourceNumberProperty),
     People(people::DataSourcePeopleProperty),
     PhoneNumber(phone_number::DataSourcePhoneNumberProperty),
+    Place(place::DataSourcePlaceProperty),
     Relation(relation::DataSourceRelationProperty),
     RichText(rich_text::DataSourceRichTextProperty),
     Rollup(rollup::DataSourceRollupProperty),
@@ -147,6 +149,13 @@ mod unit_tests {
             "description": null,
             "type": "title",
             "title": {}
+        },
+        "Place": {
+            "id": "%60j%3Bh",
+            "name": "Place",
+            "description": null,
+            "type": "place",
+            "place": {}
         }
     },
     "parent": {

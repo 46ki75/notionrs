@@ -19,6 +19,7 @@ pub mod multi_select;
 pub mod number;
 pub mod people;
 pub mod phone_number;
+pub mod place;
 pub mod relation;
 pub mod rich_text;
 pub mod rollup;
@@ -46,6 +47,7 @@ pub enum PageProperty {
     Number(number::PageNumberProperty),
     People(people::PagePeopleProperty),
     PhoneNumber(phone_number::PagePhoneNumberProperty),
+    Place(place::PagePlaceProperty),
     Relation(relation::PageRelationProperty),
     RichText(rich_text::PageRichTextProperty),
     Rollup(rollup::PageRollupProperty),
@@ -74,6 +76,7 @@ impl std::fmt::Display for PageProperty {
             PageProperty::Number(number) => write!(f, "{}", number),
             PageProperty::People(people) => write!(f, "{}", people),
             PageProperty::PhoneNumber(phone_number) => write!(f, "{}", phone_number),
+            PageProperty::Place(place) => write!(f, "{}", place),
             PageProperty::Relation(relation) => write!(f, "{}", relation),
             PageProperty::RichText(rich_text) => write!(f, "{}", rich_text),
             PageProperty::Rollup(rollup) => write!(f, "{}", rollup),
