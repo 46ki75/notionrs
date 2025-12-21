@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 
 /// <https://developers.notion.com/reference/move-page>
+///
+/// This API was added on 2025-12-16.
+/// [@notionhq/client Release Notes](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.6.0)
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct MovePageClient {
     /// The reqwest http client
