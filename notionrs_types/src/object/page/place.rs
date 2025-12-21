@@ -4,10 +4,10 @@ use serde::{Deserialize, Serialize};
 ///
 /// - `$.['*'].id`: An underlying identifier for the property.
 ///   `id` remains constant when the property name changes.
-/// - `$.['*'].type`: Always `"files"`
-/// - `$.['*'].files`: An array of objects containing information about
-///   the [files](https://developers.notion.com/reference/file-object).
-///   If the file does not exist, an empty array will be returned.
+/// - `$.['*'].type`: Always `"place"`
+/// - `$.['*'].place`: An array of objects containing information about
+///   the [places](https://developers.notion.com/reference/place-object).
+///   If the place does not exist, an empty array will be returned.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
