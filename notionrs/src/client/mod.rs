@@ -110,6 +110,13 @@ impl Client {
         }
     }
 
+    pub fn move_page(&self) -> crate::client::page::move_page::MovePageClient {
+        crate::client::page::move_page::MovePageClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
     // Database
