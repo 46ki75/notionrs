@@ -47,5 +47,5 @@ tokio = { version = "1.48", features = ["full"] }
 
 # Macro
 syn = { version = "2.0.112", features = ["derive", "parsing"] }
-proc-macro2 = "1.0.103"
+proc-macro2 = "1.0.104"
 quote = "1.0.42"
