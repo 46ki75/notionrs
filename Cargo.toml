@@ -43,7 +43,7 @@ dotenvy = "0.15.0"
 serial_test = "3.2.0"
 
 # Async Runtime
-tokio = { version = "1.48", features = ["full"] }
+tokio = { version = "1.49", features = ["full"] }
 
 # Macro
 syn = { version = "2.0.112", features = ["derive", "parsing"] }
