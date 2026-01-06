@@ -46,6 +46,6 @@ serial_test = "3.2.0"
 tokio = { version = "1.49", features = ["full"] }
 
 # Macro
-syn = { version = "2.0.112", features = ["derive", "parsing"] }
+syn = { version = "2.0.113", features = ["derive", "parsing"] }
 proc-macro2 = "1.0.104"
 quote = "1.0.43"
