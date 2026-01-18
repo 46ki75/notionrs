@@ -69,6 +69,45 @@ mod integration_tests {
 
         // # --------------------------------------------------------------------------------
         //
+        // create_page with template default and after block
+        //
+        // # --------------------------------------------------------------------------------
+
+        let mut properties = std::collections::HashMap::new();
+
+        let rich_text = RichText::from("rich text");
+
+        let block = Block::Paragraph {
+            paragraph: ParagraphBlock::default()
+                .rich_text(vec![rich_text.clone()])
+                .blue_background(),
+        };
+
+        properties.insert(
+            "My Title".to_string(),
+            PageProperty::Title(PageTitleProperty::from("My Page Title")),
+        );
+
+        let request = client
+            .create_page()
+            .properties(properties)
+            .data_source_id(&data_source_id)
+            .icon(notionrs_types::object::icon::Icon::Emoji(
+                notionrs_types::object::emoji::Emoji::from("🚧"),
+            ))
+            .cover(notionrs_types::object::file::File::External(
+                notionrs_types::object::file::ExternalFile::from(
+                    "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg",
+                ),
+            ))
+            .children(vec![block])
+            .template_default()
+            .template_position_page_start();
+
+        let _response = request.send().await?;
+
+        // # --------------------------------------------------------------------------------
+        //
         // create_page with template default
         //
         // # --------------------------------------------------------------------------------
