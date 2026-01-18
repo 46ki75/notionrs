@@ -23,6 +23,17 @@ pub struct CreatePageClient {
 
     pub(crate) template: Option<CreatePageTemplate>,
 
+    /// Customizing position within a parent page
+    ///
+    /// When the parent is a page, a reference to the newly created page is automatically added to the bottom of the parent by default.
+    ///
+    /// To customize this behavior, use the optional position parameter (added in January 2026 as part of v5.7.0 of the JS SDK):
+    ///
+    /// - To insert the child_page mention after a specific block, pass `"position": {"type": "after_block", "after_block": {"id": "BLOCK_ID"}}`.
+    /// - To create the page at the top, set `"position": {"type": "page_start"}`.
+    /// - The default behavior (inserting at the bottom) is represented by `"position": {"type": "page_end"}`.
+    ///
+    /// **Note:** The position parameter is not allowed unless the parent is a page.
     pub(crate) position: Option<CreatePageTemplatePosition>,
 }
 
