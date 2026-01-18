@@ -22,6 +22,8 @@ pub struct CreatePageClient {
     pub(crate) cover: Option<notionrs_types::object::file::File>,
 
     pub(crate) template: Option<CreatePageTemplate>,
+
+    pub(crate) position: Option<CreatePageTemplatePosition>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -42,6 +44,9 @@ pub struct CreatePageRequestBody {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) template: Option<CreatePageTemplate>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) position: Option<CreatePageTemplatePosition>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -54,6 +59,27 @@ pub struct CreatePageTemplate {
     /// When `type=template_id`, provide the ID of a page template as the `template_id`.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) template_id: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CreatePageTemplatePosition {
+    r#type: CreatePageTemplatePositionType,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    after_block: Option<CreatePageTemplatePositionAfterBlockPayload>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+#[serde(rename_all = "snake_case")]
+pub enum CreatePageTemplatePositionType {
+    AfterBlock,
+    PageStart,
+    PageEnd,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CreatePageTemplatePositionAfterBlockPayload {
+    // Block ID
+    id: String,
 }
 
 impl CreatePageClient {
@@ -71,6 +97,30 @@ impl CreatePageClient {
         self.template = Some(CreatePageTemplate {
             r#type: "default".to_string(),
             template_id: None,
+        });
+        self
+    }
+
+    pub fn template_position_after_block(mut self, block_id: String) -> Self {
+        self.position = Some(CreatePageTemplatePosition {
+            r#type: CreatePageTemplatePositionType::AfterBlock,
+            after_block: Some(CreatePageTemplatePositionAfterBlockPayload { id: block_id }),
+        });
+        self
+    }
+
+    pub fn template_position_page_start(mut self) -> Self {
+        self.position = Some(CreatePageTemplatePosition {
+            r#type: CreatePageTemplatePositionType::PageStart,
+            after_block: None,
+        });
+        self
+    }
+
+    pub fn template_position_page_end(mut self) -> Self {
+        self.position = Some(CreatePageTemplatePosition {
+            r#type: CreatePageTemplatePositionType::PageEnd,
+            after_block: None,
         });
         self
     }
@@ -111,6 +161,7 @@ impl CreatePageClient {
             icon: self.icon,
             cover: self.cover,
             template: self.template,
+            position: self.position,
         };
 
         let request_body = serde_json::to_string(&request_body_struct)?;
