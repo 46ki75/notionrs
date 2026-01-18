@@ -1,13 +1,6 @@
 use futures::TryStreamExt;
 use notionrs::{Client, PaginateExt};
 use notionrs_types::prelude::*;
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-struct MyProperties {
-    #[serde(rename = "My Title")]
-    pub title: PageTitleProperty,
-}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
