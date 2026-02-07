@@ -95,7 +95,9 @@ mod unit_tests {
                     "href": null
                 }
             ],
-            "color": "default"
+            "color": "default",
+            "list_format": "roman",
+            "list_start_index": 2
         }
         "#;
 
