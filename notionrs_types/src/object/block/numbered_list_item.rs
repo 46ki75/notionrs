@@ -19,11 +19,19 @@ pub struct NumberedListItemBlock {
 
     /// The type of list format. Possible values are: `"numbers"`, `"letters"`, and `"roman"`.
     /// Only present on the first item of a list.
-    pub list_format: Option<String>,
+    pub list_format: Option<NumberedListFormat>,
 
     /// The start index of a list, used to represent a list that doesn’t start at 1.
     /// Only present on the first item of a list.
     pub list_start_index: Option<u32>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = "snake_case")]
+pub enum NumberedListFormat {
+    Numbers,
+    Letters,
+    Roman,
 }
 
 impl NumberedListItemBlock {
