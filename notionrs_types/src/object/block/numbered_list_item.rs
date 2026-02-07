@@ -19,10 +19,12 @@ pub struct NumberedListItemBlock {
 
     /// The type of list format. Possible values are: `"numbers"`, `"letters"`, and `"roman"`.
     /// Only present on the first item of a list.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub list_format: Option<NumberedListFormat>,
 
     /// The start index of a list, used to represent a list that doesn’t start at 1.
     /// Only present on the first item of a list.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub list_start_index: Option<u32>,
 }
 
