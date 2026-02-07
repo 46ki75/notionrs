@@ -26,10 +26,12 @@ time = { version = "0.3", features = [
 ] }
 
 # HTTP Client
-reqwest = { version = "0.12", features = [
+reqwest = { version = "0.13", features = [
     "gzip",
     "http2",
     "multipart",
+    "query",
+    "rustls",
 ], default-features = false }
 
 # Error
