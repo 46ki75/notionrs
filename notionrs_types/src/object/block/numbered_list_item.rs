@@ -16,6 +16,24 @@ pub struct NumberedListItemBlock {
     /// If you need to retrieve the child blocks, you will have to send a request to this block again.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub children: Option<Vec<super::Block>>,
+
+    /// The type of list format. Possible values are: `"numbers"`, `"letters"`, and `"roman"`.
+    /// Only present on the first item of a list.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub list_format: Option<NumberedListFormat>,
+
+    /// The start index of a list, used to represent a list that doesn’t start at 1.
+    /// Only present on the first item of a list.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub list_start_index: Option<u32>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = "snake_case")]
+pub enum NumberedListFormat {
+    Numbers,
+    Letters,
+    Roman,
 }
 
 impl NumberedListItemBlock {
@@ -79,7 +97,9 @@ mod unit_tests {
                     "href": null
                 }
             ],
-            "color": "default"
+            "color": "default",
+            "list_format": "roman",
+            "list_start_index": 2
         }
         "#;
 
