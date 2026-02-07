@@ -16,6 +16,10 @@ pub struct NumberedListItemBlock {
     /// If you need to retrieve the child blocks, you will have to send a request to this block again.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub children: Option<Vec<super::Block>>,
+
+    /// The type of list format. Possible values are: `"numbers"`, `"letters"`, and `"roman"`.
+    /// Only present on the first item of a list.
+    pub list_format: Option<String>,
 }
 
 impl NumberedListItemBlock {
