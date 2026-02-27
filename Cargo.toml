@@ -37,9 +37,6 @@ reqwest = { version = "0.13", features = [
 
 # Error
 thiserror = "2"
-
-# Utilities
-async-trait = "0.1.89"
 futures = "0.3.32"
 bytes = "1.11.1"
 dotenvy = "0.15.0"

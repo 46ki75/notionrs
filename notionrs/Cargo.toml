@@ -27,7 +27,6 @@ serde_urlencoded = { workspace = true }
 thiserror = { workspace = true }
 
 time = { workspace = true }
-async-trait = { workspace = true }
 futures = { workspace = true }
 bytes = { workspace = true }
 
