@@ -2,10 +2,11 @@
 name = "notionrs_webhooks"
 description = "Event deserialization and signature verification for Notion webhooks"
 version = "0.1.0"
-edition = "2024"
-authors = ["Ikuma Yamashita"]
-repository = "https://github.com/46ki75/notionrs"
-license = "MIT OR Apache-2.0"
+edition = { workspace = true }
+rust-version = { workspace = true }
+authors = { workspace = true }
+repository = { workspace = true }
+license = { workspace = true }
 documentation = "https://docs.rs/notionrs_webhook"
 categories = ["web-programming::http-client"]
 keywords = ["notion", "notion-api"]

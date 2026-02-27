@@ -3,7 +3,8 @@ resolver = "3"
 members = ["notionrs", "notionrs_macro", "notionrs_types", "notionrs_webhooks"]
 
 [workspace.package]
-edition = "2024"
+edition = "2021"
+rust-version = "1.56.0"
 authors = ["Ikuma Yamashita"]
 repository = "https://github.com/46ki75/notionrs"
 license = "MIT OR Apache-2.0"

@@ -3,6 +3,7 @@ name = "notionrs_macro"
 description = "Macro for generating Notion API client"
 version = "0.2.0"
 edition = { workspace = true }
+rust-version = { workspace = true }
 authors = { workspace = true }
 repository = { workspace = true }
 license = { workspace = true }
