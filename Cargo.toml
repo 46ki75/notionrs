@@ -4,6 +4,7 @@ members = ["notionrs", "notionrs_macro", "notionrs_types", "notionrs_webhooks"]
 
 [workspace.package]
 edition = "2024"
+rust-version = "1.85.0"
 authors = ["Ikuma Yamashita"]
 repository = "https://github.com/46ki75/notionrs"
 license = "MIT OR Apache-2.0"
@@ -36,9 +37,6 @@ reqwest = { version = "0.13", features = [
 
 # Error
 thiserror = "2"
-
-# Utilities
-async-trait = "0.1.89"
 futures = "0.3.32"
 bytes = "1.11.1"
 dotenvy = "0.15.0"

@@ -1,8 +1,9 @@
 [package]
 name = "notionrs"
 description = "A Notion API client that provides type-safe request serialization and response deserialization"
-version = "0.9.0"
+version = "0.10.0"
 edition = { workspace = true }
+rust-version = { workspace = true }
 authors = { workspace = true }
 repository = { workspace = true }
 license = { workspace = true }
@@ -14,7 +15,7 @@ readme = "../README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-notionrs_types = { version = "0.7.0", path = "../notionrs_types" }
+notionrs_types = { version = "0.8.0", path = "../notionrs_types" }
 notionrs_macro = { version = "0.2.0", path = "../notionrs_macro" }
 
 reqwest = { workspace = true }
@@ -26,7 +27,6 @@ serde_urlencoded = { workspace = true }
 thiserror = { workspace = true }
 
 time = { workspace = true }
-async-trait = { workspace = true }
 futures = { workspace = true }
 bytes = { workspace = true }
 

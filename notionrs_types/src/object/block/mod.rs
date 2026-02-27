@@ -22,6 +22,7 @@ pub mod table_row;
 pub mod template;
 pub mod to_do;
 pub mod toggle;
+pub mod transcription;
 
 /// ```json
 /// {
@@ -181,6 +182,9 @@ pub enum Block {
     Toggle {
         toggle: toggle::ToggleBlock,
     },
+    Transcription {
+        transcription: transcription::TranscriptionBlock,
+    },
     Video {
         video: crate::object::file::File,
     },
@@ -222,6 +226,7 @@ impl std::fmt::Display for Block {
             Block::Template { template } => write!(f, "{}", template),
             Block::ToDo { to_do } => write!(f, "{}", to_do),
             Block::Toggle { toggle } => write!(f, "{}", toggle),
+            Block::Transcription { transcription } => write!(f, "{}", transcription),
             Block::Video { video } => write!(f, "{}", video),
             Block::Unsupported => write!(f, "unsupported"),
         }

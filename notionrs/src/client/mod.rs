@@ -723,7 +723,7 @@ impl Client {
                     markdown_list.push(format!("{}<{}>", prefix, url));
                     markdown_list.push(String::new()); // New Line
                 }
-                notionrs_types::prelude::Block::Unsupported => continue,
+                _ => continue,
             };
         }
 

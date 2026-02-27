@@ -1,7 +1,9 @@
 # Notion API Client for Rust
 
+[msrv]: https://img.shields.io/crates/msrv/notionrs
+
+[![msrv]](https://blog.rust-lang.org/2025/02/20/Rust-1.85.0/)
 [![Unit Test](https://github.com/46ki75/notionrs/actions/workflows/test.yml/badge.svg)](https://github.com/46ki75/notionrs/actions/workflows/test.yml)
-[![Check Documentation Build](https://github.com/46ki75/notionrs/actions/workflows/build-documentation.yml/badge.svg)](https://github.com/46ki75/notionrs/actions/workflows/build-documentation.yml)
 [![Crates.io](https://img.shields.io/crates/v/notionrs?logo=rust)](https://crates.io/crates/notionrs/)
 
 ![ogp](./assets/ogp.webp)

@@ -1,8 +1,9 @@
 [package]
 name = "notionrs_types"
 description = "Shared schema definitions for the Notion API used by the notionrs ecosystem."
-version = "0.7.0"
+version = "0.8.0"
 edition = { workspace = true }
+rust-version = { workspace = true }
 authors = { workspace = true }
 repository = { workspace = true }
 license = { workspace = true }

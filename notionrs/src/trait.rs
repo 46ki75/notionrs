@@ -1,10 +1,21 @@
-#[async_trait::async_trait]
+use std::{future::Future, pin::Pin};
+
 pub trait Paginate<T>: Clone + Send + 'static {
     fn paginate_start_cursor(self, start_cursor: Option<String>) -> Self;
 
-    async fn paginate_send(
+    fn paginate_send(
         self,
-    ) -> Result<notionrs_types::object::response::ListResponse<T>, crate::error::Error>;
+    ) -> Pin<
+        Box<
+            dyn Future<
+                    Output = Result<
+                        notionrs_types::object::response::ListResponse<T>,
+                        crate::error::Error,
+                    >,
+                > + Send
+                + Sync,
+        >,
+    >;
 }
 
 pub trait PaginateExt<T>: Paginate<T> {

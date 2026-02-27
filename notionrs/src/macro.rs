@@ -32,7 +32,6 @@
 #[macro_export]
 macro_rules! impl_paginate {
     ($struct_name:ty, $return_type:ty) => {
-        #[async_trait::async_trait]
         impl crate::r#trait::Paginate<$return_type> for $struct_name {
             fn paginate_start_cursor(self, start_cursor: Option<String>) -> Self {
                 match start_cursor {
@@ -41,13 +40,20 @@ macro_rules! impl_paginate {
                 }
             }
 
-            async fn paginate_send(
+            fn paginate_send(
                 self,
-            ) -> Result<
-                notionrs_types::object::response::ListResponse<$return_type>,
-                crate::error::Error,
+            ) -> std::pin::Pin<
+                Box<
+                    dyn std::future::Future<
+                            Output = Result<
+                                notionrs_types::object::response::ListResponse<$return_type>,
+                                crate::error::Error,
+                            >,
+                        > + Send
+                        + Sync,
+                >,
             > {
-                Ok(self.send().await?)
+                Box::pin(async { Ok(self.send().await?) })
             }
         }
     };
