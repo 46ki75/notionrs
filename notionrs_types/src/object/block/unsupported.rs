@@ -37,8 +37,8 @@ mod unit_tests {
         }
         "#;
 
-        let link_preview = serde_json::from_str::<UnsupportedBlock>(json_data).unwrap();
+        let unsupported = serde_json::from_str::<UnsupportedBlock>(json_data).unwrap();
 
-        assert_eq!(link_preview.block_type, "button")
+        assert_eq!(unsupported.block_type, "button")
     }
 }
