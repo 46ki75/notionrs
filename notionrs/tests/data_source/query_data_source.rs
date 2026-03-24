@@ -560,8 +560,10 @@ mod integration_tests {
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
-            notionrs_types::object::request::filter::Filter::select_does_not_equal("Select", "0"),
-            notionrs_types::object::request::filter::Filter::select_equals("Select", "0"),
+            notionrs_types::object::request::filter::Filter::select_does_not_equal(
+                "Select", "Type A",
+            ),
+            notionrs_types::object::request::filter::Filter::select_equals("Select", "Type B"),
             notionrs_types::object::request::filter::Filter::select_is_empty("Select"),
             notionrs_types::object::request::filter::Filter::select_is_not_empty("Select"),
         ]);
