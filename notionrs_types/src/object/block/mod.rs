@@ -23,6 +23,7 @@ pub mod template;
 pub mod to_do;
 pub mod toggle;
 pub mod transcription;
+pub mod unsupported;
 
 /// ```json
 /// {
@@ -189,8 +190,9 @@ pub enum Block {
         video: crate::object::file::File,
     },
 
-    #[serde(other)]
-    Unsupported,
+    Unsupported {
+        unsupported: unsupported::UnsupportedBlock,
+    },
 }
 
 impl std::fmt::Display for Block {
@@ -228,7 +230,7 @@ impl std::fmt::Display for Block {
             Block::Toggle { toggle } => write!(f, "{}", toggle),
             Block::Transcription { transcription } => write!(f, "{}", transcription),
             Block::Video { video } => write!(f, "{}", video),
-            Block::Unsupported => write!(f, "unsupported"),
+            Block::Unsupported { unsupported } => write!(f, "{}", unsupported.block_type),
         }
     }
 }
