@@ -453,4 +453,17 @@ mod unit_tests {
             _ => panic!("Unexpected!"),
         }
     }
+
+    #[test]
+    fn deserialize_block_unsupported() {
+        let json_data = include_bytes!("./seed/unsupported.json");
+
+        let block: Block = serde_json::from_slice(json_data).unwrap();
+
+        if let Block::Unsupported { unsupported } = block {
+            assert_eq!(unsupported.block_type, "button".to_owned())
+        } else {
+            panic!("invalid block type")
+        }
+    }
 }
