@@ -230,7 +230,7 @@ impl std::fmt::Display for Block {
             Block::Toggle { toggle } => write!(f, "{}", toggle),
             Block::Transcription { transcription } => write!(f, "{}", transcription),
             Block::Video { video } => write!(f, "{}", video),
-            Block::Unsupported { unsupported } => write!(f, "{}", unsupported.block_type),
+            Block::Unsupported { unsupported } => write!(f, "{}", unsupported),
         }
     }
 }
