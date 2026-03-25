@@ -19,7 +19,7 @@ pub struct CreateDatabaseClient {
         std::collections::HashMap<String, notionrs_types::object::data_source::DataSourceProperty>,
 
     /// This can be configured even though it's not in the official Notion API documentation
-    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::emoji_and_icon::EmojiAndIcon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     pub(crate) cover: Option<notionrs_types::object::file::File>,
@@ -47,7 +47,7 @@ pub struct CreateDatabaseRequestBody {
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::emoji_and_icon::EmojiAndIcon>,
 
     /// This can be configured even though it's not in the official Notion API documentation
     #[serde(skip_serializing_if = "Option::is_none")]

@@ -18,7 +18,7 @@ pub struct UpdateDataSourceClient {
     pub(crate) title: Vec<RichText>,
 
     /// Icon to apply to the data source.
-    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::emoji_and_icon::EmojiAndIcon>,
 
     /// Pass `true` to move a data source to the trash,
     /// or `false` to restore it from the trash.
@@ -32,7 +32,7 @@ pub struct UpdateDataSourceRequestBody {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) title: Vec<RichText>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::emoji_and_icon::EmojiAndIcon>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) in_trash: Option<bool>,
 }

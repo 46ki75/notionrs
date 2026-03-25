@@ -140,7 +140,7 @@ mod integration_tests {
             .database_id(&database_id)
             .title(vec![RichText::from("Database Title")])
             .properties(properties.clone())
-            .icon(notionrs_types::object::icon::Icon::Emoji(
+            .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ));
 
@@ -161,7 +161,7 @@ mod integration_tests {
             .data_source_id(&data_source_id)
             .title(vec![RichText::from("New Database Title")])
             .properties(properties.clone())
-            .icon(notionrs_types::object::icon::Icon::Emoji(
+            .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ));
 

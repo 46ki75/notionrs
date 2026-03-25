@@ -126,7 +126,7 @@ mod integration_tests {
             .title(vec![RichText::from("Database Title")])
             .description(vec![RichText::from("Description of the Database")])
             .properties(properties)
-            .icon(notionrs_types::object::icon::Icon::Emoji(
+            .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ))
             .cover(notionrs_types::object::file::File::External(

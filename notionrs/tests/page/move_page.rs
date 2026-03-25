@@ -26,7 +26,7 @@ mod integration_tests {
             .create_page()
             .properties(properties)
             .page_id(&parent_page_id)
-            .icon(notionrs_types::object::icon::Icon::Emoji(
+            .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ))
             .cover(notionrs_types::object::file::File::External(
@@ -50,7 +50,7 @@ mod integration_tests {
             .create_page()
             .properties(properties)
             .page_id(&parent_page_id)
-            .icon(notionrs_types::object::icon::Icon::Emoji(
+            .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ))
             .cover(notionrs_types::object::file::File::External(

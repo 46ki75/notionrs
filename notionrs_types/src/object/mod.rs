@@ -9,6 +9,7 @@ pub mod color;
 pub mod comment;
 pub mod date;
 pub mod emoji;
+pub mod emoji_and_icon;
 pub mod file;
 pub mod file_upload;
 pub mod icon;

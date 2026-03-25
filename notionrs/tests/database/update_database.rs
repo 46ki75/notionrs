@@ -53,7 +53,7 @@ mod integration_tests {
             .description(vec![RichText::from(
                 "Description of the Database (changed)",
             )])
-            .icon(notionrs_types::object::icon::Icon::Emoji(
+            .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ))
             .cover(notionrs_types::object::file::File::External(

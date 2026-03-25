@@ -38,7 +38,7 @@ pub struct DataSourceResponse<T = std::collections::HashMap<String, DataSourcePr
 
     pub properties: T,
 
-    pub icon: Option<crate::object::icon::Icon>,
+    pub icon: Option<crate::object::emoji_and_icon::EmojiAndIcon>,
 
     pub cover: Option<crate::object::file::File>,
 

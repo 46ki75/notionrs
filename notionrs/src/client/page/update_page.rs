@@ -12,7 +12,7 @@ pub struct UpdatePageClient {
 
     pub(crate) in_trash: Option<bool>,
 
-    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::emoji_and_icon::EmojiAndIcon>,
 
     pub(crate) cover: Option<notionrs_types::object::file::File>,
 }
@@ -26,7 +26,7 @@ pub struct UpdatePageRequestBody {
     pub(crate) in_trash: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::emoji_and_icon::EmojiAndIcon>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) cover: Option<notionrs_types::object::file::File>,

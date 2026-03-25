@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     object::user::User,
-    object::{file::File, icon::Icon, parent::Parent},
+    object::{emoji_and_icon::EmojiAndIcon, file::File, parent::Parent},
 };
 
 pub mod button;
@@ -104,7 +104,7 @@ where
     pub created_by: User,
     pub last_edited_by: User,
     pub cover: Option<File>,
-    pub icon: Option<Icon>,
+    pub icon: Option<EmojiAndIcon>,
     pub parent: Parent,
     pub archived: bool,
     pub properties: T,

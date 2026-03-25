@@ -13,7 +13,7 @@ pub struct CalloutBlock {
 
     /// An emoji or file object that represents the callout's icon. If the callout does not have an icon.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub icon: Option<crate::object::icon::Icon>,
+    pub icon: Option<crate::object::emoji_and_icon::EmojiAndIcon>,
 
     /// The color of the block.
     pub color: crate::object::color::Color,
@@ -115,7 +115,7 @@ mod unit_tests {
         }
 
         match callout.icon.unwrap() {
-            crate::object::icon::Icon::Emoji(emoji) => {
+            crate::object::emoji_and_icon::EmojiAndIcon::Emoji(emoji) => {
                 assert_eq!(emoji.r#type, "emoji");
                 assert_eq!(emoji.emoji, "💡".to_string());
             }
