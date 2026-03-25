@@ -10,7 +10,7 @@ pub struct DatabaseResponse {
     pub last_edited_time: String,
 
     pub cover: Option<crate::object::file::File>,
-    pub icon: Option<crate::object::icon::Icon>,
+    pub icon: Option<crate::object::emoji_and_icon::EmojiAndIcon>,
 
     pub url: String,
     pub public_url: Option<String>,

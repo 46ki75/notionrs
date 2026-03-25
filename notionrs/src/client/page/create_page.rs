@@ -17,7 +17,7 @@ pub struct CreatePageClient {
 
     pub(crate) children: Option<Vec<notionrs_types::object::block::Block>>,
 
-    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::emoji_and_icon::EmojiAndIcon>,
 
     pub(crate) cover: Option<notionrs_types::object::file::File>,
 
@@ -48,7 +48,7 @@ pub struct CreatePageRequestBody {
     pub(crate) children: Option<Vec<notionrs_types::object::block::Block>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) icon: Option<notionrs_types::object::icon::Icon>,
+    pub(crate) icon: Option<notionrs_types::object::emoji_and_icon::EmojiAndIcon>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) cover: Option<notionrs_types::object::file::File>,

@@ -5,12 +5,11 @@ mod integration_tests {
     #[tokio::test]
     async fn crud_page() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env"))
-            .expect("Failed to load ../.env file");
+        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
 
         let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
 
-                let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         // # --------------------------------------------------------------------------------
@@ -30,7 +29,7 @@ mod integration_tests {
             .create_page()
             .properties(properties)
             .page_id(page_id)
-            .icon(notionrs_types::object::icon::Icon::Emoji(
+            .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ))
             .cover(notionrs_types::object::file::File::External(
