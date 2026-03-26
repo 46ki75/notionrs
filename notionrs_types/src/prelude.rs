@@ -2,8 +2,9 @@ pub use crate::object::{
     block::{
         Block, BlockResponse, bookmark::*, bulleted_list_item::*, callout::*, child_database::*,
         child_page::*, code::*, column::*, column_list::*, embed::*, equation::*, heading::*,
-        link_preview::*, numbered_list_item::*, paragraph::*, quote::*, synced_block::*, table::*,
-        table_of_contents::*, table_row::*, template::*, to_do::*, toggle::*,
+        link_preview::*, numbered_list_item::*, paragraph::*, quote::*, synced_block::*, tab::*,
+        table::*, table_of_contents::*, table_row::*, template::*, to_do::*, toggle::*,
+        transcription::*,
     },
     data_source::{
         DataSourceProperty, button::*, checkbox::*, created_by::*, created_time::*, date::*,
@@ -24,6 +25,6 @@ pub use crate::object::{
 };
 
 pub use crate::object::{
-    color::*, comment::*, date::*, emoji::*, emoji_and_icon::*, file::*, file_upload::*,
+    color::*, comment::*, date::*, emoji::*, emoji_and_icon::*, file::*, file_upload::*, icon::*,
     language::*, parent::*, response::*, select::*, user::*,
 };
