@@ -9,7 +9,10 @@ use serde::{Deserialize, Serialize};
 ///
 /// Only `paragraph` blocks can be direct children of a tab block. When creating tabs via [Append block children](https://developers.notion.com/reference/patch-block-children), provide a `tab` block with paragraph children, each containing their own nested content blocks.
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct TabBlock {}
+pub struct TabBlock {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub children: Option<Vec<super::Block>>,
+}
 
 impl std::fmt::Display for TabBlock {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {

@@ -11,6 +11,9 @@ pub struct ParagraphBlock {
 
     /// The color of the block.
     pub color: crate::object::color::Color,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub children: Option<Vec<super::Block>>,
 }
 
 impl ParagraphBlock {
