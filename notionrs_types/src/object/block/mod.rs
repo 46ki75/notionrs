@@ -16,6 +16,7 @@ pub mod numbered_list_item;
 pub mod paragraph;
 pub mod quote;
 pub mod synced_block;
+pub mod tab;
 pub mod table;
 pub mod table_of_contents;
 pub mod table_row;
@@ -168,6 +169,9 @@ pub enum Block {
     TableOfContents {
         table_of_contents: table_of_contents::TableOfContentsBlock,
     },
+    Tab {
+        tab: tab::TabBlock,
+    },
     Table {
         table: table::TableBlock,
     },
@@ -223,6 +227,7 @@ impl std::fmt::Display for Block {
             Block::Quote { quote } => write!(f, "{}", quote),
             Block::SyncedBlock { synced_block } => write!(f, "{}", synced_block),
             Block::TableOfContents { table_of_contents } => write!(f, "{}", table_of_contents),
+            Block::Tab { tab } => write!(f, "{}", tab),
             Block::Table { table } => write!(f, "{}", table),
             Block::TableRow { table_row } => write!(f, "{}", table_row),
             Block::Template { template } => write!(f, "{}", template),
