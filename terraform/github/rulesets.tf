@@ -29,6 +29,10 @@ resource "github_repository_ruleset" "branch_require_pr" {
         context        = "Integration Test (notionrs_macro)"
         integration_id = data.github_app.github_actions.id
       }
+      required_check {
+        context        = "Unit Test (notionrs_webhooks)"
+        integration_id = data.github_app.github_actions.id
+      }
     }
   }
 }
