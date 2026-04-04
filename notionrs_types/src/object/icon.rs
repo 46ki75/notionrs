@@ -29,6 +29,7 @@ pub enum IconColor {
     #[default]
     Gray,
     Green,
+    Lightgray,
     Orange,
     Pink,
     Purple,

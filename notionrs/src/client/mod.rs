@@ -5,6 +5,7 @@ use crate::PaginateExt;
 
 pub mod block;
 pub mod comment;
+pub mod custom_emoji;
 pub mod data_source;
 pub mod database;
 pub mod file_upload;
@@ -69,6 +70,21 @@ impl Client {
     pub fn get_self(&self) -> crate::client::user::get_self::GetSelfClient {
         crate::client::user::get_self::GetSelfClient {
             reqwest_client: self.reqwest_client.clone(),
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // Custom Emoji
+    //
+    // # --------------------------------------------------------------------------------
+
+    pub fn list_custom_emojis(
+        &self,
+    ) -> crate::client::custom_emoji::list_custom_emojis::ListCustomEmojisClient {
+        crate::client::custom_emoji::list_custom_emojis::ListCustomEmojisClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
         }
     }
 
