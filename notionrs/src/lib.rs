@@ -10,6 +10,3 @@ pub(crate) mod util;
 pub use crate::client::Client;
 pub use crate::error::Error;
 pub use crate::r#trait::PaginateExt;
-
-#[cfg(test)]
-mod test;

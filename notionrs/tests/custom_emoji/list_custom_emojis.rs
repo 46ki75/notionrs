@@ -1,6 +1,6 @@
 mod integration_tests {
 
-    use crate::r#trait::PaginateExt;
+    use notionrs::PaginateExt;
     use futures::TryStreamExt;
 
     // # --------------------------------------------------------------------------------
@@ -10,12 +10,12 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    async fn list_custom_emojis() -> Result<(), crate::Error> {
+    async fn list_custom_emojis() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new("../.env")).ok();
 
         let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
-        let client = crate::Client::new(notion_api_key);
+        let client = notionrs::Client::new(notion_api_key);
 
         let response = client.list_custom_emojis().send().await?;
 
@@ -31,12 +31,12 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    async fn list_custom_emojis_all() -> Result<(), crate::Error> {
+    async fn list_custom_emojis_all() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new("../.env")).ok();
 
         let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
-        let client = crate::Client::new(notion_api_key);
+        let client = notionrs::Client::new(notion_api_key);
 
         let results: Vec<notionrs_types::prelude::CustomEmojiContent> = client
             .list_custom_emojis()
@@ -56,12 +56,12 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    async fn list_custom_emojis_by_name() -> Result<(), crate::Error> {
+    async fn list_custom_emojis_by_name() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new("../.env")).ok();
 
         let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
-        let client = crate::Client::new(notion_api_key);
+        let client = notionrs::Client::new(notion_api_key);
 
         let response = client
             .list_custom_emojis()

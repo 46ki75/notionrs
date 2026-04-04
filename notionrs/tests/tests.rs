@@ -1,5 +1,7 @@
 #[path = "block/mod.rs"]
 mod block;
+#[path = "custom_emoji/mod.rs"]
+mod custom_emoji;
 #[path = "comment.rs"]
 mod comment;
 #[path = "data_source/mod.rs"]
