@@ -14,7 +14,9 @@ mod integration_tests {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new("../.env")).ok();
 
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let Ok(notion_api_key) = std::env::var("NOTION_TOKEN") else {
+            return Ok(());
+        };
         let client = notionrs::Client::new(notion_api_key);
 
         let response = client.list_custom_emojis().send().await?;
@@ -35,7 +37,9 @@ mod integration_tests {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new("../.env")).ok();
 
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let Ok(notion_api_key) = std::env::var("NOTION_TOKEN") else {
+            return Ok(());
+        };
         let client = notionrs::Client::new(notion_api_key);
 
         let results: Vec<notionrs_types::prelude::CustomEmojiContent> = client
@@ -60,7 +64,9 @@ mod integration_tests {
         dotenvy::dotenv().ok();
         dotenvy::from_path(std::path::Path::new("../.env")).ok();
 
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let Ok(notion_api_key) = std::env::var("NOTION_TOKEN") else {
+            return Ok(());
+        };
         let client = notionrs::Client::new(notion_api_key);
 
         let response = client
