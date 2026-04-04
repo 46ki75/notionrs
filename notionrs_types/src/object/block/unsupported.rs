@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// When a block type is not yet supported by the API, the response includes `type`
 /// set to `"unsupported"` and an `unsupported` object with a `block_type` field.
 /// The `block_type` value is a plain string identifying the underlying internal block type
-/// (e.g., `"form"`, `"button"`, `"tab"`). This field is informational only
+/// (e.g., `"form"`, `"button"`, `"drive"`). This field is informational only
 /// and does not expose block content.
 #[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct UnsupportedBlock {

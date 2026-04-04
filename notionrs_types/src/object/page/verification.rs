@@ -5,12 +5,10 @@ use serde::{Deserialize, Serialize};
 /// The verification status of a page in a wiki database. Pages can be verified or unverified,
 /// and verifications can have an optional expiration date set.
 ///
-/// The verification status cannot currently be set or updated via the public API.
-///
 /// - `$.['*'].state`: The verification state of the page. `"verified"` or `"unverified"`.
-/// - `$.['*'].verified_by`: Always `"url"`
-/// - `$.['*'].date?`: If the page if verified, a User object will be included to indicate the user who verified the page.
-///   If an expiration date is set for the verification, an end date (end) will be included.
+/// - `$.['*'].verified_by`: A User object indicating the user who verified the page.
+///   If the page is unverified, this will be `null`.
+/// - `$.['*'].date?`: If the page is verified and an expiration date is set, an end date (`end`) will be included.
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///

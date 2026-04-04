@@ -1,2 +1,5 @@
-test:
-	RUST_TEST_THREADS=1 cargo test
+just check:
+	cargo check
+
+test *args='':
+    RUST_TEST_THREADS=1 cargo test {{args}}

@@ -29,6 +29,8 @@ pub enum IconColor {
     #[default]
     Gray,
     Green,
+    #[serde(rename = "light_gray")]
+    Lightgray,
     Orange,
     Pink,
     Purple,
