@@ -9,16 +9,9 @@ Structs for serializing Notion API requests and deserializing Notion API respons
 - `src/serde/`: Custom serializer/deserializer for serde.
 - `src/prelude.ts`: Re-exports all objects.
 
-## Testing
+## Development Commands
 
-### Unit Tests
-
-To run unit tests, run the following command:
-
-```bash
-cargo test
-```
-
-### Integration Tests
-
-There are no integration tests.
+- Check errors (Lightweight): `cargo check`
+- Compile: `cargo build`
+- Unit Tests: `cargo test`
+- Integration Tests: There are no integration tests.

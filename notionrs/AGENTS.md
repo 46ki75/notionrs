@@ -6,6 +6,12 @@
 - `notionrs/src/`: Main library source.
 - `notionrs/tests/`: Integration tests.
 
+## Building
+
+```bash
+cargo build
+```
+
 ## Testing
 
 ### Unit Tests
