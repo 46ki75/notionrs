@@ -6,8 +6,8 @@ A Notion API client implemented in Rust.
 
 ### Workspace Members
 
-- `notionrs/`: Main crate. Contains a client that can send API requests to Notion API endpoints.
-- `notionrs_macro/`: Provides derive macros. Published to crates.io, but its API is intended for internal use only.
+- `notionrs/`: Main crate. Contains a client that sends API requests to Notion API endpoints.
+- `notionrs_macro/`: Provides derive macros. It is published to crates.io, but its API is intended for internal use only.
 - `notionrs_types/`: Defines structs used in other crates.
 - `notionrs_webhooks/`: Verifies Notion webhook signatures and deserializes webhook events.
 
@@ -18,6 +18,10 @@ A Notion API client implemented in Rust.
 - `notionrs_types` ← `notionrs_macro`
 - `notionrs_webhooks` ← `notionrs_types`
 
-### The Others
+### Other Files
 
-- `scripts/check-upstream-release`: Checks releases in the `makenotion/notion-sdk-js` repository to stay up to date with API changes. If new releases are detected, create an issue on this repository.
+- `scripts/check-upstream-release`: Checks releases in the `makenotion/notion-sdk-js` repository to stay up to date with API changes. If new releases are detected, create an issue in this repository.
+
+## MSRV
+
+MSRV (Minimum Supported Rust Version) is specified in `Cargo.toml` and `rust-toolchain.toml`.
