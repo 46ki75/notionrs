@@ -18,6 +18,17 @@ cargo check
 
 ### Integration Tests
 
+You need to create a `.env` file at repository root, and AI Agents must not run integration tests without human approval.
+
+```ini
+NOTION_TOKEN="ntn_***"
+NOTION_IT_SANDBOX_ID="UUIDv8"
+NOTION_IT_DATA_SOURCE_ID="UUIDv8"
+NOTION_IT_DATABASE_ID="UUIDv8"
+NOTION_IT_CRUD_PAGE_ID="UUIDv8"
+NOTION_IT_MARKDOWN_PAGE_ID="UUIDv8"
+```
+
 To run the integration tests, run the following command:
 
 ```bash
