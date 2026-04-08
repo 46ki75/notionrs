@@ -25,3 +25,8 @@ A Notion API client implemented in Rust.
 ## MSRV
 
 MSRV (Minimum Supported Rust Version) is specified in `Cargo.toml` and `rust-toolchain.toml`.
+
+## Git Tag Rules
+
+- `notionrs` → without prefix (e.g., v0.1.0)
+- `notionrs_macro`, `notionrs_types`, `notionrs_webhooks` → with prefix (e.g., macro-v0.1.0, webhooks-v0.2.0)
