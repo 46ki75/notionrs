@@ -18,7 +18,7 @@ cargo check
 
 ### Integration Tests
 
-You need to create a `.env` file at repository root, and AI Agents must not run integration tests without human approval.
+You need to create a `.env` file at repository root, and AI agents must not run integration tests without human approval.
 
 ```ini
 NOTION_TOKEN="ntn_***"
