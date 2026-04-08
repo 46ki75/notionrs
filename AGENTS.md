@@ -20,4 +20,4 @@ A Notion API client implemented in Rust.
 
 ### The Others
 
-- `scripts/check-upstream-release`: Checks releases in the `makenotion/notion-sdk-js` repository to stay up to date with API changes.
+- `scripts/check-upstream-release`: Checks releases in the `makenotion/notion-sdk-js` repository to stay up to date with API changes. If new releases are detected, create an issue on this repository.
