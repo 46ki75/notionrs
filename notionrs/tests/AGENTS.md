@@ -1,12 +1,12 @@
 # Integration Tests
 
 - Page: "`46ki75/notionrs` Integration Test Page Root"
-  - Page: "Read-only: Integration Test"
-  - Page: "Mutable: Integration Test"
+  - Full Page Database: "Read-only: Integration Test"
+  - Full Page Database: "Mutable: Integration Test"
 
 ## Readonly
 
-- Root page name: "Read-only: Integration Test"
+- Root database name: "Read-only: Integration Test"
 - Notion API key name: `integration-test-readonly`
 - `.env` file path: `notionrs/.env.readonly`
 - Capabilities
@@ -24,7 +24,7 @@
 
 ## Mutable
 
-- Root page name: ""
+- Root database name: "Mutable: Integration Test"
 - Notion API key name: `integration-test-mutable`
 - `.env` file path: `notionrs/.env.mutable`
 - Capabilities
