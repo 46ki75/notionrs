@@ -4,7 +4,7 @@
 
 - `notionrs/examples/`: Code examples for crate users.
 - `notionrs/src/`: Main library source.
-- `notionrs/tests/`: Integration tests.
+- `notionrs/tests/`: Integration tests. For more information, see `README.md`.
 
 ## Building
 
