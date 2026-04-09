@@ -34,6 +34,7 @@
 - `readonly/user/get_users.rs`: Gets all users in the workspace.
 - `readonly/search.rs`: Searches the workspace for pages or databases.
 - `readonly/to_markdown.rs`: Converts Notion objects to Markdown.
+- `data_source_schema.rs`: Defines a schema for the prepared data source. Note: Some data source properties aren't supported for creation via the Notion API.
 - `integration_test_mutable.rs`: Entry point of mutable integration tests.
 - `integration_test_readonly.rs`: Entry point of read-only integration tests.
 
