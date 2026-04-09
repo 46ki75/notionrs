@@ -188,8 +188,7 @@ mod integration_tests {
     // #[serial_test::serial]
     // async fn query_data_source_filter_formula_filter() -> Result<(), notionrs::Error> {
     //     dotenvy::dotenv().ok();
-    //     dotenvy::from_path(std::path::Path::new("../.env"))
-    //         .expect("Failed to load ../.env file");
+    //     dotenvy::from_path(std::path::Path::new("../.env")).ok();
 
     //     let data_source_id = std::env::var("NOTION_IT_crate::readonly::DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
@@ -520,8 +519,7 @@ mod integration_tests {
     // #[serial_test::serial]
     // async fn query_data_source_filter_status_filter() -> Result<(), notionrs::Error> {
     //     dotenvy::dotenv().ok();
-    //     dotenvy::from_path(std::path::Path::new("../.env"))
-    //         .expect("Failed to load ../.env file");
+    //     dotenvy::from_path(std::path::Path::new("../.env")).ok();
 
     //     let data_source_id = std::env::var("NOTION_IT_crate::readonly::DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
