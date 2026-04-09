@@ -502,7 +502,7 @@ mod integration_tests {
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::select_does_not_equal(
-                "API Type", "Type A",
+                "API Type", "Block",
             ),
             notionrs_types::object::request::filter::Filter::select_equals("API Type", "Block"),
             notionrs_types::object::request::filter::Filter::select_is_empty("API Type"),
