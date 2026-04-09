@@ -14,7 +14,7 @@ mod integration_tests {
 
         let id = client
             .create_file_upload()
-            .mode(notionrs::client::file_upload::create_file_upload::FileUplpadMode::SinglePart)
+            .mode(notionrs::client::file_upload::create_file_upload::FileUploadMode::SinglePart)
             .send()
             .await?
             .id;

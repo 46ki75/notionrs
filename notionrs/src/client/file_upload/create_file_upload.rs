@@ -2,7 +2,7 @@
 pub struct CreateFileUploadClient {
     pub(crate) reqwest_client: reqwest::Client,
 
-    pub(crate) mode: FileUplpadMode,
+    pub(crate) mode: FileUploadMode,
 
     pub(crate) filename: Option<String>,
 
@@ -15,7 +15,7 @@ pub struct CreateFileUploadClient {
 
 #[derive(Debug, Default, serde::Serialize, serde::Deserialize, Clone)]
 pub struct CreateFileUploadRequestBody {
-    pub(crate) mode: FileUplpadMode,
+    pub(crate) mode: FileUploadMode,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) filename: Option<String>,
@@ -32,7 +32,7 @@ pub struct CreateFileUploadRequestBody {
 
 #[derive(Debug, Default, serde::Serialize, serde::Deserialize, Clone, Copy)]
 #[serde(rename_all = "snake_case")]
-pub enum FileUplpadMode {
+pub enum FileUploadMode {
     #[default]
     SinglePart,
     MultiPart,
@@ -43,7 +43,7 @@ impl CreateFileUploadClient {
     fn validate_request(&self) -> Result<(), crate::error::Error> {
         if matches!(
             self.mode,
-            FileUplpadMode::MultiPart | FileUplpadMode::ExternalUrl
+            FileUploadMode::MultiPart | FileUploadMode::ExternalUrl
         ) && self.filename.is_none()
         {
             return Err(crate::error::Error::RequestParameter(
@@ -51,13 +51,13 @@ impl CreateFileUploadClient {
             ));
         };
 
-        if matches!(self.mode, FileUplpadMode::MultiPart) && self.number_of_parts.is_none() {
+        if matches!(self.mode, FileUploadMode::MultiPart) && self.number_of_parts.is_none() {
             return Err(crate::error::Error::RequestParameter(
                 "`number_of_parts` is required when `mode` is `multi_part`.".to_owned(),
             ));
         };
 
-        if matches!(self.mode, FileUplpadMode::ExternalUrl) && self.filename.is_none() {
+        if matches!(self.mode, FileUploadMode::ExternalUrl) && self.filename.is_none() {
             return Err(crate::error::Error::RequestParameter(
                 "`external_url` is required when `mode` is `external_url`.".to_owned(),
             ));
