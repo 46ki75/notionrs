@@ -392,15 +392,19 @@ mod integration_tests {
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::relation_contains(
-                "Relation",
+                "Related Read-only: Integration Test",
                 "9804c957-5566-4a9d-b37d-c554bef54e7a",
             ),
             notionrs_types::object::request::filter::Filter::relation_does_not_contain(
-                "Relation",
+                "Related Read-only: Integration Test",
                 "9804c957-5566-4a9d-b37d-c554bef54e7a",
             ),
-            notionrs_types::object::request::filter::Filter::relation_is_empty("Relation"),
-            notionrs_types::object::request::filter::Filter::relation_is_not_empty("Relation"),
+            notionrs_types::object::request::filter::Filter::relation_is_empty(
+                "Related Read-only: Integration Test",
+            ),
+            notionrs_types::object::request::filter::Filter::relation_is_not_empty(
+                "Related Read-only: Integration Test",
+            ),
         ]);
 
         let response: Vec<PageResponse> = client
