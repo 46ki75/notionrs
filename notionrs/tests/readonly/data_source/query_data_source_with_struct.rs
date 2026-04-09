@@ -15,7 +15,7 @@ mod integration_tests {
         let res = client
             .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
-            .send::<crate::IntegrationTestReadOnlyDataSourceSchema>()
+            .send::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .await?;
 
         println!("{}", serde_json::to_string(&res)?);
