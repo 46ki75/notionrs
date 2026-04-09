@@ -1,5 +1,5 @@
 mod block;
-// mod comment;
+mod comment;
 // mod data_source;
 // mod database;
 // mod file_upload;
