@@ -1,5 +1,26 @@
 use serde::{Deserialize, Serialize};
 
+/// Block positioning for the `appendBlockChildren` API (2026-03-11+).
+///
+/// Replaces the deprecated `after` parameter.
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum AppendBlockChildrenPosition {
+    /// Insert after a specific block.
+    AfterBlock {
+        after_block: AppendBlockChildrenAfterBlock,
+    },
+    /// Insert at the start of the parent block.
+    Start,
+    /// Insert at the end of the parent block (default).
+    End,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct AppendBlockChildrenAfterBlock {
+    pub id: String,
+}
+
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct AppendBlockChildrenClient {
     /// The reqwest http client
@@ -9,7 +30,14 @@ pub struct AppendBlockChildrenClient {
     pub(crate) block_id: Option<String>,
 
     /// The ID of the existing block that the new block should be appended after.
+    ///
+    /// **Deprecated**: Use `position` instead.
+    #[skip]
     pub(crate) after: Option<String>,
+
+    /// Block insertion position (2026-03-11+). Replaces the deprecated `after` field.
+    #[skip]
+    pub(crate) position: Option<AppendBlockChildrenPosition>,
 
     pub(crate) children: Vec<notionrs_types::object::block::Block>,
 }
@@ -19,12 +47,46 @@ pub struct AppendBlockChildrenRequestBody {
     pub(crate) children: Vec<notionrs_types::object::block::Block>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[deprecated(note = "Use `position` instead.")]
     pub(crate) after: Option<String>,
-    // #[serde(skip_serializing_if = "Option::is_none")]
-    // pub(crate) page_size: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) position: Option<AppendBlockChildrenPosition>,
 }
 
 impl AppendBlockChildrenClient {
+    /// Set the ID of an existing block that the new blocks should be appended after.
+    ///
+    /// **Deprecated**: Use [`position_after_block`](Self::position_after_block),
+    /// [`position_start`](Self::position_start), or [`position_end`](Self::position_end) instead.
+    #[deprecated(note = "Use `position_after_block`, `position_start`, or `position_end` instead.")]
+    pub fn after<T: AsRef<str>>(mut self, after: T) -> Self {
+        self.after = Some(after.as_ref().to_string());
+        self
+    }
+
+    /// Insert the new blocks after the block with the given ID.
+    pub fn position_after_block<T: AsRef<str>>(mut self, block_id: T) -> Self {
+        self.position = Some(AppendBlockChildrenPosition::AfterBlock {
+            after_block: AppendBlockChildrenAfterBlock {
+                id: block_id.as_ref().to_string(),
+            },
+        });
+        self
+    }
+
+    /// Insert the new blocks at the start of the parent block.
+    pub fn position_start(mut self) -> Self {
+        self.position = Some(AppendBlockChildrenPosition::Start);
+        self
+    }
+
+    /// Insert the new blocks at the end of the parent block (default behavior).
+    pub fn position_end(mut self) -> Self {
+        self.position = Some(AppendBlockChildrenPosition::End);
+        self
+    }
+
     // TODO: docs for send
     pub async fn send(
         self,
@@ -38,9 +100,11 @@ impl AppendBlockChildrenClient {
             "`block_id` is not set.".to_string(),
         ))?;
 
+        #[allow(deprecated)]
         let request_body_struct = AppendBlockChildrenRequestBody {
             children: self.children,
             after: self.after,
+            position: self.position,
         };
 
         let request_body = serde_json::to_string(&request_body_struct)?;
@@ -76,3 +140,4 @@ impl AppendBlockChildrenClient {
         Ok(block)
     }
 }
+
