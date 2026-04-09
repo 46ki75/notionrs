@@ -16,7 +16,7 @@ mod integration_tests {
             .await?
             .id;
 
-        let file = include_bytes!("../../Cargo.toml");
+        let file = include_bytes!("../../../Cargo.toml");
 
         let file_upload_id = client
             .send_file_upload()
