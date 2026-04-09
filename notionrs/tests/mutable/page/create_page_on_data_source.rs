@@ -4,7 +4,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn create_page_on_data_source() -> Result<(), notionrs::Error> {
-        dotenvy::from_path(std::path::Path::new(".env.mutable")).ok();
+        dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_MUTABLE").unwrap();
         let client = notionrs::Client::new(notion_api_key);
@@ -54,7 +54,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn create_page_on_data_source_with_template_default() -> Result<(), notionrs::Error> {
-        dotenvy::from_path(std::path::Path::new(".env.mutable")).ok();
+        dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_MUTABLE").unwrap();
         let client = notionrs::Client::new(notion_api_key);

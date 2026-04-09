@@ -7,7 +7,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn create_database() -> Result<(), notionrs::Error> {
-        dotenvy::from_path(std::path::Path::new(".env.mutable")).ok();
+        dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_MUTABLE").unwrap();
         let client = notionrs::Client::new(notion_api_key);

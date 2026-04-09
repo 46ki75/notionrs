@@ -5,7 +5,7 @@ mod integration_tests {
 
     #[tokio::test]
     async fn to_markdown() {
-        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
+        dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);

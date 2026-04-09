@@ -48,7 +48,6 @@ cargo test --test integration_test_readonly
 
 - Notion database name: "Read-only: Integration Test"
 - Notion API key name: `integration-test-readonly`
-- `.env` file path: `notionrs/.env.readonly`
 - Capabilities
   - Content capabilities
     - [x] Read content
@@ -72,7 +71,6 @@ cargo test --test integration_test_mutable
 
 - Notion database name: "Mutable: Integration Test"
 - Notion API key name: `integration-test-mutable`
-- `.env` file path: `notionrs/.env.mutable`
 - Capabilities
   - Content capabilities
     - [x] Read content
