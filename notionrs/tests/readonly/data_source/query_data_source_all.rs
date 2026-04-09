@@ -10,8 +10,6 @@ mod integration_tests {
     use notionrs::r#trait::PaginateExt;
     use notionrs_types::prelude::*;
 
-    static DATA_SOURCE_ID: &str = "33da03d7-9b26-81cb-90c7-000b8fb827a8";
-
     #[tokio::test]
     async fn query_data_source_all() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
@@ -20,7 +18,7 @@ mod integration_tests {
         let client = notionrs::Client::new(notion_api_key);
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .into_stream()
             .try_collect()
             .await
@@ -44,7 +42,7 @@ mod integration_tests {
         let client = notionrs::Client::new(notion_api_key);
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .into_stream()
             .try_collect()
             .await
@@ -74,7 +72,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -100,7 +98,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -153,7 +151,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -179,7 +177,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -198,7 +196,7 @@ mod integration_tests {
     //     dotenvy::from_path(std::path::Path::new("../.env"))
     //         .expect("Failed to load ../.env file");
 
-    //     let data_source_id = std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
+    //     let data_source_id = std::env::var("NOTION_IT_crate::readonly::DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
     //     let client = notionrs::Client::new();
 
@@ -215,7 +213,7 @@ mod integration_tests {
 
     //     let request = client
     //         .query_data_source_all()
-    //         .data_source_id(DATA_SOURCE_ID)
+    //         .data_source_id(crate::readonly::DATA_SOURCE_ID)
     //         .filter(filter);
 
     //     let response = request.send().await?;
@@ -249,7 +247,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -285,7 +283,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -319,7 +317,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -371,7 +369,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -409,7 +407,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -445,7 +443,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -481,7 +479,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -511,7 +509,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -530,7 +528,7 @@ mod integration_tests {
     //     dotenvy::from_path(std::path::Path::new("../.env"))
     //         .expect("Failed to load ../.env file");
 
-    //     let data_source_id = std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
+    //     let data_source_id = std::env::var("NOTION_IT_crate::readonly::DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
 
     //     let client = notionrs::Client::new();
 
@@ -543,7 +541,7 @@ mod integration_tests {
 
     //     let request = client
     //         .query_data_source_all()
-    //         .data_source_id(DATA_SOURCE_ID)
+    //         .data_source_id(crate::readonly::DATA_SOURCE_ID)
     //         .filter(filter);
 
     //     let response = request.send().await?;
@@ -579,7 +577,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -613,7 +611,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
             .try_collect()
@@ -644,7 +642,7 @@ mod integration_tests {
 
         let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .sorts(sorts)
             .into_stream()
             .try_collect()

@@ -1,7 +1,5 @@
 mod integration_tests {
 
-    static DATA_SOURCE_ID: &str = "33da03d7-9b26-81cb-90c7-000b8fb827a8";
-
     // # --------------------------------------------------------------------------------
     //
     // query_data_source (struct)
@@ -16,7 +14,7 @@ mod integration_tests {
         let client = notionrs::Client::new(notion_api_key);
         let res = client
             .query_data_source()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .send::<crate::IntegrationTestReadOnlyDataSourceSchema>()
             .await?;
 

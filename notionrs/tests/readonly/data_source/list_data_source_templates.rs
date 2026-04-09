@@ -1,7 +1,5 @@
 mod integration_tests {
 
-    static DATA_SOURCE_ID: &str = "33da03d7-9b26-81cb-90c7-000b8fb827a8";
-
     #[tokio::test]
     async fn list_data_source_templates() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly"))
@@ -12,7 +10,7 @@ mod integration_tests {
 
         let response = client
             .list_data_source_templates()
-            .data_source_id(DATA_SOURCE_ID)
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .page_size(10)
             .send()
             .await?;
