@@ -2,29 +2,30 @@ mod integration_tests {
 
     // # --------------------------------------------------------------------------------
     //
-    // query_data_source
+    // query_data_source_all
     //
     // # --------------------------------------------------------------------------------
 
+    use futures::TryStreamExt;
+    use notionrs::r#trait::PaginateExt;
     use notionrs_types::prelude::*;
 
+    static DATA_SOURCE_ID: &str = "33da03d7-9b26-81cb-90c7-000b8fb827a8";
+
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
-        let res = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
-        println!("{}", serde_json::to_string(&res)?);
+            .data_source_id(DATA_SOURCE_ID)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -36,23 +37,19 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_page_size() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_page_size() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
-        let res = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .page_size(1)
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
-        println!("{}", serde_json::to_string(&res)?);
+            .data_source_id(DATA_SOURCE_ID)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
+        println!("{}", serde_json::to_string(&response)?);
 
         Ok(())
     }
@@ -64,15 +61,10 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_simple() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_simple() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::date_before(
@@ -80,14 +72,14 @@ mod integration_tests {
             "2024-07-01",
         );
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -95,15 +87,10 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_checkbox() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_checkbox() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -111,14 +98,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::checkbox_is_not_checked("Checkbox"),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -126,15 +113,10 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_date_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_date_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -169,14 +151,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::date_this_week("Created time"),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -184,15 +166,10 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_files_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_files_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -200,14 +177,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::files_is_not_empty("Files & media"),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -216,7 +193,7 @@ mod integration_tests {
 
     // #[tokio::test]
     // #[serial_test::serial]
-    // async fn query_data_source_filter_formula_filter() -> Result<(), notionrs::Error> {
+    // async fn query_data_source_all_filter_formula_filter() -> Result<(), notionrs::Error> {
     //     dotenvy::dotenv().ok();
     //     dotenvy::from_path(std::path::Path::new("../.env"))
     //         .expect("Failed to load ../.env file");
@@ -237,11 +214,11 @@ mod integration_tests {
     //     ]);
 
     //     let request = client
-    //         .query_data_source()
-    //         .data_source_id(data_source_id)
+    //         .query_data_source_all()
+    //         .data_source_id(DATA_SOURCE_ID)
     //         .filter(filter);
 
-    //     let response = request.send::<std::collections::HashMap<String,PageProperty>>().await?;
+    //     let response = request.send().await?;
 
     //     println!("{}", serde_json::to_string(&response)?);
 
@@ -249,15 +226,10 @@ mod integration_tests {
     // }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_multi_select_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_multi_select_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -275,14 +247,14 @@ mod integration_tests {
             ),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -290,15 +262,10 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_number_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_number_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -316,14 +283,14 @@ mod integration_tests {
             ),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -331,15 +298,10 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_people_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_people_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -355,14 +317,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::people_is_not_empty("User"),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -370,15 +332,10 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_phone_number_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_phone_number_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -412,14 +369,14 @@ mod integration_tests {
             ),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -427,15 +384,10 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_relation_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_relation_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -451,14 +403,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::relation_is_not_empty("Relation"),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -466,15 +418,10 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_rollup_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_rollup_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -492,14 +439,14 @@ mod integration_tests {
             ),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -507,15 +454,10 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_rich_text_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_rich_text_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -533,14 +475,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::rich_text_starts_with("Text", "0"),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -548,34 +490,29 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_select_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_select_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::select_does_not_equal(
-                "Select", "Type A",
+                "API Type", "Type A",
             ),
-            notionrs_types::object::request::filter::Filter::select_equals("Select", "Type B"),
-            notionrs_types::object::request::filter::Filter::select_is_empty("Select"),
-            notionrs_types::object::request::filter::Filter::select_is_not_empty("Select"),
+            notionrs_types::object::request::filter::Filter::select_equals("API Type", "Block"),
+            notionrs_types::object::request::filter::Filter::select_is_empty("API Type"),
+            notionrs_types::object::request::filter::Filter::select_is_not_empty("API Type"),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -584,7 +521,7 @@ mod integration_tests {
 
     // #[tokio::test]
     // #[serial_test::serial]
-    // async fn query_data_source_filter_status_filter() -> Result<(), notionrs::Error> {
+    // async fn query_data_source_all_filter_status_filter() -> Result<(), notionrs::Error> {
     //     dotenvy::dotenv().ok();
     //     dotenvy::from_path(std::path::Path::new("../.env"))
     //         .expect("Failed to load ../.env file");
@@ -601,11 +538,11 @@ mod integration_tests {
     //     ]);
 
     //     let request = client
-    //         .query_data_source()
-    //         .data_source_id(data_source_id)
+    //         .query_data_source_all()
+    //         .data_source_id(DATA_SOURCE_ID)
     //         .filter(filter);
 
-    //     let response = request.send::<std::collections::HashMap<String,PageProperty>>().await?;
+    //     let response = request.send().await?;
 
     //     println!("{}", serde_json::to_string(&response)?);
 
@@ -613,15 +550,10 @@ mod integration_tests {
     // }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_timestamp_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_timestamp_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -641,14 +573,14 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::timestamp_this_week(),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -656,15 +588,10 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_filter_unique_id_filter() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_filter_unique_id_filter() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -680,14 +607,14 @@ mod integration_tests {
             ),
         ]);
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .filter(filter);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .filter(filter)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -701,29 +628,24 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    #[serial_test::serial]
-    async fn query_data_source_sort() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+    async fn query_data_source_all_sort() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let sorts = vec![notionrs_types::object::request::sort::Sort::asc(
             "Created time",
         )];
 
-        let request = client
+        let response: Vec<PageResponse> = client
             .query_data_source()
-            .data_source_id(data_source_id)
-            .sorts(sorts);
-
-        let response = request
-            .send::<std::collections::HashMap<String, PageProperty>>()
-            .await?;
+            .data_source_id(DATA_SOURCE_ID)
+            .sorts(sorts)
+            .into_stream()
+            .try_collect()
+            .await
+            .unwrap();
 
         println!("{}", serde_json::to_string(&response)?);
 

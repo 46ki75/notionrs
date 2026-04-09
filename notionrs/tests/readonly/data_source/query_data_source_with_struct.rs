@@ -2,6 +2,8 @@ mod integration_tests {
 
     use notionrs_types::prelude::*;
 
+    static DATA_SOURCE_ID: &str = "33da03d7-9b26-81cb-90c7-000b8fb827a8";
+
     // # --------------------------------------------------------------------------------
     //
     // query_data_source (struct)
@@ -17,19 +19,14 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    #[serial_test::serial]
     async fn query_data_source_with_struct() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
         let res = client
             .query_data_source()
-            .data_source_id(data_source_id)
+            .data_source_id(DATA_SOURCE_ID)
             .send::<MyCrateProperties>()
             .await?;
 
