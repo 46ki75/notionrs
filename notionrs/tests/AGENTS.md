@@ -38,29 +38,6 @@
 - `integration_test_mutable.rs`: Entry point of mutable integration tests.
 - `integration_test_readonly.rs`: Entry point of read-only integration tests.
 
-## Readonly
-
-Read-only integration tests can be run by AI agents.
-
-```bash
-cargo test --test integration_test_readonly
-```
-
-- Notion database name: "Read-only: Integration Test"
-- Notion API key name: `integration-test-readonly`
-- Capabilities
-  - Content capabilities
-    - [x] Read content
-    - [ ] Update content
-    - [ ] Insert content
-  - Comment capabilities
-    - [x] Read comments
-    - [ ] Insert comments
-  - User capabilities
-    - [ ] No user information
-    - [x] Read user information without email addresses
-    - [ ] Read user information including email addresses
-
 ## Mutable
 
 Mutable integration tests MUST NOT be run by AI agents.
@@ -71,6 +48,8 @@ cargo test --test integration_test_mutable
 
 - Notion database name: "Mutable: Integration Test"
 - Notion API key name: `integration-test-mutable`
+- Required environment variables:
+  - `NOTION_API_KEY_MUTABLE`: Notion API key
 - Capabilities
   - Content capabilities
     - [x] Read content
@@ -83,3 +62,28 @@ cargo test --test integration_test_mutable
     - [ ] No user information
     - [ ] Read user information without email addresses
     - [x] Read user information including email addresses
+
+## Readonly
+
+Read-only integration tests can be run by AI agents.
+
+```bash
+cargo test --test integration_test_readonly
+```
+
+- Notion database name: "Read-only: Integration Test"
+- Notion API key name: `integration-test-readonly`
+- Required environment variables:
+  - `NOTION_API_KEY_READONLY`: Notion API key
+- Capabilities
+  - Content capabilities
+    - [x] Read content
+    - [ ] Update content
+    - [ ] Insert content
+  - Comment capabilities
+    - [x] Read comments
+    - [ ] Insert comments
+  - User capabilities
+    - [ ] No user information
+    - [x] Read user information without email addresses
+    - [ ] Read user information including email addresses

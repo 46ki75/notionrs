@@ -24,18 +24,18 @@ cargo check
 
 ### Integration Tests
 
-#### Readonly Integration Tests
-
-Read-only integration tests can be run by AI agents.
-
-```bash
-cargo test --test integration_test_readonly
-```
-
 #### Mutable Integration Tests
 
-Mutable integration tests MUST NOT be run by AI agents.
+Mutable integration tests MUST NOT be run by AI agents. The environment variable `NOTION_API_KEY_MUTABLE` is required.
 
 ```bash
 cargo test --test integration_test_mutable
+```
+
+#### Readonly Integration Tests
+
+Read-only integration tests can be run by AI agents. The environment variable `NOTION_API_KEY_READONLY` is required.
+
+```bash
+cargo test --test integration_test_readonly
 ```
