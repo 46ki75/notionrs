@@ -2,14 +2,15 @@ mod integration_tests {
 
     use notionrs_types::prelude::*;
 
+    /// <https://www.notion.so/33da03d79b2680aeb76af19ac022d4b7>
+    static PAGE_ID: &str = "33da03d79b2680aeb76af19ac022d4b7";
+
     #[tokio::test]
     async fn create_database() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+        dotenvy::from_path(std::path::Path::new(".env.mutable"))
+            .expect("Failed to load .env.mutable file");
 
-        let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let mut properties = std::collections::HashMap::new();
@@ -122,7 +123,7 @@ mod integration_tests {
 
         let request = client
             .create_database()
-            .page_id(page_id)
+            .page_id(PAGE_ID)
             .title(vec![RichText::from("Database Title")])
             .description(vec![RichText::from("Description of the Database")])
             .properties(properties)
@@ -138,6 +139,8 @@ mod integration_tests {
         let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response).unwrap());
+
+        // Clean up: delete the created database
 
         let request = client.delete_block().block_id(response.id);
 
