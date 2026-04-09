@@ -8,7 +8,8 @@ pub struct UpdateBlockClient {
     /// Identifier for a block. Also accepts a page ID.
     pub(crate) block_id: Option<String>,
 
-    /// The ID of the existing block that the new block should be appended after.
+    /// Whether the block is in the trash (i.e. deleted by the user).
+    /// Deprecated: use `in_trash` instead.
     #[skip]
     pub(crate) archived: Option<bool>,
 

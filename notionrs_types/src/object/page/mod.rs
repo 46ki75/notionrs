@@ -106,7 +106,7 @@ where
     pub cover: Option<File>,
     pub icon: Option<EmojiAndIcon>,
     pub parent: Parent,
-    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2025-09-03 API version.")]
+    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2026-03-11 API version.")]
     pub archived: bool,
     pub properties: T,
     pub url: String,

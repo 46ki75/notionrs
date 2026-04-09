@@ -79,7 +79,7 @@ pub struct BlockResponse {
 
     pub has_children: bool,
 
-    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2025-09-03 API version.")]
+    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2026-03-11 API version.")]
     pub archived: bool,
 
     pub in_trash: bool,

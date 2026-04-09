@@ -62,6 +62,7 @@ impl AppendBlockChildrenClient {
     #[deprecated(note = "Use `position_after_block`, `position_start`, or `position_end` instead.")]
     pub fn after<T: AsRef<str>>(mut self, after: T) -> Self {
         self.after = Some(after.as_ref().to_string());
+        self.position = None;
         self
     }
 
@@ -72,18 +73,21 @@ impl AppendBlockChildrenClient {
                 id: block_id.as_ref().to_string(),
             },
         });
+        self.after = None;
         self
     }
 
     /// Insert the new blocks at the start of the parent block.
     pub fn position_start(mut self) -> Self {
         self.position = Some(AppendBlockChildrenPosition::Start);
+        self.after = None;
         self
     }
 
     /// Insert the new blocks at the end of the parent block (default behavior).
     pub fn position_end(mut self) -> Self {
         self.position = Some(AppendBlockChildrenPosition::End);
+        self.after = None;
         self
     }
 

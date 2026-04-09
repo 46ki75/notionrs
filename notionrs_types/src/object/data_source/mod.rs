@@ -46,7 +46,7 @@ pub struct DataSourceResponse<T = std::collections::HashMap<String, DataSourcePr
 
     pub title: Vec<crate::object::rich_text::RichText>,
 
-    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2025-09-03 API version.")]
+    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2026-03-11 API version.")]
     pub archived: bool,
 
     pub in_trash: bool,
