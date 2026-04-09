@@ -2,6 +2,9 @@ mod integration_tests {
 
     use notionrs_types::prelude::*;
 
+    /// <https://www.notion.so/33da03d79b2680628cf0ebeb854b8846>
+    static PAGE_ID: &str = "33da03d79b2680628cf0ebeb854b8846";
+
     #[tokio::test]
     async fn crud_page() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.mutable")).ok();
@@ -25,7 +28,7 @@ mod integration_tests {
         let request = client
             .create_page()
             .properties(properties)
-            .page_id(crate::mutable::DATA_SOURCE_ID)
+            .page_id(PAGE_ID)
             .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ))
