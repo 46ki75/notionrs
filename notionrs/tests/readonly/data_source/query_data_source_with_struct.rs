@@ -26,12 +26,30 @@ mod integration_tests {
         #[serde(rename = "URL")]
         pub url: PageUrlProperty,
 
+        /// ## Options
+        ///
+        /// - `Page`
+        /// - `Block`
         #[serde(rename = "API Type")]
         pub api_type: PageSelectProperty,
 
+        /// ## Options
+        ///
+        /// - To-do
+        ///   - `Not started`
+        /// - In progress
+        ///   - `In progress`
+        /// - Completed
+        ///   - `Done`
         #[serde(rename = "Status")]
         pub status: PageStatusProperty,
 
+        /// ## Options
+        ///
+        /// - `Something`
+        /// - `Another thing`
+        /// - `Yet another thing`
+        /// - `Last thing`
         #[serde(rename = "Multi-select")]
         pub multi_select: PageMultiSelectProperty,
 
