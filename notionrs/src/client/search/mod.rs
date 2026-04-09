@@ -37,10 +37,8 @@ pub struct SearchRequestBody {
 impl SearchClient {
     pub async fn send(
         self,
-    ) -> Result<
-        ListResponse<notionrs_types::object::response::SearchResultItem>,
-        crate::error::Error,
-    > {
+    ) -> Result<ListResponse<notionrs_types::object::response::SearchResultItem>, crate::error::Error>
+    {
         let url = String::from("https://api.notion.com/v1/search");
 
         let request_body = serde_json::to_string(&self.body)?;

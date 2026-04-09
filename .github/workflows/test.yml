@@ -12,7 +12,41 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  notionrs:
+  notionrs-unit:
+    name: Unit Test (notionrs)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Rust Toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Run Unit Test
+        run: cargo check
+        working-directory: ./notionrs
+
+  notionrs-integration:
+    name: Integration Test (notionrs)
+    runs-on: ubuntu-latest
+    env:
+      NOTION_API_KEY_READONLY: ${{ secrets.NOTION_API_KEY_READONLY }}
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Rust Toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Run Unit Test
+        run: cargo test --test integration_test_readonly
+        working-directory: ./notionrs
+
+  notionrs-types-unit:
     name: Unit Test (notionrs_types)
     runs-on: ubuntu-latest
     steps:
