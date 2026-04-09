@@ -9,7 +9,7 @@ mod integration_tests {
     #[tokio::test]
     #[serial_test::serial]
     async fn search() -> Result<(), notionrs::Error> {
-        dotenvy::from_path(std::path::Path::new("../.env")).ok();
+        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
         let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
         let client = notionrs::Client::new(notion_api_key);

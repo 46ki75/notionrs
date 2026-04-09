@@ -22,6 +22,10 @@
     - [x] Read user information without email addresses
     - [ ] Read user information including email addresses
 
+```bash
+cargo test --test integration_test_readonly
+```
+
 ## Mutable
 
 - Root database name: "Mutable: Integration Test"
@@ -39,3 +43,7 @@
     - [ ] No user information
     - [ ] Read user information without email addresses
     - [x] Read user information including email addresses
+
+```bash
+cargo test --test integration_test_mutable --jobs 1
+```
