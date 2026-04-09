@@ -40,6 +40,8 @@
 
 ## Readonly
 
+Read-only integration tests can be run by AI agents.
+
 ```bash
 cargo test --test integration_test_readonly
 ```
@@ -61,6 +63,8 @@ cargo test --test integration_test_readonly
     - [ ] Read user information including email addresses
 
 ## Mutable
+
+Mutable integration tests MUST NOT be run by AI agents.
 
 ```bash
 cargo test --test integration_test_mutable
