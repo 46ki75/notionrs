@@ -14,7 +14,7 @@ mod integration_tests {
     async fn query_data_source_all() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
         let response: Vec<PageResponse> = client
             .query_data_source()
@@ -38,7 +38,7 @@ mod integration_tests {
     async fn query_data_source_all_page_size() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
         let response: Vec<PageResponse> = client
             .query_data_source()
@@ -62,7 +62,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_simple() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::date_before(
@@ -88,7 +88,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_checkbox() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -114,7 +114,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_date_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -167,7 +167,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_files_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -226,7 +226,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_multi_select_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -262,7 +262,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_number_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -298,7 +298,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_people_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -332,7 +332,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_phone_number_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -384,7 +384,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_relation_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -422,7 +422,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_rollup_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -458,7 +458,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_rich_text_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -494,7 +494,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_select_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -553,7 +553,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_timestamp_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -591,7 +591,7 @@ mod integration_tests {
     async fn query_data_source_all_filter_unique_id_filter() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
@@ -631,7 +631,7 @@ mod integration_tests {
     async fn query_data_source_all_sort() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let sorts = vec![notionrs_types::object::request::sort::Sort::asc(

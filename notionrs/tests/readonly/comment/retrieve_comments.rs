@@ -7,7 +7,7 @@ mod integration_tests {
     async fn retrieve_comments() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let request = client.retrieve_comments().block_id(PAGE_ID);

@@ -7,7 +7,7 @@ mod integration_tests {
     async fn to_markdown() {
         dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let response = client.to_markdown(PAGE_ID).await.unwrap().join("\n");

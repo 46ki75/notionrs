@@ -8,7 +8,7 @@ mod integration_tests {
     async fn crud_bookmark_block() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.mutable")).ok();
 
-        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY_MUTABLE").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         // # --------------------------------------------------------------------------------
