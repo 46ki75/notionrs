@@ -33,7 +33,8 @@ mod integration_tests {
     #[tokio::test]
     #[serial_test::serial]
     async fn search_page() -> Result<(), notionrs::Error> {
-        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
+        dotenvy::from_path(std::path::Path::new(".env.readonly"))
+            .expect("Failed to load .env.readonly file");
 
         let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
@@ -56,7 +57,8 @@ mod integration_tests {
     #[tokio::test]
     #[serial_test::serial]
     async fn search_database() -> Result<(), notionrs::Error> {
-        dotenvy::from_path(std::path::Path::new(".env.readonly")).ok();
+        dotenvy::from_path(std::path::Path::new(".env.readonly"))
+            .expect("Failed to load .env.readonly file");
 
         let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
