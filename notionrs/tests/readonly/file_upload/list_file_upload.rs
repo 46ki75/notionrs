@@ -5,9 +5,10 @@ mod integration_tests {
 
     #[tokio::test]
     async fn list_file_upload() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
+        dotenvy::from_path(std::path::Path::new(".env.readonly"))
+            .expect("Failed to load .env.readonly file");
 
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let _response = client.list_file_uploads().send().await?;
@@ -17,9 +18,10 @@ mod integration_tests {
 
     #[tokio::test]
     async fn list_file_upload_all() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
+        dotenvy::from_path(std::path::Path::new(".env.readonly"))
+            .expect("Failed to load .env.readonly file");
 
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         let _response = client

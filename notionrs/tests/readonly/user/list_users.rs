@@ -7,7 +7,10 @@ mod integration_tests {
     /// for user reading is granted in the Notion API key issuance settings.
     #[tokio::test]
     async fn list_users() -> Result<(), Error> {
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        dotenvy::from_path(std::path::Path::new(".env.readonly"))
+            .expect("Failed to load .env.readonly file");
+
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
         let res = client.list_users().send().await?;
         println!("{}", serde_json::to_string(&res)?);
@@ -17,7 +20,10 @@ mod integration_tests {
 
     #[tokio::test]
     async fn list_users_all() -> Result<(), Error> {
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        dotenvy::from_path(std::path::Path::new(".env.readonly"))
+            .expect("Failed to load .env.readonly file");
+
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
         let res: Vec<notionrs_types::prelude::User> = client
             .list_users()

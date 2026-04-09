@@ -6,4 +6,3 @@ mod database;
 mod file_upload;
 mod page;
 mod to_markdown;
-mod user;
