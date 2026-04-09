@@ -24,31 +24,18 @@ cargo check
 
 ### Integration Tests
 
-You need to create a `.env` file at repository root, and AI agents must not run integration tests without human approval.
+#### Readonly Integration Tests
 
-```ini
-NOTION_TOKEN="ntn_***"
-NOTION_IT_SANDBOX_ID="UUIDv8"
-NOTION_IT_DATA_SOURCE_ID="UUIDv8"
-NOTION_IT_DATABASE_ID="UUIDv8"
-NOTION_IT_CRUD_PAGE_ID="UUIDv8"
-NOTION_IT_MARKDOWN_PAGE_ID="UUIDv8"
-```
-
-To run the integration tests, run the following command:
+Read-only integration tests can be run by AI agents.
 
 ```bash
-RUST_TEST_THREADS=1 cargo test
+cargo test --test integration_test_readonly
 ```
 
-Integration tests take a long time. We recommend running only the specific test case you need:
+#### Mutable Integration Tests
+
+Mutable integration tests MUST NOT be run by AI agents.
 
 ```bash
-RUST_TEST_THREADS=1 cargo test [TESTNAME]
+cargo test --test integration_test_mutable
 ```
-
-## TODO
-
-- Separate integration test cases into mutable and read-only.
-  - Use separate Notion API keys for mutable and read-only test cases.
-  - Use separate Notion pages for mutable and read-only test cases.
