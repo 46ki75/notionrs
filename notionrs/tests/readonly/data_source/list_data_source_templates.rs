@@ -1,0 +1,24 @@
+mod integration_tests {
+
+    static DATA_SOURCE_ID: &str = "33da03d7-9b26-81cb-90c7-000b8fb827a8";
+
+    #[tokio::test]
+    async fn list_data_source_templates() -> Result<(), notionrs::Error> {
+        dotenvy::from_path(std::path::Path::new(".env.readonly"))
+            .expect("Failed to load .env.readonly file");
+
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
+
+        let response = client
+            .list_data_source_templates()
+            .data_source_id(DATA_SOURCE_ID)
+            .page_size(10)
+            .send()
+            .await?;
+
+        assert!(response.templates.len() >= 1);
+
+        Ok(())
+    }
+}
