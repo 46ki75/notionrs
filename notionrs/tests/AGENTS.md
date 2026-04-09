@@ -1,8 +1,8 @@
 # Integration Tests
 
-- Page: "`46ki75/notionrs` Integration Test Page Root"
-  - Full Page Database: "Read-only: Integration Test"
-  - Full Page Database: "Mutable: Integration Test"
+- Notion Page: "`46ki75/notionrs` Integration Test Page Root"
+  - Notion Full Page Database: "Read-only: Integration Test"
+  - Notion Full Page Database: "Mutable: Integration Test"
 
 ## Directory Structure
 
