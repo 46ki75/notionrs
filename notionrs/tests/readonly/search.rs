@@ -7,7 +7,6 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    #[serial_test::serial]
     async fn search() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly"))
             .expect("Failed to load .env.readonly file");
@@ -31,7 +30,6 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    #[serial_test::serial]
     async fn search_page() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly"))
             .expect("Failed to load .env.readonly file");
@@ -55,7 +53,6 @@ mod integration_tests {
     // # --------------------------------------------------------------------------------
 
     #[tokio::test]
-    #[serial_test::serial]
     async fn search_database() -> Result<(), notionrs::Error> {
         dotenvy::from_path(std::path::Path::new(".env.readonly"))
             .expect("Failed to load .env.readonly file");
