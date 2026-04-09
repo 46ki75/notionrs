@@ -4,13 +4,9 @@ mod integration_tests {
 
     #[tokio::test]
     async fn create_page_on_data_source() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+        dotenvy::from_path(std::path::Path::new(".env.mutable")).ok();
 
-        let data_source_id =
-            std::env::var("NOTION_IT_DATA_SOURCE_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         // # --------------------------------------------------------------------------------
@@ -29,7 +25,7 @@ mod integration_tests {
         let request = client
             .create_page()
             .properties(properties)
-            .data_source_id(data_source_id)
+            .data_source_id(crate::mutable::DATA_SOURCE_ID)
             .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ))
