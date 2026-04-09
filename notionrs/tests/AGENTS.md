@@ -4,9 +4,20 @@
   - Full Page Database: "Read-only: Integration Test"
   - Full Page Database: "Mutable: Integration Test"
 
+## Directory Structure
+
+- `mutable/`: Integration tests that include mutable operations.
+- `readonly/`: Integration tests that don't update Notion data.
+- `integration_test_mutable.rs`: Entry point of mutable integration tests.
+- `integration_test_readonly.rs`: Entry point of read-only integration tests.
+
 ## Readonly
 
-- Root database name: "Read-only: Integration Test"
+```bash
+cargo test --test integration_test_readonly
+```
+
+- Notion database name: "Read-only: Integration Test"
 - Notion API key name: `integration-test-readonly`
 - `.env` file path: `notionrs/.env.readonly`
 - Capabilities
@@ -22,13 +33,13 @@
     - [x] Read user information without email addresses
     - [ ] Read user information including email addresses
 
-```bash
-cargo test --test integration_test_readonly
-```
-
 ## Mutable
 
-- Root database name: "Mutable: Integration Test"
+```bash
+cargo test --test integration_test_mutable --jobs 1
+```
+
+- Notion database name: "Mutable: Integration Test"
 - Notion API key name: `integration-test-mutable`
 - `.env` file path: `notionrs/.env.mutable`
 - Capabilities
@@ -43,7 +54,3 @@ cargo test --test integration_test_readonly
     - [ ] No user information
     - [ ] Read user information without email addresses
     - [x] Read user information including email addresses
-
-```bash
-cargo test --test integration_test_mutable --jobs 1
-```
