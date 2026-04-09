@@ -9,6 +9,7 @@ pub struct UpdateBlockClient {
     pub(crate) block_id: Option<String>,
 
     /// The ID of the existing block that the new block should be appended after.
+    #[skip]
     pub(crate) archived: Option<bool>,
 
     pub(crate) block: Option<notionrs_types::object::block::Block>,
@@ -24,6 +25,13 @@ pub struct UpdateBlockRequestBody {
 }
 
 impl UpdateBlockClient {
+    /// Set the value of the `archived` field.
+    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2025-09-03 API version.")]
+    pub fn archived(mut self, archived: bool) -> Self {
+        self.archived = Some(archived);
+        self
+    }
+
     // TODO: docs for send
     pub async fn send(
         self,

@@ -18,6 +18,7 @@ pub struct FileUpload {
 
     pub complete_url: Option<String>,
 
+    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2025-09-03 API version.")]
     pub archived: bool,
 
     pub status: FileUploadStatus,
@@ -47,6 +48,7 @@ pub struct NumberOfParts {
 }
 
 #[cfg(test)]
+#[allow(deprecated)]
 mod unit_tests {
     use super::*;
 
