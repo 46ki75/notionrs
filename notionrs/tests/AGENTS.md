@@ -17,6 +17,23 @@
 - `mutable/page/crud_page.rs`: Creates, reads, updates, and deletes a page on a prepared page.
 - `mutable/page/move_page.rs`: Creates two pages on a prepared page and moves the created page to another one.
 - `readonly/`: Integration tests that don't update Notion data.
+- `readonly/block/get_*_block.rs`: Gets each block type.
+- `readonly/comment/retrieve_comments.rs`: Gets comments from a prepared page.
+- `readonly/custom_emojis/list_custom_emojis.rs`: Gets all emojis in the Notion workspace.
+- `readonly/data_source/list_data_source_templates.rs`: Lists data source templates.
+- `readonly/data_source/query_data_source.rs`: Queries a data source for a single page of results.
+- `readonly/data_source/query_data_source_all.rs`: Queries a data source and fetches all paginated results.
+- `readonly/data_source/query_data_source_with_struct.rs`: Queries a data source into a custom Rust struct.
+- `readonly/data_source/retrieve_data_source.rs`: Gets a specific data source.
+- `readonly/database/retrieve_database.rs`: Gets a specific database.
+- `readonly/file_upload/list_file_upload.rs`: Lists file uploads in the workspace.
+- `readonly/page/get_page_property_item.rs`: Gets a specific property item from a page.
+- `readonly/page/get_page.rs`: Gets a specific page.
+- `readonly/user/get_self.rs`: Gets the bot's own user object.
+- `readonly/user/get_user.rs`: Gets a specific workspace user by ID.
+- `readonly/user/get_users.rs`: Gets all users in the workspace.
+- `readonly/search.rs`: Searches the workspace for pages or databases.
+- `readonly/to_markdown.rs`: Converts Notion objects to Markdown.
 - `integration_test_mutable.rs`: Entry point of mutable integration tests.
 - `integration_test_readonly.rs`: Entry point of read-only integration tests.
 
