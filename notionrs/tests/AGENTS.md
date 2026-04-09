@@ -7,7 +7,7 @@
 ## Directory Structure
 
 - `mutable/`: Integration tests that include mutable operations.
-- `mutable/block/crud_*_block.rs`: Creates, reads, updates, and deletes each block type. Parent pages are prepared and independent.
+- `mutable/block/crud_<BLOCK_TYPE>_block.rs`: Creates, reads, updates, and deletes each block type. Parent pages are prepared and independent.
 - `mutable/comment/create_comment.rs`: Creates a comment on a prepared page.
 - `mutable/data_source/crud_data_source.rs`: Creates a database on a prepared page, adds a data source to the database, and then deletes both the database and the data source.
 - `mutable/database/create_database.rs`: Creates a database on a prepared page.
@@ -17,7 +17,7 @@
 - `mutable/page/crud_page.rs`: Creates, reads, updates, and deletes a page on a prepared page.
 - `mutable/page/move_page.rs`: Creates two pages on a prepared page and moves the created page to another one.
 - `readonly/`: Integration tests that don't update Notion data.
-- `readonly/block/get_*_block.rs`: Gets each block type.
+- `readonly/block/get_<BLOCK_TYPE>_block.rs`: Gets each block type.
 - `readonly/comment/retrieve_comments.rs`: Gets comments from a prepared page.
 - `readonly/custom_emojis/list_custom_emojis.rs`: Gets all emojis in the Notion workspace.
 - `readonly/data_source/list_data_source_templates.rs`: Lists data source templates.
