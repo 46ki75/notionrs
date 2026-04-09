@@ -63,7 +63,7 @@ cargo test --test integration_test_readonly
 ## Mutable
 
 ```bash
-cargo test --test integration_test_mutable --jobs 1
+cargo test --test integration_test_mutable
 ```
 
 - Notion database name: "Mutable: Integration Test"
