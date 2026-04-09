@@ -2,13 +2,14 @@ mod integration_tests {
 
     use notionrs_types::prelude::*;
 
+    /// <https://www.notion.so/33da03d79b268015b6a0c58c3d5c7514>
+    static PAGE_ID: &str = "33da03d79b268015b6a0c58c3d5c7514";
+
     #[tokio::test]
     async fn crud_data_source() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
+        dotenvy::from_path(std::path::Path::new(".env.mutable")).ok();
 
-        let page_id = std::env::var("NOTION_IT_SANDBOX_ID").unwrap_or_else(|_| String::new());
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         // # --------------------------------------------------------------------------------
@@ -17,7 +18,7 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let response = client.create_database().page_id(page_id).send().await?;
+        let response = client.create_database().page_id(PAGE_ID).send().await?;
 
         let database_id = response.id;
 
