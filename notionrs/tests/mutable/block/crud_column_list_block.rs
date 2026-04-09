@@ -2,14 +2,14 @@ mod integration_tests {
 
     use notionrs_types::prelude::*;
 
+    /// <https://www.notion.so/33da03d79b268001b947d07c93ef5a85>
+    static PAGE_ID: &str = "33da03d79b268001b947d07c93ef5a85";
+
     #[tokio::test]
     async fn crud_column_list_block() -> Result<(), notionrs::Error> {
-        dotenvy::dotenv().ok();
-        dotenvy::from_path(std::path::Path::new("../.env")).expect("Failed to load ../.env file");
+        dotenvy::from_path(std::path::Path::new(".env.mutable")).ok();
 
-        let block_id = std::env::var("NOTION_IT_CRUD_PAGE_ID").unwrap();
-
-        let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
+        let notion_api_key = std::env::var("NOTION_API_KEY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
         // # --------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ mod integration_tests {
 
         let request = client
             .append_block_children()
-            .block_id(block_id.clone())
+            .block_id(PAGE_ID)
             .children(vec![block]);
 
         let response = request.send().await?;
