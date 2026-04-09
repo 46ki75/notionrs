@@ -21,6 +21,7 @@ struct IntegrationTestReadOnlyDataSourceSchema {
     ///
     /// - `Page`
     /// - `Block`
+    /// - `Comment`
     #[serde(rename = "API Type")]
     pub api_type: PageSelectProperty,
 
