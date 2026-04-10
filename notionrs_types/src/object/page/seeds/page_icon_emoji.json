@@ -23,6 +23,7 @@
   "archived": false,
   "in_trash": false,
   "is_locked": false,
+    "is_archived": false,
   "properties": {
     "IsDone": {
       "id": "%3F%5C%7Cx",

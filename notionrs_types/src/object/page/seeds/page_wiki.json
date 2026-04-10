@@ -20,6 +20,7 @@
     "archived": false,
     "in_trash": false,
     "is_locked": false,
+    "is_archived": false,
     "properties": {
         "Verification": {
             "id": "%3DP%7CC",

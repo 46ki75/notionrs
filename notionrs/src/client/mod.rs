@@ -12,6 +12,7 @@ pub mod file_upload;
 pub mod page;
 pub mod search;
 pub mod user;
+pub mod view;
 
 #[derive(Default, Debug)]
 pub struct Client {
@@ -397,6 +398,98 @@ impl Client {
         &self,
     ) -> crate::client::file_upload::list_file_uploads::ListFileUploadClient {
         crate::client::file_upload::list_file_uploads::ListFileUploadClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // View
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Create a view.
+    ///
+    /// <https://developers.notion.com/reference/create-a-view>
+    pub fn create_view(&self) -> crate::client::view::create_view::CreateViewClient {
+        crate::client::view::create_view::CreateViewClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    /// Retrieve a view.
+    ///
+    /// <https://developers.notion.com/reference/retrieve-a-view>
+    pub fn retrieve_view(&self) -> crate::client::view::retrieve_view::RetrieveViewClient {
+        crate::client::view::retrieve_view::RetrieveViewClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    /// Update a view.
+    ///
+    /// <https://developers.notion.com/reference/update-a-view>
+    pub fn update_view(&self) -> crate::client::view::update_view::UpdateViewClient {
+        crate::client::view::update_view::UpdateViewClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    /// Delete a view.
+    ///
+    /// <https://developers.notion.com/reference/delete-a-view>
+    pub fn delete_view(&self) -> crate::client::view::delete_view::DeleteViewClient {
+        crate::client::view::delete_view::DeleteViewClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    /// List views for a database.
+    ///
+    /// <https://developers.notion.com/reference/list-views>
+    pub fn list_views(&self) -> crate::client::view::list_views::ListViewsClient {
+        crate::client::view::list_views::ListViewsClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    /// Create a view query.
+    ///
+    /// <https://developers.notion.com/reference/create-a-view-query>
+    pub fn create_view_query(
+        &self,
+    ) -> crate::client::view::create_view_query::CreateViewQueryClient {
+        crate::client::view::create_view_query::CreateViewQueryClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    /// Get view query results.
+    ///
+    /// <https://developers.notion.com/reference/get-view-query-results>
+    pub fn get_view_query_results(
+        &self,
+    ) -> crate::client::view::get_view_query_results::GetViewQueryResultsClient {
+        crate::client::view::get_view_query_results::GetViewQueryResultsClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    /// Delete a view query.
+    ///
+    /// <https://developers.notion.com/reference/delete-a-view-query>
+    pub fn delete_view_query(
+        &self,
+    ) -> crate::client::view::delete_view_query::DeleteViewQueryClient {
+        crate::client::view::delete_view_query::DeleteViewQueryClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
         }

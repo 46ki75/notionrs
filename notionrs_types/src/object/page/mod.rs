@@ -116,6 +116,9 @@ where
     pub request_id: Option<String>,
     pub in_trash: bool,
     pub is_locked: bool,
+    /// Whether the page has been archived.
+    #[serde(default)]
+    pub is_archived: bool,
 }
 
 // # --------------------------------------------------------------------------------
