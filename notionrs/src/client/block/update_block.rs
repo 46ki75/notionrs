@@ -8,7 +8,9 @@ pub struct UpdateBlockClient {
     /// Identifier for a block. Also accepts a page ID.
     pub(crate) block_id: Option<String>,
 
-    /// The ID of the existing block that the new block should be appended after.
+    /// Whether the block is in the trash (i.e. deleted by the user).
+    /// Deprecated: use `in_trash` instead.
+    #[skip]
     pub(crate) archived: Option<bool>,
 
     pub(crate) block: Option<notionrs_types::object::block::Block>,
@@ -24,6 +26,13 @@ pub struct UpdateBlockRequestBody {
 }
 
 impl UpdateBlockClient {
+    /// Set the value of the `archived` field.
+    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2026-03-11 API version.")]
+    pub fn archived(mut self, archived: bool) -> Self {
+        self.archived = Some(archived);
+        self
+    }
+
     // TODO: docs for send
     pub async fn send(
         self,

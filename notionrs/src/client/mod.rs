@@ -26,7 +26,7 @@ impl Client {
 
         headers.insert(
             "Notion-Version",
-            reqwest::header::HeaderValue::from_static("2025-09-03"),
+            reqwest::header::HeaderValue::from_static("2026-03-11"),
         );
         headers.insert(
             "Authorization",

@@ -2,9 +2,11 @@
 
 A Notion API client implemented in Rust.
 
-## Directory Structure
+## Official Documentation Index
 
-### Workspace Members
+Notion provides an official documentation index at [llms.txt](https://developers.notion.com/llms.txt). You must check this documentation index and the documentation every single time you implement something.
+
+## Directory Structure
 
 - `notionrs/`: Main crate. Contains a client that sends API requests to Notion API endpoints.
 - `notionrs_macro/`: Provides derive macros. It is published to crates.io, but its API is intended for internal use only.

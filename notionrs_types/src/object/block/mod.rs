@@ -79,6 +79,8 @@ pub struct BlockResponse {
 
     pub has_children: bool,
 
+    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2026-03-11 API version.")]
+    #[serde(default)]
     pub archived: bool,
 
     pub in_trash: bool,
@@ -187,6 +189,13 @@ pub enum Block {
     Toggle {
         toggle: toggle::ToggleBlock,
     },
+    /// Renamed from `transcription` in API version 2026-03-11.
+    #[serde(rename = "meeting_notes")]
+    MeetingNotes {
+        meeting_notes: transcription::TranscriptionBlock,
+    },
+    /// Deprecated: Use `MeetingNotes` instead (renamed in API version 2026-03-11).
+    #[deprecated(note = "Use `MeetingNotes` instead. Renamed in 2026-03-11 API version.")]
     Transcription {
         transcription: transcription::TranscriptionBlock,
     },
@@ -233,7 +242,9 @@ impl std::fmt::Display for Block {
             Block::Template { template } => write!(f, "{}", template),
             Block::ToDo { to_do } => write!(f, "{}", to_do),
             Block::Toggle { toggle } => write!(f, "{}", toggle),
+            #[allow(deprecated)]
             Block::Transcription { transcription } => write!(f, "{}", transcription),
+            Block::MeetingNotes { meeting_notes } => write!(f, "{}", meeting_notes),
             Block::Video { video } => write!(f, "{}", video),
             Block::Unsupported { unsupported } => write!(f, "{}", unsupported),
         }
@@ -247,6 +258,7 @@ impl std::fmt::Display for Block {
 // # --------------------------------------------------------------------------------
 
 #[cfg(test)]
+#[allow(deprecated)]
 mod unit_tests {
 
     use super::*;

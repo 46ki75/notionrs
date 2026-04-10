@@ -18,6 +18,10 @@ pub struct FileUpload {
 
     pub complete_url: Option<String>,
 
+    pub in_trash: bool,
+
+    #[deprecated(since = "2026-03-11", note = "Use `in_trash` instead.")]
+    #[serde(default)]
     pub archived: bool,
 
     pub status: FileUploadStatus,
@@ -48,6 +52,8 @@ pub struct NumberOfParts {
 
 #[cfg(test)]
 mod unit_tests {
+    #![allow(deprecated)]
+
     use super::*;
 
     #[test]
@@ -63,6 +69,7 @@ mod unit_tests {
             },
             "last_edited_time": "2025-05-22T05:53:00.000Z",
             "expiry_time": "2025-05-22T06:53:00.000Z",
+            "in_trash": false,
             "archived": false,
             "status": "uploaded",
             "filename": "85323087.jpg",
@@ -84,6 +91,7 @@ mod unit_tests {
             expiry_time: _,
             upload_url: _,
             complete_url: _,
+            in_trash: _,
             archived: _,
             status: _,
             filename,

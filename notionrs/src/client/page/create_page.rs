@@ -70,6 +70,12 @@ pub struct CreatePageTemplate {
     /// When `type=template_id`, provide the ID of a page template as the `template_id`.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) template_id: Option<String>,
+
+    /// IANA timezone to use when resolving template variables like @now and @today
+    /// (e.g. `"America/New_York"`). Defaults to the authorizing user's timezone for
+    /// public integrations, or UTC for internal integrations.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) timezone: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -99,6 +105,20 @@ impl CreatePageClient {
         self.template = Some(CreatePageTemplate {
             r#type: "template_id".to_string(),
             template_id: Some(template_id),
+            timezone: None,
+        });
+        self
+    }
+
+    /// When you want to create a page from a specific template with a timezone, use this method.
+    ///
+    /// The `timezone` parameter is an IANA timezone string (e.g. `"America/New_York"`) used
+    /// when resolving template variables like @now and @today.
+    pub fn template_id_with_timezone(mut self, template_id: String, timezone: String) -> Self {
+        self.template = Some(CreatePageTemplate {
+            r#type: "template_id".to_string(),
+            template_id: Some(template_id),
+            timezone: Some(timezone),
         });
         self
     }
@@ -108,6 +128,20 @@ impl CreatePageClient {
         self.template = Some(CreatePageTemplate {
             r#type: "default".to_string(),
             template_id: None,
+            timezone: None,
+        });
+        self
+    }
+
+    /// When you want to create a page from the default template with a timezone, use this method.
+    ///
+    /// The `timezone` parameter is an IANA timezone string (e.g. `"America/New_York"`) used
+    /// when resolving template variables like @now and @today.
+    pub fn template_default_with_timezone(mut self, timezone: String) -> Self {
+        self.template = Some(CreatePageTemplate {
+            r#type: "default".to_string(),
+            template_id: None,
+            timezone: Some(timezone),
         });
         self
     }
