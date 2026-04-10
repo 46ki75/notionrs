@@ -30,7 +30,12 @@ struct GetViewQueryResultsRequestParams {
 impl GetViewQueryResultsClient {
     pub async fn send(
         self,
-    ) -> Result<notionrs_types::object::view::ViewQueryResponse, crate::error::Error> {
+    ) -> Result<
+        notionrs_types::object::response::ListResponse<
+            notionrs_types::object::view::ViewQueryPageReference,
+        >,
+        crate::error::Error,
+    > {
         let view_id = self.view_id.ok_or(crate::error::Error::RequestParameter(
             "`view_id` is not set.".to_string(),
         ))?;
@@ -65,8 +70,11 @@ impl GetViewQueryResultsClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let results =
-            serde_json::from_slice::<notionrs_types::object::view::ViewQueryResponse>(&body)?;
+        let results = serde_json::from_slice::<
+            notionrs_types::object::response::ListResponse<
+                notionrs_types::object::view::ViewQueryPageReference,
+            >,
+        >(&body)?;
 
         Ok(results)
     }
