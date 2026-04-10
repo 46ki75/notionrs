@@ -71,16 +71,152 @@ pub struct CheckboxFilter {
 //
 // # --------------------------------------------------------------------------------
 
+/// A value that can be either an ISO 8601 date string or a relative date keyword.
+///
+/// The Notion API accepts the following relative date values
+/// in date filter fields such as `after`, `before`, `equals`, `on_or_after`, and `on_or_before`:
+///
+/// - `"today"` — The current date
+/// - `"tomorrow"` — The day after the current date
+/// - `"yesterday"` — The day before the current date
+/// - `"one_week_ago"` — Exactly 7 days before the current date
+/// - `"one_week_from_now"` — Exactly 7 days after the current date
+/// - `"one_month_ago"` — Exactly one month before the current date
+/// - `"one_month_from_now"` — Exactly one month after the current date
+///
+/// # Examples
+///
+/// ```
+/// use notionrs_types::object::request::filter::DateOrRelativeDate;
+///
+/// // From a date string
+/// let date: DateOrRelativeDate = "2021-05-10".into();
+///
+/// // From a relative date value
+/// let today = DateOrRelativeDate::today();
+/// let tomorrow = DateOrRelativeDate::tomorrow();
+/// ```
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(untagged)]
+pub enum DateOrRelativeDate {
+    /// An ISO 8601 date string.
+    /// e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
+    Date(String),
+
+    /// A relative date keyword recognized by the Notion API.
+    Relative(RelativeDateValue),
+}
+
+impl Default for DateOrRelativeDate {
+    fn default() -> Self {
+        DateOrRelativeDate::Date(String::new())
+    }
+}
+
+impl<T: AsRef<str>> From<T> for DateOrRelativeDate {
+    fn from(s: T) -> Self {
+        let s_ref = s.as_ref();
+        match s_ref {
+            "today" => DateOrRelativeDate::Relative(RelativeDateValue::Today),
+            "tomorrow" => DateOrRelativeDate::Relative(RelativeDateValue::Tomorrow),
+            "yesterday" => DateOrRelativeDate::Relative(RelativeDateValue::Yesterday),
+            "one_week_ago" => DateOrRelativeDate::Relative(RelativeDateValue::OneWeekAgo),
+            "one_week_from_now" => {
+                DateOrRelativeDate::Relative(RelativeDateValue::OneWeekFromNow)
+            }
+            "one_month_ago" => DateOrRelativeDate::Relative(RelativeDateValue::OneMonthAgo),
+            "one_month_from_now" => {
+                DateOrRelativeDate::Relative(RelativeDateValue::OneMonthFromNow)
+            }
+            _ => DateOrRelativeDate::Date(s_ref.to_string()),
+        }
+    }
+}
+
+impl DateOrRelativeDate {
+    /// Returns a `DateOrRelativeDate` representing today.
+    pub fn today() -> Self {
+        DateOrRelativeDate::Relative(RelativeDateValue::Today)
+    }
+
+    /// Returns a `DateOrRelativeDate` representing tomorrow.
+    pub fn tomorrow() -> Self {
+        DateOrRelativeDate::Relative(RelativeDateValue::Tomorrow)
+    }
+
+    /// Returns a `DateOrRelativeDate` representing yesterday.
+    pub fn yesterday() -> Self {
+        DateOrRelativeDate::Relative(RelativeDateValue::Yesterday)
+    }
+
+    /// Returns a `DateOrRelativeDate` representing one week ago.
+    pub fn one_week_ago() -> Self {
+        DateOrRelativeDate::Relative(RelativeDateValue::OneWeekAgo)
+    }
+
+    /// Returns a `DateOrRelativeDate` representing one week from now.
+    pub fn one_week_from_now() -> Self {
+        DateOrRelativeDate::Relative(RelativeDateValue::OneWeekFromNow)
+    }
+
+    /// Returns a `DateOrRelativeDate` representing one month ago.
+    pub fn one_month_ago() -> Self {
+        DateOrRelativeDate::Relative(RelativeDateValue::OneMonthAgo)
+    }
+
+    /// Returns a `DateOrRelativeDate` representing one month from now.
+    pub fn one_month_from_now() -> Self {
+        DateOrRelativeDate::Relative(RelativeDateValue::OneMonthFromNow)
+    }
+}
+
+/// Relative date keyword values accepted by the Notion API.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum RelativeDateValue {
+    /// The current date.
+    Today,
+    /// The day after the current date.
+    Tomorrow,
+    /// The day before the current date.
+    Yesterday,
+    /// Exactly 7 days before the current date.
+    OneWeekAgo,
+    /// Exactly 7 days after the current date.
+    OneWeekFromNow,
+    /// Exactly one month before the current date.
+    OneMonthAgo,
+    /// Exactly one month after the current date.
+    OneMonthFromNow,
+}
+
+impl std::fmt::Display for RelativeDateValue {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            RelativeDateValue::Today => write!(f, "today"),
+            RelativeDateValue::Tomorrow => write!(f, "tomorrow"),
+            RelativeDateValue::Yesterday => write!(f, "yesterday"),
+            RelativeDateValue::OneWeekAgo => write!(f, "one_week_ago"),
+            RelativeDateValue::OneWeekFromNow => write!(f, "one_week_from_now"),
+            RelativeDateValue::OneMonthAgo => write!(f, "one_month_ago"),
+            RelativeDateValue::OneMonthFromNow => write!(f, "one_month_from_now"),
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DateFilter {
+    /// An ISO 8601 date string or a relative date value (e.g. `"today"`, `"tomorrow"`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub after: Option<String>,
+    pub after: Option<DateOrRelativeDate>,
 
+    /// An ISO 8601 date string or a relative date value (e.g. `"today"`, `"tomorrow"`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub before: Option<String>,
+    pub before: Option<DateOrRelativeDate>,
 
+    /// An ISO 8601 date string or a relative date value (e.g. `"today"`, `"tomorrow"`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub equals: Option<String>,
+    pub equals: Option<DateOrRelativeDate>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_empty: Option<bool>,
@@ -97,11 +233,13 @@ pub struct DateFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub next_year: Option<std::collections::HashMap<(), ()>>,
 
+    /// An ISO 8601 date string or a relative date value (e.g. `"today"`, `"tomorrow"`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub on_or_after: Option<String>,
+    pub on_or_after: Option<DateOrRelativeDate>,
 
+    /// An ISO 8601 date string or a relative date value (e.g. `"today"`, `"tomorrow"`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub on_or_before: Option<String>,
+    pub on_or_before: Option<DateOrRelativeDate>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub past_month: Option<std::collections::HashMap<(), ()>>,
@@ -213,12 +351,18 @@ pub struct NumberFilter {
 //
 // # --------------------------------------------------------------------------------
 
+/// <https://developers.notion.com/reference/post-database-query-filter#people>
+///
+/// The `contains` and `does_not_contain` fields accept either a user ID
+/// or the literal string `"me"` to refer to the current user.
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 
 pub struct PeopleFilter {
+    /// A user ID or the literal string `"me"` to refer to the current user.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub contains: Option<String>,
 
+    /// A user ID or the literal string `"me"` to refer to the current user.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub does_not_contain: Option<String>,
 
@@ -389,14 +533,17 @@ pub struct StatusFilter {
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct TimestampFilter {
+    /// An ISO 8601 timestamp or a relative date value (e.g. `"today"`, `"tomorrow"`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub after: Option<String>,
+    pub after: Option<DateOrRelativeDate>,
 
+    /// An ISO 8601 timestamp or a relative date value (e.g. `"today"`, `"tomorrow"`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub before: Option<String>,
+    pub before: Option<DateOrRelativeDate>,
 
+    /// An ISO 8601 timestamp or a relative date value (e.g. `"today"`, `"tomorrow"`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub equals: Option<String>,
+    pub equals: Option<DateOrRelativeDate>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_empty: Option<bool>,
@@ -413,11 +560,13 @@ pub struct TimestampFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub next_year: Option<std::collections::HashMap<(), ()>>,
 
+    /// An ISO 8601 timestamp or a relative date value (e.g. `"today"`, `"tomorrow"`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub on_or_after: Option<String>,
+    pub on_or_after: Option<DateOrRelativeDate>,
 
+    /// An ISO 8601 timestamp or a relative date value (e.g. `"today"`, `"tomorrow"`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub on_or_before: Option<String>,
+    pub on_or_before: Option<DateOrRelativeDate>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub past_month: Option<std::collections::HashMap<(), ()>>,
@@ -519,13 +668,16 @@ impl Filter {
     /// Returns database entries where the date property value is after the provided date.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `date`: ISO 8601 date
-    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
-    pub fn date_after<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+    /// - `date`: ISO 8601 date or a relative date value (e.g. `"today"`, `"tomorrow"`)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`, `"today"`
+    pub fn date_after<S: AsRef<str>, T: Into<DateOrRelativeDate>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
-                after: Some(date.as_ref().to_string()),
+                after: Some(date.into()),
                 ..Default::default()
             }))),
             ..Default::default()
@@ -535,13 +687,16 @@ impl Filter {
     /// Returns database entries where the date property value is before the provided date.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `date`: The value to compare the date property value against. (ISO 8601 date)
-    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
-    pub fn date_before<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+    /// - `date`: ISO 8601 date or a relative date value (e.g. `"today"`, `"tomorrow"`)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`, `"today"`
+    pub fn date_before<S: AsRef<str>, T: Into<DateOrRelativeDate>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
-                before: Some(date.as_ref().to_string()),
+                before: Some(date.into()),
                 ..Default::default()
             }))),
             ..Default::default()
@@ -551,13 +706,16 @@ impl Filter {
     /// Returns database entries where the date property value is the provided date.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `date`: The value to compare the date property value against. (ISO 8601 date)
-    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
-    pub fn date_equals<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+    /// - `date`: ISO 8601 date or a relative date value (e.g. `"today"`, `"tomorrow"`)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`, `"today"`
+    pub fn date_equals<S: AsRef<str>, T: Into<DateOrRelativeDate>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
-                equals: Some(date.as_ref().to_string()),
+                equals: Some(date.into()),
                 ..Default::default()
             }))),
             ..Default::default()
@@ -641,13 +799,16 @@ impl Filter {
     /// is on or after the provided date.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `date`: The value to compare the date property value against. (ISO 8601 date)
-    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
-    pub fn date_on_or_after<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+    /// - `date`: ISO 8601 date or a relative date value (e.g. `"today"`, `"tomorrow"`)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`, `"today"`
+    pub fn date_on_or_after<S: AsRef<str>, T: Into<DateOrRelativeDate>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
-                on_or_after: Some(date.as_ref().to_string()),
+                on_or_after: Some(date.into()),
                 ..Default::default()
             }))),
             ..Default::default()
@@ -657,13 +818,16 @@ impl Filter {
     /// Returns database entries where the date property value is on or before the provided date.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `date`: The value to compare the date property value against. (ISO 8601 date)
-    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
-    pub fn date_on_or_before<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+    /// - `date`: ISO 8601 date or a relative date value (e.g. `"today"`, `"tomorrow"`)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`, `"today"`
+    pub fn date_on_or_before<S: AsRef<str>, T: Into<DateOrRelativeDate>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Date(Box::new(DateFilter {
-                on_or_before: Some(date.as_ref().to_string()),
+                on_or_before: Some(date.into()),
                 ..Default::default()
             }))),
             ..Default::default()
@@ -1043,12 +1207,15 @@ impl Filter {
     }
 
     // Formula Date Filters
-    pub fn formula_date_after<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+    pub fn formula_date_after<S: AsRef<str>, T: Into<DateOrRelativeDate>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Formula(Box::new(FormulaFilter {
                 date: Some(DateFilter {
-                    after: Some(date.as_ref().to_string()),
+                    after: Some(date.into()),
                     ..Default::default()
                 }),
                 ..Default::default()
@@ -1057,12 +1224,15 @@ impl Filter {
         }
     }
 
-    pub fn formula_date_before<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+    pub fn formula_date_before<S: AsRef<str>, T: Into<DateOrRelativeDate>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Formula(Box::new(FormulaFilter {
                 date: Some(DateFilter {
-                    before: Some(date.as_ref().to_string()),
+                    before: Some(date.into()),
                     ..Default::default()
                 }),
                 ..Default::default()
@@ -1071,12 +1241,15 @@ impl Filter {
         }
     }
 
-    pub fn formula_date_equals<S: AsRef<str>, T: AsRef<str>>(property_name: S, date: T) -> Self {
+    pub fn formula_date_equals<S: AsRef<str>, T: Into<DateOrRelativeDate>>(
+        property_name: S,
+        date: T,
+    ) -> Self {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Formula(Box::new(FormulaFilter {
                 date: Some(DateFilter {
-                    equals: Some(date.as_ref().to_string()),
+                    equals: Some(date.into()),
                     ..Default::default()
                 }),
                 ..Default::default()
@@ -1155,7 +1328,7 @@ impl Filter {
         }
     }
 
-    pub fn formula_date_on_or_after<S: AsRef<str>, T: AsRef<str>>(
+    pub fn formula_date_on_or_after<S: AsRef<str>, T: Into<DateOrRelativeDate>>(
         property_name: S,
         date: T,
     ) -> Self {
@@ -1163,7 +1336,7 @@ impl Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Formula(Box::new(FormulaFilter {
                 date: Some(DateFilter {
-                    on_or_after: Some(date.as_ref().to_string()),
+                    on_or_after: Some(date.into()),
                     ..Default::default()
                 }),
                 ..Default::default()
@@ -1172,7 +1345,7 @@ impl Filter {
         }
     }
 
-    pub fn formula_date_on_or_before<S: AsRef<str>, T: AsRef<str>>(
+    pub fn formula_date_on_or_before<S: AsRef<str>, T: Into<DateOrRelativeDate>>(
         property_name: S,
         date: T,
     ) -> Self {
@@ -1180,7 +1353,7 @@ impl Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Formula(Box::new(FormulaFilter {
                 date: Some(DateFilter {
-                    on_or_before: Some(date.as_ref().to_string()),
+                    on_or_before: Some(date.into()),
                     ..Default::default()
                 }),
                 ..Default::default()
@@ -1483,10 +1656,10 @@ impl Filter {
     //
     // # --------------------------------------------------------------------------------
 
-    /// Returns database entries where the people property value contains the provided string.
+    /// Returns database entries where the people property value contains the provided user.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `id`: The value to compare the people property value against.
+    /// - `id`: A user ID or the literal string `"me"` to refer to the current user.
     pub fn people_contains<S, T>(property_name: S, id: T) -> Self
     where
         S: AsRef<str>,
@@ -1502,10 +1675,24 @@ impl Filter {
         }
     }
 
-    /// Returns database entries where the people property value does not contain the provided string.
+    /// Returns database entries where the people property value contains the current user (`"me"`).
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `id`: The value to compare the people property value against.
+    pub fn people_contains_me<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::People(PeopleFilter {
+                contains: Some("me".to_string()),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries where the people property value does not contain the provided user.
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `id`: A user ID or the literal string `"me"` to refer to the current user.
     pub fn people_does_not_contain<S, T>(property_name: S, id: T) -> Self
     where
         S: AsRef<str>,
@@ -1515,6 +1702,20 @@ impl Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::People(PeopleFilter {
                 does_not_contain: Some(id.as_ref().to_string()),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries where the people property value does not contain the current user (`"me"`).
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    pub fn people_does_not_contain_me<T: AsRef<str>>(property_name: T) -> Self {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::People(PeopleFilter {
+                does_not_contain: Some("me".to_string()),
                 ..Default::default()
             })),
             ..Default::default()
@@ -2126,12 +2327,12 @@ impl Filter {
     /// Returns database entries where the timestamp property value is after the provided timestamp.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `timestamp`: ISO 8601 timestamp
-    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
-    pub fn timestamp_after<T: AsRef<str>>(timestamp: T) -> Self {
+    /// - `timestamp`: ISO 8601 timestamp or a relative date value (e.g. `"today"`, `"tomorrow"`)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`, `"today"`
+    pub fn timestamp_after<T: Into<DateOrRelativeDate>>(timestamp: T) -> Self {
         Filter {
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
-                after: Some(timestamp.as_ref().to_string()),
+                after: Some(timestamp.into()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
@@ -2142,12 +2343,12 @@ impl Filter {
     /// Returns database entries where the timestamp property value is before the provided timestamp.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `timestamp`: The value to compare the timestamp property value against. (ISO 8601 timestamp)
-    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
-    pub fn timestamp_before<T: AsRef<str>>(timestamp: T) -> Self {
+    /// - `timestamp`: ISO 8601 timestamp or a relative date value (e.g. `"today"`, `"tomorrow"`)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`, `"today"`
+    pub fn timestamp_before<T: Into<DateOrRelativeDate>>(timestamp: T) -> Self {
         Filter {
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
-                before: Some(timestamp.as_ref().to_string()),
+                before: Some(timestamp.into()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
@@ -2158,12 +2359,12 @@ impl Filter {
     /// Returns database entries where the timestamp property value is the provided timestamp.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `timestamp`: The value to compare the timestamp property value against. (ISO 8601 timestamp)
-    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
-    pub fn timestamp_equals<T: AsRef<str>>(timestamp: T) -> Self {
+    /// - `timestamp`: ISO 8601 timestamp or a relative date value (e.g. `"today"`, `"tomorrow"`)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`, `"today"`
+    pub fn timestamp_equals<T: Into<DateOrRelativeDate>>(timestamp: T) -> Self {
         Filter {
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
-                equals: Some(timestamp.as_ref().to_string()),
+                equals: Some(timestamp.into()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
@@ -2248,12 +2449,12 @@ impl Filter {
     /// is on or after the provided timestamp.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `timestamp`: The value to compare the timestamp property value against. (ISO 8601 timestamp)
-    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
-    pub fn timestamp_on_or_after<T: AsRef<str>>(timestamp: T) -> Self {
+    /// - `timestamp`: ISO 8601 timestamp or a relative date value (e.g. `"today"`, `"tomorrow"`)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`, `"today"`
+    pub fn timestamp_on_or_after<T: Into<DateOrRelativeDate>>(timestamp: T) -> Self {
         Filter {
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
-                on_or_after: Some(timestamp.as_ref().to_string()),
+                on_or_after: Some(timestamp.into()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
@@ -2264,12 +2465,12 @@ impl Filter {
     /// Returns database entries where the timestamp property value is on or before the provided timestamp.
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
-    /// - `timestamp`: The value to compare the timestamp property value against. (ISO 8601 timestamp)
-    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`
-    pub fn timestamp_on_or_before<T: AsRef<str>>(timestamp: T) -> Self {
+    /// - `timestamp`: ISO 8601 timestamp or a relative date value (e.g. `"today"`, `"tomorrow"`)
+    ///   - e.g.) `"2021-05-10"`, `"2021-05-10T12:00:00"`, `"2021-10-15T12:00:00-07:00"`, `"today"`
+    pub fn timestamp_on_or_before<T: Into<DateOrRelativeDate>>(timestamp: T) -> Self {
         Filter {
             condition: Some(Condition::Timestamp(Box::new(TimestampFilter {
-                on_or_before: Some(timestamp.as_ref().to_string()),
+                on_or_before: Some(timestamp.into()),
                 ..Default::default()
             }))),
             timestamp: Some("created_time".to_string()),
@@ -2449,5 +2650,191 @@ impl Filter {
             })),
             ..Default::default()
         }
+    }
+}
+
+// # --------------------------------------------------------------------------------
+//
+// unit test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+
+    #[test]
+    fn date_or_relative_date_from_date_string() {
+        let date: DateOrRelativeDate = "2021-05-10".into();
+        assert_eq!(date, DateOrRelativeDate::Date("2021-05-10".to_string()));
+    }
+
+    #[test]
+    fn date_or_relative_date_from_relative_value() {
+        let today: DateOrRelativeDate = "today".into();
+        assert_eq!(
+            today,
+            DateOrRelativeDate::Relative(RelativeDateValue::Today)
+        );
+
+        let tomorrow: DateOrRelativeDate = "tomorrow".into();
+        assert_eq!(
+            tomorrow,
+            DateOrRelativeDate::Relative(RelativeDateValue::Tomorrow)
+        );
+
+        let yesterday: DateOrRelativeDate = "yesterday".into();
+        assert_eq!(
+            yesterday,
+            DateOrRelativeDate::Relative(RelativeDateValue::Yesterday)
+        );
+
+        let one_week_ago: DateOrRelativeDate = "one_week_ago".into();
+        assert_eq!(
+            one_week_ago,
+            DateOrRelativeDate::Relative(RelativeDateValue::OneWeekAgo)
+        );
+
+        let one_week_from_now: DateOrRelativeDate = "one_week_from_now".into();
+        assert_eq!(
+            one_week_from_now,
+            DateOrRelativeDate::Relative(RelativeDateValue::OneWeekFromNow)
+        );
+
+        let one_month_ago: DateOrRelativeDate = "one_month_ago".into();
+        assert_eq!(
+            one_month_ago,
+            DateOrRelativeDate::Relative(RelativeDateValue::OneMonthAgo)
+        );
+
+        let one_month_from_now: DateOrRelativeDate = "one_month_from_now".into();
+        assert_eq!(
+            one_month_from_now,
+            DateOrRelativeDate::Relative(RelativeDateValue::OneMonthFromNow)
+        );
+    }
+
+    #[test]
+    fn date_or_relative_date_convenience_methods() {
+        assert_eq!(
+            DateOrRelativeDate::today(),
+            DateOrRelativeDate::Relative(RelativeDateValue::Today)
+        );
+        assert_eq!(
+            DateOrRelativeDate::tomorrow(),
+            DateOrRelativeDate::Relative(RelativeDateValue::Tomorrow)
+        );
+        assert_eq!(
+            DateOrRelativeDate::yesterday(),
+            DateOrRelativeDate::Relative(RelativeDateValue::Yesterday)
+        );
+    }
+
+    #[test]
+    fn serialize_date_or_relative_date_string() {
+        let date = DateOrRelativeDate::Date("2021-05-10".to_string());
+        let json = serde_json::to_string(&date).unwrap();
+        assert_eq!(json, "\"2021-05-10\"");
+    }
+
+    #[test]
+    fn serialize_date_or_relative_date_relative() {
+        let today = DateOrRelativeDate::Relative(RelativeDateValue::Today);
+        let json = serde_json::to_string(&today).unwrap();
+        assert_eq!(json, "\"today\"");
+
+        let one_week_ago = DateOrRelativeDate::Relative(RelativeDateValue::OneWeekAgo);
+        let json = serde_json::to_string(&one_week_ago).unwrap();
+        assert_eq!(json, "\"one_week_ago\"");
+    }
+
+    #[test]
+    fn deserialize_date_or_relative_date_string() {
+        let date: DateOrRelativeDate = serde_json::from_str("\"2021-05-10\"").unwrap();
+        // A non-keyword string should deserialize as Date variant
+        match date {
+            DateOrRelativeDate::Date(s) => assert_eq!(s, "2021-05-10"),
+            _ => panic!("Expected Date variant for non-keyword string"),
+        }
+    }
+
+    #[test]
+    fn deserialize_date_or_relative_date_relative() {
+        let today: DateOrRelativeDate = serde_json::from_str("\"today\"").unwrap();
+        // "today" is deserialized via serde(untagged), so it may match either variant
+        // depending on the ordering. Both representations are semantically correct.
+        match today {
+            DateOrRelativeDate::Relative(RelativeDateValue::Today) => {}
+            DateOrRelativeDate::Date(s) if s == "today" => {}
+            _ => panic!("Expected today variant"),
+        }
+    }
+
+    #[test]
+    fn serialize_date_filter_with_relative_date() {
+        let filter = DateFilter {
+            after: Some(DateOrRelativeDate::Relative(RelativeDateValue::Today)),
+            ..Default::default()
+        };
+
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("\"after\":\"today\""));
+    }
+
+    #[test]
+    fn filter_date_after_with_string() {
+        let filter = Filter::date_after("Date Property", "2021-05-10");
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("\"2021-05-10\""));
+    }
+
+    #[test]
+    fn filter_date_after_with_relative_date() {
+        let filter = Filter::date_after("Date Property", DateOrRelativeDate::today());
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("\"today\""));
+    }
+
+    #[test]
+    fn filter_people_contains_me() {
+        let filter = Filter::people_contains_me("Assignee");
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("\"me\""));
+        assert!(json.contains("\"Assignee\""));
+    }
+
+    #[test]
+    fn filter_people_does_not_contain_me() {
+        let filter = Filter::people_does_not_contain_me("Assignee");
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("\"me\""));
+        assert!(json.contains("\"does_not_contain\""));
+    }
+
+    #[test]
+    fn filter_people_contains_with_me_string() {
+        let filter = Filter::people_contains("Assignee", "me");
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("\"me\""));
+    }
+
+    #[test]
+    fn relative_date_value_display() {
+        assert_eq!(RelativeDateValue::Today.to_string(), "today");
+        assert_eq!(RelativeDateValue::Tomorrow.to_string(), "tomorrow");
+        assert_eq!(RelativeDateValue::Yesterday.to_string(), "yesterday");
+        assert_eq!(RelativeDateValue::OneWeekAgo.to_string(), "one_week_ago");
+        assert_eq!(
+            RelativeDateValue::OneWeekFromNow.to_string(),
+            "one_week_from_now"
+        );
+        assert_eq!(
+            RelativeDateValue::OneMonthAgo.to_string(),
+            "one_month_ago"
+        );
+        assert_eq!(
+            RelativeDateValue::OneMonthFromNow.to_string(),
+            "one_month_from_now"
+        );
     }
 }

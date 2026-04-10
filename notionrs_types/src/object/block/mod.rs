@@ -147,6 +147,10 @@ pub enum Block {
     Heading3 {
         heading_3: heading::HeadingBlock,
     },
+    #[serde(rename = "heading_4")]
+    Heading4 {
+        heading_4: heading::HeadingBlock,
+    },
     Image {
         image: crate::object::file::File,
     },
@@ -228,6 +232,7 @@ impl std::fmt::Display for Block {
             Block::Heading1 { heading_1 } => write!(f, "{}", heading_1),
             Block::Heading2 { heading_2 } => write!(f, "{}", heading_2),
             Block::Heading3 { heading_3 } => write!(f, "{}", heading_3),
+            Block::Heading4 { heading_4 } => write!(f, "{}", heading_4),
             Block::Image { image } => write!(f, "{}", image),
             Block::LinkPreview { link_preview } => write!(f, "{}", link_preview),
             Block::NumberedListItem { numbered_list_item } => write!(f, "{}", numbered_list_item),
@@ -482,5 +487,85 @@ mod unit_tests {
         } else {
             panic!("invalid block type")
         }
+    }
+
+    #[test]
+    fn deserialize_block_heading4() {
+        let json_data = r#"
+        {
+            "object": "block",
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "parent": {
+                "type": "page_id",
+                "page_id": "8a67eed6-3a1b-4e8c-90cc-ea87539ef9bc"
+            },
+            "created_time": "2024-08-17T02:50:00.000Z",
+            "last_edited_time": "2024-08-17T02:50:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "21d48f75-3f61-4c36-8b24-7447ca72fb3a"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "21d48f75-3f61-4c36-8b24-7447ca72fb3a"
+            },
+            "has_children": false,
+            "archived": false,
+            "in_trash": false,
+            "type": "heading_4",
+            "heading_4": {
+                "rich_text": [
+                    {
+                        "type": "text",
+                        "text": {
+                            "content": "Heading 4",
+                            "link": null
+                        },
+                        "annotations": {
+                            "bold": false,
+                            "italic": false,
+                            "strikethrough": false,
+                            "underline": false,
+                            "code": false,
+                            "color": "default"
+                        },
+                        "plain_text": "Heading 4",
+                        "href": null
+                    }
+                ],
+                "is_toggleable": false,
+                "color": "default"
+            }
+        }
+        "#;
+
+        let block = serde_json::from_str::<BlockResponse>(json_data).unwrap();
+
+        match block.block {
+            Block::Heading4 { heading_4 } => {
+                assert!(!heading_4.is_toggleable);
+                assert_eq!(heading_4.color, crate::object::color::Color::Default);
+
+                let rich_text = heading_4.rich_text.first().unwrap();
+                match rich_text {
+                    crate::object::rich_text::RichText::Text { plain_text, .. } => {
+                        assert_eq!(plain_text, "Heading 4");
+                    }
+                    _ => panic!("Expected Text rich text"),
+                }
+            }
+            _ => panic!("Expected Heading4 block"),
+        }
+    }
+
+    #[test]
+    fn serialize_block_heading4() {
+        let block = Block::Heading4 {
+            heading_4: heading::HeadingBlock::from("Test H4"),
+        };
+
+        let json = serde_json::to_string(&block).unwrap();
+        assert!(json.contains("\"heading_4\""));
+        assert!(json.contains("Test H4"));
     }
 }

@@ -21,6 +21,7 @@ mod integration_tests {
                 Block::Heading1 { heading_1 } => Some(heading_1),
                 Block::Heading2 { heading_2 } => Some(heading_2),
                 Block::Heading3 { heading_3 } => Some(heading_3),
+                Block::Heading4 { heading_4 } => Some(heading_4),
                 _ => None,
             })
             .collect::<Vec<_>>();
