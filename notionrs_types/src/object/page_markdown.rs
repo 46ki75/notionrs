@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 /// Response from the `GET /v1/pages/:id/markdown` and `PATCH /v1/pages/:id/markdown` endpoints.
 ///
-/// <https://developers.notion.com/reference/get-page-markdown>
+/// <https://developers.notion.com/reference/retrieve-page-markdown>
 /// <https://developers.notion.com/reference/update-page-markdown>
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PageMarkdownResponse {

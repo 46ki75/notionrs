@@ -136,7 +136,7 @@ impl Client {
 
     /// Retrieve a page's content as markdown.
     ///
-    /// <https://developers.notion.com/reference/get-page-markdown>
+    /// <https://developers.notion.com/reference/retrieve-page-markdown>
     pub fn get_page_markdown(
         &self,
     ) -> crate::client::page::get_page_markdown::GetPageMarkdownClient {
