@@ -206,6 +206,13 @@ impl CreatePageClient {
             )
         })?;
 
+        if self.children.is_some() && self.markdown.is_some() {
+            return Err(crate::error::Error::RequestParameter(
+                "`children` and `markdown` are mutually exclusive. Please set only one of them."
+                    .to_string(),
+            ));
+        }
+
         let request_body_struct = CreatePageRequestBody {
             parent,
             properties: self.properties,
@@ -310,5 +317,23 @@ mod tests {
             client.markdown,
             Some("# Hello World".to_string())
         );
+    }
+
+    #[tokio::test]
+    async fn create_page_client_rejects_children_and_markdown() {
+        let client = CreatePageClient::default()
+            .page_id("page-id-123")
+            .children(vec![])
+            .markdown("# Hello World");
+
+        let result = client.send().await;
+        assert!(result.is_err());
+        let err = result.unwrap_err();
+        match err {
+            crate::error::Error::RequestParameter(msg) => {
+                assert!(msg.contains("mutually exclusive"));
+            }
+            _ => panic!("Expected RequestParameter error, got: {:?}", err),
+        }
     }
 }
