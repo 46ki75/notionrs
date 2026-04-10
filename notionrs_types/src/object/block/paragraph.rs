@@ -13,6 +13,9 @@ pub struct ParagraphBlock {
     pub color: crate::object::color::Color,
 
     /// An emoji, file, or icon object that represents the paragraph's icon.
+    ///
+    /// Note: Paragraph block icons are only supported for paragraphs that are direct children of tab blocks (i.e., tab items).
+    /// Icons on paragraphs that are not tab items are rejected with a validation error.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub icon: Option<crate::object::emoji_and_icon::EmojiAndIcon>,
 
