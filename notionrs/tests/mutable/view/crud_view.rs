@@ -1,9 +1,8 @@
 mod integration_tests {
 
-    /// <https://www.notion.so/33ea03d79b2680e5b1f0f0c7eb889869>
+    /// <https://www.notion.so/33ea03d79b2680e5b1f0f0c7eb889869?v=33ea03d79b2680f7ac11000cd1db055b&source=copy_link>
     static DATABASE_ID: &str = "33ea03d79b2680e5b1f0f0c7eb889869";
-    /// <https://www.notion.so/33ea03d79b2680e5b1f0f0c7eb889869?v=33ea03d79b2680f7ac11000cd1db055b>
-    static VIEW_ID: &str = "33ea03d79b2680f7ac11000cd1db055b";
+    static DATA_SOURCE_ID: &str = "33ea03d7-9b26-8096-b614-000ba583016b";
 
     #[tokio::test]
     async fn crud_view() -> Result<(), notionrs::Error> {
@@ -15,25 +14,13 @@ mod integration_tests {
 
         // # --------------------------------------------------------------------------------
         //
-        // retrieve_view (obtain data_source_id from the existing view)
-        //
-        // # --------------------------------------------------------------------------------
-
-        let existing_view = client.retrieve_view().view_id(VIEW_ID).send().await?;
-
-        let data_source_id = existing_view
-            .data_source_id
-            .expect("existing view must have a data_source_id");
-
-        // # --------------------------------------------------------------------------------
-        //
         // create_view
         //
         // # --------------------------------------------------------------------------------
 
         let created_view = client
             .create_view()
-            .data_source_id(&data_source_id)
+            .data_source_id(DATA_SOURCE_ID)
             .database_id(DATABASE_ID)
             .name("Test View")
             .view_type(notionrs_types::object::view::ViewType::Table)
