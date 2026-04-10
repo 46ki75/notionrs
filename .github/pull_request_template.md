@@ -15,8 +15,9 @@
 - [ ] The target branch for this PR is `main`.
 - [ ] Unit tests have been added.
 - [ ] All unit tests pass.
-- [ ] If you add new structs to `notionrs_types`, ensure you re-export the structs at `prelude` module.
+- [ ] If you added new structs to `notionrs_types`, ensure you re-export the structs in the `prelude` module.
 - [ ] Documentation has been updated if necessary.
+- [ ] Release tags have been added if you need.
 
 ## Additional Notes
 
