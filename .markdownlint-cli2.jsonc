@@ -1,0 +1,6 @@
+{
+    "ignores": [
+        ".github/pull_request_template.md",
+        "LICENSE-*"
+    ]
+}
