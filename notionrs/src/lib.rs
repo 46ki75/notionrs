@@ -11,8 +11,8 @@ pub use crate::client::Client;
 pub use crate::error::Error;
 pub use crate::r#trait::PaginateExt;
 
-pub mod prelude {
-    pub mod types {
+pub mod types {
+    pub mod prelude {
         pub use notionrs_types::prelude::*;
     }
 }
