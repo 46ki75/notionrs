@@ -48,6 +48,7 @@ async fn main() -> Result<(), Error> {
             Block::Heading1 { heading_1: _ } => todo!(),
             Block::Heading2 { heading_2: _ } => todo!(),
             Block::Heading3 { heading_3: _ } => todo!(),
+            Block::Heading4 { heading_4: _ } => todo!(),
             Block::Image { image: _ } => todo!(),
             Block::LinkPreview { link_preview: _ } => todo!(),
             Block::NumberedListItem {

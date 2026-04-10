@@ -12,6 +12,10 @@ pub struct ParagraphBlock {
     /// The color of the block.
     pub color: crate::object::color::Color,
 
+    /// An emoji, file, or icon object that represents the paragraph's icon.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub icon: Option<crate::object::emoji_and_icon::EmojiAndIcon>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub children: Option<Vec<super::Block>>,
 }

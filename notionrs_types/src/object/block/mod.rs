@@ -147,6 +147,10 @@ pub enum Block {
     Heading3 {
         heading_3: heading::HeadingBlock,
     },
+    #[serde(rename = "heading_4")]
+    Heading4 {
+        heading_4: heading::HeadingBlock,
+    },
     Image {
         image: crate::object::file::File,
     },
@@ -228,6 +232,7 @@ impl std::fmt::Display for Block {
             Block::Heading1 { heading_1 } => write!(f, "{}", heading_1),
             Block::Heading2 { heading_2 } => write!(f, "{}", heading_2),
             Block::Heading3 { heading_3 } => write!(f, "{}", heading_3),
+            Block::Heading4 { heading_4 } => write!(f, "{}", heading_4),
             Block::Image { image } => write!(f, "{}", image),
             Block::LinkPreview { link_preview } => write!(f, "{}", link_preview),
             Block::NumberedListItem { numbered_list_item } => write!(f, "{}", numbered_list_item),

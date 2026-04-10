@@ -651,6 +651,17 @@ impl Client {
                     markdown_list.push(format!("{}### {}", prefix, text));
                     markdown_list.push(String::new()); // New Line
                 }
+                notionrs_types::prelude::Block::Heading4 { heading_4 } => {
+                    let text = heading_4
+                        .rich_text
+                        .into_iter()
+                        .map(|t| t.to_markdown())
+                        .collect::<String>();
+
+                    let prefix = "  ".repeat(indent);
+                    markdown_list.push(format!("{}#### {}", prefix, text));
+                    markdown_list.push(String::new()); // New Line
+                }
                 notionrs_types::prelude::Block::Image { image } => {
                     let prefix = "  ".repeat(indent);
                     let url = image.get_url();
