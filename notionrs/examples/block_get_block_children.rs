@@ -13,6 +13,7 @@ async fn main() -> Result<(), Error> {
 
     let response = request.send().await?;
 
+    #[allow(deprecated)]
     for BlockResponse {
         object: _,
         id: _,
