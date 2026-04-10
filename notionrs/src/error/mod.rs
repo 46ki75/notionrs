@@ -38,6 +38,61 @@ pub enum Error {
     SerdeUrlEncodedSerialize(#[from] serde_urlencoded::ser::Error),
 }
 
+/// Error code returned by the Notion API.
+///
+/// See <https://developers.notion.com/reference/errors> for details.
+#[derive(Debug, serde::Deserialize, serde::Serialize, Clone, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum ApiErrorCode {
+    /// The request body could not be decoded.
+    InvalidJson,
+    /// The request URL is not valid.
+    InvalidRequestUrl,
+    /// This request is not supported.
+    InvalidRequest,
+    /// The bearer token is not valid.
+    Unauthorized,
+    /// Given the bearer token used, the client doesn't have permission to perform this operation.
+    RestrictedResource,
+    /// The body of the request is not valid.
+    ValidationError,
+    /// The resource does not exist.
+    ObjectNotFound,
+    /// The transaction could not be completed, potentially due to a data collision.
+    ConflictError,
+    /// The request exceeds the rate limit.
+    RateLimited,
+    /// An unexpected error occurred on the Notion side.
+    InternalServerError,
+    /// Notion is unavailable.
+    ServiceUnavailable,
+    /// The request timed out at the gateway.
+    GatewayTimeout,
+    /// An unknown error code.
+    #[serde(untagged)]
+    Unknown(String),
+}
+
+impl std::fmt::Display for ApiErrorCode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ApiErrorCode::InvalidJson => write!(f, "invalid_json"),
+            ApiErrorCode::InvalidRequestUrl => write!(f, "invalid_request_url"),
+            ApiErrorCode::InvalidRequest => write!(f, "invalid_request"),
+            ApiErrorCode::Unauthorized => write!(f, "unauthorized"),
+            ApiErrorCode::RestrictedResource => write!(f, "restricted_resource"),
+            ApiErrorCode::ValidationError => write!(f, "validation_error"),
+            ApiErrorCode::ObjectNotFound => write!(f, "object_not_found"),
+            ApiErrorCode::ConflictError => write!(f, "conflict_error"),
+            ApiErrorCode::RateLimited => write!(f, "rate_limited"),
+            ApiErrorCode::InternalServerError => write!(f, "internal_server_error"),
+            ApiErrorCode::ServiceUnavailable => write!(f, "service_unavailable"),
+            ApiErrorCode::GatewayTimeout => write!(f, "gateway_timeout"),
+            ApiErrorCode::Unknown(code) => write!(f, "{}", code),
+        }
+    }
+}
+
 /// Error response from the Notion API
 #[derive(Debug, serde::Deserialize, serde::Serialize, Clone)]
 pub struct ErrorResponse {
@@ -48,7 +103,7 @@ pub struct ErrorResponse {
     pub status: u16,
 
     /// Error code
-    pub code: String,
+    pub code: ApiErrorCode,
 
     /// Error details
     pub message: String,
@@ -84,5 +139,99 @@ impl Error {
             status,
             message: error_message,
         }
+    }
+}
+
+// # --------------------------------------------------------------------------------
+//
+// unit test
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+
+    #[test]
+    fn deserialize_api_error_code_gateway_timeout() {
+        let json = r#""gateway_timeout""#;
+        let code: ApiErrorCode = serde_json::from_str(json).unwrap();
+        assert_eq!(code, ApiErrorCode::GatewayTimeout);
+    }
+
+    #[test]
+    fn deserialize_api_error_code_known_codes() {
+        let test_cases = vec![
+            (r#""invalid_json""#, ApiErrorCode::InvalidJson),
+            (r#""invalid_request_url""#, ApiErrorCode::InvalidRequestUrl),
+            (r#""invalid_request""#, ApiErrorCode::InvalidRequest),
+            (r#""unauthorized""#, ApiErrorCode::Unauthorized),
+            (r#""restricted_resource""#, ApiErrorCode::RestrictedResource),
+            (r#""validation_error""#, ApiErrorCode::ValidationError),
+            (r#""object_not_found""#, ApiErrorCode::ObjectNotFound),
+            (r#""conflict_error""#, ApiErrorCode::ConflictError),
+            (r#""rate_limited""#, ApiErrorCode::RateLimited),
+            (
+                r#""internal_server_error""#,
+                ApiErrorCode::InternalServerError,
+            ),
+            (
+                r#""service_unavailable""#,
+                ApiErrorCode::ServiceUnavailable,
+            ),
+            (r#""gateway_timeout""#, ApiErrorCode::GatewayTimeout),
+        ];
+
+        for (json, expected) in test_cases {
+            let code: ApiErrorCode = serde_json::from_str(json).unwrap();
+            assert_eq!(code, expected);
+        }
+    }
+
+    #[test]
+    fn deserialize_api_error_code_unknown() {
+        let json = r#""some_future_error_code""#;
+        let code: ApiErrorCode = serde_json::from_str(json).unwrap();
+        assert_eq!(
+            code,
+            ApiErrorCode::Unknown("some_future_error_code".to_string())
+        );
+    }
+
+    #[test]
+    fn serialize_api_error_code() {
+        let json = serde_json::to_string(&ApiErrorCode::GatewayTimeout).unwrap();
+        assert_eq!(json, r#""gateway_timeout""#);
+    }
+
+    #[test]
+    fn deserialize_error_response_with_gateway_timeout() {
+        let json = r#"
+        {
+            "object": "error",
+            "status": 504,
+            "code": "gateway_timeout",
+            "message": "The request timed out.",
+            "request_id": "abc123"
+        }
+        "#;
+
+        let error: ErrorResponse = serde_json::from_str(json).unwrap();
+        assert_eq!(error.status, 504);
+        assert_eq!(error.code, ApiErrorCode::GatewayTimeout);
+        assert_eq!(error.message, "The request timed out.");
+    }
+
+    #[test]
+    fn api_error_code_display() {
+        assert_eq!(ApiErrorCode::GatewayTimeout.to_string(), "gateway_timeout");
+        assert_eq!(
+            ApiErrorCode::InternalServerError.to_string(),
+            "internal_server_error"
+        );
+        assert_eq!(
+            ApiErrorCode::Unknown("custom".to_string()).to_string(),
+            "custom"
+        );
     }
 }

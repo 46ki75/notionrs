@@ -124,4 +124,108 @@ mod unit_tests {
             _ => panic!(),
         }
     }
+
+    #[test]
+    fn deserialize_block_paragraph_with_icon() {
+        let json_data = r#"
+        {
+            "rich_text": [
+                {
+                    "type": "text",
+                    "text": {
+                        "content": "Tab content",
+                        "link": null
+                    },
+                    "annotations": {
+                        "bold": false,
+                        "italic": false,
+                        "strikethrough": false,
+                        "underline": false,
+                        "code": false,
+                        "color": "default"
+                    },
+                    "plain_text": "Tab content",
+                    "href": null
+                }
+            ],
+            "color": "default",
+            "icon": {
+                "type": "emoji",
+                "emoji": "📝"
+            }
+        }
+        "#;
+
+        let paragraph: ParagraphBlock = serde_json::from_str::<ParagraphBlock>(json_data).unwrap();
+
+        assert_eq!(paragraph.color, crate::object::color::Color::Default);
+        assert!(paragraph.icon.is_some());
+
+        match paragraph.icon.unwrap() {
+            crate::object::emoji_and_icon::EmojiAndIcon::Emoji(emoji) => {
+                assert_eq!(emoji.r#type, "emoji");
+                assert_eq!(emoji.emoji, "📝".to_string());
+            }
+            _ => panic!("Expected emoji icon"),
+        }
+    }
+
+    #[test]
+    fn deserialize_block_paragraph_with_null_icon() {
+        let json_data = r#"
+        {
+            "rich_text": [],
+            "color": "default",
+            "icon": null
+        }
+        "#;
+
+        let paragraph: ParagraphBlock = serde_json::from_str::<ParagraphBlock>(json_data).unwrap();
+        assert!(paragraph.icon.is_none());
+    }
+
+    #[test]
+    fn deserialize_block_paragraph_without_icon() {
+        let json_data = r#"
+        {
+            "rich_text": [],
+            "color": "default"
+        }
+        "#;
+
+        let paragraph: ParagraphBlock = serde_json::from_str::<ParagraphBlock>(json_data).unwrap();
+        assert!(paragraph.icon.is_none());
+    }
+
+    #[test]
+    fn serialize_block_paragraph_with_icon() {
+        let paragraph = ParagraphBlock {
+            rich_text: vec![],
+            color: crate::object::color::Color::Default,
+            icon: Some(crate::object::emoji_and_icon::EmojiAndIcon::Emoji(
+                crate::object::emoji::Emoji {
+                    r#type: "emoji".to_string(),
+                    emoji: "📝".to_string(),
+                },
+            )),
+            children: None,
+        };
+
+        let json = serde_json::to_string(&paragraph).unwrap();
+        assert!(json.contains("\"icon\""));
+        assert!(json.contains("📝"));
+    }
+
+    #[test]
+    fn serialize_block_paragraph_without_icon() {
+        let paragraph = ParagraphBlock {
+            rich_text: vec![],
+            color: crate::object::color::Color::Default,
+            icon: None,
+            children: None,
+        };
+
+        let json = serde_json::to_string(&paragraph).unwrap();
+        assert!(!json.contains("\"icon\""));
+    }
 }
