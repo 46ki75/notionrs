@@ -17,6 +17,9 @@ pub struct CreatePageClient {
 
     pub(crate) children: Option<Vec<notionrs_types::object::block::Block>>,
 
+    /// Page content as Notion-flavored Markdown. Mutually exclusive with `children`.
+    pub(crate) markdown: Option<String>,
+
     pub(crate) icon: Option<notionrs_types::object::emoji_and_icon::EmojiAndIcon>,
 
     pub(crate) cover: Option<notionrs_types::object::file::File>,
@@ -46,6 +49,10 @@ pub struct CreatePageRequestBody {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) children: Option<Vec<notionrs_types::object::block::Block>>,
+
+    /// Page content as Notion-flavored Markdown. Mutually exclusive with `children`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) markdown: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) icon: Option<notionrs_types::object::emoji_and_icon::EmojiAndIcon>,
@@ -203,6 +210,7 @@ impl CreatePageClient {
             parent,
             properties: self.properties,
             children: self.children,
+            markdown: self.markdown,
             icon: self.icon,
             cover: self.cover,
             template: self.template,
@@ -236,5 +244,71 @@ impl CreatePageClient {
         let page = serde_json::from_slice::<notionrs_types::object::page::PageResponse>(&body)?;
 
         Ok(page)
+    }
+}
+
+// # --------------------------------------------------------------------------------
+//
+// unit_tests
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn serialize_create_page_request_body_with_markdown() {
+        let request_body = CreatePageRequestBody {
+            parent: notionrs_types::object::parent::Parent::PageParent(
+                notionrs_types::object::parent::PageParent::from("page-id-123"),
+            ),
+            properties: std::collections::HashMap::new(),
+            children: None,
+            markdown: Some("# Hello World\n\nThis is a test.".to_string()),
+            icon: None,
+            cover: None,
+            template: None,
+            position: None,
+        };
+
+        let json = serde_json::to_value(&request_body).expect("Failed to serialize");
+        assert_eq!(
+            json["markdown"],
+            "# Hello World\n\nThis is a test."
+        );
+        assert!(json.get("children").is_none());
+    }
+
+    #[test]
+    fn serialize_create_page_request_body_without_markdown() {
+        let request_body = CreatePageRequestBody {
+            parent: notionrs_types::object::parent::Parent::PageParent(
+                notionrs_types::object::parent::PageParent::from("page-id-123"),
+            ),
+            properties: std::collections::HashMap::new(),
+            children: None,
+            markdown: None,
+            icon: None,
+            cover: None,
+            template: None,
+            position: None,
+        };
+
+        let json = serde_json::to_value(&request_body).expect("Failed to serialize");
+        assert!(json.get("markdown").is_none());
+        assert!(json.get("children").is_none());
+    }
+
+    #[test]
+    fn create_page_client_markdown_setter() {
+        let client = CreatePageClient::default()
+            .page_id("page-id-123")
+            .markdown("# Hello World");
+
+        assert_eq!(
+            client.markdown,
+            Some("# Hello World".to_string())
+        );
     }
 }
