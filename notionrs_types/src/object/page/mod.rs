@@ -97,10 +97,10 @@ where
     T: Clone + Send + 'static,
 {
     pub id: String,
-    #[serde(with = "time::serde::rfc3339")]
-    pub created_time: time::OffsetDateTime,
-    #[serde(with = "time::serde::rfc3339")]
-    pub last_edited_time: time::OffsetDateTime,
+    #[serde(with = "time::serde::rfc3339::option")]
+    pub created_time: Option<time::OffsetDateTime>,
+    #[serde(with = "time::serde::rfc3339::option")]
+    pub last_edited_time: Option<time::OffsetDateTime>,
     pub created_by: User,
     pub last_edited_by: User,
     pub cover: Option<File>,
