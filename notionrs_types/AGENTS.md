@@ -7,7 +7,7 @@ Structs for serializing Notion API requests and deserializing Notion API respons
 - `src/macro/`: Macros used internally.
 - `src/object/`: Main structs for serializing/deserializing requests/responses.
 - `src/serde/`: Custom serializer/deserializer for serde.
-- `src/prelude.ts`: Re-exports all objects.
+- `src/prelude.rs`: Re-exports all objects. If you add a new struct, add it to this file.
 
 ## Development Commands
 

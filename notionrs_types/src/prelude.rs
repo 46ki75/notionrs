@@ -26,5 +26,5 @@ pub use crate::object::{
 
 pub use crate::object::{
     color::*, comment::*, date::*, emoji::*, emoji_and_icon::*, file::*, file_upload::*, icon::*,
-    language::*, parent::*, response::*, select::*, user::*,
+    language::*, page_markdown::*, parent::*, response::*, select::*, user::*,
 };

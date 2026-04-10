@@ -133,6 +133,36 @@ impl Client {
         }
     }
 
+    /// Retrieve a page's content as markdown.
+    ///
+    /// <https://developers.notion.com/reference/get-page-markdown>
+    pub fn get_page_markdown(
+        &self,
+    ) -> crate::client::page::get_page_markdown::GetPageMarkdownClient {
+        crate::client::page::get_page_markdown::GetPageMarkdownClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    /// Update a page's content as markdown.
+    ///
+    /// Supports four operation types:
+    /// - `insert_content`: Insert new content into the page
+    /// - `replace_content_range`: Replace a range of content in the page
+    /// - `update_content`: Update specific content using search-and-replace operations
+    /// - `replace_content`: Replace the entire page content with new markdown
+    ///
+    /// <https://developers.notion.com/reference/update-page-markdown>
+    pub fn update_page_markdown(
+        &self,
+    ) -> crate::client::page::update_page_markdown::UpdatePageMarkdownClient {
+        crate::client::page::update_page_markdown::UpdatePageMarkdownClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
     // Database
