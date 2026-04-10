@@ -27,7 +27,7 @@ pub struct UpdateBlockRequestBody {
 
 impl UpdateBlockClient {
     /// Set the value of the `archived` field.
-    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2025-09-03 API version.")]
+    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2026-03-11 API version.")]
     pub fn archived(mut self, archived: bool) -> Self {
         self.archived = Some(archived);
         self

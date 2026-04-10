@@ -20,7 +20,8 @@ pub struct FileUpload {
 
     pub in_trash: bool,
 
-    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2026-03-11 API version.")]
+    #[deprecated(since = "2026-03-11", note = "Use `in_trash` instead.")]
+    #[serde(default)]
     pub archived: bool,
 
     pub status: FileUploadStatus,

@@ -107,6 +107,7 @@ where
     pub icon: Option<EmojiAndIcon>,
     pub parent: Parent,
     #[deprecated(note = "Use `in_trash` instead. Deprecated in 2026-03-11 API version.")]
+    #[serde(default)]
     pub archived: bool,
     pub properties: T,
     pub url: String,

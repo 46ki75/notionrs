@@ -1,3 +1,4 @@
+mod append_block_children_position;
 mod crud_audio_block;
 mod crud_bookmark_block;
 mod crud_breadcrumb_block;

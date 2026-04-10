@@ -104,6 +104,12 @@ impl AppendBlockChildrenClient {
             "`block_id` is not set.".to_string(),
         ))?;
 
+        if self.after.is_some() && self.position.is_some() {
+            return Err(crate::error::Error::RequestParameter(
+                "You cannot specify both `after` and `position` in the same request.".to_string(),
+            ));
+        }
+
         #[allow(deprecated)]
         let request_body_struct = AppendBlockChildrenRequestBody {
             children: self.children,
@@ -144,4 +150,3 @@ impl AppendBlockChildrenClient {
         Ok(block)
     }
 }
-

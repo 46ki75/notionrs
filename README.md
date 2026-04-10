@@ -8,7 +8,7 @@
 
 ![ogp](./assets/ogp.webp)
 
-`notionrs` now supports `Notion-Version: 2025-09-03`.
+`notionrs` now supports `Notion-Version: 2026-03-11`.
 
 This project is currently under active development and is not yet ready for production use. Features and API stability may change without notice. Contributions and feedback are welcome!
 
