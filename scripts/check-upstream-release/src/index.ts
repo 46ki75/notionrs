@@ -13,6 +13,12 @@ Please review the changelog and update the schema as necessary.
 
 - 📄 Release notes: https://github.com/makenotion/notion-sdk-js/releases/tag/${version}
 
+## What should be done?
+
+1. Review the release notes and identify any breaking changes or new features that may require updates to the schema.
+2. Check the diff of the release to see if there are any changes that may affect the schema.
+3. Implement any necessary updates to the schema to ensure compatibility with the new version of \`notion-sdk-js\`.
+
 ---
 
 This issue was generated automatically.
