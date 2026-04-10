@@ -11,7 +11,7 @@ mod integration_tests {
     static VIEW_ID: &str = "33ea03d79b268028873a000c099dd218";
 
     #[tokio::test]
-    async fn view_query() {
+    async fn crud_view_query() {
         dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
