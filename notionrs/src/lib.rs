@@ -10,3 +10,9 @@ pub(crate) mod util;
 pub use crate::client::Client;
 pub use crate::error::Error;
 pub use crate::r#trait::PaginateExt;
+
+pub mod prelude {
+    pub mod types {
+        pub use notionrs_types::prelude::*;
+    }
+}
