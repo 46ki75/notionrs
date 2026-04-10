@@ -4,6 +4,6 @@ mod data_source;
 mod database;
 mod file_upload;
 mod page;
-// mod to_markdown;
+mod view;
 
 pub static DATA_SOURCE_ID: &str = "33da03d7-9b26-816b-a98d-000b46d0ea6c";
