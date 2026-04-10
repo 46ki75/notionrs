@@ -2751,18 +2751,18 @@ mod unit_tests {
     #[test]
     fn deserialize_date_or_relative_date_string() {
         let date: DateOrRelativeDate = serde_json::from_str("\"2021-05-10\"").unwrap();
-        // Both Date("2021-05-10") and Date("2021-05-10") are valid
+        // A non-keyword string should deserialize as Date variant
         match date {
             DateOrRelativeDate::Date(s) => assert_eq!(s, "2021-05-10"),
-            DateOrRelativeDate::Relative(_) => {} // also fine for non-keyword strings
+            _ => panic!("Expected Date variant for non-keyword string"),
         }
     }
 
     #[test]
     fn deserialize_date_or_relative_date_relative() {
         let today: DateOrRelativeDate = serde_json::from_str("\"today\"").unwrap();
-        // "today" can deserialize as either Relative(Today) or Date("today")
-        // Both are valid representations
+        // "today" is deserialized via serde(untagged), so it may match either variant
+        // depending on the ordering. Both representations are semantically correct.
         match today {
             DateOrRelativeDate::Relative(RelativeDateValue::Today) => {}
             DateOrRelativeDate::Date(s) if s == "today" => {}
