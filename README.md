@@ -34,20 +34,42 @@ As part of the alpha release, the following features are available. Please note 
   - Update a data source
   - Retrieve a data source
   - Query a data source
+  - List data source templates
 - Pages
   - Create a page
-  - Retrieve a page property item
   - Retrieve a page
+  - Retrieve a page property item
   - Update page properties
+  - Move a page
+  - Retrieve page as Markdown
+  - Update page via Markdown
+- Views
+  - Create a view
+  - Retrieve a view
+  - Update a view
+  - Delete a view
+  - List views
+  - Create a view query
+  - Get view query results
+  - Delete a view query
+- File Uploads
+  - Create a file upload
+  - Send a file upload
+  - Complete a file upload
+  - Retrieve a file upload
+  - List file uploads
 - Users
   - List all users
   - Retrieve a user
   - Retrieve your token's bot user
+  - List custom emojis
 - Comments
   - Create comment
   - Retrieve comments
 - Search
   - Search by title
+  - Search databases
+  - Search pages
 
 ## Basic Usage
 
