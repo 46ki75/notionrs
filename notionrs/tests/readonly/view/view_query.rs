@@ -1,4 +1,9 @@
 // `create_view_query` + `get_view_query_results` + `delete_view_query`
+// Those APIs look like mutable operations, but they are actually read-only operations.
+// They are used to query the content of a view, and the query results are not stored in Notion.
+// The `query_id` is just an identifier for the query,
+// and it does not have any side effects on the data in Notion. Therefore,
+// it is safe to use those APIs in read-only mode.
 
 mod integration_tests {
 
