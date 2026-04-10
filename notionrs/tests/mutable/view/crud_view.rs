@@ -56,14 +56,13 @@ mod integration_tests {
         //
         // # --------------------------------------------------------------------------------
 
-        let list_response = client
-            .list_views()
-            .database_id(DATABASE_ID)
-            .send()
-            .await?;
+        let list_response = client.list_views().database_id(DATABASE_ID).send().await?;
 
         assert!(
-            list_response.results.iter().any(|v| &v.id == created_view_id),
+            list_response
+                .results
+                .iter()
+                .any(|v| &v.id == created_view_id),
             "newly created view should appear in the list"
         );
 
