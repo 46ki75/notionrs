@@ -2,8 +2,8 @@ mod integration_tests {
 
     use notionrs_types::prelude::*;
 
-    /// <https://www.notion.so/33da03d79b2680628cf0ebeb854b8846>
-    static PAGE_ID: &str = "33da03d79b2680628cf0ebeb854b8846";
+    /// <https://www.notion.so/33ea03d79b268071b2a4e9d5f4393ccd>
+    static PAGE_ID: &str = "33ea03d79b268071b2a4e9d5f4393ccd";
 
     #[tokio::test]
     async fn update_page_markdown_insert_content() -> Result<(), notionrs::Error> {
@@ -174,11 +174,7 @@ mod integration_tests {
             .await?;
 
         // get the page as markdown
-        let response = client
-            .get_page_markdown()
-            .page_id(&page.id)
-            .send()
-            .await?;
+        let response = client.get_page_markdown().page_id(&page.id).send().await?;
 
         assert_eq!(response.object, "page_markdown");
         assert_eq!(response.id, page.id);
