@@ -1,7 +1,7 @@
 use notionrs_types::prelude::*;
 use serde::{Deserialize, Serialize};
 
-/// @see <https://developers.notion.com/reference/create-a-data-source>
+/// @see <https://developers.notion.com/reference/update-a-data-source>
 #[derive(Debug, Default, Clone, notionrs_macro::Setter)]
 pub struct UpdateDataSourceClient {
     /// The reqwest http client

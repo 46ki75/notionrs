@@ -1,4 +1,4 @@
-/// <https://developers.notion.com/reference/get-page-markdown>
+/// <https://developers.notion.com/reference/retrieve-page-markdown>
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct GetPageMarkdownClient {
     /// The reqwest http client

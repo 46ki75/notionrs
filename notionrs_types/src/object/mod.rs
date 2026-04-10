@@ -5,6 +5,7 @@ pub mod page;
 pub mod page_markdown;
 pub mod request;
 pub mod rich_text;
+pub mod view;
 
 pub mod color;
 pub mod comment;

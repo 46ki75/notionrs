@@ -9,6 +9,9 @@ pub struct Select {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub color: Option<SelectColor>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
 }
 
 impl Select {
@@ -30,6 +33,14 @@ impl Select {
 
     pub fn color(mut self, color: SelectColor) -> Self {
         self.color = Some(color);
+        self
+    }
+
+    pub fn description<T>(mut self, description: T) -> Self
+    where
+        T: AsRef<str>,
+    {
+        self.description = Some(description.as_ref().to_string());
         self
     }
 }
@@ -134,6 +145,7 @@ mod tests {
             id: Some("id".to_string()),
             name: "name".to_string(),
             color: Some(SelectColor::Blue),
+            description: None,
         };
 
         let json = serde_json::to_string(&select).expect("serialization failed");

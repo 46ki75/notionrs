@@ -23,6 +23,7 @@ pub struct IntegrationTestDataSourceSchema {
     /// - `Database`
     /// - `Data Source`
     /// - `File`
+    /// - `View`
     #[serde(rename = "API Type")]
     pub api_type: PageSelectProperty,
 
