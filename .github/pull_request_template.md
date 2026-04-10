@@ -17,7 +17,7 @@
 - [ ] All unit tests pass.
 - [ ] If you added new structs to `notionrs_types`, ensure you re-export the structs in the `prelude` module.
 - [ ] Documentation has been updated if necessary.
-- [ ] Release tags have been added if you need.
+- [ ] Release tags have been added if needed.
 
 ## Additional Notes
 
