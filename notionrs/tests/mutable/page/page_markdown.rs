@@ -91,6 +91,53 @@ mod integration_tests {
     }
 
     #[tokio::test]
+    async fn update_page_markdown_replace_content_range() -> Result<(), notionrs::Error> {
+        dotenvy::dotenv().ok();
+
+        let notion_api_key = std::env::var("NOTION_API_KEY_MUTABLE").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
+
+        // create a page
+        let mut properties = std::collections::HashMap::new();
+        properties.insert(
+            "title".to_string(),
+            PageProperty::Title(PageTitleProperty::from("Markdown Replace Content Range Test")),
+        );
+
+        let page = client
+            .create_page()
+            .properties(properties)
+            .page_id(PAGE_ID)
+            .send()
+            .await?;
+
+        // insert initial content
+        client
+            .update_page_markdown()
+            .page_id(&page.id)
+            .insert_content("Hello old world.")
+            .send()
+            .await?;
+
+        // replace a specific content range ("old world" -> "new world")
+        let response = client
+            .update_page_markdown()
+            .page_id(&page.id)
+            .replace_content_range(6, 15, "new world")
+            .send()
+            .await?;
+
+        assert_eq!(response.object, "page_markdown");
+        assert!(response.markdown.contains("Hello new world."));
+        assert!(!response.markdown.contains("Hello old world."));
+
+        // cleanup
+        client.delete_block().block_id(&page.id).send().await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
     async fn update_page_markdown_update_content() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
