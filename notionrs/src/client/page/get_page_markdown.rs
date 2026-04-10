@@ -24,13 +24,14 @@ impl GetPageMarkdownClient {
             "`page_id` is not set.".to_string(),
         ))?;
 
-        let mut url = format!("https://api.notion.com/v1/pages/{}/markdown", page_id);
-
-        if let Some(include_transcript) = self.include_transcript {
-            url.push_str(&format!("?include_transcript={}", include_transcript));
-        }
+        let url = format!("https://api.notion.com/v1/pages/{}/markdown", page_id);
 
         let request = self.reqwest_client.get(url);
+        let request = if let Some(include_transcript) = self.include_transcript {
+            request.query(&[("include_transcript", include_transcript)])
+        } else {
+            request
+        };
 
         let response = request
             .send()
