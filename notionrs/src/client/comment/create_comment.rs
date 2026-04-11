@@ -1,6 +1,8 @@
 use serde::Serialize;
 
 /// @see <https://developers.notion.com/reference/create-a-comment>
+///
+/// Note: `rich_text` and `markdown` are mutually exclusive. Please set only one of them.
 #[derive(Debug, Default, notionrs_macro::Setter)]
 pub struct CreateCommentClient {
     /// The reqwest http client
@@ -10,12 +12,15 @@ pub struct CreateCommentClient {
 
     pub(crate) discussion_id: Option<String>,
 
+    /// Mutually exclusive with `markdown`.
+    /// Please set only one of either `rich_text` or `markdown`.
     pub(crate) rich_text: Option<Vec<notionrs_types::object::rich_text::RichText>>,
 
     /// The content of the comment as a Markdown string.
     /// Supports inline formatting (bold, italic, strikethrough, code, links),
     /// inline equations ($expression$), and mentions.
     /// Mutually exclusive with `rich_text`.
+    /// Please set only one of either `rich_text` or `markdown`.
     pub(crate) markdown: Option<String>,
 }
 
@@ -101,8 +106,7 @@ impl CreateCommentClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let comment =
-            serde_json::from_slice::<notionrs_types::object::comment::Comment>(&body)?;
+        let comment = serde_json::from_slice::<notionrs_types::object::comment::Comment>(&body)?;
 
         Ok(comment)
     }
