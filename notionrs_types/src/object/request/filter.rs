@@ -1507,7 +1507,11 @@ impl Filter {
         }
     }
 
-    /// Returns database entries where the multi-select value matches any of the provided strings.
+    /// Returns database entries where the multi-select property contains any of the provided values.
+    ///
+    /// Passes an array of strings to the `contains` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "contains": ["Rust", "TypeScript"] }`).
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
     /// - `option_names`: The strings to compare the multi-select property value against.
@@ -1553,7 +1557,11 @@ impl Filter {
         }
     }
 
-    /// Returns database entries where the multi-select value does not match any of the provided strings.
+    /// Returns database entries where the multi-select property does not contain any of the provided values.
+    ///
+    /// Passes an array of strings to the `does_not_contain` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "does_not_contain": ["Rust", "TypeScript"] }`).
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
     /// - `option_names`: The strings to compare the multi-select property value against.
@@ -2305,7 +2313,11 @@ impl Filter {
         }
     }
 
-    /// Returns database entries where the select property value does not match any of the provided strings.
+    /// Returns database entries where the select property value does not equal any of the provided strings.
+    ///
+    /// Passes an array of strings to the `does_not_equal` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "does_not_equal": ["Done", "Archive"] }`).
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
     /// - `option_names`: The strings to compare the select property value against.
@@ -2351,7 +2363,11 @@ impl Filter {
         }
     }
 
-    /// Returns database entries where the select property value matches any of the provided strings.
+    /// Returns database entries where the select property value equals any of the provided strings.
+    ///
+    /// Passes an array of strings to the `equals` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "equals": ["Option A", "Option B"] }`).
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
     /// - `option_names`: The strings to compare the select property value against.
@@ -2437,7 +2453,11 @@ impl Filter {
         }
     }
 
-    /// Returns database entries where the status property value does not match any of the provided strings.
+    /// Returns database entries where the status property value does not equal any of the provided strings.
+    ///
+    /// Passes an array of strings to the `does_not_equal` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "does_not_equal": ["Done", "Archive"] }`).
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
     /// - `option_names`: The strings to compare the status property value against.
@@ -2483,7 +2503,11 @@ impl Filter {
         }
     }
 
-    /// Returns database entries where the status property value matches any of the provided strings.
+    /// Returns database entries where the status property value equals any of the provided strings.
+    ///
+    /// Passes an array of strings to the `equals` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "equals": ["In Progress", "Done"] }`).
     ///
     /// - `property_name`: Property Name (Column Name) in Notion Database
     /// - `option_names`: The strings to compare the status property value against.
