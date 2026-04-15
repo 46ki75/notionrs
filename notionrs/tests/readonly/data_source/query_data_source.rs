@@ -254,6 +254,61 @@ mod integration_tests {
     }
 
     #[tokio::test]
+    async fn query_data_source_filter_multi_select_contains_any() -> Result<(), notionrs::Error> {
+        dotenvy::dotenv().ok();
+
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
+
+        let filter =
+            notionrs_types::object::request::filter::Filter::multi_select_contains_any(
+                "Multi-select",
+                ["Something", "Another thing"],
+            );
+
+        let request = client
+            .query_data_source()
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
+            .filter(filter);
+
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
+
+        println!("{}", serde_json::to_string(&response)?);
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn query_data_source_filter_multi_select_does_not_contain_any(
+    ) -> Result<(), notionrs::Error> {
+        dotenvy::dotenv().ok();
+
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
+
+        let filter =
+            notionrs_types::object::request::filter::Filter::multi_select_does_not_contain_any(
+                "Multi-select",
+                ["Something", "Another thing"],
+            );
+
+        let request = client
+            .query_data_source()
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
+            .filter(filter);
+
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
+
+        println!("{}", serde_json::to_string(&response)?);
+
+        Ok(())
+    }
+
+    #[tokio::test]
     async fn query_data_source_filter_number_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
@@ -500,6 +555,110 @@ mod integration_tests {
             notionrs_types::object::request::filter::Filter::select_is_empty("API Type"),
             notionrs_types::object::request::filter::Filter::select_is_not_empty("API Type"),
         ]);
+
+        let request = client
+            .query_data_source()
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
+            .filter(filter);
+
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
+
+        println!("{}", serde_json::to_string(&response)?);
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn query_data_source_filter_select_equals_any() -> Result<(), notionrs::Error> {
+        dotenvy::dotenv().ok();
+
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
+
+        let filter = notionrs_types::object::request::filter::Filter::select_equals_any(
+            "API Type",
+            ["Page", "Block"],
+        );
+
+        let request = client
+            .query_data_source()
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
+            .filter(filter);
+
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
+
+        println!("{}", serde_json::to_string(&response)?);
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn query_data_source_filter_select_does_not_equal_any() -> Result<(), notionrs::Error> {
+        dotenvy::dotenv().ok();
+
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
+
+        let filter = notionrs_types::object::request::filter::Filter::select_does_not_equal_any(
+            "API Type",
+            ["Page", "Block"],
+        );
+
+        let request = client
+            .query_data_source()
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
+            .filter(filter);
+
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
+
+        println!("{}", serde_json::to_string(&response)?);
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn query_data_source_filter_status_equals_any() -> Result<(), notionrs::Error> {
+        dotenvy::dotenv().ok();
+
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
+
+        let filter = notionrs_types::object::request::filter::Filter::status_equals_any(
+            "Status",
+            ["Not started", "In progress"],
+        );
+
+        let request = client
+            .query_data_source()
+            .data_source_id(crate::readonly::DATA_SOURCE_ID)
+            .filter(filter);
+
+        let response = request
+            .send::<std::collections::HashMap<String, PageProperty>>()
+            .await?;
+
+        println!("{}", serde_json::to_string(&response)?);
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn query_data_source_filter_status_does_not_equal_any() -> Result<(), notionrs::Error> {
+        dotenvy::dotenv().ok();
+
+        let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
+
+        let filter = notionrs_types::object::request::filter::Filter::status_does_not_equal_any(
+            "Status",
+            ["Done", "In progress"],
+        );
 
         let request = client
             .query_data_source()

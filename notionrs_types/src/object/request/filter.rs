@@ -204,6 +204,68 @@ impl std::fmt::Display for RelativeDateValue {
     }
 }
 
+// # --------------------------------------------------------------------------------
+//
+// StringOrStringArray
+//
+// # --------------------------------------------------------------------------------
+
+/// A value that can be either a single string or an array of strings.
+///
+/// Used in `select`, `status`, and `multi_select` property filters to support
+/// multi-value filtering (e.g. `{ "does_not_equal": ["Done", "Archive"] }`).
+///
+/// # Examples
+///
+/// ```
+/// use notionrs_types::object::request::filter::StringOrStringArray;
+///
+/// // From a single string
+/// let single: StringOrStringArray = "Done".into();
+///
+/// // From a Vec of strings
+/// let multi: StringOrStringArray = vec!["Done", "Archive"].into();
+/// ```
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(untagged)]
+pub enum StringOrStringArray {
+    /// A single string value.
+    String(String),
+
+    /// An array of string values for multi-value filtering.
+    Array(Vec<String>),
+}
+
+impl Default for StringOrStringArray {
+    fn default() -> Self {
+        StringOrStringArray::String(String::new())
+    }
+}
+
+impl From<String> for StringOrStringArray {
+    fn from(s: String) -> Self {
+        StringOrStringArray::String(s)
+    }
+}
+
+impl From<&str> for StringOrStringArray {
+    fn from(s: &str) -> Self {
+        StringOrStringArray::String(s.to_string())
+    }
+}
+
+impl From<Vec<String>> for StringOrStringArray {
+    fn from(v: Vec<String>) -> Self {
+        StringOrStringArray::Array(v)
+    }
+}
+
+impl From<Vec<&str>> for StringOrStringArray {
+    fn from(v: Vec<&str>) -> Self {
+        StringOrStringArray::Array(v.into_iter().map(|s| s.to_string()).collect())
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct DateFilter {
     /// An ISO 8601 date string or a relative date value (e.g. `"today"`, `"tomorrow"`).
@@ -300,10 +362,10 @@ pub struct FormulaFilter {
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct MultiSelectFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub contains: Option<String>,
+    pub contains: Option<StringOrStringArray>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub does_not_contain: Option<String>,
+    pub does_not_contain: Option<StringOrStringArray>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_empty: Option<bool>,
@@ -491,10 +553,10 @@ pub struct RollupFilter {
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct SelectFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub does_not_equal: Option<String>,
+    pub does_not_equal: Option<StringOrStringArray>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub equals: Option<String>,
+    pub equals: Option<StringOrStringArray>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_empty: Option<bool>,
@@ -513,10 +575,10 @@ pub struct SelectFilter {
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
 pub struct StatusFilter {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub does_not_equal: Option<String>,
+    pub does_not_equal: Option<StringOrStringArray>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub equals: Option<String>,
+    pub equals: Option<StringOrStringArray>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_empty: Option<bool>,
@@ -1436,7 +1498,38 @@ impl Filter {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::MultiSelect(MultiSelectFilter {
-                contains: Some(option_name.as_ref().to_string()),
+                contains: Some(StringOrStringArray::String(
+                    option_name.as_ref().to_string(),
+                )),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries where the multi-select property contains any of the provided values.
+    ///
+    /// Passes an array of strings to the `contains` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "contains": ["Rust", "TypeScript"] }`).
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_names`: The strings to compare the multi-select property value against.
+    pub fn multi_select_contains_any<S, I, T>(property_name: S, option_names: I) -> Self
+    where
+        S: AsRef<str>,
+        I: IntoIterator<Item = T>,
+        T: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::MultiSelect(MultiSelectFilter {
+                contains: Some(StringOrStringArray::Array(
+                    option_names
+                        .into_iter()
+                        .map(|s| s.as_ref().to_string())
+                        .collect(),
+                )),
                 ..Default::default()
             })),
             ..Default::default()
@@ -1455,7 +1548,38 @@ impl Filter {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::MultiSelect(MultiSelectFilter {
-                does_not_contain: Some(option_name.as_ref().to_string()),
+                does_not_contain: Some(StringOrStringArray::String(
+                    option_name.as_ref().to_string(),
+                )),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries where the multi-select property does not contain any of the provided values.
+    ///
+    /// Passes an array of strings to the `does_not_contain` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "does_not_contain": ["Rust", "TypeScript"] }`).
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_names`: The strings to compare the multi-select property value against.
+    pub fn multi_select_does_not_contain_any<S, I, T>(property_name: S, option_names: I) -> Self
+    where
+        S: AsRef<str>,
+        I: IntoIterator<Item = T>,
+        T: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::MultiSelect(MultiSelectFilter {
+                does_not_contain: Some(StringOrStringArray::Array(
+                    option_names
+                        .into_iter()
+                        .map(|s| s.as_ref().to_string())
+                        .collect(),
+                )),
                 ..Default::default()
             })),
             ..Default::default()
@@ -2180,7 +2304,38 @@ impl Filter {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Select(SelectFilter {
-                does_not_equal: Some(option_name.as_ref().to_string()),
+                does_not_equal: Some(StringOrStringArray::String(
+                    option_name.as_ref().to_string(),
+                )),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries where the select property value does not equal any of the provided strings.
+    ///
+    /// Passes an array of strings to the `does_not_equal` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "does_not_equal": ["Done", "Archive"] }`).
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_names`: The strings to compare the select property value against.
+    pub fn select_does_not_equal_any<S, I, T>(property_name: S, option_names: I) -> Self
+    where
+        S: AsRef<str>,
+        I: IntoIterator<Item = T>,
+        T: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Select(SelectFilter {
+                does_not_equal: Some(StringOrStringArray::Array(
+                    option_names
+                        .into_iter()
+                        .map(|s| s.as_ref().to_string())
+                        .collect(),
+                )),
                 ..Default::default()
             })),
             ..Default::default()
@@ -2199,7 +2354,38 @@ impl Filter {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Select(SelectFilter {
-                equals: Some(option_name.as_ref().to_string()),
+                equals: Some(StringOrStringArray::String(
+                    option_name.as_ref().to_string(),
+                )),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries where the select property value equals any of the provided strings.
+    ///
+    /// Passes an array of strings to the `equals` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "equals": ["Option A", "Option B"] }`).
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_names`: The strings to compare the select property value against.
+    pub fn select_equals_any<S, I, T>(property_name: S, option_names: I) -> Self
+    where
+        S: AsRef<str>,
+        I: IntoIterator<Item = T>,
+        T: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Select(SelectFilter {
+                equals: Some(StringOrStringArray::Array(
+                    option_names
+                        .into_iter()
+                        .map(|s| s.as_ref().to_string())
+                        .collect(),
+                )),
                 ..Default::default()
             })),
             ..Default::default()
@@ -2258,7 +2444,38 @@ impl Filter {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Status(StatusFilter {
-                does_not_equal: Some(option_name.as_ref().to_string()),
+                does_not_equal: Some(StringOrStringArray::String(
+                    option_name.as_ref().to_string(),
+                )),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries where the status property value does not equal any of the provided strings.
+    ///
+    /// Passes an array of strings to the `does_not_equal` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "does_not_equal": ["Done", "Archive"] }`).
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_names`: The strings to compare the status property value against.
+    pub fn status_does_not_equal_any<S, I, T>(property_name: S, option_names: I) -> Self
+    where
+        S: AsRef<str>,
+        I: IntoIterator<Item = T>,
+        T: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Status(StatusFilter {
+                does_not_equal: Some(StringOrStringArray::Array(
+                    option_names
+                        .into_iter()
+                        .map(|s| s.as_ref().to_string())
+                        .collect(),
+                )),
                 ..Default::default()
             })),
             ..Default::default()
@@ -2277,7 +2494,38 @@ impl Filter {
         Filter {
             property: Some(property_name.as_ref().to_string()),
             condition: Some(Condition::Status(StatusFilter {
-                equals: Some(option_name.as_ref().to_string()),
+                equals: Some(StringOrStringArray::String(
+                    option_name.as_ref().to_string(),
+                )),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }
+    }
+
+    /// Returns database entries where the status property value equals any of the provided strings.
+    ///
+    /// Passes an array of strings to the `equals` operator, allowing
+    /// multi-value filtering in a single condition
+    /// (e.g. `{ "equals": ["In Progress", "Done"] }`).
+    ///
+    /// - `property_name`: Property Name (Column Name) in Notion Database
+    /// - `option_names`: The strings to compare the status property value against.
+    pub fn status_equals_any<S, I, T>(property_name: S, option_names: I) -> Self
+    where
+        S: AsRef<str>,
+        I: IntoIterator<Item = T>,
+        T: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Status(StatusFilter {
+                equals: Some(StringOrStringArray::Array(
+                    option_names
+                        .into_iter()
+                        .map(|s| s.as_ref().to_string())
+                        .collect(),
+                )),
                 ..Default::default()
             })),
             ..Default::default()
@@ -2836,5 +3084,212 @@ mod unit_tests {
             RelativeDateValue::OneMonthFromNow.to_string(),
             "one_month_from_now"
         );
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // StringOrStringArray
+    //
+    // # --------------------------------------------------------------------------------
+
+    #[test]
+    fn string_or_string_array_from_str() {
+        let value: StringOrStringArray = "Done".into();
+        assert_eq!(value, StringOrStringArray::String("Done".to_string()));
+    }
+
+    #[test]
+    fn string_or_string_array_from_string() {
+        let value: StringOrStringArray = String::from("Done").into();
+        assert_eq!(value, StringOrStringArray::String("Done".to_string()));
+    }
+
+    #[test]
+    fn string_or_string_array_from_vec_str() {
+        let value: StringOrStringArray = vec!["Done", "Archive"].into();
+        assert_eq!(
+            value,
+            StringOrStringArray::Array(vec!["Done".to_string(), "Archive".to_string()])
+        );
+    }
+
+    #[test]
+    fn string_or_string_array_from_vec_string() {
+        let value: StringOrStringArray =
+            vec!["Done".to_string(), "Archive".to_string()].into();
+        assert_eq!(
+            value,
+            StringOrStringArray::Array(vec!["Done".to_string(), "Archive".to_string()])
+        );
+    }
+
+    #[test]
+    fn serialize_string_or_string_array_string() {
+        let value = StringOrStringArray::String("Done".to_string());
+        let json = serde_json::to_string(&value).unwrap();
+        assert_eq!(json, "\"Done\"");
+    }
+
+    #[test]
+    fn serialize_string_or_string_array_array() {
+        let value =
+            StringOrStringArray::Array(vec!["Done".to_string(), "Archive".to_string()]);
+        let json = serde_json::to_string(&value).unwrap();
+        assert_eq!(json, "[\"Done\",\"Archive\"]");
+    }
+
+    #[test]
+    fn deserialize_string_or_string_array_string() {
+        let value: StringOrStringArray = serde_json::from_str("\"Done\"").unwrap();
+        assert_eq!(value, StringOrStringArray::String("Done".to_string()));
+    }
+
+    #[test]
+    fn deserialize_string_or_string_array_array() {
+        let value: StringOrStringArray =
+            serde_json::from_str("[\"Done\",\"Archive\"]").unwrap();
+        assert_eq!(
+            value,
+            StringOrStringArray::Array(vec!["Done".to_string(), "Archive".to_string()])
+        );
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // Multi-value filter builder methods
+    //
+    // # --------------------------------------------------------------------------------
+
+    #[test]
+    fn filter_select_equals_any() {
+        let filter = Filter::select_equals_any("Status", vec!["Done", "Archive"]);
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("[\"Done\",\"Archive\"]"));
+        assert!(json.contains("\"equals\""));
+        assert!(json.contains("\"Status\""));
+    }
+
+    #[test]
+    fn filter_select_does_not_equal_any() {
+        let filter =
+            Filter::select_does_not_equal_any("Status", vec!["Done", "Archive"]);
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("[\"Done\",\"Archive\"]"));
+        assert!(json.contains("\"does_not_equal\""));
+    }
+
+    #[test]
+    fn filter_status_equals_any() {
+        let filter = Filter::status_equals_any("Status", vec!["Done", "Archive"]);
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("[\"Done\",\"Archive\"]"));
+        assert!(json.contains("\"equals\""));
+    }
+
+    #[test]
+    fn filter_status_does_not_equal_any() {
+        let filter =
+            Filter::status_does_not_equal_any("Status", vec!["Done", "Archive"]);
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("[\"Done\",\"Archive\"]"));
+        assert!(json.contains("\"does_not_equal\""));
+    }
+
+    #[test]
+    fn filter_multi_select_contains_any() {
+        let filter =
+            Filter::multi_select_contains_any("Tags", vec!["Rust", "TypeScript"]);
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("[\"Rust\",\"TypeScript\"]"));
+        assert!(json.contains("\"contains\""));
+    }
+
+    #[test]
+    fn filter_multi_select_does_not_contain_any() {
+        let filter = Filter::multi_select_does_not_contain_any(
+            "Tags",
+            vec!["Rust", "TypeScript"],
+        );
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("[\"Rust\",\"TypeScript\"]"));
+        assert!(json.contains("\"does_not_contain\""));
+    }
+
+    // Verify backward compatibility: single-value methods still serialize as strings
+    #[test]
+    fn filter_select_equals_single_backward_compat() {
+        let filter = Filter::select_equals("Status", "Done");
+        let json = serde_json::to_string(&filter).unwrap();
+        // Should serialize as a plain string, not an array
+        assert!(json.contains("\"equals\":\"Done\""));
+    }
+
+    #[test]
+    fn filter_status_equals_single_backward_compat() {
+        let filter = Filter::status_equals("Status", "Done");
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("\"equals\":\"Done\""));
+    }
+
+    #[test]
+    fn filter_multi_select_contains_single_backward_compat() {
+        let filter = Filter::multi_select_contains("Tags", "Rust");
+        let json = serde_json::to_string(&filter).unwrap();
+        assert!(json.contains("\"contains\":\"Rust\""));
+    }
+
+    #[test]
+    fn deserialize_select_filter_with_array() {
+        let json = r#"{"property":"Status","select":{"does_not_equal":["Done","Archive"]}}"#;
+        let filter: Filter = serde_json::from_str(json).unwrap();
+        match &filter.condition {
+            Some(Condition::Select(sf)) => {
+                assert_eq!(
+                    sf.does_not_equal,
+                    Some(StringOrStringArray::Array(vec![
+                        "Done".to_string(),
+                        "Archive".to_string()
+                    ]))
+                );
+            }
+            _ => panic!("Expected Select condition"),
+        }
+    }
+
+    #[test]
+    fn deserialize_status_filter_with_array() {
+        let json = r#"{"property":"Status","status":{"equals":["In Progress","Done"]}}"#;
+        let filter: Filter = serde_json::from_str(json).unwrap();
+        match &filter.condition {
+            Some(Condition::Status(sf)) => {
+                assert_eq!(
+                    sf.equals,
+                    Some(StringOrStringArray::Array(vec![
+                        "In Progress".to_string(),
+                        "Done".to_string()
+                    ]))
+                );
+            }
+            _ => panic!("Expected Status condition"),
+        }
+    }
+
+    #[test]
+    fn deserialize_multi_select_filter_with_array() {
+        let json =
+            r#"{"property":"Tags","multi_select":{"contains":["Rust","TypeScript"]}}"#;
+        let filter: Filter = serde_json::from_str(json).unwrap();
+        match &filter.condition {
+            Some(Condition::MultiSelect(msf)) => {
+                assert_eq!(
+                    msf.contains,
+                    Some(StringOrStringArray::Array(vec![
+                        "Rust".to_string(),
+                        "TypeScript".to_string()
+                    ]))
+                );
+            }
+            _ => panic!("Expected MultiSelect condition"),
+        }
     }
 }
