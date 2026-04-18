@@ -352,6 +352,22 @@ impl Client {
         }
     }
 
+    // TODO: docs
+    pub fn update_comment(&self) -> crate::client::comment::update_comment::UpdateCommentClient {
+        crate::client::comment::update_comment::UpdateCommentClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
+    // TODO: docs
+    pub fn delete_comment(&self) -> crate::client::comment::delete_comment::DeleteCommentClient {
+        crate::client::comment::delete_comment::DeleteCommentClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
     // File Upload
