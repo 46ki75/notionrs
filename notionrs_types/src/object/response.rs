@@ -1,5 +1,32 @@
 use serde::{Deserialize, Serialize};
 
+/// The reason why a list response is incomplete.
+///
+/// <https://developers.notion.com/reference/intro#responses>
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum IncompleteReason {
+    QueryResultLimitReached,
+    #[serde(untagged)]
+    Unknown(String),
+}
+
+/// The status of a list request, indicating whether the result set is complete or was
+/// truncated by a server-side pagination depth limit.
+///
+/// <https://developers.notion.com/reference/intro#responses>
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum RequestStatus {
+    /// The result set is complete.
+    Complete,
+    /// The result set is incomplete (e.g. due to a server-side pagination depth limit).
+    Incomplete {
+        #[serde(skip_serializing_if = "Option::is_none")]
+        incomplete_reason: Option<IncompleteReason>,
+    },
+}
+
 #[derive(Default, Deserialize, Serialize, Debug, Clone)]
 pub struct ListResponse<T> {
     /// always "list"
@@ -9,6 +36,11 @@ pub struct ListResponse<T> {
     pub next_cursor: Option<String>,
     pub has_more: Option<bool>,
     pub r#type: Option<String>,
+
+    /// Optional status indicating whether the result set is complete or was truncated
+    /// by the server-side pagination depth limit.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub request_status: Option<RequestStatus>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -480,5 +512,89 @@ mod unit_tests {
         for result in result.results {
             assert_eq!(result.object, "comment");
         }
+    }
+
+    #[test]
+    fn deserialize_request_status_incomplete() {
+        let json_data = r#"
+        {
+            "type": "incomplete",
+            "incomplete_reason": "query_result_limit_reached"
+        }
+        "#;
+
+        let status: RequestStatus = serde_json::from_str(json_data).unwrap();
+        assert_eq!(
+            status,
+            RequestStatus::Incomplete {
+                incomplete_reason: Some(IncompleteReason::QueryResultLimitReached),
+            }
+        );
+    }
+
+    #[test]
+    fn deserialize_request_status_complete() {
+        let json_data = r#"{"type": "complete"}"#;
+        let status: RequestStatus = serde_json::from_str(json_data).unwrap();
+        assert_eq!(status, RequestStatus::Complete);
+    }
+
+    #[test]
+    fn deserialize_request_status_incomplete_no_reason() {
+        let json_data = r#"{"type": "incomplete"}"#;
+        let status: RequestStatus = serde_json::from_str(json_data).unwrap();
+        assert_eq!(
+            status,
+            RequestStatus::Incomplete {
+                incomplete_reason: None,
+            }
+        );
+    }
+
+    #[test]
+    fn deserialize_list_response_with_request_status() {
+        let json_data = r#"
+        {
+            "object": "list",
+            "results": [],
+            "next_cursor": null,
+            "has_more": false,
+            "type": "comment",
+            "comment": {},
+            "request_status": {
+                "type": "incomplete",
+                "incomplete_reason": "query_result_limit_reached"
+            }
+        }
+        "#;
+
+        let result: ListResponse<crate::object::comment::Comment> =
+            serde_json::from_str(json_data).unwrap();
+
+        assert_eq!(
+            result.request_status,
+            Some(RequestStatus::Incomplete {
+                incomplete_reason: Some(IncompleteReason::QueryResultLimitReached),
+            })
+        );
+    }
+
+    #[test]
+    fn deserialize_list_response_without_request_status() {
+        let json_data = r#"
+        {
+            "object": "list",
+            "results": [],
+            "next_cursor": null,
+            "has_more": false,
+            "type": "comment",
+            "comment": {}
+        }
+        "#;
+
+        let result: ListResponse<crate::object::comment::Comment> =
+            serde_json::from_str(json_data).unwrap();
+
+        assert_eq!(result.request_status, None);
     }
 }

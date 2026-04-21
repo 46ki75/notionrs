@@ -125,6 +125,11 @@ pub struct ViewQueryResponse {
 
     /// Whether there are more results.
     pub has_more: bool,
+
+    /// Optional status indicating whether the result set is complete or was truncated
+    /// by the server-side pagination depth limit.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub request_status: Option<crate::object::response::RequestStatus>,
 }
 
 /// A page reference within a view query result.
@@ -255,6 +260,37 @@ mod tests {
         assert_eq!(query.total_count, 2);
         assert_eq!(query.results.len(), 2);
         assert!(!query.has_more);
+        assert_eq!(query.request_status, None);
+    }
+
+    #[test]
+    fn deserialize_view_query_response_with_request_status() {
+        let json_data = r#"
+        {
+            "object": "view_query",
+            "id": "qry12345-6789-0abc-def0-123456789abc",
+            "view_id": "view12345-6789-0abc-def0-123456789abc",
+            "expires_at": "2026-03-20T11:00:00.000Z",
+            "total_count": 50,
+            "results": [],
+            "next_cursor": null,
+            "has_more": false,
+            "request_status": {
+                "type": "incomplete",
+                "incomplete_reason": "query_result_limit_reached"
+            }
+        }
+        "#;
+
+        let query = serde_json::from_str::<ViewQueryResponse>(json_data).unwrap();
+        assert_eq!(
+            query.request_status,
+            Some(crate::object::response::RequestStatus::Incomplete {
+                incomplete_reason: Some(
+                    crate::object::response::IncompleteReason::QueryResultLimitReached
+                ),
+            })
+        );
     }
 
     #[test]
