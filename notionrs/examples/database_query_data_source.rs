@@ -11,19 +11,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let sort = Sort::desc("Created Time");
 
-    let request = client
-        .query_data_source()
-        .data_source_id("DATA_SOURCE_ID")
-        .filter(filter)
-        .sorts(vec![sort]);
-
     #[derive(Debug, Clone, Serialize, Deserialize)]
     struct MyProperties {
         #[serde(rename = "My Title")]
         pub title: PageTitleProperty,
     }
 
-    let response = request.send::<MyProperties>().await?;
+    let response = client
+        .query_data_source::<MyProperties>()
+        .data_source_id("DATA_SOURCE_ID")
+        .filter(filter)
+        .sorts(vec![sort])
+        .send()
+        .await?;
 
     for page in response.results {
         println!("{}", page.properties.title.to_string());
