@@ -33,7 +33,7 @@ async fn main() -> Result<(), Error> {
     );
 
     let request = client
-        .create_page()
+        .create_page::<std::collections::HashMap<String, PageProperty>>()
         .page_id("PAGE_ID")
         .properties(properties);
 

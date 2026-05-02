@@ -26,7 +26,7 @@ mod integration_tests {
         );
 
         let request = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .page_id(PAGE_ID)
             .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
@@ -54,7 +54,7 @@ mod integration_tests {
         );
 
         let request = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .page_id(response.id);
 

@@ -22,7 +22,7 @@ mod integration_tests {
         );
 
         let request = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .page_id(PAGE_ID)
             .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
@@ -46,7 +46,7 @@ mod integration_tests {
         );
 
         let request = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .page_id(PAGE_ID)
             .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
@@ -63,7 +63,7 @@ mod integration_tests {
         // move the source page to the target page
 
         let request = client
-            .move_page()
+            .move_page::<std::collections::HashMap<String, PageProperty>>()
             .source_page_id(&source_page.id)
             .destination_page_id(&destination_page.id);
 

@@ -1,8 +1,12 @@
-use serde::{Deserialize, Serialize};
+use std::marker::PhantomData;
+
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
 /// @see <https://developers.notion.com/reference/post-page>
-#[derive(Debug, Default, notionrs_macro::Setter)]
-pub struct CreatePageClient {
+#[derive(Debug, notionrs_macro::Setter)]
+pub struct CreatePageClient<
+    T = std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
+> {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
@@ -38,6 +42,27 @@ pub struct CreatePageClient {
     ///
     /// **Note:** The position parameter is not allowed unless the parent is a page.
     pub(crate) position: Option<CreatePageTemplatePosition>,
+
+    #[skip]
+    pub(crate) _phantom: PhantomData<T>,
+}
+
+impl<T> Default for CreatePageClient<T> {
+    fn default() -> Self {
+        Self {
+            reqwest_client: reqwest::Client::default(),
+            page_id: None,
+            data_source_id: None,
+            properties: std::collections::HashMap::new(),
+            children: None,
+            markdown: None,
+            icon: None,
+            cover: None,
+            template: None,
+            position: None,
+            _phantom: PhantomData,
+        }
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -106,7 +131,26 @@ pub struct CreatePageTemplatePositionAfterBlockPayload {
     id: String,
 }
 
-impl CreatePageClient {
+impl<T> CreatePageClient<T> {
+    /// Change the page-property type used to deserialize the response.
+    /// Call this when you want to map properties into a custom struct instead
+    /// of the default `HashMap<String, PageProperty>`.
+    pub fn typed<U>(self) -> CreatePageClient<U> {
+        CreatePageClient {
+            reqwest_client: self.reqwest_client,
+            page_id: self.page_id,
+            data_source_id: self.data_source_id,
+            properties: self.properties,
+            children: self.children,
+            markdown: self.markdown,
+            icon: self.icon,
+            cover: self.cover,
+            template: self.template,
+            position: self.position,
+            _phantom: PhantomData,
+        }
+    }
+
     /// When you want to create a page from a specific template, use this method to set the template ID.
     pub fn template_id(mut self, template_id: String) -> Self {
         self.template = Some(CreatePageTemplate {
@@ -177,15 +221,16 @@ impl CreatePageClient {
         self
     }
 
-    /// Send a request specifying generics.
+    /// Send the request and deserialize the response properties into type `T`.
     ///
-    /// Create a struct with generics like `send::<MyResponse>()`.
-    /// When the response type is not specific,
-    /// use `send::<HashMap<String, PageProperty>>()`.
-    /// (Type inference for the property field cannot be used.)
+    /// Use `typed::<MyResponse>()` before calling `send()` to specify a custom struct.
+    /// When the response type is not specific, the default `HashMap<String, PageProperty>` is used.
     pub async fn send(
         self,
-    ) -> Result<notionrs_types::object::page::PageResponse, crate::error::Error> {
+    ) -> Result<notionrs_types::object::page::PageResponse<T>, crate::error::Error>
+    where
+        T: DeserializeOwned + Clone + Send + Sync + 'static,
+    {
         let mut parent: Option<notionrs_types::object::parent::Parent> = None;
 
         if let Some(page_id) = self.page_id {
@@ -248,7 +293,8 @@ impl CreatePageClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let page = serde_json::from_slice::<notionrs_types::object::page::PageResponse>(&body)?;
+        let page =
+            serde_json::from_slice::<notionrs_types::object::page::PageResponse<T>>(&body)?;
 
         Ok(page)
     }
@@ -309,9 +355,12 @@ mod tests {
 
     #[test]
     fn create_page_client_markdown_setter() {
-        let client = CreatePageClient::default()
-            .page_id("page-id-123")
-            .markdown("# Hello World");
+        let client = CreatePageClient::<std::collections::HashMap<
+            String,
+            notionrs_types::object::page::PageProperty,
+        >>::default()
+        .page_id("page-id-123")
+        .markdown("# Hello World");
 
         assert_eq!(
             client.markdown,
@@ -321,10 +370,13 @@ mod tests {
 
     #[tokio::test]
     async fn create_page_client_rejects_children_and_markdown() {
-        let client = CreatePageClient::default()
-            .page_id("page-id-123")
-            .children(vec![])
-            .markdown("# Hello World");
+        let client = CreatePageClient::<std::collections::HashMap<
+            String,
+            notionrs_types::object::page::PageProperty,
+        >>::default()
+        .page_id("page-id-123")
+        .children(vec![])
+        .markdown("# Hello World");
 
         let result = client.send().await;
         assert!(result.is_err());

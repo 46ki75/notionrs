@@ -113,7 +113,7 @@ impl Client {
         }
     }
 
-    pub fn create_page(&self) -> crate::client::page::create_page::CreatePageClient {
+    pub fn create_page<T>(&self) -> crate::client::page::create_page::CreatePageClient<T> {
         crate::client::page::create_page::CreatePageClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
@@ -130,7 +130,7 @@ impl Client {
         }
     }
 
-    pub fn move_page(&self) -> crate::client::page::move_page::MovePageClient {
+    pub fn move_page<T>(&self) -> crate::client::page::move_page::MovePageClient<T> {
         crate::client::page::move_page::MovePageClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
