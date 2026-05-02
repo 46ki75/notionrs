@@ -6,8 +6,6 @@ mod integration_tests {
     //
     // # --------------------------------------------------------------------------------
 
-    use notionrs_types::prelude::*;
-
     #[tokio::test]
     async fn query_data_source() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
@@ -15,7 +13,7 @@ mod integration_tests {
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
         let res = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .send()
             .await?;
@@ -37,7 +35,7 @@ mod integration_tests {
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
         let res = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .page_size(1)
             .send()
@@ -66,13 +64,11 @@ mod integration_tests {
         );
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -92,13 +88,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -145,13 +139,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -171,13 +163,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -240,13 +230,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -260,20 +248,17 @@ mod integration_tests {
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
-        let filter =
-            notionrs_types::object::request::filter::Filter::multi_select_contains_any(
-                "Multi-select",
-                ["Something", "Another thing"],
-            );
+        let filter = notionrs_types::object::request::filter::Filter::multi_select_contains_any(
+            "Multi-select",
+            ["Something", "Another thing"],
+        );
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -281,8 +266,8 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_data_source_filter_multi_select_does_not_contain_any(
-    ) -> Result<(), notionrs::Error> {
+    async fn query_data_source_filter_multi_select_does_not_contain_any()
+    -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
@@ -295,13 +280,11 @@ mod integration_tests {
             );
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -331,13 +314,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -365,13 +346,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -417,13 +396,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -455,13 +432,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -491,13 +466,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -527,13 +500,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -557,13 +528,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -583,13 +552,11 @@ mod integration_tests {
         );
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -609,13 +576,11 @@ mod integration_tests {
         );
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -635,13 +600,11 @@ mod integration_tests {
         );
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -661,13 +624,11 @@ mod integration_tests {
         );
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -728,13 +689,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -762,13 +721,11 @@ mod integration_tests {
         ]);
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 
@@ -793,13 +750,11 @@ mod integration_tests {
         )];
 
         let request = client
-            .query_data_source::<std::collections::HashMap<String, PageProperty>>()
+            .query_data_source()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .sorts(sorts);
 
-        let response = request
-            .send()
-            .await?;
+        let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
 

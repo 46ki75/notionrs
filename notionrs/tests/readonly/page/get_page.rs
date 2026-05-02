@@ -9,7 +9,9 @@ mod integration_tests {
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
 
-        let request = client.get_page().page_id(PAGE_ID);
+        let request = client
+            .get_page::<std::collections::HashMap<String, notionrs_types::prelude::PageProperty>>()
+            .page_id(PAGE_ID);
 
         let response = request.send().await?;
 

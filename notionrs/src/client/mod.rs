@@ -96,7 +96,7 @@ impl Client {
     // # --------------------------------------------------------------------------------
 
     // TODO: docs: get_page method
-    pub fn get_page(&self) -> crate::client::page::get_page::GetPageClient {
+    pub fn get_page<T>(&self) -> crate::client::page::get_page::GetPageClient<T> {
         crate::client::page::get_page::GetPageClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
@@ -203,9 +203,9 @@ impl Client {
     //
     // # --------------------------------------------------------------------------------
 
-    pub fn query_data_source<T>(
+    pub fn query_data_source(
         &self,
-    ) -> crate::client::data_source::query_data_source::QueryDataSourceClient<T> {
+    ) -> crate::client::data_source::query_data_source::QueryDataSourceClient {
         crate::client::data_source::query_data_source::QueryDataSourceClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()

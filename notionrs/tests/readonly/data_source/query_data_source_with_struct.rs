@@ -13,7 +13,8 @@ mod integration_tests {
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
         let client = notionrs::Client::new(notion_api_key);
         let res = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .send()
             .await?;
