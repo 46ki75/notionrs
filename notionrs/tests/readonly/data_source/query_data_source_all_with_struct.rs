@@ -20,7 +20,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .into_stream()
             .try_collect()
@@ -48,7 +49,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .page_size(10)
             .into_stream()
@@ -83,7 +85,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -113,7 +116,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -170,7 +174,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -201,7 +206,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -215,8 +221,8 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_data_source_all_with_struct_filter_multi_select_filter(
-    ) -> Result<(), notionrs::Error> {
+    async fn query_data_source_all_with_struct_filter_multi_select_filter()
+    -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
@@ -242,7 +248,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -283,7 +290,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -322,7 +330,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -336,8 +345,8 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_data_source_all_with_struct_filter_phone_number_filter(
-    ) -> Result<(), notionrs::Error> {
+    async fn query_data_source_all_with_struct_filter_phone_number_filter()
+    -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
@@ -379,7 +388,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -393,8 +403,8 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_data_source_all_with_struct_filter_relation_filter(
-    ) -> Result<(), notionrs::Error> {
+    async fn query_data_source_all_with_struct_filter_relation_filter()
+    -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
@@ -422,7 +432,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -463,7 +474,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -477,8 +489,8 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_data_source_all_with_struct_filter_rich_text_filter(
-    ) -> Result<(), notionrs::Error> {
+    async fn query_data_source_all_with_struct_filter_rich_text_filter()
+    -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
@@ -504,7 +516,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -539,7 +552,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -553,8 +567,8 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_data_source_all_with_struct_filter_timestamp_filter(
-    ) -> Result<(), notionrs::Error> {
+    async fn query_data_source_all_with_struct_filter_timestamp_filter()
+    -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
@@ -582,7 +596,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -596,8 +611,8 @@ mod integration_tests {
     }
 
     #[tokio::test]
-    async fn query_data_source_all_with_struct_filter_unique_id_filter(
-    ) -> Result<(), notionrs::Error> {
+    async fn query_data_source_all_with_struct_filter_unique_id_filter()
+    -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
         let notion_api_key = std::env::var("NOTION_API_KEY_READONLY").unwrap();
@@ -621,7 +636,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .filter(filter)
             .into_stream()
@@ -656,7 +672,8 @@ mod integration_tests {
                 crate::data_source_schema::IntegrationTestDataSourceSchema,
             >,
         > = client
-            .query_data_source::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
+            .query_data_source()
+            .typed::<crate::data_source_schema::IntegrationTestDataSourceSchema>()
             .data_source_id(crate::readonly::DATA_SOURCE_ID)
             .sorts(sorts)
             .into_stream()

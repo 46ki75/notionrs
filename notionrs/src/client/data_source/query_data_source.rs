@@ -5,7 +5,9 @@ use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use notionrs_types::prelude::*;
 
 #[derive(Debug, Clone)]
-pub struct QueryDataSourceClient<T = std::collections::HashMap<String, notionrs_types::prelude::PageProperty>> {
+pub struct QueryDataSourceClient<
+    T = std::collections::HashMap<String, notionrs_types::prelude::PageProperty>,
+> {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
@@ -37,6 +39,21 @@ impl<T> Default for QueryDataSourceClient<T> {
 }
 
 impl<T> QueryDataSourceClient<T> {
+    /// Change the page-property type used to deserialize query results.
+    /// Call this when you want to map properties into a custom struct instead
+    /// of the default `HashMap<String, PageProperty>`.
+    pub fn typed<U>(self) -> QueryDataSourceClient<U> {
+        QueryDataSourceClient {
+            reqwest_client: self.reqwest_client,
+            data_source_id: self.data_source_id,
+            filter: self.filter,
+            sorts: self.sorts,
+            start_cursor: self.start_cursor,
+            page_size: self.page_size,
+            _phantom: PhantomData,
+        }
+    }
+
     /// Set the value of the `data_source_id` field.
     pub fn data_source_id<S: AsRef<str>>(mut self, data_source_id: S) -> Self {
         self.data_source_id = Some(data_source_id.as_ref().to_string());

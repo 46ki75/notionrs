@@ -18,7 +18,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     let response = client
-        .query_data_source::<MyProperties>()
+        .query_data_source()
+        .typed::<MyProperties>()
         .data_source_id("DATA_SOURCE_ID")
         .filter(filter)
         .sorts(vec![sort])
