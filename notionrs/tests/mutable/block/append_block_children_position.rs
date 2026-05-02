@@ -16,7 +16,7 @@ mod integration_tests {
         );
 
         let pre_page = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .data_source_id(crate::mutable::DATA_SOURCE_ID)
             .send()

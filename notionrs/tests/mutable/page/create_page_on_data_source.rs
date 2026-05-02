@@ -23,7 +23,7 @@ mod integration_tests {
         );
 
         let request = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .data_source_id(crate::mutable::DATA_SOURCE_ID)
             .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
@@ -73,7 +73,7 @@ mod integration_tests {
         );
 
         let request = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .data_source_id(crate::mutable::DATA_SOURCE_ID)
             .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
@@ -125,7 +125,7 @@ mod integration_tests {
         );
 
         let request = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .data_source_id(crate::mutable::DATA_SOURCE_ID)
             .template_default_with_timezone("America/New_York".to_string());

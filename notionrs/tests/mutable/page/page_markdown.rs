@@ -20,7 +20,7 @@ mod integration_tests {
         );
 
         let page = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .page_id(PAGE_ID)
             .send()
@@ -59,7 +59,7 @@ mod integration_tests {
         );
 
         let page = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .page_id(PAGE_ID)
             .send()
@@ -105,7 +105,7 @@ mod integration_tests {
         );
 
         let page = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .page_id(PAGE_ID)
             .send()
@@ -159,7 +159,7 @@ mod integration_tests {
         );
 
         let page = client
-            .create_page()
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .page_id(PAGE_ID)
             .send()

@@ -1,11 +1,14 @@
 use notionrs::client::Client;
+use notionrs_types::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
     let client = Client::new(notion_api_key);
 
-    let request = client.create_page().page_id("PAGE_ID");
+    let request = client
+        .get_page::<std::collections::HashMap<String, PageProperty>>()
+        .page_id("PAGE_ID");
 
     let response = request.send().await?;
 
