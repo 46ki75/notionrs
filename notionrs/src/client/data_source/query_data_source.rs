@@ -1,9 +1,11 @@
+use std::marker::PhantomData;
+
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
 use notionrs_types::prelude::*;
 
-#[derive(Debug, Default, Clone, notionrs_macro::Setter)]
-pub struct QueryDataSourceClient {
+#[derive(Debug, Clone)]
+pub struct QueryDataSourceClient<T = std::collections::HashMap<String, notionrs_types::prelude::PageProperty>> {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
@@ -16,12 +18,86 @@ pub struct QueryDataSourceClient {
     pub(crate) start_cursor: Option<String>,
 
     pub(crate) page_size: Option<u32>,
+
+    pub(crate) _phantom: PhantomData<T>,
 }
 
-crate::impl_paginate!(
-    QueryDataSourceClient,
-    notionrs_types::object::page::PageResponse
-);
+impl<T> Default for QueryDataSourceClient<T> {
+    fn default() -> Self {
+        Self {
+            reqwest_client: reqwest::Client::default(),
+            data_source_id: None,
+            filter: None,
+            sorts: Vec::new(),
+            start_cursor: None,
+            page_size: None,
+            _phantom: PhantomData,
+        }
+    }
+}
+
+impl<T> QueryDataSourceClient<T> {
+    /// Set the value of the `data_source_id` field.
+    pub fn data_source_id<S: AsRef<str>>(mut self, data_source_id: S) -> Self {
+        self.data_source_id = Some(data_source_id.as_ref().to_string());
+        self
+    }
+
+    /// Set the value of the `filter` field.
+    pub fn filter(mut self, filter: notionrs_types::object::request::filter::Filter) -> Self {
+        self.filter = Some(filter);
+        self
+    }
+
+    /// Set the value of the `sorts` field.
+    pub fn sorts(mut self, sorts: Vec<notionrs_types::object::request::sort::Sort>) -> Self {
+        self.sorts = sorts;
+        self
+    }
+
+    /// Set the value of the `start_cursor` field.
+    pub fn start_cursor<S: AsRef<str>>(mut self, start_cursor: S) -> Self {
+        self.start_cursor = Some(start_cursor.as_ref().to_string());
+        self
+    }
+
+    /// Set the value of the `page_size` field.
+    pub fn page_size(mut self, page_size: u32) -> Self {
+        self.page_size = Some(page_size);
+        self
+    }
+}
+
+impl<T> crate::r#trait::Paginate<notionrs_types::object::page::PageResponse<T>>
+    for QueryDataSourceClient<T>
+where
+    T: Serialize + DeserializeOwned + Clone + Send + Sync + 'static,
+{
+    fn paginate_start_cursor(self, start_cursor: Option<String>) -> Self {
+        match start_cursor {
+            Some(c) => self.start_cursor(c),
+            None => self,
+        }
+    }
+
+    fn paginate_send(
+        self,
+    ) -> std::pin::Pin<
+        Box<
+            dyn std::future::Future<
+                    Output = Result<
+                        notionrs_types::object::response::ListResponse<
+                            notionrs_types::object::page::PageResponse<T>,
+                        >,
+                        crate::error::Error,
+                    >,
+                > + Send
+                + Sync,
+        >,
+    > {
+        Box::pin(async { Ok(self.send().await?) })
+    }
+}
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct QueryDataSourceRequestBody {
@@ -38,12 +114,13 @@ pub struct QueryDataSourceRequestBody {
     pub(crate) page_size: Option<u32>,
 }
 
-impl QueryDataSourceClient {
-    pub async fn send<T>(
+impl<T> QueryDataSourceClient<T>
+where
+    T: Serialize + DeserializeOwned + Clone + Send + Sync + 'static,
+{
+    pub async fn send(
         self,
     ) -> Result<ListResponse<notionrs_types::object::page::PageResponse<T>>, crate::error::Error>
-    where
-        T: Serialize + DeserializeOwned + Clone + Send + Sync + 'static,
     {
         match self.data_source_id {
             Some(id) => {

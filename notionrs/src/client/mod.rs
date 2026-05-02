@@ -203,9 +203,9 @@ impl Client {
     //
     // # --------------------------------------------------------------------------------
 
-    pub fn query_data_source(
+    pub fn query_data_source<T>(
         &self,
-    ) -> crate::client::data_source::query_data_source::QueryDataSourceClient {
+    ) -> crate::client::data_source::query_data_source::QueryDataSourceClient<T> {
         crate::client::data_source::query_data_source::QueryDataSourceClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()
