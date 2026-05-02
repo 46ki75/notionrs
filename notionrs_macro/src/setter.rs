@@ -3,6 +3,8 @@ use syn::{Data, DeriveInput, Expr, Fields, Lit, Meta, MetaNameValue, Type};
 
 pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
     let struct_name = input.ident;
+    let generics = input.generics;
+    let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
 
     let fields = match input.data {
         Data::Struct(data) => match data.fields {
@@ -24,9 +26,9 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
         } else if is_string_type(field_ty) {
             quote! {
                 #comment
-                pub fn #field_name<T>(mut self, #field_name: T) -> Self
+                pub fn #field_name<S>(mut self, #field_name: S) -> Self
                 where
-                    T: AsRef<str>,
+                    S: AsRef<str>,
                 {
                     self.#field_name = #field_name.as_ref().to_string();
                     self
@@ -54,9 +56,9 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
             if is_string_type(inner_ty) {
                 quote! {
                     #comment
-                    pub fn #field_name<T>(mut self, #field_name: T) -> Self
+                    pub fn #field_name<S>(mut self, #field_name: S) -> Self
                     where
-                        T: AsRef<str>,{
+                        S: AsRef<str>,{
                         self.#field_name = Some(#field_name.as_ref().to_string());
                         self
                     }
@@ -82,7 +84,7 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
     });
 
     let expanded = quote! {
-        impl #struct_name {
+        impl #impl_generics #struct_name #ty_generics #where_clause {
             #(#field_setters)*
         }
     };
