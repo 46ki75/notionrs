@@ -120,7 +120,10 @@ impl Client {
         }
     }
 
-    pub fn update_page(&self) -> crate::client::page::update_page::UpdatePageClient {
+    pub fn update_page<T>(&self) -> crate::client::page::update_page::UpdatePageClient<T>
+    where
+        T: Default,
+    {
         crate::client::page::update_page::UpdatePageClient {
             reqwest_client: self.reqwest_client.clone(),
             ..Default::default()

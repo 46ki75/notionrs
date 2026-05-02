@@ -1,14 +1,15 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
-#[derive(Debug, Default, notionrs_macro::Setter)]
-pub struct UpdatePageClient {
+#[derive(Debug, notionrs_macro::Setter)]
+pub struct UpdatePageClient<
+    T = std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
+> {
     /// The reqwest http client
     pub(crate) reqwest_client: reqwest::Client,
 
     pub(crate) page_id: Option<String>,
 
-    pub(crate) properties:
-        std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
+    pub(crate) properties: T,
 
     pub(crate) in_trash: Option<bool>,
 
@@ -19,10 +20,26 @@ pub struct UpdatePageClient {
     pub(crate) template: Option<UpdatePageTemplate>,
 }
 
+impl<T> Default for UpdatePageClient<T>
+where
+    T: Default,
+{
+    fn default() -> Self {
+        Self {
+            reqwest_client: reqwest::Client::default(),
+            page_id: None,
+            properties: Default::default(),
+            in_trash: None,
+            icon: None,
+            cover: None,
+            template: None,
+        }
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize)]
-pub struct UpdatePageRequestBody {
-    pub(crate) properties:
-        std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
+pub struct UpdatePageRequestBody<T> {
+    pub(crate) properties: T,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) in_trash: Option<bool>,
@@ -54,7 +71,10 @@ pub struct UpdatePageTemplate {
     pub(crate) timezone: Option<String>,
 }
 
-impl UpdatePageClient {
+impl<T> UpdatePageClient<T>
+where
+    T: Serialize + DeserializeOwned + Clone + Send + Sync + 'static,
+{
     /// When you want to update a page from a specific template, use this method to set the template ID.
     pub fn template_id(mut self, template_id: String) -> Self {
         self.template = Some(UpdatePageTemplate {
@@ -103,7 +123,7 @@ impl UpdatePageClient {
 
     pub async fn send(
         self,
-    ) -> Result<notionrs_types::object::page::PageResponse, crate::error::Error> {
+    ) -> Result<notionrs_types::object::page::PageResponse<T>, crate::error::Error> {
         let page_id = self.page_id.ok_or(crate::error::Error::RequestParameter(
             "`page_id` is not set.".to_string(),
         ))?;
@@ -140,7 +160,7 @@ impl UpdatePageClient {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let page = serde_json::from_slice::<notionrs_types::object::page::PageResponse>(&body)?;
+        let page = serde_json::from_slice::<notionrs_types::object::page::PageResponse<T>>(&body)?;
 
         Ok(page)
     }
