@@ -9,6 +9,7 @@ pub enum Parent {
     PageParent(PageParent),
     WorkspaceParent(WorkspaceParent),
     BlockParent(BlockParent),
+    AgentIdParent(AgentIdParent),
 }
 
 /// <https://developers.notion.com/reference/parent-object#database-parent>
@@ -125,5 +126,42 @@ impl From<String> for BlockParent {
             r#type: "block_id".to_string(),
             block_id,
         }
+    }
+}
+
+/// Parent type for workflow-parented pages and blocks.
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+pub struct AgentIdParent {
+    /// always "agent_id"
+    #[serde(skip_serializing)]
+    pub r#type: String,
+    pub agent_id: String,
+}
+
+// # --------------------------------------------------------------------------------
+//
+// Unit tests
+//
+// # --------------------------------------------------------------------------------
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+
+    #[test]
+    fn deserialize_agent_id_parent() {
+        let json = r#"{"type":"agent_id","agent_id":"abc123"}"#;
+        let parent: Parent = serde_json::from_str(json).unwrap();
+        assert!(matches!(parent, Parent::AgentIdParent(_)));
+        if let Parent::AgentIdParent(p) = parent {
+            assert_eq!(p.agent_id, "abc123");
+        }
+    }
+
+    #[test]
+    fn deserialize_block_parent() {
+        let json = r#"{"type":"block_id","block_id":"block-abc"}"#;
+        let parent: Parent = serde_json::from_str(json).unwrap();
+        assert!(matches!(parent, Parent::BlockParent(_)));
     }
 }

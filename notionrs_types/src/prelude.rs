@@ -1,6 +1,7 @@
 pub use crate::object::{
     block::{
-        Block, BlockResponse, bookmark::*, bulleted_list_item::*, callout::*, child_database::*,
+        Block, BlockResponse, MeetingNotesBlockResponse, QueryMeetingNotesResponse,
+        bookmark::*, bulleted_list_item::*, callout::*, child_database::*,
         child_page::*, code::*, column::*, column_list::*, embed::*, equation::*, heading::*,
         link_preview::*, numbered_list_item::*, paragraph::*, quote::*, synced_block::*, tab::*,
         table::*, table_of_contents::*, table_row::*, template::*, to_do::*, toggle::*,
@@ -20,7 +21,7 @@ pub use crate::object::{
         rich_text::*, rollup::*, select::*, status::*, title::*, unique_id::*, url::*,
         verification::*,
     },
-    request::{filter::*, search::*, sort::*},
+    request::{filter::*, meeting_notes::*, search::*, sort::*},
     rich_text::{RichText, RichTextAnnotations, equation::*, mention::*, text::*},
 };
 

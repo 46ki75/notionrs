@@ -301,6 +301,18 @@ impl Client {
         }
     }
 
+    /// Query meeting notes.
+    ///
+    /// <https://developers.notion.com/reference/query-meeting-notes>
+    pub fn query_meeting_notes(
+        &self,
+    ) -> crate::client::block::query_meeting_notes::QueryMeetingNotesClient {
+        crate::client::block::query_meeting_notes::QueryMeetingNotesClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     // # --------------------------------------------------------------------------------
     //
     // search

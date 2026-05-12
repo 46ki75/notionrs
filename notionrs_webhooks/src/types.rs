@@ -47,6 +47,7 @@ pub enum WebhookEntity {
     DataSource { id: String },
     Space { id: String },
     Comment { id: String },
+    Agent { id: String },
 }
 
 impl WebhookEntity {
@@ -58,6 +59,7 @@ impl WebhookEntity {
             WebhookEntity::DataSource { id } => id,
             WebhookEntity::Space { id } => id,
             WebhookEntity::Comment { id } => id,
+            WebhookEntity::Agent { id } => id,
         }
     }
 }
@@ -297,6 +299,17 @@ pub struct CommentDeleted {
 #[cfg(test)]
 mod test {
     use super::*;
+
+    #[test]
+    fn deserialize_page_created_agent_parent() {
+        let json_data = include_bytes!("./events/page.created.agent_parent.json");
+        let deserialized = serde_json::from_slice::<WebhookEvent>(json_data).unwrap();
+        println!("{:#?}", deserialized);
+        assert!(matches!(deserialized.data, EventData::PageCreated(_)));
+        if let EventData::PageCreated(data) = deserialized.data {
+            assert!(matches!(data.parent, WebhookEntity::Agent { .. }));
+        }
+    }
 
     #[test]
     fn deserialize_page_created() {
