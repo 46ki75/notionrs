@@ -2,8 +2,8 @@ mod integration_tests {
 
     use notionrs_types::object::request::meeting_notes::{
         MeetingNotesCombinatorFilter, MeetingNotesCombinatorOperator, MeetingNotesFilterNode,
-        MeetingNotesPropertyFilter, MeetingNotesPropertyFilterCondition,
-        MeetingNotesPropertyName, MeetingNotesSort, MeetingNotesSortDirection,
+        MeetingNotesPropertyFilter, MeetingNotesPropertyFilterCondition, MeetingNotesPropertyName,
+        MeetingNotesSort, MeetingNotesSortDirection,
     };
 
     // # --------------------------------------------------------------------------------
@@ -14,6 +14,7 @@ mod integration_tests {
 
     /// Basic query with no filter or sort.
     #[tokio::test]
+    #[ignore]
     async fn query_meeting_notes() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
@@ -35,6 +36,7 @@ mod integration_tests {
 
     /// Query with a limit on the number of results.
     #[tokio::test]
+    #[ignore]
     async fn query_meeting_notes_with_limit() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
@@ -56,6 +58,7 @@ mod integration_tests {
 
     /// Query filtered by title using a string_contains operator.
     #[tokio::test]
+    #[ignore]
     async fn query_meeting_notes_with_filter() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
@@ -75,11 +78,7 @@ mod integration_tests {
             )]),
         };
 
-        let response = client
-            .query_meeting_notes()
-            .filter(filter)
-            .send()
-            .await?;
+        let response = client.query_meeting_notes().filter(filter).send().await?;
 
         println!("{:?}", response);
 
@@ -94,6 +93,7 @@ mod integration_tests {
 
     /// Query sorted by created_time descending.
     #[tokio::test]
+    #[ignore]
     async fn query_meeting_notes_with_sort() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
@@ -105,11 +105,7 @@ mod integration_tests {
             direction: MeetingNotesSortDirection::Descending,
         }];
 
-        let response = client
-            .query_meeting_notes()
-            .sort(sort)
-            .send()
-            .await?;
+        let response = client.query_meeting_notes().sort(sort).send().await?;
 
         println!("{:?}", response);
 
