@@ -89,6 +89,49 @@ pub struct BlockResponse {
     pub block: Block,
 }
 
+/// A single meeting note result from the query meeting notes endpoint.
+///
+/// <https://developers.notion.com/reference/query-meeting-notes>
+#[allow(deprecated)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct MeetingNotesBlockResponse {
+    /// Always `"block"`.
+    pub object: String,
+
+    pub id: String,
+
+    /// ISO 8601 timestamp when this meeting note was created.
+    #[serde(with = "time::serde::rfc3339")]
+    pub created_time: time::OffsetDateTime,
+
+    /// ISO 8601 timestamp when this meeting note was last edited.
+    #[serde(with = "time::serde::rfc3339")]
+    pub last_edited_time: time::OffsetDateTime,
+
+    pub created_by: crate::object::user::User,
+
+    pub last_edited_by: crate::object::user::User,
+
+    pub has_children: bool,
+
+    #[deprecated(note = "Use `in_trash` instead. Deprecated in 2026-03-11 API version.")]
+    #[serde(default)]
+    pub archived: bool,
+
+    pub in_trash: bool,
+
+    pub meeting_notes: transcription::TranscriptionBlock,
+}
+
+/// Response from the query meeting notes endpoint.
+///
+/// <https://developers.notion.com/reference/query-meeting-notes>
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+pub struct QueryMeetingNotesResponse {
+    pub results: Vec<MeetingNotesBlockResponse>,
+    pub has_more: bool,
+}
+
 /// <https://developers.notion.com/reference/block#block-type-objects>
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]

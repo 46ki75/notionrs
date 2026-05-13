@@ -24,6 +24,8 @@ cargo check
 
 ### Integration Tests
 
+If you create a new client method, you should add integration tests.
+
 #### Mutable Integration Tests
 
 Mutable integration tests MUST NOT be run by AI agents. The environment variable `NOTION_API_KEY_MUTABLE` is required.
