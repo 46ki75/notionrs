@@ -61,3 +61,30 @@ fn test_documented_struct_compiles() {
     assert_eq!(s.name, "x");
 }
 
+// Exercises the non-`Type::Path` fall-through in `is_option_type` /
+// `is_string_type` (a tuple type is `Type::Tuple`).
+#[derive(Default, notionrs_macro::Setter)]
+pub struct NonPathFieldType {
+    pub pair: (i32, i32),
+}
+
+#[test]
+fn test_non_path_field_type() {
+    let s = NonPathFieldType::default().pair((1, 2));
+    assert_eq!(s.pair, (1, 2));
+}
+
+// `#[doc(hidden)]` parses as `Meta::List`, not `Meta::NameValue`, so the
+// inner string-literal extraction in `generate_comment` returns `None`.
+#[derive(Default, notionrs_macro::Setter)]
+pub struct HiddenDocField {
+    #[doc(hidden)]
+    pub field: String,
+}
+
+#[test]
+fn test_hidden_doc_field() {
+    let s = HiddenDocField::default().field("v");
+    assert_eq!(s.field, "v");
+}
+
