@@ -131,4 +131,31 @@ mod unit_tests {
             "csu%5B"
         );
     }
+
+    #[test]
+    fn relation_property() {
+        let p = DataSourceRelationProperty::create_one_way_relation("db-id");
+        assert_eq!(p.relation.database_id, "db-id");
+        assert!(p.relation.single_property.is_some());
+
+        let p2 = DataSourceRelationProperty::create_tow_way_relation("db", "sp-id", "sp-name");
+        let dual = p2.relation.dual_property.unwrap();
+        assert_eq!(dual.synced_property_id, "sp-id");
+        assert_eq!(dual.synced_property_name, "sp-name");
+
+        let _ = DataSourceRelationProperty::default()
+            .id("id")
+            .name("n")
+            .description("d")
+            .relation(DataSourceRelationDetail::default());
+
+        let _ = DataSourceRelationDetail::default()
+            .database_id("db")
+            .single_property(std::collections::HashMap::new())
+            .dual_property(DataSourceRelationDualProperty::default());
+
+        let _ = DataSourceRelationDualProperty::default()
+            .synced_property_id("a")
+            .synced_property_name("b");
+    }
 }

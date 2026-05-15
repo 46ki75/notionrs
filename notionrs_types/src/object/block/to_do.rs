@@ -107,4 +107,39 @@ mod unit_tests {
             _ => panic!(),
         }
     }
+
+    #[test]
+    fn to_do_color_setters() {
+        use crate::object::color::Color;
+        let t = ToDoBlock::default();
+        assert_eq!(t.clone().default_color().color, Color::Default);
+        assert_eq!(t.clone().blue().color, Color::Blue);
+        assert_eq!(t.clone().brown().color, Color::Brown);
+        assert_eq!(t.clone().gray().color, Color::Gray);
+        assert_eq!(t.clone().green().color, Color::Green);
+        assert_eq!(t.clone().orange().color, Color::Orange);
+        assert_eq!(t.clone().pink().color, Color::Pink);
+        assert_eq!(t.clone().purple().color, Color::Purple);
+        assert_eq!(t.clone().red().color, Color::Red);
+        assert_eq!(t.clone().yellow().color, Color::Yellow);
+        assert_eq!(
+            t.clone().default_background_color().color,
+            Color::DefaultBackground
+        );
+        assert_eq!(t.clone().blue_background().color, Color::BlueBackground);
+        assert_eq!(t.clone().brown_background().color, Color::BrownBackground);
+        assert_eq!(t.clone().gray_background().color, Color::GrayBackground);
+        assert_eq!(t.clone().green_background().color, Color::GreenBackground);
+        assert_eq!(t.clone().orange_background().color, Color::OrangeBackground);
+        assert_eq!(t.clone().pink_background().color, Color::PinkBackground);
+        assert_eq!(t.clone().purple_background().color, Color::PurpleBackground);
+        assert_eq!(t.clone().red_background().color, Color::RedBackground);
+        assert_eq!(t.yellow_background().color, Color::YellowBackground);
+    }
+
+    #[test]
+    fn to_do_from_str_and_display() {
+        let t: ToDoBlock = "todo".into();
+        assert_eq!(t.to_string(), "todo");
+    }
 }

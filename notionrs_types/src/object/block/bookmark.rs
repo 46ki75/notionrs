@@ -80,4 +80,15 @@ mod unit_tests {
             _ => panic!(),
         }
     }
+
+    #[test]
+    fn bookmark_from_and_display_and_setters() {
+        use crate::object::rich_text::RichText;
+        let bm: BookmarkBlock = "https://bk".into();
+        assert_eq!(bm.to_string(), "https://bk");
+        let bm2 = BookmarkBlock::default()
+            .url("https://bk2")
+            .caption(vec![RichText::from("c")]);
+        assert_eq!(bm2.to_string(), "https://bk2");
+    }
 }

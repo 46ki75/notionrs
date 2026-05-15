@@ -11,3 +11,18 @@ pub struct Equation {
 
 crate::impl_display_from_string_field!(Equation, expression);
 crate::impl_from_as_ref!(Equation, expression);
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+
+    #[test]
+    fn equation_display_and_from() {
+        let eq: Equation = "E = mc^2".into();
+        assert_eq!(eq.expression, "E = mc^2");
+        assert_eq!(eq.to_string(), "E = mc^2");
+
+        let eq2 = Equation::default().expression("x = y");
+        assert_eq!(eq2.expression, "x = y");
+    }
+}

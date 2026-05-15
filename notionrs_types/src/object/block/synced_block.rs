@@ -96,4 +96,22 @@ mod unit_tests {
             "9c71962d-8c9a-4bdf-b1a1-2f5cec3ac454"
         )
     }
+
+    #[test]
+    fn synced_block_setters_and_display() {
+        let sb = SyncedBlock::default().block_id("block-1");
+        assert_eq!(sb.to_string(), "block-1");
+        let _ = sb.synced_from(super::SyncedBlockParams {
+            r#type: "block_id".to_string(),
+            block_id: "x".to_string(),
+        });
+
+        let empty = SyncedBlock::default();
+        assert_eq!(empty.to_string(), "");
+
+        let from_str: SyncedBlock = "abc".into();
+        assert_eq!(from_str.to_string(), "abc");
+
+        let _ = super::SyncedBlockParams::default();
+    }
 }

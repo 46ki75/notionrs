@@ -152,4 +152,40 @@ mod unit_tests {
             Some("31434608-d5c9-80b6-a815-fcb76dc6be32".to_owned())
         );
     }
+
+    #[test]
+    fn transcription_setters() {
+        use crate::object::rich_text::RichText;
+        let tb = TranscriptionBlock::default()
+            .title(vec![RichText::from("Title")])
+            .status(TranscriptionStatus::TranscriptionInProgress)
+            .children(
+                TranscriptionChildren::default()
+                    .summary_block_id("s")
+                    .notes_block_id("n")
+                    .transcript_block_id("t"),
+            )
+            .calendar_event(TranscriptionCalendarEvent {
+                start_time: time::OffsetDateTime::now_utc(),
+                end_time: time::OffsetDateTime::now_utc(),
+                attendees: Some(vec!["a".to_string()]),
+            })
+            .recording(
+                TranscriptionRecording::default()
+                    .start_time(time::OffsetDateTime::now_utc())
+                    .end_time(time::OffsetDateTime::now_utc()),
+            );
+        assert_eq!(tb.to_string(), "Title");
+
+        let empty = TranscriptionBlock::default();
+        assert_eq!(empty.to_string(), "");
+
+        let ce = TranscriptionCalendarEvent {
+            start_time: time::OffsetDateTime::now_utc(),
+            end_time: time::OffsetDateTime::now_utc(),
+            attendees: None,
+        }
+        .attendees(vec!["x".to_string()]);
+        assert!(ce.attendees.is_some());
+    }
 }

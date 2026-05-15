@@ -46,4 +46,17 @@ mod unit_tests {
         assert_eq!(checkbox.name, "Checkbox");
         assert_eq!(checkbox.checkbox, std::collections::HashMap::new());
     }
+
+    #[test]
+    fn exercise_setters() {
+        let p = DataSourceCheckboxProperty::default()
+            .id("ID")
+            .name("Name")
+            .description("Desc")
+            .checkbox(std::collections::HashMap::new());
+        assert_eq!(p.id.as_deref(), Some("ID"));
+        assert_eq!(p.name, "Name");
+        assert_eq!(p.description.as_deref(), Some("Desc"));
+        let _ = serde_json::to_string(&p).unwrap();
+    }
 }

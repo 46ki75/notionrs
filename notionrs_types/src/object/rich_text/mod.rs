@@ -413,4 +413,91 @@ mod unit_tests {
 
         assert_eq!(serialized_value, expected_value);
     }
+
+    #[test]
+    fn rich_text_manipulation_on_all_variants() {
+        use super::equation::Equation;
+        use super::mention::Mention;
+        use crate::object::user::User;
+
+        let user = User {
+            object: "user".to_string(),
+            id: "uid".to_string(),
+            ..Default::default()
+        };
+
+        let text_rt = RichText::from("body");
+        let mention_rt = RichText::Mention {
+            mention: Mention::User { user: user.clone() },
+            annotations: RichTextAnnotations::default(),
+            plain_text: "User".into(),
+            href: None,
+        };
+        let eq_rt = RichText::Equation {
+            equation: Equation::from("E=mc"),
+            annotations: RichTextAnnotations::default(),
+            plain_text: "E=mc".into(),
+            href: None,
+        };
+
+        for rt in [text_rt, mention_rt, eq_rt] {
+            let _ = rt.clone().plain_text("Hello").to_string();
+            let _ = rt.clone().href("https://h").to_string();
+            let _ = rt
+                .clone()
+                .bold()
+                .italic()
+                .strikethrough()
+                .underline()
+                .code()
+                .color(Color::Red);
+            let _ = rt.clone().annotations(RichTextAnnotations::default());
+            let _ = rt.to_markdown();
+        }
+    }
+
+    #[test]
+    fn rich_text_to_markdown_variations() {
+        use super::equation::Equation;
+        use super::mention::Mention;
+        use crate::object::user::User;
+
+        let user = User {
+            object: "user".to_string(),
+            id: "uid".to_string(),
+            ..Default::default()
+        };
+
+        let rt = RichText::from("hello");
+        assert_eq!(rt.to_markdown(), "hello");
+
+        let bold = RichText::from("hi").bold();
+        assert_eq!(bold.to_markdown(), "**hi**");
+
+        let formatted = RichText::from("x")
+            .italic()
+            .underline()
+            .strikethrough()
+            .code();
+        assert!(formatted.to_markdown().contains('`'));
+
+        let linked = RichText::from("click").href("https://x");
+        assert_eq!(linked.to_markdown(), "[click](https://x)");
+
+        let eq = RichText::Equation {
+            equation: Equation::from("a"),
+            annotations: RichTextAnnotations::default(),
+            plain_text: "a".into(),
+            href: None,
+        };
+        assert_eq!(eq.to_markdown(), "$a$");
+
+        let mention = RichText::Mention {
+            mention: Mention::User { user },
+            annotations: RichTextAnnotations::default(),
+            plain_text: "User".into(),
+            href: Some("https://u".to_string()),
+        };
+        assert_eq!(mention.to_markdown(), "[User](https://u)");
+    }
 }

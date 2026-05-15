@@ -104,4 +104,21 @@ mod unit_tests {
         assert_eq!(unique_id.unique_id.prefix, Some("TES".to_string()));
         assert_eq!(unique_id.unique_id.number, Some(434));
     }
+
+    #[test]
+    fn page_unique_id_setters_and_display() {
+        let p = PageUniqueIdProperty::default()
+            .id("id")
+            .unique_id(PageUniqueIdPropertyParameter::default());
+        let _ = p.to_string();
+        let with_prefix = PageUniqueIdProperty {
+            id: None,
+            unique_id: PageUniqueIdPropertyParameter::default()
+                .prefix("PRE")
+                .number(42),
+        };
+        let _ = with_prefix.to_string();
+        let no_prefix = PageUniqueIdPropertyParameter::default().number(99);
+        let _ = no_prefix.to_string();
+    }
 }

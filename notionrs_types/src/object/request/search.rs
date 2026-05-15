@@ -86,3 +86,38 @@ impl SearchSort {
         }
     }
 }
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+
+    #[test]
+    fn search_filter_and_sort() {
+        let page = SearchFilter::page();
+        assert_eq!(page.value, SearchFilterType::Page);
+        assert_eq!(page.property, "object");
+
+        let db = SearchFilter::database();
+        assert_eq!(db.value, SearchFilterType::DataSource);
+
+        let asc = SearchSort::asc();
+        assert_eq!(asc.direction, SearchSortDirection::Ascending);
+        assert_eq!(asc.timestamp, "last_edited_time");
+
+        let desc = SearchSort::desc();
+        assert_eq!(desc.direction, SearchSortDirection::Descending);
+
+        let json = serde_json::to_string(&page).unwrap();
+        let _: SearchFilter = serde_json::from_str(&json).unwrap();
+        let json = serde_json::to_string(&asc).unwrap();
+        let _: SearchSort = serde_json::from_str(&json).unwrap();
+
+        let _ = SearchFilter::default();
+        let _ = SearchSort::default();
+        assert_eq!(SearchFilterType::default(), SearchFilterType::Page);
+        assert_eq!(
+            SearchSortDirection::default(),
+            SearchSortDirection::Ascending
+        );
+    }
+}

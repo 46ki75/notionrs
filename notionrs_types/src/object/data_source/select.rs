@@ -107,4 +107,16 @@ mod unit_tests {
             Some(crate::object::select::SelectColor::Yellow)
         );
     }
+
+    #[test]
+    fn select_property() {
+        let p = DataSourceSelectProperty::default()
+            .id("id")
+            .name("n")
+            .description("d")
+            .options(vec![]);
+        let _ = serde_json::to_string(&p).unwrap();
+
+        let _ = DataSourceSelectOptionProperty::default();
+    }
 }

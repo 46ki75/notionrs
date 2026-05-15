@@ -156,4 +156,36 @@ mod unit_tests {
             Formula::Number(_) => panic!(),
         }
     }
+
+    #[test]
+    fn page_formula_setters_and_display() {
+        let p = PageFormulaProperty {
+            id: Some("id".to_string()),
+            formula: Formula::String(FormulaString {
+                string: Some("hi".to_string()),
+            }),
+        }
+        .id("id")
+        .formula(Formula::Boolean(FormulaBoolean {
+            boolean: Some(true),
+        }));
+        assert_eq!(p.to_string(), "true");
+
+        let bool_none = Formula::Boolean(FormulaBoolean { boolean: None });
+        assert_eq!(bool_none.to_string(), "false");
+        let num = Formula::Number(FormulaNumber { number: Some(3.5) });
+        assert_eq!(num.to_string(), "3.5");
+        let num_none = Formula::Number(FormulaNumber { number: None });
+        assert_eq!(num_none.to_string(), "0");
+        let s_none = Formula::String(FormulaString { string: None });
+        assert_eq!(s_none.to_string(), "");
+        let date = Formula::Date(FormulaDate {
+            date: Some(crate::object::date::DateOrDateTime::Date(
+                time::Date::from_calendar_date(2024, time::Month::January, 1).unwrap(),
+            )),
+        });
+        let _ = date.to_string();
+        let date_none = Formula::Date(FormulaDate { date: None });
+        let _ = date_none.to_string();
+    }
 }

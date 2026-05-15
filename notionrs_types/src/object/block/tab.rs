@@ -39,4 +39,12 @@ mod unit_tests {
 
         let _ = serde_json::from_str::<TabBlock>(json_data).unwrap();
     }
+
+    #[test]
+    fn tab_display() {
+        let tab = TabBlock {
+            children: Some(vec![]),
+        };
+        assert_eq!(tab.to_string(), "");
+    }
 }

@@ -83,4 +83,16 @@ mod unit_tests {
         );
         assert_eq!(last_edited_time.last_edited_time, expected_last_edited_time);
     }
+
+    #[test]
+    fn page_last_edited_time_setters_and_display() {
+        let now = time::OffsetDateTime::now_utc();
+        let p = PageLastEditedTimeProperty {
+            id: Some("id".to_string()),
+            last_edited_time: now,
+        }
+        .id("x")
+        .last_edited_time(now);
+        let _ = p.to_string();
+    }
 }

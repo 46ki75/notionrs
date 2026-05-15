@@ -85,4 +85,11 @@ mod unit_tests {
             _ => panic!(),
         }
     }
+
+    #[test]
+    fn template_setters_and_display() {
+        use crate::object::rich_text::RichText;
+        let tpl = TemplateBlock::default().rich_text(vec![RichText::from("body")]);
+        assert_eq!(tpl.to_string(), "body");
+    }
 }

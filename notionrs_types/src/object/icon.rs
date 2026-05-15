@@ -49,3 +49,30 @@ impl fmt::Display for Icon {
         write!(f, "{}", self.icon)
     }
 }
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+
+    #[test]
+    fn icon_display_and_serde() {
+        let icon = Icon {
+            r#type: "icon".to_string(),
+            icon: IconContent {
+                name: "pizza".to_string(),
+                color: IconColor::Blue,
+            },
+        };
+        assert_eq!(icon.to_string(), "pizza");
+        assert_eq!(icon.icon.to_string(), "pizza");
+
+        let json = serde_json::to_string(&icon).unwrap();
+        let de: Icon = serde_json::from_str(&json).unwrap();
+        assert_eq!(de, icon);
+
+        let gray: IconColor = Default::default();
+        assert_eq!(gray, IconColor::Gray);
+        let lightgray: IconColor = serde_json::from_str("\"light_gray\"").unwrap();
+        assert_eq!(lightgray, IconColor::Lightgray);
+    }
+}

@@ -90,4 +90,12 @@ mod unit_tests {
 
         assert_eq!(created_by.id, Some("fR4s".to_string()));
     }
+
+    #[test]
+    fn page_created_by_setters_and_display() {
+        let p = PageCreatedByProperty::default()
+            .id("id")
+            .created_by(crate::object::user::User::default());
+        let _ = p.to_string();
+    }
 }

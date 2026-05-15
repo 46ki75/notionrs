@@ -23,5 +23,13 @@ impl std::fmt::Display for PageRollupProperty {
 
 #[cfg(test)]
 mod unit_tests {
-    // TODO: test
+    use super::*;
+
+    #[test]
+    fn page_rollup_property() {
+        let json = r#"{"id":"ro1"}"#;
+        let prop: PageRollupProperty = serde_json::from_str(json).unwrap();
+        assert_eq!(prop.id.as_deref(), Some("ro1"));
+        assert_eq!(prop.to_string(), "");
+    }
 }

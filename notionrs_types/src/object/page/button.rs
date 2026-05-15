@@ -69,4 +69,16 @@ mod unit_tests {
         assert_eq!(button.id, Some("c%60qZ".to_string()));
         assert!(button.button.is_empty());
     }
+
+    #[test]
+    fn page_button_setters() {
+        let p = PageButtonProperty::default()
+            .id("id")
+            .button(std::collections::HashMap::from([(
+                "k".to_string(),
+                "v".to_string(),
+            )]));
+        assert_eq!(p.to_string(), "");
+        let _ = serde_json::to_string(&p).unwrap();
+    }
 }

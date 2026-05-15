@@ -91,4 +91,12 @@ mod unit_tests {
         assert_eq!(email.id, Some("rXuf".to_string()));
         assert_eq!(email.email, Some("hi@example.com".to_string()));
     }
+
+    #[test]
+    fn page_email_from_and_setters() {
+        let p: PageEmailProperty = "test@example.com".into();
+        assert_eq!(p.to_string(), "test@example.com");
+        let p2 = PageEmailProperty::default().id("id").email("a@b.c");
+        assert_eq!(p2.email.as_deref(), Some("a@b.c"));
+    }
 }

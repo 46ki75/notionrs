@@ -128,4 +128,38 @@ mod unit_tests {
             PageVerificationState::Verified
         );
     }
+
+    #[test]
+    fn page_verification_setters_and_display() {
+        use crate::object::date::DateOrDateTime;
+        let mut p = PageVerificationProperty::default()
+            .id("id")
+            .verification(PageVerificationPropertyParameter::default());
+        p.state(PageVerificationState::Verified);
+        p.verified_by(crate::object::user::User::default());
+        p.date(PageVerificationDate::default());
+        assert_eq!(p.to_string(), "verified");
+
+        let mut p2 = PageVerificationProperty::default();
+        p2.state(PageVerificationState::Unverified);
+        assert_eq!(p2.to_string(), "unverified");
+
+        let mut p3 = PageVerificationProperty::default();
+        p3.state(PageVerificationState::Expired);
+        assert_eq!(p3.to_string(), "expired");
+
+        let _date = PageVerificationDate::default()
+            .start(DateOrDateTime::Date(
+                time::Date::from_calendar_date(2024, time::Month::January, 1).unwrap(),
+            ))
+            .end(DateOrDateTime::Date(
+                time::Date::from_calendar_date(2024, time::Month::January, 2).unwrap(),
+            ))
+            .time_zone("UTC");
+
+        let _param = PageVerificationPropertyParameter::default()
+            .state(PageVerificationState::Verified)
+            .verified_by(crate::object::user::User::default())
+            .date(PageVerificationDate::default());
+    }
 }

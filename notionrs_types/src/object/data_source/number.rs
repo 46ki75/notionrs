@@ -101,4 +101,19 @@ mod unit_tests {
         assert_eq!(number.name, "Price");
         assert_eq!(number.number.format, NumberFormat::Dollar);
     }
+
+    #[test]
+    fn number_property() {
+        let p = DataSourceNumberProperty::default()
+            .id("id")
+            .name("n")
+            .description("d")
+            .number(DataSourceNumberFormatProperty {
+                format: NumberFormat::Dollar,
+            });
+        assert_eq!(p.number.format, NumberFormat::Dollar);
+
+        let f = DataSourceNumberFormatProperty::default().format(NumberFormat::Yen);
+        assert_eq!(f.format, NumberFormat::Yen);
+    }
 }

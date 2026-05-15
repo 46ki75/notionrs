@@ -78,4 +78,14 @@ mod unit_tests {
         assert_eq!(phone_number.id, Some("Se%3Dp".to_string()));
         assert_eq!(phone_number.phone_number, Some("415-202-4776".to_string()));
     }
+
+    #[test]
+    fn page_phone_number_from_and_setters() {
+        let p: PagePhoneNumberProperty = "555-1234".into();
+        assert_eq!(p.to_string(), "555-1234");
+        let p2 = PagePhoneNumberProperty::default()
+            .id("id")
+            .phone_number("999");
+        assert_eq!(p2.phone_number.as_deref(), Some("999"));
+    }
 }

@@ -135,4 +135,39 @@ mod unit_tests {
             _ => panic!(),
         }
     }
+
+    #[test]
+    fn heading_color_setters() {
+        use crate::object::color::Color;
+        let h = HeadingBlock::default();
+        assert_eq!(h.clone().default_color().color, Color::Default);
+        assert_eq!(h.clone().blue().color, Color::Blue);
+        assert_eq!(h.clone().brown().color, Color::Brown);
+        assert_eq!(h.clone().gray().color, Color::Gray);
+        assert_eq!(h.clone().green().color, Color::Green);
+        assert_eq!(h.clone().orange().color, Color::Orange);
+        assert_eq!(h.clone().pink().color, Color::Pink);
+        assert_eq!(h.clone().purple().color, Color::Purple);
+        assert_eq!(h.clone().red().color, Color::Red);
+        assert_eq!(h.clone().yellow().color, Color::Yellow);
+        assert_eq!(
+            h.clone().default_background_color().color,
+            Color::DefaultBackground
+        );
+        assert_eq!(h.clone().blue_background().color, Color::BlueBackground);
+        assert_eq!(h.clone().brown_background().color, Color::BrownBackground);
+        assert_eq!(h.clone().gray_background().color, Color::GrayBackground);
+        assert_eq!(h.clone().green_background().color, Color::GreenBackground);
+        assert_eq!(h.clone().orange_background().color, Color::OrangeBackground);
+        assert_eq!(h.clone().pink_background().color, Color::PinkBackground);
+        assert_eq!(h.clone().purple_background().color, Color::PurpleBackground);
+        assert_eq!(h.clone().red_background().color, Color::RedBackground);
+        assert_eq!(h.yellow_background().color, Color::YellowBackground);
+    }
+
+    #[test]
+    fn heading_from_str_and_display() {
+        let h: HeadingBlock = "hi".into();
+        assert_eq!(h.to_string(), "hi");
+    }
 }

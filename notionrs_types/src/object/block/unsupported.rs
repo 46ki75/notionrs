@@ -41,4 +41,12 @@ mod unit_tests {
 
         assert_eq!(unsupported.block_type, "button")
     }
+
+    #[test]
+    fn unsupported_display() {
+        let u = UnsupportedBlock {
+            block_type: "btn".into(),
+        };
+        assert_eq!(u.to_string(), "btn");
+    }
 }

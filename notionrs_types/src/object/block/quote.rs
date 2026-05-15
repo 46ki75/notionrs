@@ -122,4 +122,39 @@ mod unit_tests {
             _ => panic!(),
         }
     }
+
+    #[test]
+    fn quote_color_setters() {
+        use crate::object::color::Color;
+        let q = QuoteBlock::default();
+        assert_eq!(q.clone().default_color().color, Color::Default);
+        assert_eq!(q.clone().blue().color, Color::Blue);
+        assert_eq!(q.clone().brown().color, Color::Brown);
+        assert_eq!(q.clone().gray().color, Color::Gray);
+        assert_eq!(q.clone().green().color, Color::Green);
+        assert_eq!(q.clone().orange().color, Color::Orange);
+        assert_eq!(q.clone().pink().color, Color::Pink);
+        assert_eq!(q.clone().purple().color, Color::Purple);
+        assert_eq!(q.clone().red().color, Color::Red);
+        assert_eq!(q.clone().yellow().color, Color::Yellow);
+        assert_eq!(
+            q.clone().default_background_color().color,
+            Color::DefaultBackground
+        );
+        assert_eq!(q.clone().blue_background().color, Color::BlueBackground);
+        assert_eq!(q.clone().brown_background().color, Color::BrownBackground);
+        assert_eq!(q.clone().gray_background().color, Color::GrayBackground);
+        assert_eq!(q.clone().green_background().color, Color::GreenBackground);
+        assert_eq!(q.clone().orange_background().color, Color::OrangeBackground);
+        assert_eq!(q.clone().pink_background().color, Color::PinkBackground);
+        assert_eq!(q.clone().purple_background().color, Color::PurpleBackground);
+        assert_eq!(q.clone().red_background().color, Color::RedBackground);
+        assert_eq!(q.yellow_background().color, Color::YellowBackground);
+    }
+
+    #[test]
+    fn quote_from_str_and_display() {
+        let q: QuoteBlock = "quoted".into();
+        assert_eq!(q.to_string(), "quoted");
+    }
 }

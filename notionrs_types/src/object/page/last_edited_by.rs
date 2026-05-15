@@ -100,4 +100,15 @@ mod unit_tests {
             Some("info@example.com".to_string())
         );
     }
+
+    #[test]
+    fn page_last_edited_by_setters_and_display() {
+        let p = PageLastEditedByProperty {
+            id: Some("id".to_string()),
+            last_edited_by: crate::object::user::User::default(),
+        }
+        .id("id")
+        .last_edited_by(crate::object::user::User::default());
+        let _ = p.to_string();
+    }
 }

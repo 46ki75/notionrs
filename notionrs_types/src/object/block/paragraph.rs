@@ -231,4 +231,39 @@ mod unit_tests {
         let json = serde_json::to_string(&paragraph).unwrap();
         assert!(!json.contains("\"icon\""));
     }
+
+    #[test]
+    fn paragraph_color_setters() {
+        use crate::object::color::Color;
+        let p = ParagraphBlock::default();
+        assert_eq!(p.clone().default_color().color, Color::Default);
+        assert_eq!(p.clone().blue().color, Color::Blue);
+        assert_eq!(p.clone().brown().color, Color::Brown);
+        assert_eq!(p.clone().gray().color, Color::Gray);
+        assert_eq!(p.clone().green().color, Color::Green);
+        assert_eq!(p.clone().orange().color, Color::Orange);
+        assert_eq!(p.clone().pink().color, Color::Pink);
+        assert_eq!(p.clone().purple().color, Color::Purple);
+        assert_eq!(p.clone().red().color, Color::Red);
+        assert_eq!(p.clone().yellow().color, Color::Yellow);
+        assert_eq!(
+            p.clone().default_background_color().color,
+            Color::DefaultBackground
+        );
+        assert_eq!(p.clone().blue_background().color, Color::BlueBackground);
+        assert_eq!(p.clone().brown_background().color, Color::BrownBackground);
+        assert_eq!(p.clone().gray_background().color, Color::GrayBackground);
+        assert_eq!(p.clone().green_background().color, Color::GreenBackground);
+        assert_eq!(p.clone().orange_background().color, Color::OrangeBackground);
+        assert_eq!(p.clone().pink_background().color, Color::PinkBackground);
+        assert_eq!(p.clone().purple_background().color, Color::PurpleBackground);
+        assert_eq!(p.clone().red_background().color, Color::RedBackground);
+        assert_eq!(p.yellow_background().color, Color::YellowBackground);
+    }
+
+    #[test]
+    fn paragraph_from_str_and_display() {
+        let p: ParagraphBlock = "hello".into();
+        assert_eq!(p.to_string(), "hello");
+    }
 }

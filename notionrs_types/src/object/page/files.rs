@@ -143,4 +143,19 @@ mod unit_tests {
             }
         }
     }
+
+    #[test]
+    fn page_files_from_and_setters() {
+        let p: PageFilesProperty = "https://example.com/file.png".into();
+        let _ = p.to_string();
+
+        let file = crate::object::file::File::default()
+            .url("https://example.com/x")
+            .name("x");
+        let p2 = PageFilesProperty::from(file);
+        let _ = p2.to_string();
+
+        let p3 = PageFilesProperty::default().id("id").files(vec![]);
+        assert_eq!(p3.to_string(), "");
+    }
 }

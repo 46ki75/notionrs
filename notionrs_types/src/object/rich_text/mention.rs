@@ -311,4 +311,73 @@ mod unit_tests {
 
         assert!(matches!(mention, super::Mention::CustomEmoji { .. }));
     }
+
+    #[test]
+    fn mention_variants_display() {
+        use super::*;
+        use crate::object::page::date::PageDatePropertyParameter;
+        use crate::object::user::User;
+
+        let user = User {
+            object: "user".to_string(),
+            id: "uid".to_string(),
+            ..Default::default()
+        };
+
+        let date_mention = Mention::Date {
+            date: PageDatePropertyParameter::default(),
+        };
+        let _ = date_mention.to_string();
+
+        let user_mention = Mention::User { user };
+        assert_eq!(user_mention.to_string(), "uid");
+
+        let lp_mention = Mention::LinkPreview {
+            link_preview: LinkPreviewMention::from("https://lp"),
+        };
+        assert_eq!(lp_mention.to_string(), "https://lp");
+
+        let lm = Mention::LinkMention {
+            link_mention: LinkMention::from("https://lm"),
+        };
+        assert_eq!(lm.to_string(), "https://lm");
+
+        let tm_today = Mention::TemplateMention {
+            template_mention: TemplateMention::TemplateMentionDate(TemplateMentionDate::Today),
+        };
+        assert_eq!(tm_today.to_string(), "today");
+
+        let tm_now = TemplateMention::TemplateMentionDate(TemplateMentionDate::Now);
+        assert_eq!(tm_now.to_string(), "now");
+
+        let tm_user = TemplateMention::TemplateMentionUser(TemplateMentionUser::Me);
+        assert_eq!(tm_user.to_string(), "me");
+        assert_eq!(TemplateMentionUser::Me.to_string(), "me");
+
+        let page = Mention::Page {
+            page: PageMention::from("page-id"),
+        };
+        assert_eq!(page.to_string(), "page-id");
+
+        let db = Mention::Database {
+            database: DatabaseMention::from("db-id"),
+        };
+        assert_eq!(db.to_string(), "db-id");
+
+        let _ = PageMention::default().id("x");
+        let _ = DatabaseMention::default().id("x");
+        let _ = LinkPreviewMention::default().url("x");
+        let _ = LinkMention::default()
+            .href("h")
+            .title("t".to_string())
+            .description("d".to_string())
+            .link_author("a".to_string())
+            .link_provider("p".to_string())
+            .thumbnail_url("th".to_string())
+            .icon_url("ic".to_string())
+            .iframe_url("if".to_string())
+            .height(10)
+            .padding(2)
+            .padding_top(1);
+    }
 }

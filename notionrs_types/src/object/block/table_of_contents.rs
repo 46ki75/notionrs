@@ -38,4 +38,10 @@ mod unit_tests {
 
         assert_eq!(table.color, crate::object::color::Color::Red);
     }
+
+    #[test]
+    fn table_of_contents_setters_and_display() {
+        let toc = TableOfContentsBlock::default().color(crate::object::color::Color::Red);
+        assert_eq!(toc.to_string(), "red");
+    }
 }

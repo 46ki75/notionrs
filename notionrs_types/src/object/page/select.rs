@@ -103,4 +103,17 @@ mod unit_tests {
             Some(crate::object::select::SelectColor::Default)
         );
     }
+
+    #[test]
+    fn page_select_from_and_setters() {
+        use crate::object::select::Select;
+        let p: PageSelectProperty = "Option".into();
+        assert_eq!(p.to_string(), "Option");
+        let empty = PageSelectProperty::default();
+        assert_eq!(empty.to_string(), "None");
+        let p2 = PageSelectProperty::default()
+            .id("id")
+            .select(Select::from("X"));
+        assert_eq!(p2.to_string(), "X");
+    }
 }

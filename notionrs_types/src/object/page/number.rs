@@ -78,4 +78,12 @@ mod unit_tests {
         assert_eq!(number.id, Some("%5Chme".to_string()));
         assert_eq!(number.number, Some(20.0));
     }
+
+    #[test]
+    fn page_number_from_and_setters() {
+        let p: PageNumberProperty = 12.5_f64.into();
+        assert_eq!(p.to_string(), "12.5");
+        let p2 = PageNumberProperty::default().id("id").number(7.0);
+        assert_eq!(p2.number, Some(7.0));
+    }
 }

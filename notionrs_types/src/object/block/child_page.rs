@@ -41,4 +41,12 @@ mod unit_tests {
 
         assert_eq!(child_page.title, "My Page")
     }
+
+    #[test]
+    fn child_page_display() {
+        let cp = ChildPageBlock {
+            title: "cp".into(),
+        };
+        assert_eq!(cp.to_string(), "cp");
+    }
 }

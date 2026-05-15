@@ -161,4 +161,19 @@ mod unit_tests {
             _ => panic!(),
         }
     }
+
+    #[test]
+    fn code_block_setters_and_from_and_display() {
+        use crate::object::language::Language;
+        use crate::object::rich_text::RichText;
+        let cb = CodeBlock::default()
+            .caption(vec![RichText::from("cap")])
+            .rich_text(vec![RichText::from("body")])
+            .lnaguage(Language::Rust);
+        assert_eq!(cb.language, Language::Rust);
+        assert_eq!(cb.to_string(), "body");
+
+        let cb2: CodeBlock = "from-str".into();
+        assert_eq!(cb2.to_string(), "from-str");
+    }
 }

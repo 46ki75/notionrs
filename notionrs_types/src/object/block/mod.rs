@@ -611,4 +611,131 @@ mod unit_tests {
         assert!(json.contains("\"heading_4\""));
         assert!(json.contains("Test H4"));
     }
+
+    #[test]
+    fn block_display_all_variants() {
+        use std::collections::HashMap;
+
+        use crate::object::file::{ExternalFile, File};
+        use crate::object::rich_text::RichText;
+
+        fn ext_file() -> File {
+            File::External(ExternalFile::from("https://example.com/x"))
+        }
+
+        let variants: Vec<Block> = vec![
+            Block::Audio { audio: ext_file() },
+            Block::Bookmark {
+                bookmark: bookmark::BookmarkBlock::from("https://b"),
+            },
+            Block::Breadcrumb {
+                breadcrumb: HashMap::new(),
+            },
+            Block::BulletedListItem {
+                bulleted_list_item: bulleted_list_item::BulletedListItemBlock::default(),
+            },
+            Block::Callout {
+                callout: callout::CalloutBlock::from("c"),
+            },
+            Block::ChildDatabase {
+                child_database: child_database::ChildDatabaseBlock {
+                    title: "t".into(),
+                },
+            },
+            Block::ChildPage {
+                child_page: child_page::ChildPageBlock {
+                    title: "t".into(),
+                },
+            },
+            Block::Code {
+                code: code::CodeBlock::from("code"),
+            },
+            Block::ColumnList {
+                column_list: column_list::ColumnListBlock::default(),
+            },
+            Block::Column {
+                column: column::ColumnBlock::default(),
+            },
+            Block::Divider {
+                divider: HashMap::new(),
+            },
+            Block::Embed {
+                embed: embed::EmbedBlock::from("https://e"),
+            },
+            Block::Equation {
+                equation: equation::EquationBlock::from("E=mc^2"),
+            },
+            Block::File { file: ext_file() },
+            Block::Heading1 {
+                heading_1: heading::HeadingBlock::from("h1"),
+            },
+            Block::Heading2 {
+                heading_2: heading::HeadingBlock::from("h2"),
+            },
+            Block::Heading3 {
+                heading_3: heading::HeadingBlock::from("h3"),
+            },
+            Block::Heading4 {
+                heading_4: heading::HeadingBlock::from("h4"),
+            },
+            Block::Image { image: ext_file() },
+            Block::LinkPreview {
+                link_preview: link_preview::LinkPreviewBlock {
+                    url: "https://lp".into(),
+                },
+            },
+            Block::NumberedListItem {
+                numbered_list_item: numbered_list_item::NumberedListItemBlock::from("n"),
+            },
+            Block::Paragraph {
+                paragraph: paragraph::ParagraphBlock::from("p"),
+            },
+            Block::Pdf { pdf: ext_file() },
+            Block::Quote {
+                quote: quote::QuoteBlock::from("q"),
+            },
+            Block::SyncedBlock {
+                synced_block: synced_block::SyncedBlock::default(),
+            },
+            Block::TableOfContents {
+                table_of_contents: table_of_contents::TableOfContentsBlock::default(),
+            },
+            Block::Tab {
+                tab: tab::TabBlock { children: None },
+            },
+            Block::Table {
+                table: table::TableBlock::from(2u16),
+            },
+            Block::TableRow {
+                table_row: table_row::TableRowBlock {
+                    cells: vec![vec![RichText::from("cell")]],
+                },
+            },
+            Block::Template {
+                template: template::TemplateBlock::default().rich_text(vec![RichText::from("tpl")]),
+            },
+            Block::ToDo {
+                to_do: to_do::ToDoBlock::from("td"),
+            },
+            Block::Toggle {
+                toggle: toggle::ToggleBlock::from("tg"),
+            },
+            Block::MeetingNotes {
+                meeting_notes: transcription::TranscriptionBlock::default(),
+            },
+            Block::Transcription {
+                transcription: transcription::TranscriptionBlock::default(),
+            },
+            Block::Video { video: ext_file() },
+            Block::Unsupported {
+                unsupported: unsupported::UnsupportedBlock {
+                    block_type: "form".into(),
+                },
+            },
+        ];
+
+        for v in &variants {
+            let _ = v.to_string();
+        }
+    }
 }

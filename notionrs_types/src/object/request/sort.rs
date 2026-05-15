@@ -73,4 +73,17 @@ mod unit_tests {
             "Serialized JSON does not match the expected JSON"
         );
     }
+
+    #[test]
+    fn sort_helpers_and_setters() {
+        let asc = Sort::asc("name");
+        assert_eq!(asc.direction, SortDirection::Ascending);
+        let desc = Sort::desc("name");
+        assert_eq!(desc.direction, SortDirection::Descending);
+
+        let s = Sort::default()
+            .property("p")
+            .direction(SortDirection::Descending);
+        assert_eq!(s.property, "p");
+    }
 }

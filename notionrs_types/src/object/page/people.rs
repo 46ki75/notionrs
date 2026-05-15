@@ -109,4 +109,12 @@ mod unit_tests {
             Some("46ki75@example.com".to_string())
         );
     }
+
+    #[test]
+    fn page_people_setters_and_display() {
+        let p = PagePeopleProperty::default()
+            .id("id")
+            .people(vec![crate::object::user::User::default()]);
+        let _ = p.to_string();
+    }
 }
