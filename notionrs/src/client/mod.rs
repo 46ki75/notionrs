@@ -120,6 +120,16 @@ impl Client {
         }
     }
 
+    /// Update a page's properties, icon, cover, archived state, or template.
+    ///
+    /// `T` is the type used for the `properties` payload and for deserializing
+    /// the response. It defaults to `HashMap<String, PageProperty>`; pass a
+    /// custom struct via the turbofish (`update_page::<MyProps>()`) to use a
+    /// typed payload. A custom `T` must derive `Default` and `Clone` (in
+    /// addition to `Serialize` and `Deserialize`) — unlike `get_page<T>`,
+    /// which holds `T` via `PhantomData` and has no such requirement.
+    ///
+    /// <https://developers.notion.com/reference/patch-page>
     pub fn update_page<T>(&self) -> crate::client::page::update_page::UpdatePageClient<T>
     where
         T: Default,

@@ -12,7 +12,7 @@ pub struct GetPageClient<
     /// The ID is also included in the Notion page URL.
     pub(crate) page_id: Option<String>,
 
-    #[skip]
+    #[setter(skip)]
     pub(crate) _phantom: PhantomData<T>,
 }
 

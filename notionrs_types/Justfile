@@ -1,0 +1,5 @@
+test:
+	cargo test
+
+coverage:
+	cargo llvm-cov report --show-missing-lines

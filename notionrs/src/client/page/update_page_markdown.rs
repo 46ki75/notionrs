@@ -15,7 +15,7 @@ pub struct UpdatePageMarkdownClient {
     /// The ID of the page to update.
     pub(crate) page_id: Option<String>,
 
-    #[skip]
+    #[setter(skip)]
     pub(crate) body: Option<UpdatePageMarkdownBody>,
 }
 

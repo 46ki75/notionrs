@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
+/// @see <https://developers.notion.com/reference/patch-page>
 #[derive(Debug, notionrs_macro::Setter)]
 pub struct UpdatePageClient<
     T = std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,

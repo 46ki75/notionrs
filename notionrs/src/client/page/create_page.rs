@@ -43,7 +43,7 @@ pub struct CreatePageClient<
     /// **Note:** The position parameter is not allowed unless the parent is a page.
     pub(crate) position: Option<CreatePageTemplatePosition>,
 
-    #[skip]
+    #[setter(skip)]
     pub(crate) _phantom: PhantomData<T>,
 }
 

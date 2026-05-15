@@ -9,10 +9,39 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
     let fields = match input.data {
         Data::Struct(data) => match data.fields {
             Fields::Named(fields) => fields.named.into_iter().collect::<Vec<_>>(),
-            _ => vec![],
+            Fields::Unnamed(unnamed) => {
+                return syn::Error::new_spanned(
+                    unnamed.unnamed,
+                    "Setter does not support tuple structs",
+                )
+                .to_compile_error()
+                .into();
+            }
+            Fields::Unit => {
+                return syn::Error::new_spanned(
+                    struct_name,
+                    "Setter does not support unit structs",
+                )
+                .to_compile_error()
+                .into();
+            }
         },
-        _ => panic!("Setter can only be used with structs"),
+        Data::Enum(data) => {
+            return syn::Error::new_spanned(data.enum_token, "Setter can only be used with structs")
+                .to_compile_error()
+                .into();
+        }
+        Data::Union(data) => {
+            return syn::Error::new_spanned(
+                data.union_token,
+                "Setter can only be used with structs",
+            )
+            .to_compile_error()
+            .into();
+        }
     };
+
+    let mut errors = Vec::<syn::Error>::new();
 
     let field_setters = fields.iter().map(|f| {
         let field_name = &f.ident;
@@ -35,22 +64,12 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
                 }
             }
         } else if is_option_type(field_ty) {
-            let inner_ty = if let Type::Path(type_path) = field_ty {
-                if let Some(first_segment) = type_path.path.segments.first() {
-                    if let syn::PathArguments::AngleBracketed(args) = &first_segment.arguments {
-                        if let syn::GenericArgument::Type(ty) = args.args.first().unwrap() {
-                            ty
-                        } else {
-                            panic!("Option type must have a generic argument");
-                        }
-                    } else {
-                        panic!("Option type must have a generic argument");
-                    }
-                } else {
-                    panic!("Option type must have a generic argument");
-                }
-            } else {
-                panic!("Option type must have a generic argument");
+            let Some(inner_ty) = option_inner_ty(field_ty) else {
+                errors.push(syn::Error::new_spanned(
+                    field_ty,
+                    "Option type must have a generic argument",
+                ));
+                return quote! {};
             };
 
             if is_string_type(inner_ty) {
@@ -58,7 +77,8 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
                     #comment
                     pub fn #field_name<S>(mut self, #field_name: S) -> Self
                     where
-                        S: AsRef<str>,{
+                        S: AsRef<str>,
+                    {
                         self.#field_name = Some(#field_name.as_ref().to_string());
                         self
                     }
@@ -83,9 +103,19 @@ pub fn generate_setters(input: DeriveInput) -> proc_macro::TokenStream {
         }
     });
 
+    let setters: Vec<_> = field_setters.collect();
+
+    if !errors.is_empty() {
+        let combined = errors.into_iter().reduce(|mut acc, e| {
+            acc.combine(e);
+            acc
+        });
+        return combined.unwrap().to_compile_error().into();
+    }
+
     let expanded = quote! {
         impl #impl_generics #struct_name #ty_generics #where_clause {
-            #(#field_setters)*
+            #(#setters)*
         }
     };
 
@@ -99,42 +129,46 @@ fn generate_comment(f: &syn::Field) -> proc_macro2::TokenStream {
         field_name.as_ref().unwrap()
     );
 
-    let field_original_comment = f.attrs.iter().filter_map(|attr| {
-        if attr.path().is_ident("doc") {
+    let field_original_comments: Vec<_> = f
+        .attrs
+        .iter()
+        .filter_map(|attr| {
+            if !attr.path().is_ident("doc") {
+                return None;
+            }
             if let Meta::NameValue(MetaNameValue {
-                path: _,
-                eq_token: _,
                 value: Expr::Lit(comment),
+                ..
             }) = &attr.meta
             {
                 if let Lit::Str(comment) = &comment.lit {
                     let comment = comment.value();
-                    return Some(quote! {
-                        #[doc = #comment]
-                    });
+                    return Some(quote! { #[doc = #comment] });
                 }
             }
+            None
+        })
+        .collect();
 
-            return None;
+    if field_original_comments.is_empty() {
+        quote! {
+            #[doc = #setter_comment]
         }
-        None
-    });
-
-    let comment = quote! {
-        #[doc = #setter_comment]
-        #[doc = ""]
-        #[doc = "---"]
-        #[doc = ""]
-        #(#field_original_comment)*
-    };
-
-    comment
+    } else {
+        quote! {
+            #[doc = #setter_comment]
+            #[doc = ""]
+            #[doc = "---"]
+            #[doc = ""]
+            #(#field_original_comments)*
+        }
+    }
 }
 
 fn is_option_type(ty: &Type) -> bool {
     if let Type::Path(type_path) = ty {
-        if let Some(first_segment) = type_path.path.segments.first() {
-            return first_segment.ident == "Option";
+        if let Some(segment) = type_path.path.segments.last() {
+            return segment.ident == "Option";
         }
     }
     false
@@ -142,14 +176,39 @@ fn is_option_type(ty: &Type) -> bool {
 
 fn is_string_type(ty: &Type) -> bool {
     if let Type::Path(type_path) = ty {
-        if let Some(segment) = type_path.path.segments.first() {
+        if let Some(segment) = type_path.path.segments.last() {
             return segment.ident == "String";
         }
     }
     false
 }
 
-fn is_skip(attrs: &Vec<syn::Attribute>) -> bool {
-    let flag = attrs.iter().any(|attr| attr.path().is_ident("skip"));
-    flag
+fn option_inner_ty(ty: &Type) -> Option<&Type> {
+    let Type::Path(type_path) = ty else {
+        return None;
+    };
+    let segment = type_path.path.segments.last()?;
+    let syn::PathArguments::AngleBracketed(args) = &segment.arguments else {
+        return None;
+    };
+    let syn::GenericArgument::Type(inner) = args.args.first()? else {
+        return None;
+    };
+    Some(inner)
+}
+
+fn is_skip(attrs: &[syn::Attribute]) -> bool {
+    attrs.iter().any(|attr| {
+        if !attr.path().is_ident("setter") {
+            return false;
+        }
+        let mut found = false;
+        let _ = attr.parse_nested_meta(|meta| {
+            if meta.path.is_ident("skip") {
+                found = true;
+            }
+            Ok(())
+        });
+        found
+    })
 }
