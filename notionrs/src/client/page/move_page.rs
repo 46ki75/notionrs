@@ -22,7 +22,7 @@ pub struct MovePageClient<
     /// The ID of the destination data source to move the page to
     pub(crate) destination_data_source_id: Option<String>,
 
-    #[skip]
+    #[setter(skip)]
     pub(crate) _phantom: PhantomData<T>,
 }
 

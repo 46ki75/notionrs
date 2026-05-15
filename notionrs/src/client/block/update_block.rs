@@ -10,7 +10,7 @@ pub struct UpdateBlockClient {
 
     /// Whether the block is in the trash (i.e. deleted by the user).
     /// Deprecated: use `in_trash` instead.
-    #[skip]
+    #[setter(skip)]
     pub(crate) archived: Option<bool>,
 
     pub(crate) block: Option<notionrs_types::object::block::Block>,

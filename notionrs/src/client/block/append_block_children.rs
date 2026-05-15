@@ -32,11 +32,11 @@ pub struct AppendBlockChildrenClient {
     /// The ID of the existing block that the new block should be appended after.
     ///
     /// **Deprecated**: Use `position` instead.
-    #[skip]
+    #[setter(skip)]
     pub(crate) after: Option<String>,
 
     /// Block insertion position (2026-03-11+). Replaces the deprecated `after` field.
-    #[skip]
+    #[setter(skip)]
     pub(crate) position: Option<AppendBlockChildrenPosition>,
 
     pub(crate) children: Vec<notionrs_types::object::block::Block>,
