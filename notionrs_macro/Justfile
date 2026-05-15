@@ -2,4 +2,4 @@ test:
 	cargo test
 
 coverage:
-	cargo llvm-cov --html --open
+	cargo llvm-cov report --show-missing-lines
