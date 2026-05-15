@@ -1,17 +1,20 @@
 use notionrs::{Client, Error};
-use notionrs_types::prelude::*;
+use serde::{Deserialize, Serialize};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     let notion_api_key = std::env::var("NOTION_TOKEN").unwrap();
     let client = Client::new(notion_api_key);
 
-    let mut properties = std::collections::HashMap::new();
+    #[derive(Debug, Default, Clone, Serialize, Deserialize)]
+    struct MyPageProperty {
+        #[serde(rename = "Name")]
+        name: String,
+    }
 
-    properties.insert(
-        "Name".to_string(),
-        PageProperty::Title(PageTitleProperty::from("New Page")),
-    );
+    let properties = MyPageProperty {
+        name: "New Page".to_string(),
+    };
 
     let request = client
         .update_page()
