@@ -79,4 +79,12 @@ mod unit_tests {
         assert_eq!(checkbox.id, Some("ZI%40W".to_string()));
         assert!(checkbox.checkbox);
     }
+
+    #[test]
+    fn page_checkbox_from_and_display() {
+        let p = PageCheckboxProperty::from(true).id("id").checkbox(true);
+        assert_eq!(p.to_string(), "Yes");
+        let unchecked = PageCheckboxProperty::from(false);
+        assert_eq!(unchecked.to_string(), "No");
+    }
 }

@@ -146,4 +146,39 @@ mod unit_tests {
             _ => panic!(),
         }
     }
+
+    #[test]
+    fn numbered_color_setters() {
+        use crate::object::color::Color;
+        let n = NumberedListItemBlock::default();
+        assert_eq!(n.clone().default_color().color, Color::Default);
+        assert_eq!(n.clone().blue().color, Color::Blue);
+        assert_eq!(n.clone().brown().color, Color::Brown);
+        assert_eq!(n.clone().gray().color, Color::Gray);
+        assert_eq!(n.clone().green().color, Color::Green);
+        assert_eq!(n.clone().orange().color, Color::Orange);
+        assert_eq!(n.clone().pink().color, Color::Pink);
+        assert_eq!(n.clone().purple().color, Color::Purple);
+        assert_eq!(n.clone().red().color, Color::Red);
+        assert_eq!(n.clone().yellow().color, Color::Yellow);
+        assert_eq!(
+            n.clone().default_background_color().color,
+            Color::DefaultBackground
+        );
+        assert_eq!(n.clone().blue_background().color, Color::BlueBackground);
+        assert_eq!(n.clone().brown_background().color, Color::BrownBackground);
+        assert_eq!(n.clone().gray_background().color, Color::GrayBackground);
+        assert_eq!(n.clone().green_background().color, Color::GreenBackground);
+        assert_eq!(n.clone().orange_background().color, Color::OrangeBackground);
+        assert_eq!(n.clone().pink_background().color, Color::PinkBackground);
+        assert_eq!(n.clone().purple_background().color, Color::PurpleBackground);
+        assert_eq!(n.clone().red_background().color, Color::RedBackground);
+        assert_eq!(n.yellow_background().color, Color::YellowBackground);
+    }
+
+    #[test]
+    fn numbered_from_str_and_display() {
+        let n: NumberedListItemBlock = "num".into();
+        assert_eq!(n.to_string(), "num");
+    }
 }

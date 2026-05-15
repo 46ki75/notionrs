@@ -159,4 +159,17 @@ mod unit_tests {
         // );
         // assert_eq!(rich_text.rich_text.first().unwrap().href, None);
     }
+
+    #[test]
+    fn page_rich_text_from_and_setters() {
+        use crate::object::rich_text::RichText;
+        let p: PageRichTextProperty = "hello".into();
+        assert_eq!(p.to_string(), "hello");
+        let p2: PageRichTextProperty = RichText::from("hi").into();
+        assert_eq!(p2.to_string(), "hi");
+        let p3 = PageRichTextProperty::default()
+            .id("id")
+            .rich_text(vec![RichText::from("body")]);
+        assert_eq!(p3.to_string(), "body");
+    }
 }

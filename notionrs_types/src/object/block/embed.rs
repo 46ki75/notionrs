@@ -58,4 +58,12 @@ mod unit_tests {
 
         assert_eq!(embed.url, "example.com")
     }
+
+    #[test]
+    fn embed_block_setters_and_from() {
+        let e = EmbedBlock::default().url("https://example.com");
+        assert_eq!(e.to_string(), "https://example.com");
+        let e2: EmbedBlock = "https://x".into();
+        assert_eq!(e2.url, "https://x");
+    }
 }

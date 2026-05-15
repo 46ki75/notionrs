@@ -40,4 +40,12 @@ mod unit_tests {
 
         assert_eq!(link_preview.url, "example.com")
     }
+
+    #[test]
+    fn link_preview_display() {
+        let lp = LinkPreviewBlock {
+            url: "https://x".into(),
+        };
+        assert_eq!(lp.to_string(), "https://x");
+    }
 }

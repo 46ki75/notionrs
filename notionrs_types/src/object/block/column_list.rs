@@ -22,3 +22,20 @@ impl std::fmt::Display for ColumnListBlock {
         write!(f, "")
     }
 }
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+
+    #[test]
+    fn column_list_block() {
+        let cl = ColumnListBlock::default();
+        let with_children = cl.children(vec![]);
+        assert!(with_children.children.as_ref().unwrap().is_empty());
+        assert_eq!(with_children.to_string(), "");
+
+        let json = serde_json::to_string(&ColumnListBlock::default()).unwrap();
+        let de: ColumnListBlock = serde_json::from_str(&json).unwrap();
+        assert!(de.children.is_none());
+    }
+}

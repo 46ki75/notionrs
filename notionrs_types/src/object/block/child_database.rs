@@ -41,4 +41,12 @@ mod unit_tests {
 
         assert_eq!(child_database.title, "My Database")
     }
+
+    #[test]
+    fn child_database_display() {
+        let cd = ChildDatabaseBlock {
+            title: "cd".into(),
+        };
+        assert_eq!(cd.to_string(), "cd");
+    }
 }

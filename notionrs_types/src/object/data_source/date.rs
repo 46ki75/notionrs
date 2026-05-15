@@ -46,4 +46,17 @@ mod unit_tests {
         assert_eq!(date.name, "Task due date");
         assert_eq!(date.date, std::collections::HashMap::new());
     }
+
+    #[test]
+    fn exercise_setters() {
+        let p = DataSourceDateProperty::default()
+            .id("ID")
+            .name("Name")
+            .description("Desc")
+            .date(std::collections::HashMap::new());
+        assert_eq!(p.id.as_deref(), Some("ID"));
+        assert_eq!(p.name, "Name");
+        assert_eq!(p.description.as_deref(), Some("Desc"));
+        let _ = serde_json::to_string(&p).unwrap();
+    }
 }

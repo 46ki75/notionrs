@@ -130,4 +130,25 @@ mod unit_tests {
         );
         assert_eq!(p.google_place_id, None);
     }
+
+    #[test]
+    fn page_place_setters_and_display() {
+        let p = PagePlaceProperty::default()
+            .id("id")
+            .place(PagePlacePropertyParameter::default());
+        assert_eq!(p.to_string(), "");
+
+        let param = PagePlacePropertyParameter::default()
+            .lat(1.0)
+            .lon(2.0)
+            .name("name".to_string())
+            .address("addr".to_string())
+            .aws_place_id("aws".to_string())
+            .google_place_id("g".to_string());
+        let with_param = PagePlaceProperty::default().place(param);
+        assert_eq!(with_param.to_string(), "name");
+
+        let empty = PagePlaceProperty::default();
+        assert_eq!(empty.to_string(), "");
+    }
 }

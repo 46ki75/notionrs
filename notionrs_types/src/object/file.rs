@@ -325,4 +325,59 @@ mod unit_tests {
         );
         assert_eq!(file.file.expiry_time, "2024-04-04T10:45:54.308Z");
     }
+
+    #[test]
+    fn file_get_url_and_setters() {
+        use crate::object::rich_text::RichText;
+        let mut external = File::default()
+            .url("https://example.com/x.png")
+            .name("x.png")
+            .caption(vec![RichText::from("c")]);
+        assert_eq!(external.get_url(), "https://example.com/x.png");
+        if let File::External(ref f) = external {
+            assert_eq!(f.name.as_deref(), Some("x.png"));
+            assert!(f.caption.is_some());
+        } else {
+            panic!();
+        }
+        external = File::NotionHosted(NotionHostedFile::default());
+        let still_hosted = external
+            .clone()
+            .name("ignored")
+            .caption(vec![])
+            .url("ignored");
+        assert!(matches!(still_hosted, File::NotionHosted(_)));
+        let url = external.get_url();
+        assert_eq!(url, "");
+
+        let ext = ExternalFile::from("https://e.example.com");
+        assert_eq!(ext.to_string(), "https://e.example.com");
+        assert_eq!(ExternalFileParameter { url: "u".into() }.to_string(), "u");
+
+        let hosted = NotionHostedFile::default();
+        let _ = hosted.to_string();
+        let param = NotionHostedFileParameter {
+            url: "https://nh".into(),
+            expiry_time: "2024".into(),
+        };
+        assert_eq!(param.to_string(), "https://nh");
+
+        let api_json = r#"{"file_upload":{"id":"abc"}}"#;
+        let api: ApiUploadedFile = serde_json::from_str(api_json).unwrap();
+        assert_eq!(api.file_upload.id, "abc");
+        let _ = serde_json::to_string(&api).unwrap();
+        let _ = ApiUploadedFileParameter { id: "x".into() };
+
+        let f_ext = File::External(ExternalFile::from("https://x"));
+        assert_eq!(f_ext.to_string(), "https://x");
+        let f_h = File::NotionHosted(NotionHostedFile {
+            file: NotionHostedFileParameter {
+                url: "https://h".into(),
+                expiry_time: "t".into(),
+            },
+            name: None,
+            caption: None,
+        });
+        assert_eq!(f_h.to_string(), "https://h");
+    }
 }

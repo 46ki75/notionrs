@@ -32,3 +32,13 @@ MSRV (Minimum Supported Rust Version) is specified in `Cargo.toml` and `rust-too
 
 - `notionrs` → without prefix (e.g., v0.1.0)
 - `notionrs_macro`, `notionrs_types`, `notionrs_webhooks` → with prefix (e.g., macro-v0.1.0, webhooks-v0.2.0)
+
+## Test Coverage
+
+Test coverage uses [`cargo-llvm-cov`](https://github.com/taiki-e/cargo-llvm-cov). Run via the `Justfile` recipe:
+
+```bash
+just coverage   # cargo llvm-cov --show-missing-lines
+```
+
+Treat coverage % as a guardrail (fail CI on drops), not a target to maximize.

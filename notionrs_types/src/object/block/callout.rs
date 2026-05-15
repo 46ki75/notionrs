@@ -122,4 +122,39 @@ mod unit_tests {
             _ => panic!("Unexpected!"),
         };
     }
+
+    #[test]
+    fn callout_color_setters() {
+        use crate::object::color::Color;
+        let c = CalloutBlock::default();
+        assert_eq!(c.clone().default_color().color, Color::Default);
+        assert_eq!(c.clone().blue().color, Color::Blue);
+        assert_eq!(c.clone().brown().color, Color::Brown);
+        assert_eq!(c.clone().gray().color, Color::Gray);
+        assert_eq!(c.clone().green().color, Color::Green);
+        assert_eq!(c.clone().orange().color, Color::Orange);
+        assert_eq!(c.clone().pink().color, Color::Pink);
+        assert_eq!(c.clone().purple().color, Color::Purple);
+        assert_eq!(c.clone().red().color, Color::Red);
+        assert_eq!(c.clone().yellow().color, Color::Yellow);
+        assert_eq!(
+            c.clone().default_background_color().color,
+            Color::DefaultBackground
+        );
+        assert_eq!(c.clone().blue_background().color, Color::BlueBackground);
+        assert_eq!(c.clone().brown_background().color, Color::BrownBackground);
+        assert_eq!(c.clone().gray_background().color, Color::GrayBackground);
+        assert_eq!(c.clone().green_background().color, Color::GreenBackground);
+        assert_eq!(c.clone().orange_background().color, Color::OrangeBackground);
+        assert_eq!(c.clone().pink_background().color, Color::PinkBackground);
+        assert_eq!(c.clone().purple_background().color, Color::PurpleBackground);
+        assert_eq!(c.clone().red_background().color, Color::RedBackground);
+        assert_eq!(c.yellow_background().color, Color::YellowBackground);
+    }
+
+    #[test]
+    fn callout_from_str_and_display() {
+        let c: CalloutBlock = "callout".into();
+        assert_eq!(c.to_string(), "callout");
+    }
 }

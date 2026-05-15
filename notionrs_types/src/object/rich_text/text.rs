@@ -42,3 +42,21 @@ pub struct TextLink {
 
 crate::impl_display_from_string_field!(TextLink, url);
 crate::impl_from_as_ref!(TextLink, url);
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+
+    #[test]
+    fn text_link_setters_and_display() {
+        let t = Text::default().content("c").url("https://x");
+        assert_eq!(t.to_string(), "c");
+        let from_str: Text = "hello".into();
+        assert_eq!(from_str.content, "hello");
+
+        let link = TextLink::default().url("https://l");
+        assert_eq!(link.to_string(), "https://l");
+        let from_str_link: TextLink = "https://x".into();
+        assert_eq!(from_str_link.url, "https://x");
+    }
+}

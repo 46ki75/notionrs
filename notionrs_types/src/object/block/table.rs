@@ -68,4 +68,18 @@ mod unit_tests {
         assert!(!table.has_column_header);
         assert!(!table.has_row_header);
     }
+
+    #[test]
+    fn table_setters_and_display() {
+        let table = TableBlock::default()
+            .table_width(3)
+            .has_column_header(true)
+            .has_row_header(false)
+            .children(vec![]);
+        let s = table.to_string();
+        assert!(s.contains("table_width: 3"));
+
+        let from_u16: TableBlock = 5u16.into();
+        assert_eq!(from_u16.table_width, 5);
+    }
 }

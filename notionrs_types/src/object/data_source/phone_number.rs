@@ -47,4 +47,17 @@ mod unit_tests {
         assert_eq!(phone_number.name, "Contact phone number");
         assert_eq!(phone_number.phone_number, std::collections::HashMap::new());
     }
+
+    #[test]
+    fn exercise_setters() {
+        let p = DataSourcePhoneNumberProperty::default()
+            .id("ID")
+            .name("Name")
+            .description("Desc")
+            .phone_number(std::collections::HashMap::new());
+        assert_eq!(p.id.as_deref(), Some("ID"));
+        assert_eq!(p.name, "Name");
+        assert_eq!(p.description.as_deref(), Some("Desc"));
+        let _ = serde_json::to_string(&p).unwrap();
+    }
 }

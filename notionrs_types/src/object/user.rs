@@ -175,4 +175,33 @@ mod unit_tests {
 
         Ok(())
     }
+
+    #[test]
+    fn user_setters_from_and_display() {
+        let u = User::default()
+            .object("user")
+            .id("uid")
+            .name("Name")
+            .avatar_url("https://a")
+            .r#type("person")
+            .person(PersonDetail::default().email("e@example.com"))
+            .bot(
+                BotDetail::default()
+                    .owner(BotOwner::default().r#type("workspace").workspace(true))
+                    .workspace_name("ws"),
+            );
+        assert_eq!(u.to_string(), "uid");
+
+        let from_str: User = "from-str".into();
+        assert_eq!(from_str.id, "from-str");
+
+        let limits = WorkspaceLimits::default().max_file_upload_size_in_bytes(1024);
+        assert_eq!(limits.max_file_upload_size_in_bytes, 1024);
+
+        let owner = BotOwner::default()
+            .r#type("user")
+            .workspace(false)
+            .workspace_limits(WorkspaceLimits::default());
+        assert!(!owner.workspace);
+    }
 }

@@ -62,4 +62,12 @@ mod unit_tests {
             r"W_q = \frac{\lambda}{\mu (\mu - \lambda)}"
         )
     }
+
+    #[test]
+    fn equation_block_setters_and_from() {
+        let eq = EquationBlock::default().expression("a=b");
+        assert_eq!(eq.to_string(), "a=b");
+        let eq2: EquationBlock = "x=y".into();
+        assert_eq!(eq2.expression, "x=y");
+    }
 }

@@ -38,4 +38,11 @@ mod unit_tests {
         assert!(column.children.is_none());
         assert_eq!(column.width_ratio, 0.5);
     }
+
+    #[test]
+    fn column_block_setters() {
+        let cb = ColumnBlock::default().children(vec![]).width_ratio(0.75);
+        assert_eq!(cb.width_ratio, 0.75);
+        assert_eq!(cb.to_string(), "");
+    }
 }

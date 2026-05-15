@@ -75,4 +75,20 @@ mod tests {
         let custom_emoji: EmojiAndIcon = serde_json::from_str(custom_emoji).unwrap();
         assert!(matches!(custom_emoji, EmojiAndIcon::CustomEmoji(_)));
     }
+
+    #[test]
+    fn emoji_and_icon_display_all_variants() {
+        use crate::object::file::{ExternalFile, File};
+
+        let icon_json = r#"{"type":"icon","icon":{"name":"home","color":"gray"}}"#;
+        let icon: EmojiAndIcon = serde_json::from_str(icon_json).unwrap();
+        assert!(matches!(icon, EmojiAndIcon::Icon(_)));
+        assert_eq!(icon.to_string(), "home");
+
+        let emoji = EmojiAndIcon::default();
+        let _ = emoji.to_string();
+
+        let file = EmojiAndIcon::File(File::External(ExternalFile::from("https://u")));
+        assert_eq!(file.to_string(), "https://u");
+    }
 }

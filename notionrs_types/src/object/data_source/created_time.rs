@@ -47,4 +47,17 @@ mod unit_tests {
         assert_eq!(created_time.name, "Created time");
         assert_eq!(created_time.created_time, std::collections::HashMap::new());
     }
+
+    #[test]
+    fn exercise_setters() {
+        let p = DataSourceCreatedTimeProperty::default()
+            .id("ID")
+            .name("Name")
+            .description("Desc")
+            .created_time(std::collections::HashMap::new());
+        assert_eq!(p.id.as_deref(), Some("ID"));
+        assert_eq!(p.name, "Name");
+        assert_eq!(p.description.as_deref(), Some("Desc"));
+        let _ = serde_json::to_string(&p).unwrap();
+    }
 }

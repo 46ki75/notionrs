@@ -53,4 +53,22 @@ mod tests {
         assert_eq!(data_source_template_list_response.has_more, false);
         assert_eq!(data_source_template_list_response.next_cursor, None);
     }
+
+    #[test]
+    fn template_property_setters() {
+        let t = DataSourceTemplate::default()
+            .id("id")
+            .name("n")
+            .is_default(true);
+        assert_eq!(t.id, "id");
+        assert_eq!(t.name, "n");
+        assert!(t.is_default);
+
+        let list = DataSourceTemplateListResponse::default()
+            .templates(vec![t])
+            .has_more(true)
+            .next_cursor("cursor".to_string());
+        assert!(list.has_more);
+        assert_eq!(list.next_cursor.as_deref(), Some("cursor"));
+    }
 }

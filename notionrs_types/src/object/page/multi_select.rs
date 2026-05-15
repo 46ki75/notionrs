@@ -119,4 +119,13 @@ mod unit_tests {
             Some(crate::object::select::SelectColor::Blue)
         );
     }
+
+    #[test]
+    fn page_multi_select_setters_and_display() {
+        use crate::object::select::Select;
+        let p = PageMultiSelectProperty::default()
+            .id("id")
+            .multi_select(vec![Select::from("A"), Select::from("B")]);
+        assert_eq!(p.to_string(), "A, B");
+    }
 }

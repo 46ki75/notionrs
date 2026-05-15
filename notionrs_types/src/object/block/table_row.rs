@@ -97,4 +97,11 @@ mod unit_tests {
             _ => panic!(),
         }
     }
+
+    #[test]
+    fn table_row_setters_and_display() {
+        use crate::object::rich_text::RichText;
+        let table_row = TableRowBlock::default().cells(vec![vec![RichText::from("hi")]]);
+        assert_eq!(table_row.to_string(), "hi");
+    }
 }

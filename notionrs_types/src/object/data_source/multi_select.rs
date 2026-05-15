@@ -123,4 +123,17 @@ mod unit_tests {
             Some(crate::object::select::SelectColor::Yellow)
         );
     }
+
+    #[test]
+    fn multi_select_property() {
+        let p = DataSourceMultiSelectProperty::default()
+            .id("id")
+            .name("n")
+            .description("d")
+            .options(vec![]);
+        assert!(p.multi_select.options.is_empty());
+
+        let opts = DataSourceMultiSelectOptionProperty::default().options(vec![]);
+        assert!(opts.options.is_empty());
+    }
 }

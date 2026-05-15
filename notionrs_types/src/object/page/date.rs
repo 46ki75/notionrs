@@ -177,4 +177,31 @@ mod unit_tests {
             assert_eq!(property.time_zone, None);
         }
     }
+
+    #[test]
+    fn page_date_setters_and_display() {
+        let d = crate::object::date::DateOrDateTime::Date(
+            time::Date::from_calendar_date(2024, time::Month::April, 1).unwrap(),
+        );
+        let mut p = PageDateProperty::from(d).id("id");
+        p.start(d);
+        p.end(d);
+        let _ = p.to_string();
+
+        let mut p2 = PageDateProperty::default();
+        p2.start(d);
+        p2.end(d);
+        let _ = p2.to_string();
+
+        let p3 = PageDateProperty::default();
+        assert_eq!(p3.to_string(), "");
+
+        let param = super::PageDatePropertyParameter::default()
+            .start(d)
+            .end(d)
+            .time_zone("UTC");
+        let _ = param.to_string();
+        let empty = super::PageDatePropertyParameter::default();
+        assert_eq!(empty.to_string(), "");
+    }
 }

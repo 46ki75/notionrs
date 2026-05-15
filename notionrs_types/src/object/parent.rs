@@ -164,4 +164,50 @@ mod unit_tests {
         let parent: Parent = serde_json::from_str(json).unwrap();
         assert!(matches!(parent, Parent::BlockParent(_)));
     }
+
+    #[test]
+    fn parent_variants_from_str_and_string() {
+        let dbp: DatabaseParent = "db1".into();
+        assert_eq!(dbp.r#type, "database_id");
+        assert_eq!(dbp.database_id, "db1");
+        let dbp2: DatabaseParent = "db2".to_string().into();
+        assert_eq!(dbp2.database_id, "db2");
+
+        let dsp: DataSourceParent = "ds1".into();
+        assert_eq!(dsp.r#type, "data_source_id");
+        let dsp2: DataSourceParent = "ds2".to_string().into();
+        assert_eq!(dsp2.data_source_id, "ds2");
+
+        let pp: PageParent = "p1".into();
+        assert_eq!(pp.r#type, "page_id");
+        let pp2: PageParent = "p2".to_string().into();
+        assert_eq!(pp2.page_id, "p2");
+
+        let bp: BlockParent = "b1".into();
+        assert_eq!(bp.r#type, "block_id");
+        let bp2: BlockParent = "b2".to_string().into();
+        assert_eq!(bp2.block_id, "b2");
+
+        let _ = WorkspaceParent::default();
+        let _ = AgentIdParent::default();
+    }
+
+    #[test]
+    fn parent_enum_deserialization() {
+        let dbp =
+            serde_json::from_str::<Parent>(r#"{"type":"database_id","database_id":"x"}"#).unwrap();
+        assert!(matches!(dbp, Parent::DatabaseParent(_)));
+
+        let dsp =
+            serde_json::from_str::<Parent>(r#"{"type":"data_source_id","data_source_id":"x"}"#)
+                .unwrap();
+        assert!(matches!(dsp, Parent::DataSourceParent(_)));
+
+        let pp = serde_json::from_str::<Parent>(r#"{"type":"page_id","page_id":"x"}"#).unwrap();
+        assert!(matches!(pp, Parent::PageParent(_)));
+
+        let wp =
+            serde_json::from_str::<Parent>(r#"{"type":"workspace","workspace":true}"#).unwrap();
+        assert!(matches!(wp, Parent::WorkspaceParent(_)));
+    }
 }

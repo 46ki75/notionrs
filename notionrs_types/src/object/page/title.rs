@@ -148,4 +148,17 @@ mod unit_tests {
         // assert_eq!(title.title.first().unwrap().plain_text, "My Title");
         // assert_eq!(title.title.first().unwrap().href, None);
     }
+
+    #[test]
+    fn page_title_from_and_setters() {
+        use crate::object::rich_text::RichText;
+        let p: PageTitleProperty = "Hello".into();
+        assert_eq!(p.to_string(), "Hello");
+        let p2: PageTitleProperty = RichText::from("Hi").into();
+        assert_eq!(p2.to_string(), "Hi");
+        let p3 = PageTitleProperty::default()
+            .id("id")
+            .title(vec![RichText::from("body")]);
+        assert_eq!(p3.to_string(), "body");
+    }
 }

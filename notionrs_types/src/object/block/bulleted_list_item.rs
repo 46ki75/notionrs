@@ -111,4 +111,40 @@ mod unit_tests {
             _ => panic!(),
         }
     }
+
+    #[test]
+    fn bulleted_color_setters() {
+        use crate::object::color::Color;
+        let b = BulletedListItemBlock::default();
+        assert_eq!(b.clone().default_color().color, Color::Default);
+        assert_eq!(b.clone().blue().color, Color::Blue);
+        assert_eq!(b.clone().brown().color, Color::Brown);
+        assert_eq!(b.clone().gray().color, Color::Gray);
+        assert_eq!(b.clone().green().color, Color::Green);
+        assert_eq!(b.clone().orange().color, Color::Orange);
+        assert_eq!(b.clone().pink().color, Color::Pink);
+        assert_eq!(b.clone().purple().color, Color::Purple);
+        assert_eq!(b.clone().red().color, Color::Red);
+        assert_eq!(b.clone().yellow().color, Color::Yellow);
+        assert_eq!(
+            b.clone().default_background_color().color,
+            Color::DefaultBackground
+        );
+        assert_eq!(b.clone().blue_background().color, Color::BlueBackground);
+        assert_eq!(b.clone().brown_background().color, Color::BrownBackground);
+        assert_eq!(b.clone().gray_background().color, Color::GrayBackground);
+        assert_eq!(b.clone().green_background().color, Color::GreenBackground);
+        assert_eq!(b.clone().orange_background().color, Color::OrangeBackground);
+        assert_eq!(b.clone().pink_background().color, Color::PinkBackground);
+        assert_eq!(b.clone().purple_background().color, Color::PurpleBackground);
+        assert_eq!(b.clone().red_background().color, Color::RedBackground);
+        assert_eq!(b.yellow_background().color, Color::YellowBackground);
+    }
+
+    #[test]
+    fn bulleted_from_vec_rich_text_and_display() {
+        use crate::object::rich_text::RichText;
+        let b: BulletedListItemBlock = vec![RichText::from("hi")].into();
+        assert_eq!(b.to_string(), "hi");
+    }
 }

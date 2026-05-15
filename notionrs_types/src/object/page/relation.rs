@@ -108,4 +108,16 @@ mod unit_tests {
             "669ffc58-9c20-4264-956b-f7f917c58400"
         );
     }
+
+    #[test]
+    fn page_relation_setters_and_display() {
+        let p = PageRelationProperty::default()
+            .id("id")
+            .relation(vec![
+                PageRelationPropertyParameter::default().id("page-id".to_string()),
+            ])
+            .has_more(true);
+        assert_eq!(p.to_string(), "page-id");
+        assert!(p.has_more);
+    }
 }

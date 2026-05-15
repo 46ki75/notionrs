@@ -120,4 +120,16 @@ mod unit_tests {
             Some("1e834608-d5c9-80a2-ab7a-001c2c516cfd".to_string())
         );
     }
+
+    #[test]
+    fn comment_from_and_display_and_setters() {
+        use crate::object::rich_text::RichText;
+        let c: Comment = "hello".into();
+        assert_eq!(c.to_string(), "hello");
+        let _ = Comment::default()
+            .object("comment")
+            .id("id".to_string())
+            .discussion_id("d")
+            .rich_text(vec![RichText::from("body")]);
+    }
 }

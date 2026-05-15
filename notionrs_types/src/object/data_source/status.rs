@@ -164,4 +164,15 @@ mod unit_tests {
             vec!["497e64fb-01e2-41ef-ae2d-8a87a3bb51da"]
         );
     }
+
+    #[test]
+    fn status_property() {
+        let p = DatabaseStatusProperty::default()
+            .id("id")
+            .name("n")
+            .description("d")
+            .options(vec![]);
+        let _ = serde_json::to_string(&p).unwrap();
+        let _ = DataSourceStatusOptionProperty::default();
+    }
 }

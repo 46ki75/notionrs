@@ -81,4 +81,12 @@ mod unit_tests {
             Some("https://developers.notion.com/reference/page-property-values#url".to_string())
         );
     }
+
+    #[test]
+    fn page_url_from_and_setters() {
+        let p: PageUrlProperty = "https://example.com".into();
+        assert_eq!(p.to_string(), "https://example.com");
+        let p2 = PageUrlProperty::default().id("id").url("https://x");
+        assert_eq!(p2.url.as_deref(), Some("https://x"));
+    }
 }

@@ -1,5 +1,5 @@
 test:
 	cargo test
 
-coverage:
-	cargo llvm-cov report --show-missing-lines
+coverage: test
+	cargo llvm-cov report --show-missing-lines --color=always 2>&1 | grep -v " 100.00%"

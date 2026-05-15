@@ -3292,4 +3292,295 @@ mod unit_tests {
             _ => panic!("Expected MultiSelect condition"),
         }
     }
+
+    // # --------------------------------------------------------------------------------
+    // Filter helper coverage tests
+    // # --------------------------------------------------------------------------------
+
+    fn check(f: Filter) {
+        let _ = serde_json::to_string(&f).expect("filter must serialize");
+    }
+
+    #[test]
+    fn and_or_combinators() {
+        let inner = Filter::checkbox_is_checked("done");
+        check(Filter::and(vec![inner.clone(), inner.clone()]));
+        check(Filter::or(vec![inner.clone(), inner]));
+    }
+
+    #[test]
+    fn checkbox_filters() {
+        check(Filter::checkbox_is_checked("c"));
+        check(Filter::checkbox_is_not_checked("c"));
+    }
+
+    #[test]
+    fn date_filters() {
+        check(Filter::date_after("d", "2024-01-01"));
+        check(Filter::date_before("d", "2024-01-01"));
+        check(Filter::date_equals("d", "2024-01-01"));
+        check(Filter::date_is_empty("d"));
+        check(Filter::date_is_not_empty("d"));
+        check(Filter::date_next_month("d"));
+        check(Filter::date_next_week("d"));
+        check(Filter::date_next_year("d"));
+        check(Filter::date_on_or_after("d", "2024-01-01"));
+        check(Filter::date_on_or_before("d", "2024-01-01"));
+        check(Filter::date_past_month("d"));
+        check(Filter::date_past_week("d"));
+        check(Filter::date_past_year("d"));
+        check(Filter::date_this_week("d"));
+    }
+
+    #[test]
+    fn files_filters() {
+        check(Filter::files_is_empty("f"));
+        check(Filter::files_is_not_empty("f"));
+    }
+
+    #[test]
+    fn formula_number_filters() {
+        check(Filter::formula_number_equals("f", 1));
+        check(Filter::formula_number_does_not_equal("f", 1));
+        check(Filter::formula_number_greater_than("f", 1));
+        check(Filter::formula_number_less_than("f", 1));
+        check(Filter::formula_number_greater_than_or_equal("f", 1));
+        check(Filter::formula_number_less_than_or_equal("f", 1));
+        check(Filter::formula_number_is_empty("f"));
+        check(Filter::formula_number_is_not_empty("f"));
+    }
+
+    #[test]
+    fn formula_string_filters() {
+        check(Filter::formula_string_equals("f", "x"));
+        check(Filter::formula_string_does_not_equal("f", "x"));
+        check(Filter::formula_string_contains("f", "x"));
+        check(Filter::formula_string_does_not_contain("f", "x"));
+        check(Filter::formula_string_starts_with("f", "x"));
+        check(Filter::formula_string_ends_with("f", "x"));
+        check(Filter::formula_string_is_empty("f"));
+        check(Filter::formula_string_is_not_empty("f"));
+    }
+
+    #[test]
+    fn formula_checkbox_filters() {
+        check(Filter::formula_checkbox_equals("f", true));
+        check(Filter::formula_checkbox_is_checked("f"));
+        check(Filter::formula_checkbox_is_not_checked("f"));
+    }
+
+    #[test]
+    fn formula_date_filters() {
+        check(Filter::formula_date_after("f", "2024-01-01"));
+        check(Filter::formula_date_before("f", "2024-01-01"));
+        check(Filter::formula_date_equals("f", "2024-01-01"));
+        check(Filter::formula_date_is_empty("f"));
+        check(Filter::formula_date_is_not_empty("f"));
+        check(Filter::formula_date_next_month("f"));
+        check(Filter::formula_date_next_week("f"));
+        check(Filter::formula_date_next_year("f"));
+        check(Filter::formula_date_on_or_after("f", "2024-01-01"));
+        check(Filter::formula_date_on_or_before("f", "2024-01-01"));
+        check(Filter::formula_date_past_month("f"));
+        check(Filter::formula_date_past_week("f"));
+        check(Filter::formula_date_past_year("f"));
+        check(Filter::formula_date_this_week("f"));
+    }
+
+    #[test]
+    fn multi_select_filters_helper() {
+        check(Filter::multi_select_contains("m", "opt"));
+        check(Filter::multi_select_contains_any("m", ["a", "b"]));
+        check(Filter::multi_select_does_not_contain("m", "opt"));
+        check(Filter::multi_select_does_not_contain_any("m", ["a", "b"]));
+        check(Filter::multi_select_is_empty::<&str>("m"));
+        check(Filter::multi_select_is_not_empty::<&str>("m"));
+    }
+
+    #[test]
+    fn number_filters() {
+        check(Filter::number_equals("n", 1));
+        check(Filter::number_does_not_equal("n", 1));
+        check(Filter::number_greater_than("n", 1));
+        check(Filter::number_less_than("n", 1));
+        check(Filter::number_greater_than_or_equal_to("n", 1));
+        check(Filter::number_less_than_or_equal_to("n", 1));
+        check(Filter::number_is_empty("n"));
+        check(Filter::number_is_not_empty("n"));
+    }
+
+    #[test]
+    fn people_filters() {
+        check(Filter::people_contains("p", "uid"));
+        check(Filter::people_contains_me("p"));
+        check(Filter::people_does_not_contain("p", "uid"));
+        check(Filter::people_does_not_contain_me("p"));
+        check(Filter::people_is_empty("p"));
+        check(Filter::people_is_not_empty("p"));
+    }
+
+    #[test]
+    fn phone_number_filters() {
+        check(Filter::phone_number_equals("p", "555"));
+        check(Filter::phone_number_does_not_equal("p", "555"));
+        check(Filter::phone_number_contains("p", "5"));
+        check(Filter::phone_number_does_not_contain("p", "5"));
+        check(Filter::phone_number_starts_with("p", "5"));
+        check(Filter::phone_number_ends_with("p", "5"));
+        check(Filter::phone_number_is_empty("p"));
+        check(Filter::phone_number_is_not_empty("p"));
+    }
+
+    #[test]
+    fn relation_filters() {
+        check(Filter::relation_contains("r", "page-id"));
+        check(Filter::relation_does_not_contain("r", "page-id"));
+        check(Filter::relation_is_empty("r"));
+        check(Filter::relation_is_not_empty("r"));
+    }
+
+    #[test]
+    fn rich_text_filters() {
+        check(Filter::rich_text_equals("r", "x"));
+        check(Filter::rich_text_does_not_equal("r", "x"));
+        check(Filter::rich_text_contains("r", "x"));
+        check(Filter::rich_text_does_not_contain("r", "x"));
+        check(Filter::rich_text_starts_with("r", "x"));
+        check(Filter::rich_text_ends_with("r", "x"));
+        check(Filter::rich_text_is_empty("r"));
+        check(Filter::rich_text_is_not_empty("r"));
+    }
+
+    #[test]
+    fn rollup_filters() {
+        let inner = Filter::number_equals("inner", 1);
+        check(Filter::rollup_any("ro", inner.clone()));
+        check(Filter::rollup_every("ro", inner.clone()));
+        check(Filter::rollup_none("ro", inner));
+    }
+
+    #[test]
+    fn select_filters() {
+        check(Filter::select_equals("s", "Done"));
+        check(Filter::select_equals_any("s", ["A", "B"]));
+        check(Filter::select_does_not_equal("s", "Done"));
+        check(Filter::select_does_not_equal_any("s", ["A", "B"]));
+        check(Filter::select_is_empty::<&str>("s"));
+        check(Filter::select_is_not_empty::<&str>("s"));
+    }
+
+    #[test]
+    fn status_filters() {
+        check(Filter::status_equals("s", "Done"));
+        check(Filter::status_equals_any("s", ["A", "B"]));
+        check(Filter::status_does_not_equal("s", "Done"));
+        check(Filter::status_does_not_equal_any("s", ["A", "B"]));
+        check(Filter::status_is_empty::<&str>("s"));
+        check(Filter::status_is_not_empty::<&str>("s"));
+    }
+
+    #[test]
+    fn timestamp_filters() {
+        check(Filter::timestamp_after("2024-01-01"));
+        check(Filter::timestamp_before("2024-01-01"));
+        check(Filter::timestamp_equals("2024-01-01"));
+        check(Filter::timestamp_is_empty());
+        check(Filter::timestamp_is_not_empty());
+        check(Filter::timestamp_next_month());
+        check(Filter::timestamp_next_week());
+        check(Filter::timestamp_next_year());
+        check(Filter::timestamp_on_or_after("2024-01-01"));
+        check(Filter::timestamp_on_or_before("2024-01-01"));
+        check(Filter::timestamp_past_month());
+        check(Filter::timestamp_past_week());
+        check(Filter::timestamp_past_year());
+        check(Filter::timestamp_this_week());
+    }
+
+    #[test]
+    fn unique_id_filters() {
+        check(Filter::unique_id_equals("u", 1));
+        check(Filter::unique_id_does_not_equal("u", 1));
+        check(Filter::unique_id_greater_than("u", 1));
+        check(Filter::unique_id_less_than("u", 1));
+        check(Filter::unique_id_greater_than_or_equal_to("u", 1));
+        check(Filter::unique_id_less_than_or_equal_to("u", 1));
+    }
+
+    #[test]
+    fn date_or_relative_helpers() {
+        let _ = DateOrRelativeDate::today();
+        let _ = DateOrRelativeDate::tomorrow();
+        let _ = DateOrRelativeDate::yesterday();
+        let _ = DateOrRelativeDate::one_week_ago();
+        let _ = DateOrRelativeDate::one_week_from_now();
+        let _ = DateOrRelativeDate::one_month_ago();
+        let _ = DateOrRelativeDate::one_month_from_now();
+
+        let d: DateOrRelativeDate = "today".into();
+        assert!(matches!(
+            d,
+            DateOrRelativeDate::Relative(RelativeDateValue::Today)
+        ));
+        let d: DateOrRelativeDate = "tomorrow".into();
+        assert!(matches!(
+            d,
+            DateOrRelativeDate::Relative(RelativeDateValue::Tomorrow)
+        ));
+        let d: DateOrRelativeDate = "yesterday".into();
+        assert!(matches!(
+            d,
+            DateOrRelativeDate::Relative(RelativeDateValue::Yesterday)
+        ));
+        let d: DateOrRelativeDate = "one_week_ago".into();
+        assert!(matches!(
+            d,
+            DateOrRelativeDate::Relative(RelativeDateValue::OneWeekAgo)
+        ));
+        let d: DateOrRelativeDate = "one_week_from_now".into();
+        assert!(matches!(
+            d,
+            DateOrRelativeDate::Relative(RelativeDateValue::OneWeekFromNow)
+        ));
+        let d: DateOrRelativeDate = "one_month_ago".into();
+        assert!(matches!(
+            d,
+            DateOrRelativeDate::Relative(RelativeDateValue::OneMonthAgo)
+        ));
+        let d: DateOrRelativeDate = "one_month_from_now".into();
+        assert!(matches!(
+            d,
+            DateOrRelativeDate::Relative(RelativeDateValue::OneMonthFromNow)
+        ));
+        let d: DateOrRelativeDate = "2024-01-01".into();
+        assert!(matches!(d, DateOrRelativeDate::Date(_)));
+
+        assert_eq!(
+            DateOrRelativeDate::default(),
+            DateOrRelativeDate::Date(String::new())
+        );
+
+        assert_eq!(RelativeDateValue::Today.to_string(), "today");
+        assert_eq!(RelativeDateValue::Tomorrow.to_string(), "tomorrow");
+        assert_eq!(RelativeDateValue::Yesterday.to_string(), "yesterday");
+        assert_eq!(RelativeDateValue::OneWeekAgo.to_string(), "one_week_ago");
+        assert_eq!(
+            RelativeDateValue::OneWeekFromNow.to_string(),
+            "one_week_from_now"
+        );
+        assert_eq!(RelativeDateValue::OneMonthAgo.to_string(), "one_month_ago");
+        assert_eq!(
+            RelativeDateValue::OneMonthFromNow.to_string(),
+            "one_month_from_now"
+        );
+    }
+
+    #[test]
+    fn string_or_string_array_from() {
+        let _: StringOrStringArray = "x".to_string().into();
+        let _: StringOrStringArray = "x".into();
+        let _: StringOrStringArray = vec!["a".to_string(), "b".to_string()].into();
+        let _: StringOrStringArray = vec!["a", "b"].into();
+        let _ = StringOrStringArray::default();
+    }
 }

@@ -86,4 +86,13 @@ mod unit_tests {
             Some(crate::object::select::SelectColor::Default)
         );
     }
+
+    #[test]
+    fn page_status_setters_and_display() {
+        use crate::object::select::Select;
+        let p = PageStatusProperty::default()
+            .id("id")
+            .status(Select::from("Done"));
+        assert_eq!(p.to_string(), "Done");
+    }
 }

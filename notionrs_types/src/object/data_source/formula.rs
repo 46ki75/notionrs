@@ -69,4 +69,16 @@ mod unit_tests {
             "{{notion:block_property:BtVS:00000000-0000-0000-0000-000000000000:8994905a-074a-415f-9bcf-d1f8b4fa38e4}}/2"
         );
     }
+
+    #[test]
+    fn formula_property_from_and_setters() {
+        let p = DataSourceFormulaProperty::from("expr");
+        assert_eq!(p.formula, p.formula.clone());
+
+        let p2 = DataSourceFormulaProperty::default()
+            .id("id")
+            .name("n")
+            .description("d");
+        assert_eq!(p2.name, "n");
+    }
 }

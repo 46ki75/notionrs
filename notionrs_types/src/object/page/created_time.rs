@@ -94,4 +94,14 @@ mod unit_tests {
         );
         assert_eq!(created_time.created_time, expected_created_time);
     }
+
+    #[test]
+    fn page_created_time_setters_and_display() {
+        let now = time::OffsetDateTime::now_utc();
+        let p = PageCreatedTimeProperty::default()
+            .id("id")
+            .created_time(now);
+        let _ = p.to_string();
+        let _ = PageCreatedTimeProperty::default();
+    }
 }

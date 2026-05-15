@@ -15,6 +15,9 @@ This project is currently under active development and is not yet ready for prod
 - [♻ Release Notes](https://github.com/46ki75/notionrs/releases)
 - [🛠️ API Reference (docs.rs)](https://docs.rs/notionrs/latest/notionrs/)
 
+> [!NOTE]
+> `AGENTS.md` is written for AI agents and internal contributors, not for crate users. If you're consuming this crate, see the API Reference above.
+
 ## Features currently released
 
 As part of the alpha release, the following features are available. Please note that API changes may occur before the official release.

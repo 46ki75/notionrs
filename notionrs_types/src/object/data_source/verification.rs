@@ -18,3 +18,29 @@ pub struct DataSourceVerificationProperty {
     /// An empty object (`{}`)
     pub verification: std::collections::HashMap<(), ()>,
 }
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+
+    #[test]
+    fn data_source_verification_property() {
+        let json = r#"{"id":"v1","name":"Ver","verification":{}}"#;
+        let prop: DataSourceVerificationProperty = serde_json::from_str(json).unwrap();
+        assert_eq!(prop.name, "Ver");
+        let _ = serde_json::to_string(&prop).unwrap();
+    }
+
+    #[test]
+    fn exercise_setters() {
+        let p = DataSourceVerificationProperty::default()
+            .id("ID")
+            .name("Name")
+            .description("Desc")
+            .verification(std::collections::HashMap::new());
+        assert_eq!(p.id.as_deref(), Some("ID"));
+        assert_eq!(p.name, "Name");
+        assert_eq!(p.description.as_deref(), Some("Desc"));
+        let _ = serde_json::to_string(&p).unwrap();
+    }
+}

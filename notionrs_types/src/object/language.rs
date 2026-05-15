@@ -203,3 +203,22 @@ impl std::fmt::Display for Language {
             .fmt(f)
     }
 }
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+    use std::str::FromStr;
+
+    #[test]
+    fn language_display_and_from_str() {
+        assert_eq!(Language::Rust.to_string(), "rust");
+        assert_eq!(Language::from_str("rust").unwrap(), Language::Rust);
+        assert_eq!(Language::from_str("c#").unwrap(), Language::CSharp);
+        assert_eq!(
+            Language::from_str("plain text").unwrap(),
+            Language::PlainText
+        );
+        assert_eq!(Language::default(), Language::PlainText);
+        assert!(Language::from_str("not_a_real_lang").is_err());
+    }
+}

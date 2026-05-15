@@ -103,4 +103,23 @@ mod unit_tests {
         assert_eq!(rollup.rollup.relation_property_id, "Y]<y");
         assert_eq!(rollup.rollup.function, RollupFunction::Sum);
     }
+
+    #[test]
+    fn rollup_property() {
+        let p = DataSourceRollupProperty::default()
+            .id("id")
+            .name("n")
+            .description("d")
+            .rollup(DataSourceRollupDetail::default());
+        let _ = serde_json::to_string(&p).unwrap();
+
+        let detail = DataSourceRollupDetail::default()
+            .function(RollupFunction::Average)
+            .relation_property_id("rpid")
+            .relation_property_name("rpname")
+            .rollup_property_id("ropid")
+            .rollup_property_name("ropname");
+        assert_eq!(detail.function, RollupFunction::Average);
+        assert_eq!(detail.relation_property_id, "rpid");
+    }
 }

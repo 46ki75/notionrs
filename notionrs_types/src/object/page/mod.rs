@@ -224,4 +224,82 @@ mod tests {
         let _page = serde_json::from_str::<crate::object::page::PageResponse>(json_data)
             .expect("An error occurred while deserializing the page");
     }
+
+    #[test]
+    fn page_property_display_all_variants() {
+        use crate::object::page::{
+            button::PageButtonProperty,
+            checkbox::PageCheckboxProperty,
+            created_by::PageCreatedByProperty,
+            created_time::PageCreatedTimeProperty,
+            date::PageDateProperty,
+            email::PageEmailProperty,
+            files::PageFilesProperty,
+            formula::{Formula, FormulaString, PageFormulaProperty},
+            last_edited_by::PageLastEditedByProperty,
+            last_edited_time::PageLastEditedTimeProperty,
+            multi_select::PageMultiSelectProperty,
+            number::PageNumberProperty,
+            people::PagePeopleProperty,
+            phone_number::PagePhoneNumberProperty,
+            place::PagePlaceProperty,
+            relation::PageRelationProperty,
+            rich_text::PageRichTextProperty,
+            rollup::PageRollupProperty,
+            select::PageSelectProperty,
+            status::PageStatusProperty,
+            title::PageTitleProperty,
+            unique_id::{PageUniqueIdProperty, PageUniqueIdPropertyParameter},
+            url::PageUrlProperty,
+            verification::PageVerificationProperty,
+        };
+        use crate::object::select::Select;
+        use crate::object::user::User;
+
+        let now = time::OffsetDateTime::now_utc();
+        let variants = vec![
+            PageProperty::Button(PageButtonProperty::default()),
+            PageProperty::Checkbox(PageCheckboxProperty::from(true)),
+            PageProperty::CreatedBy(PageCreatedByProperty::default().created_by(User::default())),
+            PageProperty::CreatedTime(PageCreatedTimeProperty::default().created_time(now)),
+            PageProperty::Date(PageDateProperty::default()),
+            PageProperty::Email(PageEmailProperty::from("e@x.com")),
+            PageProperty::Files(PageFilesProperty::default()),
+            PageProperty::Formula(PageFormulaProperty {
+                id: None,
+                formula: Formula::String(FormulaString {
+                    string: Some("v".into()),
+                }),
+            }),
+            PageProperty::LastEditedBy(PageLastEditedByProperty {
+                id: None,
+                last_edited_by: User::default(),
+            }),
+            PageProperty::LastEditedTime(PageLastEditedTimeProperty {
+                id: None,
+                last_edited_time: now,
+            }),
+            PageProperty::MultiSelect(PageMultiSelectProperty::default()),
+            PageProperty::Number(PageNumberProperty::from(1.0)),
+            PageProperty::People(PagePeopleProperty::default()),
+            PageProperty::PhoneNumber(PagePhoneNumberProperty::from("555")),
+            PageProperty::Place(PagePlaceProperty::default()),
+            PageProperty::Relation(PageRelationProperty::default()),
+            PageProperty::RichText(PageRichTextProperty::from("text")),
+            PageProperty::Rollup(PageRollupProperty { id: None }),
+            PageProperty::Select(PageSelectProperty::default()),
+            PageProperty::Status(PageStatusProperty::default().status(Select::from("S"))),
+            PageProperty::Title(PageTitleProperty::from("Title")),
+            PageProperty::UniqueId(PageUniqueIdProperty {
+                id: None,
+                unique_id: PageUniqueIdPropertyParameter::default(),
+            }),
+            PageProperty::Url(PageUrlProperty::from("https://u")),
+            PageProperty::Verification(PageVerificationProperty::default()),
+        ];
+
+        for v in &variants {
+            let _ = v.to_string();
+        }
+    }
 }

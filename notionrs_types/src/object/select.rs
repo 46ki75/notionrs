@@ -193,4 +193,19 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn select_setters_and_display() {
+        let s = Select::default()
+            .id("id")
+            .name("name")
+            .color(SelectColor::Blue)
+            .description("desc");
+        assert_eq!(s.to_string(), "name");
+        let from_str: Select = "Option".into();
+        assert_eq!(from_str.name, "Option");
+
+        assert_eq!(SelectColor::Blue.to_string(), "blue");
+        assert_eq!(SelectColor::Default.to_string(), "default");
+    }
 }
