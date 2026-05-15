@@ -1,5 +1,15 @@
-just check:
-	cargo check
-
 test *args='':
-    cargo test {{args}} --jobs 1
+    cargo test {{args}}
+
+test-readonly: (test 'readonly')
+test-mutable: (test 'mutable')
+
+_cov-run *args='':
+    cargo llvm-cov --no-report test {{args}}
+
+_cov-report:
+    cargo llvm-cov report --show-missing-lines --color=always 2>&1 | grep -v " 100.00%"
+
+coverage: (_cov-run) _cov-report
+coverage-readonly: (_cov-run 'readonly') _cov-report
+coverage-mutable: (_cov-run 'mutable') _cov-report
