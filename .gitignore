@@ -3,6 +3,8 @@ target/
 .env.*
 src/bin/*
 
+lcov.info
+
 # Node.js
 node_modules/
 
