@@ -58,8 +58,30 @@ pub struct InsertContentPayload {
 
     /// Selection of existing content to insert after, using the ellipsis format
     /// ("start text...end text"). Omit to append at the end of the page.
+    ///
+    /// Mutually exclusive with `position`.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub after: Option<String>,
+
+    /// Explicit position at which to insert the content (either the start
+    /// or the end of the page). Added in `notion-sdk-js` v5.22.0.
+    ///
+    /// Mutually exclusive with `after`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub position: Option<InsertContentPosition>,
+}
+
+/// Position at which to insert content via the `insert_content` operation.
+///
+/// Mutually exclusive with `InsertContentPayload::after`.
+#[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum InsertContentPosition {
+    /// Insert the content at the start of the page.
+    Start,
+
+    /// Insert the content at the end of the page.
+    End,
 }
 
 /// Payload for the `replace_content_range` operation.
@@ -127,6 +149,7 @@ impl UpdatePageMarkdownClient {
             insert_content: InsertContentPayload {
                 content: content.as_ref().to_string(),
                 after: None,
+                position: None,
             },
         });
         self
@@ -144,6 +167,26 @@ impl UpdatePageMarkdownClient {
             insert_content: InsertContentPayload {
                 content: content.as_ref().to_string(),
                 after: Some(after.as_ref().to_string()),
+                position: None,
+            },
+        });
+        self
+    }
+
+    /// Set the body to an `insert_content` operation that inserts at the explicit
+    /// `position` (start or end of the page). Added in `notion-sdk-js` v5.22.0.
+    ///
+    /// `position` is mutually exclusive with `after`.
+    pub fn insert_content_at(
+        mut self,
+        content: impl AsRef<str>,
+        position: InsertContentPosition,
+    ) -> Self {
+        self.body = Some(UpdatePageMarkdownBody::InsertContent {
+            insert_content: InsertContentPayload {
+                content: content.as_ref().to_string(),
+                after: None,
+                position: Some(position),
             },
         });
         self
@@ -298,6 +341,7 @@ mod tests {
             insert_content: InsertContentPayload {
                 content: "# New Heading\n\nSome text.".to_string(),
                 after: None,
+                position: None,
             },
         };
 
@@ -305,6 +349,7 @@ mod tests {
         assert_eq!(json["type"], "insert_content");
         assert_eq!(json["insert_content"]["content"], "# New Heading\n\nSome text.");
         assert!(json["insert_content"].get("after").is_none());
+        assert!(json["insert_content"].get("position").is_none());
     }
 
     #[test]
@@ -313,12 +358,60 @@ mod tests {
             insert_content: InsertContentPayload {
                 content: "New content".to_string(),
                 after: Some("start...end".to_string()),
+                position: None,
             },
         };
 
         let json = serde_json::to_value(&body).expect("Failed to serialize");
         assert_eq!(json["type"], "insert_content");
         assert_eq!(json["insert_content"]["after"], "start...end");
+        assert!(json["insert_content"].get("position").is_none());
+    }
+
+    #[test]
+    fn serialize_insert_content_with_position_start() {
+        let body = UpdatePageMarkdownBody::InsertContent {
+            insert_content: InsertContentPayload {
+                content: "Prepend me".to_string(),
+                after: None,
+                position: Some(InsertContentPosition::Start),
+            },
+        };
+
+        let json = serde_json::to_value(&body).expect("Failed to serialize");
+        assert_eq!(json["type"], "insert_content");
+        assert_eq!(json["insert_content"]["content"], "Prepend me");
+        assert_eq!(json["insert_content"]["position"]["type"], "start");
+        assert!(json["insert_content"].get("after").is_none());
+    }
+
+    #[test]
+    fn serialize_insert_content_with_position_end() {
+        let body = UpdatePageMarkdownBody::InsertContent {
+            insert_content: InsertContentPayload {
+                content: "Append me".to_string(),
+                after: None,
+                position: Some(InsertContentPosition::End),
+            },
+        };
+
+        let json = serde_json::to_value(&body).expect("Failed to serialize");
+        assert_eq!(json["insert_content"]["position"]["type"], "end");
+    }
+
+    #[test]
+    fn builder_insert_content_at_sets_position() {
+        let client = UpdatePageMarkdownClient::default()
+            .insert_content_at("Hi", InsertContentPosition::Start);
+
+        match client.body.expect("body should be set") {
+            UpdatePageMarkdownBody::InsertContent { insert_content } => {
+                assert_eq!(insert_content.content, "Hi");
+                assert!(insert_content.after.is_none());
+                assert_eq!(insert_content.position, Some(InsertContentPosition::Start));
+            }
+            _ => panic!("Expected InsertContent variant"),
+        }
     }
 
     #[test]
@@ -459,6 +552,30 @@ mod tests {
             UpdatePageMarkdownBody::InsertContent { insert_content } => {
                 assert_eq!(insert_content.content, "hello");
                 assert!(insert_content.after.is_none());
+                assert!(insert_content.position.is_none());
+            }
+            _ => panic!("Expected InsertContent variant"),
+        }
+    }
+
+    #[test]
+    fn deserialize_insert_content_with_position() {
+        let json = r#"
+        {
+            "type": "insert_content",
+            "insert_content": {
+                "content": "hello",
+                "position": { "type": "start" }
+            }
+        }
+        "#;
+
+        let body: UpdatePageMarkdownBody =
+            serde_json::from_str(json).expect("Failed to deserialize");
+        match body {
+            UpdatePageMarkdownBody::InsertContent { insert_content } => {
+                assert_eq!(insert_content.content, "hello");
+                assert_eq!(insert_content.position, Some(InsertContentPosition::Start));
             }
             _ => panic!("Expected InsertContent variant"),
         }
