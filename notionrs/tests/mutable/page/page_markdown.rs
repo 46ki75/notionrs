@@ -45,6 +45,58 @@ mod integration_tests {
     }
 
     #[tokio::test]
+    async fn update_page_markdown_insert_content_at_start() -> Result<(), notionrs::Error> {
+        dotenvy::dotenv().ok();
+
+        let notion_api_key = std::env::var("NOTION_API_KEY_MUTABLE").unwrap();
+        let client = notionrs::Client::new(notion_api_key);
+
+        // create a page
+        let mut properties = std::collections::HashMap::new();
+        properties.insert(
+            "title".to_string(),
+            PageProperty::Title(PageTitleProperty::from(
+                "Markdown Insert Content At Start Test",
+            )),
+        );
+
+        let page = client
+            .create_page::<std::collections::HashMap<String, PageProperty>>()
+            .properties(properties)
+            .page_id(PAGE_ID)
+            .send()
+            .await?;
+
+        // insert initial content (appended at end by default)
+        client
+            .update_page_markdown()
+            .page_id(&page.id)
+            .insert_content("Original first line.")
+            .send()
+            .await?;
+
+        // prepend new content at the start of the page
+        let response = client
+            .update_page_markdown()
+            .page_id(&page.id)
+            .insert_content_at(
+                "# Prepended Heading\n\nPrepended paragraph.",
+                notionrs::client::page::update_page_markdown::InsertContentPosition::Start,
+            )
+            .send()
+            .await?;
+
+        assert_eq!(response.object, "page_markdown");
+        assert_eq!(response.id, page.id);
+        assert!(!response.markdown.is_empty());
+
+        // cleanup
+        client.delete_block().block_id(&page.id).send().await?;
+
+        Ok(())
+    }
+
+    #[tokio::test]
     async fn update_page_markdown_replace_content() -> Result<(), notionrs::Error> {
         dotenvy::dotenv().ok();
 
