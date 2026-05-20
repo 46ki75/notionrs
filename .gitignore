@@ -5,6 +5,8 @@ src/bin/*
 
 lcov.info
 
+notes/
+
 # Node.js
 node_modules/
 
