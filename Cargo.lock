@@ -986,7 +986,7 @@ dependencies = [
 
 [[package]]
 name = "notionrs"
-version = "0.26.0"
+version = "0.27.0"
 dependencies = [
  "bytes",
  "dotenvy",
@@ -1015,7 +1015,7 @@ dependencies = [
 
 [[package]]
 name = "notionrs_types"
-version = "0.19.0"
+version = "0.20.0"
 dependencies = [
  "notionrs_macro",
  "serde",
