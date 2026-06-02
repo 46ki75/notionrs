@@ -40,7 +40,7 @@ thiserror = "2"
 futures = "0.3.32"
 bytes = "1.11.1"
 dotenvy = "0.15.0"
-serial_test = "3.4.0"
+serial_test = "3.5.0"
 
 # Async Runtime
 tokio = { version = "1.52", features = ["full"] }
