@@ -99,6 +99,11 @@ impl SearchClient {
         self.sort(notionrs_types::object::request::search::SearchSort::desc())
     }
 
+    /// Sort by relevance to the search query.
+    pub fn sort_relevance(self) -> Self {
+        self.sort(notionrs_types::object::request::search::SearchSort::relevance())
+    }
+
     /// Restricts search results to only database types.
     /// It is recommended to use the search_database method, which returns results that are not in an enum format.
     pub fn filter_database(self) -> Self {
