@@ -15,8 +15,26 @@ pub struct UpdatePageMarkdownClient {
     /// The ID of the page to update.
     pub(crate) page_id: Option<String>,
 
+    /// When set to `true`, the update may be performed asynchronously; the
+    /// response can then be an async task reference instead of the updated
+    /// page's markdown. Added in `notion-sdk-js` v5.23.0.
+    pub(crate) allow_async: Option<bool>,
+
     #[setter(skip)]
     pub(crate) body: Option<UpdatePageMarkdownBody>,
+}
+
+/// The full request body for `PATCH /v1/pages/:id/markdown`, combining the
+/// top-level `allow_async` flag with the operation-specific payload.
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct UpdatePageMarkdownRequestBody {
+    /// See [`UpdatePageMarkdownClient::allow_async`].
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub allow_async: Option<bool>,
+
+    /// The discriminated operation payload (`insert_content`, `replace_content_range`, etc.).
+    #[serde(flatten)]
+    pub operation: UpdatePageMarkdownBody,
 }
 
 /// The request body for `PATCH /v1/pages/:id/markdown`.
@@ -289,11 +307,14 @@ impl UpdatePageMarkdownClient {
             "`page_id` is not set.".to_string(),
         ))?;
 
-        let body = self.body.ok_or(crate::error::Error::RequestParameter(
+        let operation = self.body.ok_or(crate::error::Error::RequestParameter(
             "No operation body is set. Use one of `insert_content`, `replace_content_range`, `update_content`, or `replace_content`.".to_string(),
         ))?;
 
-        let request_body = serde_json::to_string(&body)?;
+        let request_body = serde_json::to_string(&UpdatePageMarkdownRequestBody {
+            allow_async: self.allow_async,
+            operation,
+        })?;
 
         let url = format!("https://api.notion.com/v1/pages/{}/markdown", page_id);
 
@@ -347,7 +368,10 @@ mod tests {
 
         let json = serde_json::to_value(&body).expect("Failed to serialize");
         assert_eq!(json["type"], "insert_content");
-        assert_eq!(json["insert_content"]["content"], "# New Heading\n\nSome text.");
+        assert_eq!(
+            json["insert_content"]["content"],
+            "# New Heading\n\nSome text."
+        );
         assert!(json["insert_content"].get("after").is_none());
         assert!(json["insert_content"].get("position").is_none());
     }
@@ -431,9 +455,11 @@ mod tests {
             json["replace_content_range"]["content_range"],
             "old start...old end"
         );
-        assert!(json["replace_content_range"]
-            .get("allow_deleting_content")
-            .is_none());
+        assert!(
+            json["replace_content_range"]
+                .get("allow_deleting_content")
+                .is_none()
+        );
     }
 
     #[test]
@@ -475,7 +501,9 @@ mod tests {
 
         let json = serde_json::to_value(&body).expect("Failed to serialize");
         assert_eq!(json["type"], "update_content");
-        let updates = json["update_content"]["content_updates"].as_array().unwrap();
+        let updates = json["update_content"]["content_updates"]
+            .as_array()
+            .unwrap();
         assert_eq!(updates.len(), 2);
         assert_eq!(updates[0]["old_str"], "old text");
         assert_eq!(updates[0]["new_str"], "new text");
@@ -517,9 +545,11 @@ mod tests {
             json["replace_content"]["new_str"],
             "# Entire new page content"
         );
-        assert!(json["replace_content"]
-            .get("allow_deleting_content")
-            .is_none());
+        assert!(
+            json["replace_content"]
+                .get("allow_deleting_content")
+                .is_none()
+        );
     }
 
     #[test]
@@ -636,7 +666,11 @@ mod tests {
                 assert_eq!(update_content.content_updates.len(), 2);
                 assert_eq!(update_content.content_updates[0].old_str, "old text");
                 assert_eq!(update_content.content_updates[0].new_str, "new text");
-                assert!(update_content.content_updates[0].replace_all_matches.is_none());
+                assert!(
+                    update_content.content_updates[0]
+                        .replace_all_matches
+                        .is_none()
+                );
                 assert_eq!(update_content.content_updates[1].old_str, "heading");
                 assert_eq!(
                     update_content.content_updates[1].replace_all_matches,
@@ -646,6 +680,51 @@ mod tests {
             }
             _ => panic!("Expected UpdateContent variant"),
         }
+    }
+
+    #[test]
+    fn serialize_request_body_with_allow_async() {
+        let request_body = UpdatePageMarkdownRequestBody {
+            allow_async: Some(true),
+            operation: UpdatePageMarkdownBody::InsertContent {
+                insert_content: InsertContentPayload {
+                    content: "hello".to_string(),
+                    after: None,
+                    position: None,
+                },
+            },
+        };
+
+        let json = serde_json::to_value(&request_body).expect("Failed to serialize");
+        assert_eq!(json["allow_async"], true);
+        assert_eq!(json["type"], "insert_content");
+        assert_eq!(json["insert_content"]["content"], "hello");
+    }
+
+    #[test]
+    fn serialize_request_body_without_allow_async() {
+        let request_body = UpdatePageMarkdownRequestBody {
+            allow_async: None,
+            operation: UpdatePageMarkdownBody::InsertContent {
+                insert_content: InsertContentPayload {
+                    content: "hello".to_string(),
+                    after: None,
+                    position: None,
+                },
+            },
+        };
+
+        let json = serde_json::to_value(&request_body).expect("Failed to serialize");
+        assert!(json.get("allow_async").is_none());
+    }
+
+    #[test]
+    fn builder_allow_async_setter() {
+        let client = UpdatePageMarkdownClient::default()
+            .insert_content("hi")
+            .allow_async(true);
+
+        assert_eq!(client.allow_async, Some(true));
     }
 
     #[test]
