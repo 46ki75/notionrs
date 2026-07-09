@@ -43,6 +43,11 @@ pub struct CreatePageClient<
     /// **Note:** The position parameter is not allowed unless the parent is a page.
     pub(crate) position: Option<CreatePageTemplatePosition>,
 
+    /// When set to `true` and `markdown` is provided, the page may be created
+    /// asynchronously; the response can then be an async task reference instead
+    /// of the created page. Added in `notion-sdk-js` v5.23.0.
+    pub(crate) allow_async: Option<bool>,
+
     #[setter(skip)]
     pub(crate) _phantom: PhantomData<T>,
 }
@@ -60,6 +65,7 @@ impl<T> Default for CreatePageClient<T> {
             cover: None,
             template: None,
             position: None,
+            allow_async: None,
             _phantom: PhantomData,
         }
     }
@@ -90,6 +96,9 @@ pub struct CreatePageRequestBody {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) position: Option<CreatePageTemplatePosition>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) allow_async: Option<bool>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -147,6 +156,7 @@ impl<T> CreatePageClient<T> {
             cover: self.cover,
             template: self.template,
             position: self.position,
+            allow_async: self.allow_async,
             _phantom: PhantomData,
         }
     }
@@ -267,6 +277,7 @@ impl<T> CreatePageClient<T> {
             cover: self.cover,
             template: self.template,
             position: self.position,
+            allow_async: self.allow_async,
         };
 
         let request_body = serde_json::to_string(&request_body_struct)?;
@@ -293,8 +304,7 @@ impl<T> CreatePageClient<T> {
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let page =
-            serde_json::from_slice::<notionrs_types::object::page::PageResponse<T>>(&body)?;
+        let page = serde_json::from_slice::<notionrs_types::object::page::PageResponse<T>>(&body)?;
 
         Ok(page)
     }
@@ -323,13 +333,11 @@ mod tests {
             cover: None,
             template: None,
             position: None,
+            allow_async: None,
         };
 
         let json = serde_json::to_value(&request_body).expect("Failed to serialize");
-        assert_eq!(
-            json["markdown"],
-            "# Hello World\n\nThis is a test."
-        );
+        assert_eq!(json["markdown"], "# Hello World\n\nThis is a test.");
         assert!(json.get("children").is_none());
     }
 
@@ -346,6 +354,7 @@ mod tests {
             cover: None,
             template: None,
             position: None,
+            allow_async: None,
         };
 
         let json = serde_json::to_value(&request_body).expect("Failed to serialize");
@@ -354,26 +363,53 @@ mod tests {
     }
 
     #[test]
+    fn serialize_create_page_request_body_with_allow_async() {
+        let request_body = CreatePageRequestBody {
+            parent: notionrs_types::object::parent::Parent::PageParent(
+                notionrs_types::object::parent::PageParent::from("page-id-123"),
+            ),
+            properties: std::collections::HashMap::new(),
+            children: None,
+            markdown: Some("# Hello World".to_string()),
+            icon: None,
+            cover: None,
+            template: None,
+            position: None,
+            allow_async: Some(true),
+        };
+
+        let json = serde_json::to_value(&request_body).expect("Failed to serialize");
+        assert_eq!(json["allow_async"], true);
+    }
+
+    #[test]
+    fn create_page_client_allow_async_setter() {
+        let client = CreatePageClient::<
+            std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
+        >::default()
+        .page_id("page-id-123")
+        .markdown("# Hello World")
+        .allow_async(true);
+
+        assert_eq!(client.allow_async, Some(true));
+    }
+
+    #[test]
     fn create_page_client_markdown_setter() {
-        let client = CreatePageClient::<std::collections::HashMap<
-            String,
-            notionrs_types::object::page::PageProperty,
-        >>::default()
+        let client = CreatePageClient::<
+            std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
+        >::default()
         .page_id("page-id-123")
         .markdown("# Hello World");
 
-        assert_eq!(
-            client.markdown,
-            Some("# Hello World".to_string())
-        );
+        assert_eq!(client.markdown, Some("# Hello World".to_string()));
     }
 
     #[tokio::test]
     async fn create_page_client_rejects_children_and_markdown() {
-        let client = CreatePageClient::<std::collections::HashMap<
-            String,
-            notionrs_types::object::page::PageProperty,
-        >>::default()
+        let client = CreatePageClient::<
+            std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
+        >::default()
         .page_id("page-id-123")
         .children(vec![])
         .markdown("# Hello World");
