@@ -22,6 +22,22 @@ mod integration_tests {
         for _ in 0..MAX_POLL_ATTEMPTS {
             task = match task {
                 AsyncTaskResponse::Succeeded(succeeded) => {
+                    // `succeeded.object`/`succeeded.id` describe the async task
+                    // envelope itself (always "async_task" and the task's own
+                    // ID) — the actual page_markdown fields are nested inside
+                    // `succeeded.result`.
+                    let id = succeeded
+                        .result
+                        .get("id")
+                        .and_then(|value| value.as_str())
+                        .unwrap_or_else(|| {
+                            panic!(
+                                "succeeded async task result missing `id`: {:?}",
+                                succeeded.result
+                            )
+                        })
+                        .to_string();
+
                     let markdown = succeeded
                         .result
                         .get("markdown")
@@ -36,8 +52,8 @@ mod integration_tests {
 
                     return Ok(
                         notionrs_types::object::page_markdown::PageMarkdownResponse {
-                            object: succeeded.object,
-                            id: succeeded.id,
+                            object: "page_markdown".to_string(),
+                            id,
                             markdown,
                             truncated: false,
                             unknown_block_ids: Vec::new(),
