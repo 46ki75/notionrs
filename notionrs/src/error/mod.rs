@@ -50,6 +50,8 @@ pub enum ApiErrorCode {
     InvalidRequestUrl,
     /// This request is not supported.
     InvalidRequest,
+    /// The request is missing the `Notion-Version` header.
+    MissingVersion,
     /// The bearer token is not valid.
     Unauthorized,
     /// Given the bearer token used, the client doesn't have permission to perform this operation.
@@ -62,10 +64,14 @@ pub enum ApiErrorCode {
     ConflictError,
     /// The request exceeds the rate limit.
     RateLimited,
+    /// The request would return too many rows.
+    RowLimitExceeded,
     /// An unexpected error occurred on the Notion side.
     InternalServerError,
     /// Notion is unavailable.
     ServiceUnavailable,
+    /// Notion is temporarily overloaded and could not process the request.
+    ServiceOverload,
     /// The request timed out at the gateway.
     GatewayTimeout,
     /// An unknown error code.
@@ -79,14 +85,17 @@ impl std::fmt::Display for ApiErrorCode {
             ApiErrorCode::InvalidJson => write!(f, "invalid_json"),
             ApiErrorCode::InvalidRequestUrl => write!(f, "invalid_request_url"),
             ApiErrorCode::InvalidRequest => write!(f, "invalid_request"),
+            ApiErrorCode::MissingVersion => write!(f, "missing_version"),
             ApiErrorCode::Unauthorized => write!(f, "unauthorized"),
             ApiErrorCode::RestrictedResource => write!(f, "restricted_resource"),
             ApiErrorCode::ValidationError => write!(f, "validation_error"),
             ApiErrorCode::ObjectNotFound => write!(f, "object_not_found"),
             ApiErrorCode::ConflictError => write!(f, "conflict_error"),
             ApiErrorCode::RateLimited => write!(f, "rate_limited"),
+            ApiErrorCode::RowLimitExceeded => write!(f, "row_limit_exceeded"),
             ApiErrorCode::InternalServerError => write!(f, "internal_server_error"),
             ApiErrorCode::ServiceUnavailable => write!(f, "service_unavailable"),
+            ApiErrorCode::ServiceOverload => write!(f, "service_overload"),
             ApiErrorCode::GatewayTimeout => write!(f, "gateway_timeout"),
             ApiErrorCode::Unknown(code) => write!(f, "{}", code),
         }
@@ -165,20 +174,20 @@ mod unit_tests {
             (r#""invalid_json""#, ApiErrorCode::InvalidJson),
             (r#""invalid_request_url""#, ApiErrorCode::InvalidRequestUrl),
             (r#""invalid_request""#, ApiErrorCode::InvalidRequest),
+            (r#""missing_version""#, ApiErrorCode::MissingVersion),
             (r#""unauthorized""#, ApiErrorCode::Unauthorized),
             (r#""restricted_resource""#, ApiErrorCode::RestrictedResource),
             (r#""validation_error""#, ApiErrorCode::ValidationError),
             (r#""object_not_found""#, ApiErrorCode::ObjectNotFound),
             (r#""conflict_error""#, ApiErrorCode::ConflictError),
             (r#""rate_limited""#, ApiErrorCode::RateLimited),
+            (r#""row_limit_exceeded""#, ApiErrorCode::RowLimitExceeded),
             (
                 r#""internal_server_error""#,
                 ApiErrorCode::InternalServerError,
             ),
-            (
-                r#""service_unavailable""#,
-                ApiErrorCode::ServiceUnavailable,
-            ),
+            (r#""service_unavailable""#, ApiErrorCode::ServiceUnavailable),
+            (r#""service_overload""#, ApiErrorCode::ServiceOverload),
             (r#""gateway_timeout""#, ApiErrorCode::GatewayTimeout),
         ];
 
@@ -229,6 +238,15 @@ mod unit_tests {
             ApiErrorCode::InternalServerError.to_string(),
             "internal_server_error"
         );
+        assert_eq!(
+            ApiErrorCode::ServiceOverload.to_string(),
+            "service_overload"
+        );
+        assert_eq!(
+            ApiErrorCode::RowLimitExceeded.to_string(),
+            "row_limit_exceeded"
+        );
+        assert_eq!(ApiErrorCode::MissingVersion.to_string(), "missing_version");
         assert_eq!(
             ApiErrorCode::Unknown("custom".to_string()).to_string(),
             "custom"
