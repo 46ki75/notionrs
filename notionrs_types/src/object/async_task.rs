@@ -22,6 +22,19 @@ pub enum AsyncTaskResponse {
     Failed(AsyncTaskFailed),
 }
 
+impl AsyncTaskResponse {
+    /// The ID of the async task, regardless of its current status.
+    pub fn id(&self) -> &str {
+        match self {
+            AsyncTaskResponse::Queued(progress)
+            | AsyncTaskResponse::Running(progress)
+            | AsyncTaskResponse::Retrying(progress) => &progress.id,
+            AsyncTaskResponse::Succeeded(succeeded) => &succeeded.id,
+            AsyncTaskResponse::Failed(failed) => &failed.id,
+        }
+    }
+}
+
 /// Shared fields for a task in the `queued`, `running`, or `retrying` states.
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
 pub struct AsyncTaskProgress {
@@ -286,6 +299,51 @@ mod unit_tests {
             }
             _ => panic!("Expected Failed variant"),
         }
+    }
+
+    #[test]
+    fn async_task_response_id_across_variants() {
+        let queued = AsyncTaskResponse::Queued(AsyncTaskProgress {
+            object: "async_task".to_string(),
+            id: "task-queued".to_string(),
+            status_url: "https://api.notion.com/v1/async_tasks/task-queued".to_string(),
+            created_time: "2026-01-01T00:00:00.000Z".to_string(),
+            operation: AsyncTaskOperation {
+                surface: AsyncTaskOperationSurface::Rest,
+                name: "create_page".to_string(),
+            },
+            poll_after_seconds: None,
+        });
+        assert_eq!(queued.id(), "task-queued");
+
+        let succeeded = AsyncTaskResponse::Succeeded(AsyncTaskSucceeded {
+            object: "async_task".to_string(),
+            id: "task-succeeded".to_string(),
+            status_url: "https://api.notion.com/v1/async_tasks/task-succeeded".to_string(),
+            created_time: "2026-01-01T00:00:00.000Z".to_string(),
+            operation: AsyncTaskOperation {
+                surface: AsyncTaskOperationSurface::Rest,
+                name: "create_page".to_string(),
+            },
+            result: std::collections::HashMap::new(),
+        });
+        assert_eq!(succeeded.id(), "task-succeeded");
+
+        let failed = AsyncTaskResponse::Failed(AsyncTaskFailed {
+            object: "async_task".to_string(),
+            id: "task-failed".to_string(),
+            status_url: "https://api.notion.com/v1/async_tasks/task-failed".to_string(),
+            created_time: "2026-01-01T00:00:00.000Z".to_string(),
+            operation: AsyncTaskOperation {
+                surface: AsyncTaskOperationSurface::Rest,
+                name: "create_page".to_string(),
+            },
+            error: AsyncTaskError {
+                code: AsyncTaskErrorCode::ServiceOverload,
+                message: "overloaded".to_string(),
+            },
+        });
+        assert_eq!(failed.id(), "task-failed");
     }
 
     #[test]

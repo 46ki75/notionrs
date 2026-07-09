@@ -36,6 +36,18 @@ pub enum Error {
     /// This error occurs when serialization or deserialization fails (URL-encoded).
     #[error("Serialization/Deserialization error: {0}")]
     SerdeUrlEncodedSerialize(#[from] serde_urlencoded::ser::Error),
+
+    /// This error occurs when a synchronous response was expected (e.g. via
+    /// `into_page()`/`into_markdown()`), but the request was instead accepted
+    /// for asynchronous processing (see `allow_async`). Use the async task ID
+    /// with `Client::get_async_task` to poll for the result.
+    #[error(
+        "Expected a synchronous response, but the request was accepted as async task `{task_id}`"
+    )]
+    UnexpectedAsyncTask {
+        /// The ID of the async task that was returned instead.
+        task_id: String,
+    },
 }
 
 /// Error code returned by the Notion API.
@@ -160,6 +172,17 @@ impl Error {
 #[cfg(test)]
 mod unit_tests {
     use super::*;
+
+    #[test]
+    fn unexpected_async_task_display() {
+        let error = Error::UnexpectedAsyncTask {
+            task_id: "task-id-123".to_string(),
+        };
+        assert_eq!(
+            error.to_string(),
+            "Expected a synchronous response, but the request was accepted as async task `task-id-123`"
+        );
+    }
 
     #[test]
     fn deserialize_api_error_code_gateway_timeout() {
