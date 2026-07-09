@@ -7,6 +7,7 @@ pub mod request;
 pub mod rich_text;
 pub mod view;
 
+pub mod async_task;
 pub mod color;
 pub mod comment;
 pub mod date;
