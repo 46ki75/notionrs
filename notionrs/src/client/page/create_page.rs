@@ -101,6 +101,59 @@ pub struct CreatePageRequestBody {
     pub(crate) allow_async: Option<bool>,
 }
 
+/// Response from `POST /v1/pages`.
+///
+/// Normally this is the created page (`send()` receives an HTTP `200`). When
+/// `allow_async(true)` is set and Notion accepts the request for asynchronous
+/// processing instead, an HTTP `202` is returned with an async task reference.
+/// Poll it with `Client::get_async_task`.
+#[derive(Debug, Clone)]
+pub enum CreatePageResponse<T>
+where
+    T: Clone + Send + 'static,
+{
+    /// The page was created synchronously.
+    Page(notionrs_types::object::page::PageResponse<T>),
+
+    /// The request was accepted for asynchronous processing.
+    AsyncTask(notionrs_types::object::async_task::AsyncTaskResponse),
+}
+
+impl<T> CreatePageResponse<T>
+where
+    T: Clone + Send + 'static,
+{
+    /// Returns the created page, or `Error::UnexpectedAsyncTask` if the
+    /// request was instead accepted for asynchronous processing.
+    pub fn into_page(
+        self,
+    ) -> Result<notionrs_types::object::page::PageResponse<T>, crate::error::Error> {
+        match self {
+            CreatePageResponse::Page(page) => Ok(page),
+            CreatePageResponse::AsyncTask(task) => Err(crate::error::Error::UnexpectedAsyncTask {
+                task_id: task.id().to_string(),
+            }),
+        }
+    }
+}
+
+fn parse_create_page_response<T>(
+    status: reqwest::StatusCode,
+    body: &[u8],
+) -> Result<CreatePageResponse<T>, crate::error::Error>
+where
+    T: DeserializeOwned + Clone + Send + 'static,
+{
+    if status == reqwest::StatusCode::ACCEPTED {
+        let task =
+            serde_json::from_slice::<notionrs_types::object::async_task::AsyncTaskResponse>(body)?;
+        Ok(CreatePageResponse::AsyncTask(task))
+    } else {
+        let page = serde_json::from_slice::<notionrs_types::object::page::PageResponse<T>>(body)?;
+        Ok(CreatePageResponse::Page(page))
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreatePageTemplate {
     /// Whether to apply no template and create a page from scratch manually (`"none"`),
@@ -235,9 +288,12 @@ impl<T> CreatePageClient<T> {
     ///
     /// Use `typed::<MyResponse>()` before calling `send()` to specify a custom struct.
     /// When the response type is not specific, the default `HashMap<String, PageProperty>` is used.
-    pub async fn send(
-        self,
-    ) -> Result<notionrs_types::object::page::PageResponse<T>, crate::error::Error>
+    ///
+    /// Returns `CreatePageResponse::AsyncTask` instead of `CreatePageResponse::Page`
+    /// when `allow_async(true)` is set and Notion accepts the request for
+    /// asynchronous processing (HTTP `202`). Call `.into_page()` on the result
+    /// if you only want to handle the synchronous case.
+    pub async fn send(self) -> Result<CreatePageResponse<T>, crate::error::Error>
     where
         T: DeserializeOwned + Clone + Send + Sync + 'static,
     {
@@ -299,14 +355,14 @@ impl<T> CreatePageClient<T> {
             return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
+        let status = response.status();
+
         let body = response
             .bytes()
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let page = serde_json::from_slice::<notionrs_types::object::page::PageResponse<T>>(&body)?;
-
-        Ok(page)
+        parse_create_page_response(status, &body)
     }
 }
 
@@ -403,6 +459,89 @@ mod tests {
         .markdown("# Hello World");
 
         assert_eq!(client.markdown, Some("# Hello World".to_string()));
+    }
+
+    #[test]
+    fn parse_create_page_response_ok_status_returns_page() {
+        let json = serde_json::json!({
+            "object": "page",
+            "id": "page-id-123",
+            "created_time": "2026-01-01T00:00:00.000Z",
+            "last_edited_time": "2026-01-01T00:00:00.000Z",
+            "created_by": { "object": "user", "id": "user-id" },
+            "last_edited_by": { "object": "user", "id": "user-id" },
+            "cover": null,
+            "icon": null,
+            "parent": { "type": "page_id", "page_id": "parent-id" },
+            "archived": false,
+            "in_trash": false,
+            "is_locked": false,
+            "properties": {},
+            "url": "https://www.notion.so/page-id-123",
+            "public_url": null,
+        });
+        let body = serde_json::to_vec(&json).unwrap();
+
+        let response = parse_create_page_response::<
+            std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
+        >(reqwest::StatusCode::OK, &body)
+        .expect("Failed to parse");
+
+        match response {
+            CreatePageResponse::Page(page) => assert_eq!(page.id, "page-id-123"),
+            CreatePageResponse::AsyncTask(_) => panic!("Expected Page variant"),
+        }
+    }
+
+    #[test]
+    fn parse_create_page_response_accepted_status_returns_async_task() {
+        let json = serde_json::json!({
+            "object": "async_task",
+            "id": "task-id-123",
+            "status": "queued",
+            "status_url": "https://api.notion.com/v1/async_tasks/task-id-123",
+            "created_time": "2026-01-01T00:00:00.000Z",
+            "operation": { "surface": "rest", "name": "create_page" },
+        });
+        let body = serde_json::to_vec(&json).unwrap();
+
+        let response = parse_create_page_response::<
+            std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
+        >(reqwest::StatusCode::ACCEPTED, &body)
+        .expect("Failed to parse");
+
+        match response {
+            CreatePageResponse::AsyncTask(task) => assert_eq!(task.id(), "task-id-123"),
+            CreatePageResponse::Page(_) => panic!("Expected AsyncTask variant"),
+        }
+    }
+
+    #[test]
+    fn into_page_returns_error_for_async_task() {
+        let task = notionrs_types::object::async_task::AsyncTaskResponse::Queued(
+            notionrs_types::object::async_task::AsyncTaskProgress {
+                object: "async_task".to_string(),
+                id: "task-id-123".to_string(),
+                status_url: "https://api.notion.com/v1/async_tasks/task-id-123".to_string(),
+                created_time: "2026-01-01T00:00:00.000Z".to_string(),
+                operation: notionrs_types::object::async_task::AsyncTaskOperation {
+                    surface: notionrs_types::object::async_task::AsyncTaskOperationSurface::Rest,
+                    name: "create_page".to_string(),
+                },
+                poll_after_seconds: None,
+            },
+        );
+
+        let response = CreatePageResponse::<
+            std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
+        >::AsyncTask(task);
+
+        match response.into_page() {
+            Err(crate::error::Error::UnexpectedAsyncTask { task_id }) => {
+                assert_eq!(task_id, "task-id-123");
+            }
+            other => panic!("Expected UnexpectedAsyncTask error, got: {:?}", other),
+        }
     }
 
     #[tokio::test]

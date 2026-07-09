@@ -37,6 +37,55 @@ pub struct UpdatePageMarkdownRequestBody {
     pub operation: UpdatePageMarkdownBody,
 }
 
+/// Response from `PATCH /v1/pages/:id/markdown`.
+///
+/// Normally this is the updated page's markdown (`send()` receives an HTTP
+/// `200`). When `allow_async(true)` is set and Notion accepts the request for
+/// asynchronous processing instead, an HTTP `202` is returned with an async
+/// task reference. Poll it with `Client::get_async_task`.
+#[derive(Debug, Clone)]
+pub enum UpdatePageMarkdownResponse {
+    /// The page's markdown was updated synchronously.
+    Markdown(notionrs_types::object::page_markdown::PageMarkdownResponse),
+
+    /// The request was accepted for asynchronous processing.
+    AsyncTask(notionrs_types::object::async_task::AsyncTaskResponse),
+}
+
+impl UpdatePageMarkdownResponse {
+    /// Returns the updated page's markdown, or `Error::UnexpectedAsyncTask`
+    /// if the request was instead accepted for asynchronous processing.
+    pub fn into_markdown(
+        self,
+    ) -> Result<notionrs_types::object::page_markdown::PageMarkdownResponse, crate::error::Error>
+    {
+        match self {
+            UpdatePageMarkdownResponse::Markdown(markdown) => Ok(markdown),
+            UpdatePageMarkdownResponse::AsyncTask(task) => {
+                Err(crate::error::Error::UnexpectedAsyncTask {
+                    task_id: task.id().to_string(),
+                })
+            }
+        }
+    }
+}
+
+fn parse_update_page_markdown_response(
+    status: reqwest::StatusCode,
+    body: &[u8],
+) -> Result<UpdatePageMarkdownResponse, crate::error::Error> {
+    if status == reqwest::StatusCode::ACCEPTED {
+        let task =
+            serde_json::from_slice::<notionrs_types::object::async_task::AsyncTaskResponse>(body)?;
+        Ok(UpdatePageMarkdownResponse::AsyncTask(task))
+    } else {
+        let markdown = serde_json::from_slice::<
+            notionrs_types::object::page_markdown::PageMarkdownResponse,
+        >(body)?;
+        Ok(UpdatePageMarkdownResponse::Markdown(markdown))
+    }
+}
+
 /// The request body for `PATCH /v1/pages/:id/markdown`.
 ///
 /// This is a discriminated union on `type`.
@@ -299,10 +348,14 @@ impl UpdatePageMarkdownClient {
         self
     }
 
-    pub async fn send(
-        self,
-    ) -> Result<notionrs_types::object::page_markdown::PageMarkdownResponse, crate::error::Error>
-    {
+    /// Send the request.
+    ///
+    /// Returns `UpdatePageMarkdownResponse::AsyncTask` instead of
+    /// `UpdatePageMarkdownResponse::Markdown` when `allow_async(true)` is set
+    /// and Notion accepts the request for asynchronous processing (HTTP
+    /// `202`). Call `.into_markdown()` on the result if you only want to
+    /// handle the synchronous case.
+    pub async fn send(self) -> Result<UpdatePageMarkdownResponse, crate::error::Error> {
         let page_id = self.page_id.ok_or(crate::error::Error::RequestParameter(
             "`page_id` is not set.".to_string(),
         ))?;
@@ -333,16 +386,14 @@ impl UpdatePageMarkdownClient {
             return Err(crate::error::Error::try_from_response_async(response).await);
         }
 
+        let status = response.status();
+
         let body = response
             .bytes()
             .await
             .map_err(|e| crate::error::Error::BodyParse(e.to_string()))?;
 
-        let page_markdown = serde_json::from_slice::<
-            notionrs_types::object::page_markdown::PageMarkdownResponse,
-        >(&body)?;
-
-        Ok(page_markdown)
+        parse_update_page_markdown_response(status, &body)
     }
 }
 
@@ -725,6 +776,75 @@ mod tests {
             .allow_async(true);
 
         assert_eq!(client.allow_async, Some(true));
+    }
+
+    #[test]
+    fn parse_update_page_markdown_response_ok_status_returns_markdown() {
+        let json = serde_json::json!({
+            "object": "page_markdown",
+            "id": "page-id-123",
+            "markdown": "# Hello World",
+            "truncated": false,
+            "unknown_block_ids": [],
+            "request_id": "req-123",
+        });
+        let body = serde_json::to_vec(&json).unwrap();
+
+        let response = parse_update_page_markdown_response(reqwest::StatusCode::OK, &body).unwrap();
+
+        match response {
+            UpdatePageMarkdownResponse::Markdown(markdown) => {
+                assert_eq!(markdown.id, "page-id-123");
+            }
+            UpdatePageMarkdownResponse::AsyncTask(_) => panic!("Expected Markdown variant"),
+        }
+    }
+
+    #[test]
+    fn parse_update_page_markdown_response_accepted_status_returns_async_task() {
+        let json = serde_json::json!({
+            "object": "async_task",
+            "id": "task-id-123",
+            "status": "running",
+            "status_url": "https://api.notion.com/v1/async_tasks/task-id-123",
+            "created_time": "2026-01-01T00:00:00.000Z",
+            "operation": { "surface": "rest", "name": "update_page_markdown" },
+        });
+        let body = serde_json::to_vec(&json).unwrap();
+
+        let response =
+            parse_update_page_markdown_response(reqwest::StatusCode::ACCEPTED, &body).unwrap();
+
+        match response {
+            UpdatePageMarkdownResponse::AsyncTask(task) => assert_eq!(task.id(), "task-id-123"),
+            UpdatePageMarkdownResponse::Markdown(_) => panic!("Expected AsyncTask variant"),
+        }
+    }
+
+    #[test]
+    fn into_markdown_returns_error_for_async_task() {
+        let task = notionrs_types::object::async_task::AsyncTaskResponse::Running(
+            notionrs_types::object::async_task::AsyncTaskProgress {
+                object: "async_task".to_string(),
+                id: "task-id-123".to_string(),
+                status_url: "https://api.notion.com/v1/async_tasks/task-id-123".to_string(),
+                created_time: "2026-01-01T00:00:00.000Z".to_string(),
+                operation: notionrs_types::object::async_task::AsyncTaskOperation {
+                    surface: notionrs_types::object::async_task::AsyncTaskOperationSurface::Rest,
+                    name: "update_page_markdown".to_string(),
+                },
+                poll_after_seconds: None,
+            },
+        );
+
+        let response = UpdatePageMarkdownResponse::AsyncTask(task);
+
+        match response.into_markdown() {
+            Err(crate::error::Error::UnexpectedAsyncTask { task_id }) => {
+                assert_eq!(task_id, "task-id-123");
+            }
+            other => panic!("Expected UnexpectedAsyncTask error, got: {:?}", other),
+        }
     }
 
     #[test]
