@@ -32,6 +32,7 @@ MSRV (Minimum Supported Rust Version) is specified in `Cargo.toml` and `rust-too
 
 - `notionrs` → without prefix (e.g., v0.1.0)
 - `notionrs_macro`, `notionrs_types`, `notionrs_webhooks` → with prefix (e.g., macro-v0.1.0, webhooks-v0.2.0)
+- Every release bumps only the minor version (`0.Y.0`), regardless of whether it includes breaking changes.
 
 ## Test Coverage
 
@@ -42,3 +43,8 @@ just coverage   # cargo llvm-cov --show-missing-lines
 ```
 
 Treat coverage % as a guardrail (fail CI on drops), not a target to maximize.
+
+## Formatting & Linting
+
+- `cargo fmt --all -- --check` has pre-existing drift across many unrelated files (local rustfmt output differs from whatever produced the checked-in formatting) — format only the files you actually touched; don't reformat the repo as a side effect of a scoped change.
+- `cargo clippy --workspace` cannot currently complete: a non-semver `since` in a `#[deprecated(...)]` on `FileUpload::archived` (`notionrs_types/src/object/file_upload.rs`) hard-errors the clippy driver for every dependent crate (tracked in #629). `cargo build`/`check`/`test` are unaffected — use those to verify, and check a clean `main` checkout before assuming a fmt/clippy failure is something you introduced.
