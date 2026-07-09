@@ -18,10 +18,13 @@ To run integration tests, you need to create a `.env` file in the root of your w
 - `mutable/database/create_database.rs`: Creates a database on a prepared page.
 - `mutable/database/crud_database.rs`: Creates a database on a prepared page, updates it, and then deletes it.
 - `mutable/file_upload/upload_file.rs`: Uploads a file and creates a block using it.
+- `mutable/page/create_page_allow_async.rs`: Creates a page with `allow_async(true)` on a prepared data source; handles both the synchronous page response and the async task response (polling `get_async_task` until it resolves).
 - `mutable/page/create_page_on_data_source.rs`: Creates a page on the data source.
 - `mutable/page/crud_page.rs`: Creates, reads, updates, and deletes a page on a prepared page.
 - `mutable/page/move_page.rs`: Creates two pages on a prepared page and moves the created page to another one.
+- `mutable/page/update_page_markdown_allow_async.rs`: Updates a page's markdown with `allow_async(true)`; handles both the synchronous and async task response.
 - `readonly/`: Integration tests that don't update Notion data.
+- `readonly/async_task.rs`: Exercises `get_async_task`'s error path with an unknown task ID (there's no way to deterministically obtain a real task ID without a mutable async operation).
 - `readonly/block/get_<BLOCK_TYPE>_block.rs`: Gets each block type.
 - `readonly/comment/retrieve_comments.rs`: Gets comments from a prepared page.
 - `readonly/custom_emojis/list_custom_emojis.rs`: Gets all emojis in the Notion workspace.
