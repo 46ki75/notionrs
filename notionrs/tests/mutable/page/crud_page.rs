@@ -38,7 +38,7 @@ mod integration_tests {
                 ),
             ));
 
-        let response = request.send().await?;
+        let response = request.send().await?.into_page()?;
 
         // # --------------------------------------------------------------------------------
         //
@@ -58,7 +58,7 @@ mod integration_tests {
             .properties(properties)
             .page_id(response.id);
 
-        let response = request.send().await?;
+        let response = request.send().await?.into_page()?;
 
         // # --------------------------------------------------------------------------------
         //

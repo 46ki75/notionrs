@@ -34,7 +34,7 @@ mod integration_tests {
                 ),
             ));
 
-        let source_page = request.send().await?;
+        let source_page = request.send().await?.into_page()?;
 
         // crate a target page to move to
 
@@ -58,7 +58,7 @@ mod integration_tests {
                 ),
             ));
 
-        let destination_page = request.send().await?;
+        let destination_page = request.send().await?.into_page()?;
 
         // move the source page to the target page
 

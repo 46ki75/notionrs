@@ -35,7 +35,7 @@ mod integration_tests {
                 ),
             ));
 
-        let response = request.send().await?;
+        let response = request.send().await?.into_page()?;
 
         // # --------------------------------------------------------------------------------
         //
@@ -86,7 +86,7 @@ mod integration_tests {
             ))
             .template_default();
 
-        let response = request.send().await?;
+        let response = request.send().await?.into_page()?;
 
         // // # --------------------------------------------------------------------------------
         // //
@@ -130,7 +130,7 @@ mod integration_tests {
             .data_source_id(crate::mutable::DATA_SOURCE_ID)
             .template_default_with_timezone("America/New_York".to_string());
 
-        let response = request.send().await?;
+        let response = request.send().await?.into_page()?;
 
         // # --------------------------------------------------------------------------------
         //

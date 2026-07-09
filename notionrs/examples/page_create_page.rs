@@ -37,7 +37,7 @@ async fn main() -> Result<(), Error> {
         .page_id("PAGE_ID")
         .properties(properties);
 
-    let response = request.send().await?;
+    let response = request.send().await?.into_page()?;
 
     println!("This block's id is {}", response.id);
 
