@@ -28,7 +28,7 @@ If you create a new client method, you should add integration tests.
 
 #### Mutable Integration Tests
 
-Mutable integration tests MUST NOT be run by AI agents. The environment variable `NOTION_API_KEY_MUTABLE` is required.
+Mutable integration tests may be run by AI agents when working in a sandboxed environment. Do not run them against a production Notion workspace. The environment variable `NOTION_API_KEY_MUTABLE` is required.
 
 ```bash
 cargo test --test integration_test_mutable
