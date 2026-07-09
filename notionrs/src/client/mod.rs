@@ -3,6 +3,7 @@ use notionrs_types::prelude::*;
 
 use crate::PaginateExt;
 
+pub mod async_task;
 pub mod block;
 pub mod comment;
 pub mod custom_emoji;
@@ -42,6 +43,22 @@ impl Client {
 
         Client {
             reqwest_client: client,
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
+    // Async Task
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Retrieve the status of an async task.
+    ///
+    /// <https://developers.notion.com/reference/retrieve-an-async-task>
+    pub fn get_async_task(&self) -> crate::client::async_task::get_async_task::GetAsyncTaskClient {
+        crate::client::async_task::get_async_task::GetAsyncTaskClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
         }
     }
 

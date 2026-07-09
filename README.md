@@ -66,6 +66,8 @@ As part of the alpha release, the following features are available. Please note 
   - [Retrieve a user](https://developers.notion.com/reference/get-user)
   - [Retrieve your token's bot user](https://developers.notion.com/reference/get-self)
   - [List custom emojis](https://developers.notion.com/reference/list-custom-emojis)
+- Async Tasks
+  - [Retrieve an async task](https://developers.notion.com/reference/retrieve-an-async-task)
 - Comments
   - [Create comment](https://developers.notion.com/reference/create-a-comment)
   - [Retrieve comments](https://developers.notion.com/reference/list-comments)

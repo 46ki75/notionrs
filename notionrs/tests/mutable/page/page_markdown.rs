@@ -24,7 +24,8 @@ mod integration_tests {
             .properties(properties)
             .page_id(PAGE_ID)
             .send()
-            .await?;
+            .await?
+            .into_page()?;
 
         // insert content using markdown API
         let response = client
@@ -32,7 +33,8 @@ mod integration_tests {
             .page_id(&page.id)
             .insert_content("# Hello World\n\nThis is inserted content.")
             .send()
-            .await?;
+            .await?
+            .into_markdown()?;
 
         assert_eq!(response.object, "page_markdown");
         assert_eq!(response.id, page.id);
@@ -65,7 +67,8 @@ mod integration_tests {
             .properties(properties)
             .page_id(PAGE_ID)
             .send()
-            .await?;
+            .await?
+            .into_page()?;
 
         // insert initial content (appended at end by default)
         client
@@ -84,7 +87,8 @@ mod integration_tests {
                 notionrs::client::page::update_page_markdown::InsertContentPosition::Start,
             )
             .send()
-            .await?;
+            .await?
+            .into_markdown()?;
 
         assert_eq!(response.object, "page_markdown");
         assert_eq!(response.id, page.id);
@@ -115,7 +119,8 @@ mod integration_tests {
             .properties(properties)
             .page_id(PAGE_ID)
             .send()
-            .await?;
+            .await?
+            .into_page()?;
 
         // insert initial content
         client
@@ -131,7 +136,8 @@ mod integration_tests {
             .page_id(&page.id)
             .replace_content("# Replaced\n\nThis is the new content.")
             .send()
-            .await?;
+            .await?
+            .into_markdown()?;
 
         assert_eq!(response.object, "page_markdown");
         assert!(!response.markdown.is_empty());
@@ -161,7 +167,8 @@ mod integration_tests {
             .properties(properties)
             .page_id(PAGE_ID)
             .send()
-            .await?;
+            .await?
+            .into_page()?;
 
         // insert initial content
         client
@@ -185,7 +192,8 @@ mod integration_tests {
             .page_id(&page.id)
             .update_content(content_updates)
             .send()
-            .await?;
+            .await?
+            .into_markdown()?;
 
         assert_eq!(response.object, "page_markdown");
         assert!(response.markdown.contains("new world"));
@@ -215,7 +223,8 @@ mod integration_tests {
             .properties(properties)
             .page_id(PAGE_ID)
             .send()
-            .await?;
+            .await?
+            .into_page()?;
 
         // insert content
         client

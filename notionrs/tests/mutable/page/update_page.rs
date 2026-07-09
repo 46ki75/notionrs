@@ -27,7 +27,8 @@ mod integration_tests {
             .properties(properties)
             .data_source_id(crate::mutable::DATA_SOURCE_ID)
             .send()
-            .await?;
+            .await?
+            .into_page()?;
 
         // # --------------------------------------------------------------------------------
         //
@@ -88,7 +89,8 @@ mod integration_tests {
             .properties(properties)
             .data_source_id(crate::mutable::DATA_SOURCE_ID)
             .send()
-            .await?;
+            .await?
+            .into_page()?;
 
         // # --------------------------------------------------------------------------------
         //

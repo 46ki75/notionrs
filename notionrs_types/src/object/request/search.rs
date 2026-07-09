@@ -48,19 +48,30 @@ impl SearchFilter {
 }
 
 /// <https://developers.notion.com/reference/post-search>
-/// A set of criteria, direction and timestamp keys, that orders the results.
+/// A set of criteria that orders the search results — either by a timestamp
+/// (with a direction) or by relevance to the search query.
 /// The only supported timestamp value is "last_edited_time".
 /// Supported direction values are "ascending" and "descending".
 /// If sort is not provided, then the most recently edited results are returned first.
-#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq)]
-pub struct SearchSort {
-    /// `SearchSortDirection::Ascending` or `SearchSortDirection:Descending`
-    pub direction: SearchSortDirection,
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(untagged)]
+pub enum SearchSort {
+    /// Sort by a timestamp.
+    Timestamp {
+        /// `SearchSortDirection::Ascending` or `SearchSortDirection:Descending`
+        direction: SearchSortDirection,
 
-    /// Always `"last_edited_time"`
-    ///
-    ///  The name of the timestamp to sort against. Possible values include last_edited_time.
-    pub timestamp: String,
+        /// Always `"last_edited_time"`
+        ///
+        /// The name of the timestamp to sort against. Possible values include last_edited_time.
+        timestamp: String,
+    },
+
+    /// Sort by relevance to the search query. Added in `notion-sdk-js` v5.23.0.
+    Relevance {
+        /// Always `"relevance"`
+        property: String,
+    },
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Default)]
@@ -71,18 +82,31 @@ pub enum SearchSortDirection {
     Descending,
 }
 
+impl Default for SearchSort {
+    fn default() -> Self {
+        SearchSort::asc()
+    }
+}
+
 impl SearchSort {
     pub fn asc() -> Self {
-        SearchSort {
+        SearchSort::Timestamp {
             direction: SearchSortDirection::Ascending,
             timestamp: String::from("last_edited_time"),
         }
     }
 
     pub fn desc() -> Self {
-        SearchSort {
+        SearchSort::Timestamp {
             direction: SearchSortDirection::Descending,
             timestamp: String::from("last_edited_time"),
+        }
+    }
+
+    /// Sort by relevance to the search query.
+    pub fn relevance() -> Self {
+        SearchSort::Relevance {
+            property: String::from("relevance"),
         }
     }
 }
@@ -101,16 +125,38 @@ mod unit_tests {
         assert_eq!(db.value, SearchFilterType::DataSource);
 
         let asc = SearchSort::asc();
-        assert_eq!(asc.direction, SearchSortDirection::Ascending);
-        assert_eq!(asc.timestamp, "last_edited_time");
+        match &asc {
+            SearchSort::Timestamp {
+                direction,
+                timestamp,
+            } => {
+                assert_eq!(*direction, SearchSortDirection::Ascending);
+                assert_eq!(timestamp, "last_edited_time");
+            }
+            _ => panic!("Expected Timestamp variant"),
+        }
 
         let desc = SearchSort::desc();
-        assert_eq!(desc.direction, SearchSortDirection::Descending);
+        match &desc {
+            SearchSort::Timestamp { direction, .. } => {
+                assert_eq!(*direction, SearchSortDirection::Descending);
+            }
+            _ => panic!("Expected Timestamp variant"),
+        }
+
+        let relevance = SearchSort::relevance();
+        match &relevance {
+            SearchSort::Relevance { property } => assert_eq!(property, "relevance"),
+            _ => panic!("Expected Relevance variant"),
+        }
 
         let json = serde_json::to_string(&page).unwrap();
         let _: SearchFilter = serde_json::from_str(&json).unwrap();
         let json = serde_json::to_string(&asc).unwrap();
         let _: SearchSort = serde_json::from_str(&json).unwrap();
+        let json = serde_json::to_string(&relevance).unwrap();
+        let deserialized_relevance: SearchSort = serde_json::from_str(&json).unwrap();
+        assert_eq!(deserialized_relevance, relevance);
 
         let _ = SearchFilter::default();
         let _ = SearchSort::default();

@@ -94,4 +94,9 @@ impl SearchPageClient {
     pub fn sort_timestamp_desc(self) -> Self {
         self.sort(notionrs_types::object::request::search::SearchSort::desc())
     }
+
+    /// Sort by relevance to the search query.
+    pub fn sort_relevance(self) -> Self {
+        self.sort(notionrs_types::object::request::search::SearchSort::relevance())
+    }
 }

@@ -1,3 +1,4 @@
+mod async_task;
 mod block;
 mod comment;
 mod custom_emoji;
