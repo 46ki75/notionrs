@@ -17,6 +17,9 @@ pub struct SearchDatabaseClient {
     /// The amount of data retrieved in one query.
     /// If not specified, the default is 100.
     pub(crate) page_size: Option<u32>,
+
+    #[setter(skip)]
+    pub(crate) in_trash: Option<bool>,
 }
 
 crate::impl_paginate!(
@@ -30,7 +33,7 @@ pub struct SearchDatabaseRequestBody {
     pub(crate) query: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) filter: Option<notionrs_types::object::request::search::SearchFilter>,
+    pub(crate) filter: Option<notionrs_types::object::request::search::SearchFilterRequest>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) sort: Option<notionrs_types::object::request::search::SearchSort>,
@@ -55,7 +58,13 @@ impl SearchDatabaseClient {
 
         let request_body = serde_json::to_string(&SearchDatabaseRequestBody {
             query: self.query,
-            filter: Some(notionrs_types::object::request::search::SearchFilter::database()),
+            filter: Some(match self.in_trash {
+                Some(in_trash) => {
+                    notionrs_types::object::request::search::SearchFilterRequest::database()
+                        .in_trash(in_trash)
+                }
+                None => notionrs_types::object::request::search::SearchFilterRequest::database(),
+            }),
             sort: self.sort,
             start_cursor: self.start_cursor,
             page_size: self.page_size,
@@ -103,5 +112,11 @@ impl SearchDatabaseClient {
     /// Sort by relevance to the search query.
     pub fn sort_relevance(self) -> Self {
         self.sort(notionrs_types::object::request::search::SearchSort::relevance())
+    }
+
+    /// Restricts search results to trashed or live data sources.
+    pub fn filter_in_trash(mut self, in_trash: bool) -> Self {
+        self.in_trash = Some(in_trash);
+        self
     }
 }

@@ -47,6 +47,73 @@ impl SearchFilter {
     }
 }
 
+/// A search filter that can restrict results by object type, trash status, or both.
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(untagged)]
+pub enum SearchFilterRequest {
+    /// Restricts search results to pages or data sources, optionally in the trash.
+    Object {
+        /// The value of the property to filter the results by.
+        value: SearchFilterType,
+
+        /// Always `"object"`.
+        property: String,
+
+        /// Whether to return only trashed objects.
+        #[serde(skip_serializing_if = "Option::is_none")]
+        in_trash: Option<bool>,
+    },
+
+    /// Restricts search results to trashed or live objects without limiting their type.
+    InTrash {
+        /// Whether to return only trashed objects.
+        in_trash: bool,
+    },
+}
+
+impl SearchFilterRequest {
+    pub fn page() -> Self {
+        Self::Object {
+            value: SearchFilterType::Page,
+            property: String::from("object"),
+            in_trash: None,
+        }
+    }
+
+    pub fn database() -> Self {
+        Self::Object {
+            value: SearchFilterType::DataSource,
+            property: String::from("object"),
+            in_trash: None,
+        }
+    }
+
+    /// Restricts search results to trashed or live objects without limiting their type.
+    pub fn trash(in_trash: bool) -> Self {
+        Self::InTrash { in_trash }
+    }
+
+    /// Restricts search results to trashed or live objects.
+    pub fn in_trash(self, in_trash: bool) -> Self {
+        match self {
+            Self::Object {
+                value, property, ..
+            } => Self::Object {
+                value,
+                property,
+                in_trash: Some(in_trash),
+            },
+            Self::InTrash { .. } => Self::InTrash { in_trash },
+        }
+    }
+}
+
+impl Default for SearchFilterRequest {
+    fn default() -> Self {
+        Self::page()
+    }
+}
+
 /// <https://developers.notion.com/reference/post-search>
 /// A set of criteria that orders the search results — either by a timestamp
 /// (with a direction) or by relevance to the search query.
@@ -124,6 +191,18 @@ mod unit_tests {
         let db = SearchFilter::database();
         assert_eq!(db.value, SearchFilterType::DataSource);
 
+        let trashed_pages = SearchFilterRequest::page().in_trash(true);
+        assert_eq!(
+            serde_json::to_value(&trashed_pages).unwrap(),
+            serde_json::json!({"property": "object", "value": "page", "in_trash": true})
+        );
+
+        let live_objects = SearchFilterRequest::trash(false);
+        assert_eq!(
+            serde_json::to_value(&live_objects).unwrap(),
+            serde_json::json!({"in_trash": false})
+        );
+
         let asc = SearchSort::asc();
         match &asc {
             SearchSort::Timestamp {
@@ -152,6 +231,9 @@ mod unit_tests {
 
         let json = serde_json::to_string(&page).unwrap();
         let _: SearchFilter = serde_json::from_str(&json).unwrap();
+        let json = serde_json::to_string(&live_objects).unwrap();
+        let deserialized_live_objects: SearchFilterRequest = serde_json::from_str(&json).unwrap();
+        assert_eq!(deserialized_live_objects, live_objects);
         let json = serde_json::to_string(&asc).unwrap();
         let _: SearchSort = serde_json::from_str(&json).unwrap();
         let json = serde_json::to_string(&relevance).unwrap();
@@ -159,6 +241,7 @@ mod unit_tests {
         assert_eq!(deserialized_relevance, relevance);
 
         let _ = SearchFilter::default();
+        let _ = SearchFilterRequest::default();
         let _ = SearchSort::default();
         assert_eq!(SearchFilterType::default(), SearchFilterType::Page);
         assert_eq!(
