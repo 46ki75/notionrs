@@ -24,7 +24,23 @@ mod integration_tests {
 
         assert!(result.is_err());
 
-        match result.unwrap_err() {
+        let error = result.unwrap_err();
+
+        // A real Notion API error always carries a request_id in its body.
+        assert!(
+            error.request_id().is_some_and(|id| !id.is_empty()),
+            "expected a request_id, got: {:?}",
+            error.request_id()
+        );
+
+        // Notion currently serves the API from behind Cloudflare, so a `cf-ray`
+        // header is expected — but don't fail the suite if that ever changes.
+        assert!(
+            error.ray_id().is_none_or(|id| !id.is_empty()),
+            "ray_id was present but empty"
+        );
+
+        match error {
             notionrs::Error::Http { status, .. } => {
                 assert!((400..500).contains(&status), "unexpected status: {status}");
             }
