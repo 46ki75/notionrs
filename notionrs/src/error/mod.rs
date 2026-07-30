@@ -20,6 +20,17 @@ pub enum Error {
         status: u16,
         /// Error message
         message: String,
+        /// Notion's request identifier, taken from the error body's `request_id`
+        /// field, or from the `x-notion-request-id` response header when the body
+        /// doesn't provide one. Include it when reporting an issue to Notion.
+        request_id: Option<String>,
+        /// Value of the `cf-ray` response header, when present.
+        ///
+        /// A response carrying a Ray ID but no [`request_id`](Error::Http) was
+        /// answered at the network edge before it reached the Notion API — for
+        /// example by a network security rule. Include it when reporting an issue
+        /// to Notion.
+        ray_id: Option<String>,
     },
 
     /// This library follows the Builder pattern, allowing requests to be sent even with missing parameters.
@@ -137,30 +148,115 @@ pub struct ErrorResponse {
 }
 
 impl Error {
-    pub(crate) async fn try_from_response_async(response: reqwest::Response) -> Self {
-        let status = response.status().as_u16();
-
-        let error_body = match response.text().await{
-            Err(_) =>{
-                return crate::error::Error::Http {
-                    status,
-                    message: "An error occurred, but failed to retrieve the error details from the response body.".to_string(),
-                }},
-            Ok(body) => body
-        };
-
-        let error_json = serde_json::from_str::<crate::error::ErrorResponse>(&error_body).ok();
-
-        let error_message = match error_json {
-            Some(e) => e.message,
-            None => format!("{:?}", error_body),
-        };
-
-        crate::error::Error::Http {
-            status,
-            message: error_message,
+    /// Notion's request identifier, when this error carries one.
+    ///
+    /// Only [`Error::Http`] carries it; every other variant returns `None`.
+    pub fn request_id(&self) -> Option<&str> {
+        match self {
+            Error::Http { request_id, .. } => request_id.as_deref(),
+            _ => None,
         }
     }
+
+    /// The Cloudflare Ray ID of the response, when this error carries one.
+    ///
+    /// Only [`Error::Http`] carries it; every other variant returns `None`.
+    pub fn ray_id(&self) -> Option<&str> {
+        match self {
+            Error::Http { ray_id, .. } => ray_id.as_deref(),
+            _ => None,
+        }
+    }
+
+    pub(crate) async fn try_from_response_async(response: reqwest::Response) -> Self {
+        let status = response.status().as_u16();
+        let headers = response.headers().clone();
+
+        let error_body = response.text().await.ok();
+
+        Self::http_from_parts(status, &headers, error_body.as_deref())
+    }
+
+    /// Builds an [`Error::Http`] from the pieces of a failed response.
+    ///
+    /// `body` is `None` when the response body could not be read.
+    fn http_from_parts(
+        status: u16,
+        headers: &reqwest::header::HeaderMap,
+        body: Option<&str>,
+    ) -> Self {
+        let ray_id = header_value(headers, "cf-ray");
+        let header_request_id = header_value(headers, "x-notion-request-id");
+
+        let Some(body) = body else {
+            return Error::Http {
+                status,
+                message: "An error occurred, but failed to retrieve the error details from the response body.".to_string(),
+                request_id: header_request_id,
+                ray_id,
+            };
+        };
+
+        match serde_json::from_str::<crate::error::ErrorResponse>(body) {
+            // A well-formed Notion API error takes precedence over any header-derived diagnostics.
+            Ok(error_response) => Error::Http {
+                status,
+                message: error_response.message,
+                request_id: error_response.request_id.or(header_request_id),
+                ray_id,
+            },
+            Err(_) => {
+                // An unrecognized response with a Ray ID but no Notion request ID was
+                // answered before it reached the Notion API. Its body is usually HTML,
+                // so surface the Ray ID instead of dumping it into the message.
+                let message = match (&ray_id, &header_request_id) {
+                    (Some(ray_id), None) => build_edge_response_message(
+                        status,
+                        header_value(headers, "content-type").as_deref(),
+                        ray_id,
+                    ),
+                    _ => format!("{:?}", body),
+                };
+
+                Error::Http {
+                    status,
+                    message,
+                    request_id: header_request_id,
+                    ray_id,
+                }
+            }
+        }
+    }
+}
+
+/// Reads a header as a `String`, ignoring values that aren't valid visible ASCII.
+///
+/// Header names are matched case-insensitively by [`reqwest::header::HeaderMap`].
+fn header_value(headers: &reqwest::header::HeaderMap, name: &str) -> Option<String> {
+    headers
+        .get(name)
+        .and_then(|value| value.to_str().ok())
+        .map(str::to_string)
+}
+
+/// Builds the message for an unrecognized response generated at the network edge.
+fn build_edge_response_message(status: u16, content_type: Option<&str>, ray_id: &str) -> String {
+    let content_type_note = match content_type {
+        Some(content_type) => format!(" (content-type: {content_type})"),
+        None => String::new(),
+    };
+
+    let blocked_request_note = if status == 403 {
+        " This may mean the request was blocked by a network security rule."
+    } else {
+        ""
+    };
+
+    format!(
+        "The response was returned by Notion's edge proxy before reaching the Notion \
+         API{content_type_note}.{blocked_request_note} Cloudflare Ray ID: {ray_id}. \
+         Include this ID when contacting Notion support."
+    )
 }
 
 // # --------------------------------------------------------------------------------
@@ -172,6 +268,199 @@ impl Error {
 #[cfg(test)]
 mod unit_tests {
     use super::*;
+
+    fn header_map(pairs: &[(&str, &str)]) -> reqwest::header::HeaderMap {
+        let mut headers = reqwest::header::HeaderMap::new();
+
+        for (name, value) in pairs {
+            headers.insert(
+                reqwest::header::HeaderName::from_bytes(name.as_bytes()).unwrap(),
+                reqwest::header::HeaderValue::from_str(value).unwrap(),
+            );
+        }
+
+        headers
+    }
+
+    /// Unpacks an [`Error::Http`], panicking on any other variant.
+    fn unwrap_http(error: Error) -> (u16, String, Option<String>, Option<String>) {
+        match error {
+            Error::Http {
+                status,
+                message,
+                request_id,
+                ray_id,
+            } => (status, message, request_id, ray_id),
+            other => panic!("expected Error::Http, got {other:?}"),
+        }
+    }
+
+    const NOTION_ERROR_BODY: &str = r#"
+    {
+        "object": "error",
+        "status": 404,
+        "code": "object_not_found",
+        "message": "Could not find page.",
+        "request_id": "body-request-id"
+    }
+    "#;
+
+    #[test]
+    fn http_from_parts_prefers_well_formed_notion_error() {
+        let headers = header_map(&[
+            ("cf-ray", "abc123-NRT"),
+            ("x-notion-request-id", "header-request-id"),
+        ]);
+
+        let (status, message, request_id, ray_id) = unwrap_http(Error::http_from_parts(
+            404,
+            &headers,
+            Some(NOTION_ERROR_BODY),
+        ));
+
+        assert_eq!(status, 404);
+        assert_eq!(message, "Could not find page.");
+        // The body's own request_id wins over the header.
+        assert_eq!(request_id.as_deref(), Some("body-request-id"));
+        assert_eq!(ray_id.as_deref(), Some("abc123-NRT"));
+    }
+
+    #[test]
+    fn http_from_parts_falls_back_to_request_id_header() {
+        let body = r#"
+        {
+            "object": "error",
+            "status": 429,
+            "code": "rate_limited",
+            "message": "Rate limited."
+        }
+        "#;
+
+        let headers = header_map(&[("x-notion-request-id", "header-request-id")]);
+
+        let (_, message, request_id, ray_id) =
+            unwrap_http(Error::http_from_parts(429, &headers, Some(body)));
+
+        assert_eq!(message, "Rate limited.");
+        assert_eq!(request_id.as_deref(), Some("header-request-id"));
+        assert_eq!(ray_id, None);
+    }
+
+    #[test]
+    fn http_from_parts_matches_headers_case_insensitively() {
+        let headers = header_map(&[("CF-Ray", "abc123-NRT"), ("X-Notion-Request-Id", "req-1")]);
+
+        let (_, _, request_id, ray_id) = unwrap_http(Error::http_from_parts(
+            404,
+            &headers,
+            Some(r#"{"not":"a notion error"}"#),
+        ));
+
+        assert_eq!(request_id.as_deref(), Some("req-1"));
+        assert_eq!(ray_id.as_deref(), Some("abc123-NRT"));
+    }
+
+    #[test]
+    fn http_from_parts_diagnoses_edge_generated_403() {
+        let headers = header_map(&[("cf-ray", "abc123-NRT"), ("content-type", "text/html")]);
+
+        let (status, message, request_id, ray_id) = unwrap_http(Error::http_from_parts(
+            403,
+            &headers,
+            Some("<html><body>Blocked</body></html>"),
+        ));
+
+        assert_eq!(status, 403);
+        assert_eq!(
+            message,
+            "The response was returned by Notion's edge proxy before reaching the Notion API \
+             (content-type: text/html). This may mean the request was blocked by a network \
+             security rule. Cloudflare Ray ID: abc123-NRT. Include this ID when contacting \
+             Notion support."
+        );
+        // The HTML body is kept out of the message.
+        assert!(!message.contains("<html>"));
+        assert_eq!(request_id, None);
+        assert_eq!(ray_id.as_deref(), Some("abc123-NRT"));
+        assert_eq!(
+            Error::http_from_parts(403, &headers, Some("<html></html>")).to_string(),
+            format!("HTTP error 403: {message}")
+        );
+    }
+
+    #[test]
+    fn http_from_parts_diagnoses_edge_generated_non_403_without_content_type() {
+        let headers = header_map(&[("cf-ray", "def456-NRT")]);
+
+        let (_, message, _, _) =
+            unwrap_http(Error::http_from_parts(502, &headers, Some("Bad Gateway")));
+
+        assert_eq!(
+            message,
+            "The response was returned by Notion's edge proxy before reaching the Notion API. \
+             Cloudflare Ray ID: def456-NRT. Include this ID when contacting Notion support."
+        );
+        assert!(!message.contains("content-type"));
+        assert!(!message.contains("network security rule"));
+    }
+
+    #[test]
+    fn http_from_parts_keeps_raw_body_when_notion_answered() {
+        // A Ray ID together with a Notion request ID means the response did reach the
+        // API, so the body is still the best available diagnostic.
+        let headers = header_map(&[("cf-ray", "abc123-NRT"), ("x-notion-request-id", "req-1")]);
+
+        let (_, message, request_id, ray_id) =
+            unwrap_http(Error::http_from_parts(500, &headers, Some("not json")));
+
+        assert_eq!(message, "\"not json\"");
+        assert_eq!(request_id.as_deref(), Some("req-1"));
+        assert_eq!(ray_id.as_deref(), Some("abc123-NRT"));
+    }
+
+    #[test]
+    fn http_from_parts_keeps_raw_body_without_ray_id() {
+        let (_, message, request_id, ray_id) = unwrap_http(Error::http_from_parts(
+            500,
+            &reqwest::header::HeaderMap::new(),
+            Some("not json"),
+        ));
+
+        assert_eq!(message, "\"not json\"");
+        assert_eq!(request_id, None);
+        assert_eq!(ray_id, None);
+    }
+
+    #[test]
+    fn http_from_parts_without_readable_body() {
+        let headers = header_map(&[("cf-ray", "abc123-NRT")]);
+
+        let (status, message, request_id, ray_id) =
+            unwrap_http(Error::http_from_parts(500, &headers, None));
+
+        assert_eq!(status, 500);
+        assert_eq!(
+            message,
+            "An error occurred, but failed to retrieve the error details from the response body."
+        );
+        assert_eq!(request_id, None);
+        assert_eq!(ray_id.as_deref(), Some("abc123-NRT"));
+    }
+
+    #[test]
+    fn request_id_and_ray_id_accessors() {
+        let error = Error::http_from_parts(
+            403,
+            &header_map(&[("cf-ray", "abc123-NRT"), ("x-notion-request-id", "req-1")]),
+            Some("nope"),
+        );
+        assert_eq!(error.request_id(), Some("req-1"));
+        assert_eq!(error.ray_id(), Some("abc123-NRT"));
+
+        let error = Error::Network("connection reset".to_string());
+        assert_eq!(error.request_id(), None);
+        assert_eq!(error.ray_id(), None);
+    }
 
     #[test]
     fn unexpected_async_task_display() {
