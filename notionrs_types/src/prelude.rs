@@ -1,6 +1,7 @@
 pub use crate::object::{
     block::{
-        Block, BlockResponse, MeetingNotesBlockResponse, QueryMeetingNotesResponse, bookmark::*,
+        Block, BlockResponse, CreateMeetingNoteResponse, MeetingNotesBlockResponse,
+        PartialMeetingNotesBlockResponse, QueryMeetingNotesResponse, bookmark::*,
         bulleted_list_item::*, callout::*, child_database::*, child_page::*, code::*, column::*,
         column_list::*, embed::*, equation::*, heading::*, link_preview::*, numbered_list_item::*,
         paragraph::*, quote::*, synced_block::*, tab::*, table::*, table_of_contents::*,

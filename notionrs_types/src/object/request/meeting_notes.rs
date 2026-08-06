@@ -2,6 +2,99 @@ use serde::{Deserialize, Serialize};
 
 // # --------------------------------------------------------------------------------
 //
+// Create Meeting Note
+//
+// # --------------------------------------------------------------------------------
+
+/// The media source used to create a meeting note.
+///
+/// <https://developers.notion.com/reference/create-meeting-note>
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum CreateMeetingNoteSource {
+    /// A completed public API file upload.
+    FileUpload {
+        /// ID of the completed file upload.
+        file_upload_id: String,
+    },
+    /// An existing audio, video, or file block.
+    Block {
+        /// ID of the existing block.
+        block_id: String,
+    },
+}
+
+impl CreateMeetingNoteSource {
+    /// Create a source from a completed public API file upload.
+    pub fn file_upload(file_upload_id: impl AsRef<str>) -> Self {
+        Self::FileUpload {
+            file_upload_id: file_upload_id.as_ref().to_owned(),
+        }
+    }
+
+    /// Create a source from an existing audio, video, or file block.
+    pub fn block(block_id: impl AsRef<str>) -> Self {
+        Self::Block {
+            block_id: block_id.as_ref().to_owned(),
+        }
+    }
+}
+
+/// Language hint for meeting note transcription.
+///
+/// <https://developers.notion.com/reference/create-meeting-note>
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CreateMeetingNoteLanguage {
+    #[serde(rename = "auto")]
+    Auto,
+    #[serde(rename = "en")]
+    English,
+    #[serde(rename = "zh-CN")]
+    ChineseSimplified,
+    #[serde(rename = "zh-TW")]
+    ChineseTraditional,
+    #[serde(rename = "es")]
+    Spanish,
+    #[serde(rename = "fr")]
+    French,
+    #[serde(rename = "de")]
+    German,
+    #[serde(rename = "ja")]
+    Japanese,
+    #[serde(rename = "ko")]
+    Korean,
+    #[serde(rename = "pt")]
+    Portuguese,
+    #[serde(rename = "ru")]
+    Russian,
+    #[serde(rename = "th")]
+    Thai,
+    #[serde(rename = "vi")]
+    Vietnamese,
+    #[serde(rename = "id")]
+    Indonesian,
+    #[serde(rename = "da")]
+    Danish,
+    #[serde(rename = "fi")]
+    Finnish,
+    #[serde(rename = "no")]
+    Norwegian,
+    #[serde(rename = "nl")]
+    Dutch,
+    #[serde(rename = "it")]
+    Italian,
+    #[serde(rename = "sv")]
+    Swedish,
+    #[serde(rename = "ar")]
+    Arabic,
+    #[serde(rename = "he")]
+    Hebrew,
+    #[serde(rename = "pl")]
+    Polish,
+}
+
+// # --------------------------------------------------------------------------------
+//
 // Meeting Notes Filter
 //
 // # --------------------------------------------------------------------------------
@@ -261,6 +354,32 @@ pub enum MeetingNotesSortDirection {
 #[cfg(test)]
 mod unit_tests {
     use super::*;
+
+    #[test]
+    fn serialize_create_meeting_note_source_and_language() {
+        assert_eq!(
+            serde_json::to_value(CreateMeetingNoteSource::file_upload("upload-id")).unwrap(),
+            serde_json::json!({
+                "type": "file_upload",
+                "file_upload_id": "upload-id"
+            })
+        );
+        assert_eq!(
+            serde_json::to_value(CreateMeetingNoteSource::block("block-id")).unwrap(),
+            serde_json::json!({
+                "type": "block",
+                "block_id": "block-id"
+            })
+        );
+        assert_eq!(
+            serde_json::to_value(CreateMeetingNoteLanguage::ChineseSimplified).unwrap(),
+            "zh-CN"
+        );
+        assert_eq!(
+            serde_json::to_value(CreateMeetingNoteLanguage::Norwegian).unwrap(),
+            "no"
+        );
+    }
 
     #[test]
     fn serialize_combinator_filter() {

@@ -328,6 +328,18 @@ impl Client {
         }
     }
 
+    /// Create a meeting note from uploaded media or an existing media block.
+    ///
+    /// <https://developers.notion.com/reference/create-meeting-note>
+    pub fn create_meeting_note(
+        &self,
+    ) -> crate::client::block::create_meeting_note::CreateMeetingNoteClient {
+        crate::client::block::create_meeting_note::CreateMeetingNoteClient {
+            reqwest_client: self.reqwest_client.clone(),
+            ..Default::default()
+        }
+    }
+
     /// Query meeting notes.
     ///
     /// <https://developers.notion.com/reference/query-meeting-notes>

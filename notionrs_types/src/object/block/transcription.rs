@@ -30,6 +30,7 @@ pub enum TranscriptionStatus {
     TranscriptionNotStarted,
     TranscriptionPaused,
     TranscriptionInProgress,
+    TranscriptionFailed,
     SummaryInProgress,
     NotesReady,
 }

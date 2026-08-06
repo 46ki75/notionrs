@@ -25,6 +25,8 @@ mod integration_tests {
             .send_file_upload()
             .file_upload_id(id)
             .file(file.to_vec())
+            .filename("notionrs-test.txt")
+            .content_type("text/plain")
             .send()
             .await?
             .id;
