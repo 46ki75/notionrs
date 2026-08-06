@@ -14,6 +14,7 @@ use serde::{Deserialize, Serialize};
 ///   - `date`
 ///   - `number`
 ///   - `string`
+///   - `unsupported`
 ///
 /// **Note**: The `['*']` part represents the column name you set when creating the database.
 ///
@@ -53,6 +54,7 @@ pub enum Formula {
     Date(FormulaDate),
     Number(FormulaNumber),
     String(FormulaString),
+    Unsupported(FormulaUnsupported),
 }
 
 impl std::fmt::Display for Formula {
@@ -62,6 +64,7 @@ impl std::fmt::Display for Formula {
             Formula::Date(d) => write!(f, "{}", d.date.unwrap_or_default()),
             Formula::Number(n) => write!(f, "{}", n.number.unwrap_or(0.0)),
             Formula::String(s) => write!(f, "{}", s.string.as_deref().unwrap_or("")),
+            Formula::Unsupported(_) => write!(f, ""),
         }
     }
 }
@@ -114,6 +117,19 @@ pub struct FormulaString {
     pub string: Option<String>,
 }
 
+/// A formula value that Notion did not compute.
+///
+/// ```json
+/// {
+///   "type": "unsupported",
+///   "unsupported": {}
+/// }
+/// ```
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+pub struct FormulaUnsupported {
+    pub unsupported: std::collections::HashMap<(), ()>,
+}
+
 // # --------------------------------------------------------------------------------
 //
 // unit test
@@ -154,6 +170,7 @@ mod unit_tests {
             Formula::Boolean(_) => panic!(),
             Formula::Date(_) => panic!(),
             Formula::Number(_) => panic!(),
+            Formula::Unsupported(_) => panic!(),
         }
     }
 
@@ -187,5 +204,23 @@ mod unit_tests {
         let _ = date.to_string();
         let date_none = Formula::Date(FormulaDate { date: None });
         let _ = date_none.to_string();
+        let unsupported = Formula::Unsupported(FormulaUnsupported {
+            unsupported: std::collections::HashMap::new(),
+        });
+        assert_eq!(unsupported.to_string(), "");
+    }
+
+    #[test]
+    fn deserialize_unsupported_formula() {
+        let property: PageFormulaProperty = serde_json::from_value(serde_json::json!({
+            "id": "formula-id",
+            "formula": {
+                "type": "unsupported",
+                "unsupported": {}
+            }
+        }))
+        .unwrap();
+
+        assert!(matches!(property.formula, Formula::Unsupported(_)));
     }
 }

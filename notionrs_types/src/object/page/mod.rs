@@ -245,7 +245,7 @@ mod tests {
             place::PagePlaceProperty,
             relation::PageRelationProperty,
             rich_text::PageRichTextProperty,
-            rollup::PageRollupProperty,
+            rollup::{PageRollupProperty, Rollup, RollupNumber},
             select::PageSelectProperty,
             status::PageStatusProperty,
             title::PageTitleProperty,
@@ -286,7 +286,13 @@ mod tests {
             PageProperty::Place(PagePlaceProperty::default()),
             PageProperty::Relation(PageRelationProperty::default()),
             PageProperty::RichText(PageRichTextProperty::from("text")),
-            PageProperty::Rollup(PageRollupProperty { id: None }),
+            PageProperty::Rollup(PageRollupProperty {
+                id: None,
+                rollup: Rollup::Number(RollupNumber {
+                    number: Some(1.0),
+                    function: crate::object::data_source::rollup::RollupFunction::Sum,
+                }),
+            }),
             PageProperty::Select(PageSelectProperty::default()),
             PageProperty::Status(PageStatusProperty::default().status(Select::from("S"))),
             PageProperty::Title(PageTitleProperty::from("Title")),
