@@ -148,6 +148,8 @@ pub enum AsyncTaskErrorCode {
     InvalidRequest,
     /// The request is missing the `Notion-Version` header.
     MissingVersion,
+    /// The `Notion-Beta` header is invalid or missing when required.
+    InvalidBeta,
     /// The body of the request is not valid.
     ValidationError,
     /// The bearer token is not valid.
@@ -296,6 +298,39 @@ mod unit_tests {
             AsyncTaskResponse::Failed(failed) => {
                 assert_eq!(failed.error.code, AsyncTaskErrorCode::ServiceOverload);
                 assert_eq!(failed.error.message, "Notion is overloaded.");
+            }
+            _ => panic!("Expected Failed variant"),
+        }
+    }
+
+    #[test]
+    fn deserialize_async_task_failed_with_invalid_beta() {
+        let json = r#"
+        {
+            "object": "async_task",
+            "id": "task-id-123",
+            "status": "failed",
+            "status_url": "https://api.notion.com/v1/async_tasks/task-id-123",
+            "created_time": "2026-08-05T00:00:00.000Z",
+            "operation": { "surface": "rest", "name": "create_page" },
+            "error": {
+                "object": "error",
+                "status": 400,
+                "code": "invalid_beta",
+                "message": "The beta revision is no longer supported.",
+                "additional_data": { "beta": "notion-as-code" }
+            }
+        }
+        "#;
+
+        let task: AsyncTaskResponse = serde_json::from_str(json).expect("Failed to deserialize");
+        match task {
+            AsyncTaskResponse::Failed(failed) => {
+                assert_eq!(failed.error.code, AsyncTaskErrorCode::InvalidBeta);
+                assert_eq!(
+                    failed.error.message,
+                    "The beta revision is no longer supported."
+                );
             }
             _ => panic!("Expected Failed variant"),
         }

@@ -28,6 +28,7 @@ As part of the alpha release, the following features are available. Please note 
   - [Retrieve block children](https://developers.notion.com/reference/get-block-children)
   - [Update a block](https://developers.notion.com/reference/update-a-block)
   - [Delete a block](https://developers.notion.com/reference/delete-a-block)
+  - [Create a meeting note](https://developers.notion.com/reference/create-meeting-note)
 - Databases
   - [Create a database](https://developers.notion.com/reference/create-a-database)
   - [Update a database](https://developers.notion.com/reference/update-a-database)

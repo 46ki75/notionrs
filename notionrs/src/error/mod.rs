@@ -75,6 +75,8 @@ pub enum ApiErrorCode {
     InvalidRequest,
     /// The request is missing the `Notion-Version` header.
     MissingVersion,
+    /// The `Notion-Beta` header is invalid or missing when required.
+    InvalidBeta,
     /// The bearer token is not valid.
     Unauthorized,
     /// Given the bearer token used, the client doesn't have permission to perform this operation.
@@ -109,6 +111,7 @@ impl std::fmt::Display for ApiErrorCode {
             ApiErrorCode::InvalidRequestUrl => write!(f, "invalid_request_url"),
             ApiErrorCode::InvalidRequest => write!(f, "invalid_request"),
             ApiErrorCode::MissingVersion => write!(f, "missing_version"),
+            ApiErrorCode::InvalidBeta => write!(f, "invalid_beta"),
             ApiErrorCode::Unauthorized => write!(f, "unauthorized"),
             ApiErrorCode::RestrictedResource => write!(f, "restricted_resource"),
             ApiErrorCode::ValidationError => write!(f, "validation_error"),
@@ -487,6 +490,7 @@ mod unit_tests {
             (r#""invalid_request_url""#, ApiErrorCode::InvalidRequestUrl),
             (r#""invalid_request""#, ApiErrorCode::InvalidRequest),
             (r#""missing_version""#, ApiErrorCode::MissingVersion),
+            (r#""invalid_beta""#, ApiErrorCode::InvalidBeta),
             (r#""unauthorized""#, ApiErrorCode::Unauthorized),
             (r#""restricted_resource""#, ApiErrorCode::RestrictedResource),
             (r#""validation_error""#, ApiErrorCode::ValidationError),
@@ -559,6 +563,7 @@ mod unit_tests {
             "row_limit_exceeded"
         );
         assert_eq!(ApiErrorCode::MissingVersion.to_string(), "missing_version");
+        assert_eq!(ApiErrorCode::InvalidBeta.to_string(), "invalid_beta");
         assert_eq!(
             ApiErrorCode::Unknown("custom".to_string()).to_string(),
             "custom"

@@ -100,6 +100,9 @@ pub struct MeetingNotesBlockResponse {
 
     pub id: String,
 
+    /// Always `"meeting_notes"`.
+    pub r#type: String,
+
     /// ISO 8601 timestamp when this meeting note was created.
     #[serde(with = "time::serde::rfc3339")]
     pub created_time: time::OffsetDateTime,
@@ -121,6 +124,41 @@ pub struct MeetingNotesBlockResponse {
     pub in_trash: bool,
 
     pub meeting_notes: transcription::TranscriptionBlock,
+}
+
+/// ID-only meeting note response returned without the Read content capability.
+///
+/// <https://developers.notion.com/reference/create-meeting-note>
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(deny_unknown_fields)]
+pub struct PartialMeetingNotesBlockResponse {
+    /// Always `"block"`.
+    pub object: String,
+
+    /// ID of the created meeting notes block.
+    pub id: String,
+}
+
+/// Response from the create meeting note endpoint.
+///
+/// <https://developers.notion.com/reference/create-meeting-note>
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(untagged)]
+pub enum CreateMeetingNoteResponse {
+    /// Full block data returned with the Read content capability.
+    Full(MeetingNotesBlockResponse),
+    /// ID-only data returned without the Read content capability.
+    Partial(PartialMeetingNotesBlockResponse),
+}
+
+impl CreateMeetingNoteResponse {
+    /// Return the ID of the created meeting notes block.
+    pub fn id(&self) -> &str {
+        match self {
+            Self::Full(response) => &response.id,
+            Self::Partial(response) => &response.id,
+        }
+    }
 }
 
 /// Response from the query meeting notes endpoint.
@@ -599,6 +637,63 @@ mod unit_tests {
             }
             _ => panic!("Expected Heading4 block"),
         }
+    }
+
+    #[test]
+    fn deserialize_create_meeting_note_responses() {
+        let partial: CreateMeetingNoteResponse = serde_json::from_value(serde_json::json!({
+            "object": "block",
+            "id": "partial-block-id"
+        }))
+        .unwrap();
+        assert!(matches!(partial, CreateMeetingNoteResponse::Partial(_)));
+        assert_eq!(partial.id(), "partial-block-id");
+
+        let full: CreateMeetingNoteResponse = serde_json::from_value(serde_json::json!({
+            "object": "block",
+            "id": "full-block-id",
+            "type": "meeting_notes",
+            "meeting_notes": {
+                "status": "transcription_failed"
+            },
+            "created_time": "2026-08-05T19:00:00.000Z",
+            "last_edited_time": "2026-08-05T19:00:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "user-id"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "user-id"
+            },
+            "has_children": false,
+            "in_trash": false
+        }))
+        .unwrap();
+        assert!(matches!(full, CreateMeetingNoteResponse::Full(_)));
+        assert_eq!(full.id(), "full-block-id");
+
+        let malformed_full = serde_json::json!({
+            "object": "block",
+            "id": "full-block-id",
+            "type": "meeting_notes",
+            "meeting_notes": {
+                "status": "future_status"
+            },
+            "created_time": "2026-08-05T19:00:00.000Z",
+            "last_edited_time": "2026-08-05T19:00:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "user-id"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "user-id"
+            },
+            "has_children": false,
+            "in_trash": false
+        });
+        assert!(serde_json::from_value::<CreateMeetingNoteResponse>(malformed_full).is_err());
     }
 
     #[test]
