@@ -231,11 +231,11 @@ mod integration_tests {
         let filter = notionrs_types::object::request::filter::Filter::or(vec![
             notionrs_types::object::request::filter::Filter::multi_select_contains(
                 "Multi-select",
-                "0",
+                "Something",
             ),
             notionrs_types::object::request::filter::Filter::multi_select_does_not_contain(
                 "Multi-select",
-                "0",
+                "Something",
             ),
             notionrs_types::object::request::filter::Filter::multi_select_is_empty("Multi-select"),
             notionrs_types::object::request::filter::Filter::multi_select_is_not_empty(
