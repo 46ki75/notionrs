@@ -22,8 +22,8 @@ importers:
         specifier: ^3.9.6
         version: 3.9.6
       tsx:
-        specifier: ^4.23.10
-        version: 4.23.10
+        specifier: ^4.23.11
+        version: 4.23.11
       typescript:
         specifier: ^7.0.2
         version: 7.0.2
@@ -1185,8 +1185,8 @@ packages:
   trim-lines@3.0.1:
     resolution: {integrity: sha512-kRj8B+YHZCc9kQYdWfJB2/oUl9rA99qbowYYBtr4ui4mZyAQ2JpvVBd/6U2YloATfqBhBTSMhTpgBHtU0Mf3Rg==}
 
-  tsx@4.23.10:
-    resolution: {integrity: sha512-0Vb9eKU47njkxv/6B8CRZRDsxNDT/Pz+BIU+M5jw7xL3TdzAjSxlZUxu0xFL/kLpaG3sHZ0LH2wbK1T1yo7CUQ==}
+  tsx@4.23.11:
+    resolution: {integrity: sha512-Ry2oTEUnhBdeEdWIztY8kf3/nBGnPnjMLVGL0YfdRXMORuPER5NlKmayqxtxRxwB1xBN+RivRaJfe7PM1rtiyw==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -2295,7 +2295,7 @@ snapshots:
 
   trim-lines@3.0.1: {}
 
-  tsx@4.23.10:
+  tsx@4.23.11:
     dependencies:
       esbuild: 0.28.2
     optionalDependencies:
