@@ -1007,13 +1007,14 @@ dependencies = [
 
 [[package]]
 name = "notionrs"
-version = "0.31.0"
+version = "0.32.0"
 dependencies = [
  "bytes",
  "dotenvy",
  "futures",
  "notionrs_macro",
  "notionrs_types",
+ "percent-encoding",
  "reqwest",
  "serde",
  "serde_json",
@@ -1036,7 +1037,7 @@ dependencies = [
 
 [[package]]
 name = "notionrs_types"
-version = "0.23.0"
+version = "0.24.0"
 dependencies = [
  "notionrs_macro",
  "serde",

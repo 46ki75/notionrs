@@ -26,6 +26,7 @@ mod integration_tests {
             .create_page::<std::collections::HashMap<String, PageProperty>>()
             .properties(properties)
             .data_source_id(crate::mutable::DATA_SOURCE_ID)
+            .filter_properties(vec!["My Title".to_string()])
             .icon(notionrs_types::object::emoji_and_icon::EmojiAndIcon::Emoji(
                 notionrs_types::object::emoji::Emoji::from("🚧"),
             ))
@@ -36,6 +37,8 @@ mod integration_tests {
             ));
 
         let response = request.send().await?.into_page()?;
+        let returned_only_requested_property =
+            response.properties.len() == 1 && response.properties.contains_key("My Title");
 
         // # --------------------------------------------------------------------------------
         //
@@ -48,6 +51,7 @@ mod integration_tests {
         let response = request.send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
+        assert!(returned_only_requested_property);
 
         Ok(())
     }

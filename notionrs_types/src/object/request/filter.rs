@@ -51,6 +51,7 @@ pub enum Condition {
     #[serde(rename = "created_time")]
     Timestamp(Box<TimestampFilter>),
     UniqueId(UniqueIdFilter),
+    Verification(VerificationFilter),
 }
 
 // # --------------------------------------------------------------------------------
@@ -585,6 +586,29 @@ pub struct StatusFilter {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_not_empty: Option<bool>,
+}
+
+// # --------------------------------------------------------------------------------
+//
+// verification
+//
+// # --------------------------------------------------------------------------------
+
+/// A verification status accepted by verification property filters.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum VerificationStatus {
+    Verified,
+    Expired,
+    None,
+}
+
+/// <https://developers.notion.com/reference/filter-data-source-entries#verification>
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[serde(untagged)]
+pub enum VerificationFilter {
+    Status { status: VerificationStatus },
+    DoesNotEqual { does_not_equal: VerificationStatus },
 }
 
 // # --------------------------------------------------------------------------------
@@ -2568,6 +2592,40 @@ impl Filter {
 
     // # --------------------------------------------------------------------------------
     //
+    // verification <https://developers.notion.com/reference/filter-data-source-entries#verification>
+    //
+    // # --------------------------------------------------------------------------------
+
+    /// Returns entries whose verification status matches the provided value.
+    pub fn verification_status<S>(property_name: S, status: VerificationStatus) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Verification(VerificationFilter::Status {
+                status,
+            })),
+            ..Default::default()
+        }
+    }
+
+    /// Returns entries whose verification status does not match the provided value.
+    pub fn verification_does_not_equal<S>(property_name: S, status: VerificationStatus) -> Self
+    where
+        S: AsRef<str>,
+    {
+        Filter {
+            property: Some(property_name.as_ref().to_string()),
+            condition: Some(Condition::Verification(VerificationFilter::DoesNotEqual {
+                does_not_equal: status,
+            })),
+            ..Default::default()
+        }
+    }
+
+    // # --------------------------------------------------------------------------------
+    //
     // timestamp <https://developers.notion.com/reference/post-database-query-filter#timestamp>
     //
     // # --------------------------------------------------------------------------------
@@ -3275,6 +3333,48 @@ mod unit_tests {
     }
 
     #[test]
+    fn serialize_verification_filters() {
+        assert_eq!(
+            serde_json::to_value(Filter::verification_status(
+                "Verification",
+                VerificationStatus::Verified,
+            ))
+            .unwrap(),
+            serde_json::json!({
+                "property": "Verification",
+                "verification": { "status": "verified" }
+            })
+        );
+        assert_eq!(
+            serde_json::to_value(Filter::verification_does_not_equal(
+                "Verification",
+                VerificationStatus::Expired,
+            ))
+            .unwrap(),
+            serde_json::json!({
+                "property": "Verification",
+                "verification": { "does_not_equal": "expired" }
+            })
+        );
+    }
+
+    #[test]
+    fn deserialize_verification_does_not_equal_filter() {
+        let filter: Filter = serde_json::from_value(serde_json::json!({
+            "property": "Verification",
+            "verification": { "does_not_equal": "none" }
+        }))
+        .unwrap();
+
+        assert_eq!(
+            filter.condition,
+            Some(Condition::Verification(VerificationFilter::DoesNotEqual {
+                does_not_equal: VerificationStatus::None,
+            }))
+        );
+    }
+
+    #[test]
     fn deserialize_multi_select_filter_with_array() {
         let json =
             r#"{"property":"Tags","multi_select":{"contains":["Rust","TypeScript"]}}"#;
@@ -3477,6 +3577,18 @@ mod unit_tests {
         check(Filter::status_does_not_equal_any("s", ["A", "B"]));
         check(Filter::status_is_empty::<&str>("s"));
         check(Filter::status_is_not_empty::<&str>("s"));
+    }
+
+    #[test]
+    fn verification_filters() {
+        check(Filter::verification_status(
+            "v",
+            VerificationStatus::Verified,
+        ));
+        check(Filter::verification_does_not_equal(
+            "v",
+            VerificationStatus::Expired,
+        ));
     }
 
     #[test]

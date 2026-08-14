@@ -16,6 +16,10 @@ pub struct CreatePageClient<
     /// Cannot specify the same data_source ID as the parent data_source's page_id  
     pub(crate) data_source_id: Option<String>,
 
+    /// Property IDs or names to include in the returned page's `properties`.
+    /// IDs may be passed in the URL-encoded form returned by Notion.
+    pub(crate) filter_properties: Option<Vec<String>>,
+
     pub(crate) properties:
         std::collections::HashMap<String, notionrs_types::object::page::PageProperty>,
 
@@ -58,6 +62,7 @@ impl<T> Default for CreatePageClient<T> {
             reqwest_client: reqwest::Client::default(),
             page_id: None,
             data_source_id: None,
+            filter_properties: None,
             properties: std::collections::HashMap::new(),
             children: None,
             markdown: None,
@@ -202,6 +207,7 @@ impl<T> CreatePageClient<T> {
             reqwest_client: self.reqwest_client,
             page_id: self.page_id,
             data_source_id: self.data_source_id,
+            filter_properties: self.filter_properties,
             properties: self.properties,
             children: self.children,
             markdown: self.markdown,
@@ -345,6 +351,7 @@ impl<T> CreatePageClient<T> {
             .post(url)
             .header("Content-Type", "application/json")
             .body(request_body);
+        let request = crate::client::page::with_filter_properties(request, self.filter_properties);
 
         let response = request
             .send()
