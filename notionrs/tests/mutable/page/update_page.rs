@@ -43,13 +43,16 @@ mod integration_tests {
             PageProperty::Title(PageTitleProperty::from("My Page Title (Updated)")),
         );
 
-        let _updated = client
+        let updated = client
             .update_page()
             .page_id(&created.id)
             .properties(properties)
+            .filter_properties(vec!["My Title".to_string()])
             .template_default()
             .send()
             .await?;
+        let returned_only_requested_property =
+            updated.properties.len() == 1 && updated.properties.contains_key("My Title");
 
         // # --------------------------------------------------------------------------------
         //
@@ -60,6 +63,7 @@ mod integration_tests {
         let response = client.delete_block().block_id(created.id).send().await?;
 
         println!("{}", serde_json::to_string(&response)?);
+        assert!(returned_only_requested_property);
 
         Ok(())
     }
