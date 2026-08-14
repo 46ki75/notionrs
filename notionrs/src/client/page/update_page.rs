@@ -10,6 +10,9 @@ pub struct UpdatePageClient<
 
     pub(crate) page_id: Option<String>,
 
+    /// Property IDs or names to include in the returned page's `properties`.
+    pub(crate) filter_properties: Option<Vec<String>>,
+
     pub(crate) properties: T,
 
     pub(crate) in_trash: Option<bool>,
@@ -29,6 +32,7 @@ where
         Self {
             reqwest_client: reqwest::Client::default(),
             page_id: None,
+            filter_properties: None,
             properties: Default::default(),
             in_trash: None,
             icon: None,
@@ -146,6 +150,7 @@ where
             .patch(url)
             .header("Content-Type", "application/json")
             .body(request_body);
+        let request = crate::client::page::with_filter_properties(request, self.filter_properties);
 
         let response = request
             .send()
