@@ -16,7 +16,12 @@ pub(super) fn with_filter_properties(
 
     let query = filter_properties
         .into_iter()
-        .map(|property| ("filter_properties", property))
+        .map(|property| {
+            let property = percent_encoding::percent_decode_str(&property)
+                .decode_utf8_lossy()
+                .into_owned();
+            ("filter_properties", property)
+        })
         .collect::<Vec<_>>();
 
     request.query(&query)
@@ -29,10 +34,12 @@ mod tests {
     #[test]
     fn filter_properties_are_encoded_as_repeated_query_parameters() {
         let request = reqwest::Client::new().post("https://api.notion.com/v1/pages");
-        let request =
-            with_filter_properties(request, Some(vec!["title".to_string(), ":Uj;".to_string()]))
-                .build()
-                .unwrap();
+        let request = with_filter_properties(
+            request,
+            Some(vec!["title".to_string(), "%3AUj%3B".to_string()]),
+        )
+        .build()
+        .unwrap();
 
         assert_eq!(
             request.url().query(),

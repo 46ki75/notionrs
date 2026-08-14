@@ -1014,6 +1014,7 @@ dependencies = [
  "futures",
  "notionrs_macro",
  "notionrs_types",
+ "percent-encoding",
  "reqwest",
  "serde",
  "serde_json",

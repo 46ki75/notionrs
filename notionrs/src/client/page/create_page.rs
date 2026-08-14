@@ -17,6 +17,7 @@ pub struct CreatePageClient<
     pub(crate) data_source_id: Option<String>,
 
     /// Property IDs or names to include in the returned page's `properties`.
+    /// IDs may be passed in the URL-encoded form returned by Notion.
     pub(crate) filter_properties: Option<Vec<String>>,
 
     pub(crate) properties:
